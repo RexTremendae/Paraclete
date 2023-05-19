@@ -7,14 +7,13 @@ Clear();
 ConsoleKey? key;
 var now = default(DateTime);
 
-var settings = new Settings
-{
+var settings = new Settings() with {
     UpdateInterval = 50,
-    ShowMilliseconds = true,
     FontSize = 3,
-    Color = ConsoleColor.Cyan,
-    MillisecondsColor = ConsoleColor.DarkCyan,
-    DigitDisplayChar = '■'
+    DigitDisplayChar = '■',
+    ShowHours = true,
+    ShowSeconds = true,
+    ShowMilliseconds = false
 };
 
 var timeWriter = new TimeWriter(settings);

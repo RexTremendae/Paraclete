@@ -20,32 +20,52 @@ public class TimeWriter
         }
     }
 
-    public void Write(DateTime timestamp, (int x, int y) cursorPos)
+    public void Write(TimeSpan timestamp, (int x, int y) cursorPos)
     {
-        var hour = timestamp.Hour.ToString().PadLeft(2, '0');
-        var minute = timestamp.Minute.ToString().PadLeft(2, '0');
-        var second = timestamp.Second.ToString().PadLeft(2, '0');
-        var millisecond = timestamp.Millisecond.ToString().PadLeft(3, '0');
-
-        var parts = new[] {
-            $"{hour}:{minute}:{second}",
-            $".{millisecond}"
-        };
-
-        var partColors = new[] {
-            _settings.Color,
-            _settings.MillisecondsColor
-        };
-
-        Write(
-            _settings.ShowMilliseconds ? parts : parts.Take(1).ToArray(),
-            _settings.ShowMilliseconds ? partColors : partColors.Take(1).ToArray(),
-            cursorPos);
+        Write(timestamp.Hours, timestamp.Minutes, timestamp.Seconds, timestamp.Milliseconds, cursorPos);
     }
 
-    private void Write(string[] textParts, ConsoleColor[] colors, (int x, int y) cursorPos)
+    public void Write(DateTime timestamp, (int x, int y) cursorPos)
     {
-        cursorPos = (cursorPos.x, cursorPos.y+1);
+        Write(timestamp.Hour, timestamp.Minute, timestamp.Second, timestamp.Millisecond, cursorPos);
+    }
+
+    private void Write(int hour, int minute, int second, int millisecond, (int x, int y) cursorPos)
+    {
+        var hourPart = hour.ToString().PadLeft(2, '0');
+        var minutePart = minute.ToString().PadLeft(2, '0');
+        var secondPart = second.ToString().PadLeft(2, '0');
+        var millisecondPart = millisecond.ToString().PadLeft(3, '0');
+
+        var parts = new List<string>();
+        var partColors = new List<ConsoleColor>();
+
+        if (_settings.ShowHours)
+        {
+            parts.Add($"{hourPart}:");
+            partColors.Add(_settings.Color);
+        }
+
+        parts.Add($"{minutePart}");
+        partColors.Add(_settings.Color);
+
+        if (_settings.ShowSeconds)
+        {
+            parts.Add($":{secondPart}");
+            partColors.Add(_settings.Color);
+        }
+
+        if (_settings.ShowMilliseconds)
+        {
+            parts.Add($".{millisecondPart}");
+            partColors.Add(_settings.MillisecondsColor);
+        }
+
+        Write(parts, partColors, cursorPos);
+    }
+
+    private void Write(List<string> textParts, List<ConsoleColor> colors, (int x, int y) cursorPos)
+    {
         var charWidth = _font['0'][0].Length;
         var charHeight = _font['0'].Length;
 
@@ -53,7 +73,7 @@ public class TimeWriter
         CursorTop = cursorPos.y;
 
         var charCount = 0;
-        for (int idx = 0; idx < textParts.Length; idx++)
+        for (int idx = 0; idx < textParts.Count; idx++)
         {
             var text = textParts[idx];
             ForegroundColor = colors[idx];
