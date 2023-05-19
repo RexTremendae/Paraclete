@@ -4,11 +4,20 @@ namespace Time;
 
 public class TimeWriter
 {
-    private Dictionary<char, string[]> _font;
+    private readonly Dictionary<char, string[]> _font;
+    private readonly Settings _settings;
 
-    public TimeWriter(int fontSize)
+    public TimeWriter(Settings settings)
     {
-        _font = Font.OfSize(fontSize);
+        _settings = settings;
+        _font = Font.OfSize(settings.FontSize);
+        if (settings.DigitDisplayChar != '#')
+        {
+            foreach (var key in _font.Keys)
+            {
+                _font[key] = _font[key].Select(_ => _.Replace('#', settings.DigitDisplayChar)).ToArray();
+            }
+        }
     }
 
     public void Write(DateTime timestamp, (int x, int y) cursorPos)
@@ -18,9 +27,19 @@ public class TimeWriter
         var second = timestamp.Second.ToString().PadLeft(2, '0');
         var millisecond = timestamp.Millisecond.ToString().PadLeft(3, '0');
 
+        var parts = new[] {
+            $"{hour}:{minute}:{second}",
+            $".{millisecond}"
+        };
+
+        var partColors = new[] {
+            _settings.Color,
+            _settings.MillisecondsColor
+        };
+
         Write(
-            new[] { $"{hour}:{minute}:{second}", $".{millisecond}" },
-            new[] { ConsoleColor.Gray, ConsoleColor.DarkGray },
+            _settings.ShowMilliseconds ? parts : parts.Take(1).ToArray(),
+            _settings.ShowMilliseconds ? partColors : partColors.Take(1).ToArray(),
             cursorPos);
     }
 

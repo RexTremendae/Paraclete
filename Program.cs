@@ -7,7 +7,17 @@ Clear();
 ConsoleKey? key;
 var now = default(DateTime);
 
-var timeWriter = new TimeWriter(fontSize: 2);
+var settings = new Settings
+{
+    UpdateInterval = 50,
+    ShowMilliseconds = true,
+    FontSize = 3,
+    Color = ConsoleColor.Cyan,
+    MillisecondsColor = ConsoleColor.DarkCyan,
+    DigitDisplayChar = '■'
+};
+
+var timeWriter = new TimeWriter(settings);
 
 var cursorPos = (x: CursorLeft, y: CursorTop);
 
@@ -20,5 +30,5 @@ for(;;)
     now = DateTime.Now;
     timeWriter.Write(now, cursorPos);
 
-    await Task.Delay(20);
+    await Task.Delay(settings.UpdateInterval);
 }
