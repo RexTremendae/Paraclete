@@ -27,12 +27,25 @@ public static class MainLoop
             MillisecondsColor = ConsoleColor.DarkMagenta
         };
 
+        var markTimeSettings = new Settings() with {
+            FontSize = 1,
+            ShowHours = true,
+            ShowSeconds = true,
+            ShowMilliseconds = true,
+            Color = ConsoleColor.Magenta,
+            MillisecondsColor = ConsoleColor.DarkMagenta
+        };
+
         var now = default(DateTime);
         var currentTimeWriter = new TimeWriter(currentTimeSettings);
         var stopWatchWriter = new TimeWriter(stopWatchSettings);
+        var markTimeWriter = new TimeWriter(markTimeSettings);
 
         var currentTimePosition = (x: 3, y: 2);
         var stopWatchPosition = (x: 3, y: 12);
+        var markTimesPosition = (x: 3, y: 18);
+
+        var markedTimes = new List<TimeSpan>();
 
         ConsoleKey? key;
         var stopWatchStart = default(DateTime);
@@ -42,7 +55,8 @@ public static class MainLoop
         var menuOptions = new[] {
             (ConsoleKey.Escape, "Quit"),
             (ConsoleKey.S, "Start/stop"),
-            (ConsoleKey.R, "Reset")
+            (ConsoleKey.R, "Reset"),
+            (ConsoleKey.M, "Mark")
         };
 
         for(;;)
@@ -86,16 +100,39 @@ public static class MainLoop
                         ? DateTime.Now
                         : default;
                     stopWatchStop = default;
+                    markedTimes.Clear();
+                    PaintFrame(menuOptions);
                     break;
 
-                default: break;
+                case ConsoleKey.M:
+                    var mark = (isStopWatchRunning ? DateTime.Now : stopWatchStop)
+                        - stopWatchStart;
+                    if (markedTimes.LastOrDefault() != mark)
+                    {
+                        markedTimes.Add(mark);
+                    }
+                    break;
+
+                default:
+                    break;
             }
 
             now = DateTime.Now;
             currentTimeWriter.Write(now, currentTimePosition);
-            var stopWatchTime = (isStopWatchRunning ? DateTime.Now : stopWatchStop)
-                - stopWatchStart;
-            stopWatchWriter.Write(stopWatchTime, stopWatchPosition);
+
+            if (stopWatchStart != default)
+            {
+                var stopWatchTime = (isStopWatchRunning ? DateTime.Now : stopWatchStop)
+                    - stopWatchStart;
+                stopWatchWriter.Write(stopWatchTime, stopWatchPosition);
+            }
+
+            var mx = markTimesPosition.x;
+            var my = markTimesPosition.y;
+            foreach (var mark in markedTimes)
+            {
+                markTimeWriter.Write(mark, (mx, my++));
+            }
 
             await Task.Delay(updateInterval);
         }

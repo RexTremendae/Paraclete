@@ -1,7 +1,7 @@
 ﻿using Time;
-using static System.Console;
 
-CursorVisible = false;
-Clear();
+Console.OutputEncoding = System.Text.Encoding.UTF8;
+Console.CursorVisible = false;
+Console.Clear();
 
 await MainLoop.Run();
