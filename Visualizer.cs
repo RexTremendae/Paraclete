@@ -1,14 +1,16 @@
+using Time.Menu;
 using static System.Console;
 
 namespace Time;
 
 public class Visualizer
 {
-    private readonly StopWatch _stopWatch;
+    private readonly Stopwatch _stopWatch;
+    private readonly MainMenu _mainMenu;
+    private readonly FrameInvalidator _frameInvalidator;
 
     private int _windowHeight;
     private int _windowWidth;
-    private bool _isFrameValid;
 
     private (int x, int y) _currentTimePosition;
     private (int x, int y) _stopWatchPosition;
@@ -18,9 +20,11 @@ public class Visualizer
     private TimeWriter _stopWatchWriter;
     private TimeWriter _markTimeWriter;
 
-    public Visualizer(StopWatch stopWatch)
+    public Visualizer(Stopwatch stopWatch, MainMenu mainMenu, FrameInvalidator frameInvalidator)
     {
         _stopWatch = stopWatch;
+        _mainMenu = mainMenu;
+        _frameInvalidator = frameInvalidator;
 
         _currentTimePosition = (x: 3, y:  2);
         _stopWatchPosition   = (x: 3, y: 12);
@@ -60,9 +64,15 @@ public class Visualizer
         _markTimeWriter = new TimeWriter(markTimeSettings);
     }
 
-    public void PaintFrame(params (ConsoleKey key, string description)[] menuOptions)
+    public void PaintScreen()
     {
-        if (_isFrameValid && _windowHeight == WindowHeight && _windowWidth == WindowWidth)
+        PaintFrame();
+        PaintContent();
+    }
+
+    private void PaintFrame()
+    {
+        if (_frameInvalidator.IsValid && _windowHeight == WindowHeight && _windowWidth == WindowWidth)
         {
             return;
         }
@@ -98,10 +108,16 @@ public class Visualizer
             Write(frameRows[y]);
         }
 
+        PaintMenu();
+        _frameInvalidator.Reset();
+    }
+
+    private void PaintMenu()
+    {
         CursorLeft = 2;
         CursorTop = _windowHeight-2;
 
-        foreach (var (key, description) in menuOptions)
+        foreach (var (key, description) in _mainMenu.MenuItems.Select(_ => (_.Shortcut, _.Description)))
         {
             Write("[");
             ForegroundColor = ConsoleColor.Green;
@@ -110,16 +126,9 @@ public class Visualizer
             Write("] ");
             Write(description + "    ");
         }
-
-        _isFrameValid = true;
     }
 
-    public void InvalidateFrame()
-    {
-        _isFrameValid = false;
-    }
-
-    public void PaintContent()
+    private void PaintContent()
     {
         var now = DateTime.Now;
         _currentTimeWriter.Write(now, _currentTimePosition);

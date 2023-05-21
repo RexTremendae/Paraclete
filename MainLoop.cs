@@ -1,3 +1,4 @@
+using Time.Menu;
 using static System.Console;
 
 namespace Time;
@@ -5,62 +6,43 @@ namespace Time;
 public class MainLoop
 {
     private readonly Visualizer _visualizer;
-    private readonly StopWatch _stopWatch;
+    private readonly MainMenu _mainMenu;
 
-    public MainLoop(Visualizer visualizer, StopWatch stopWatch)
+    public MainLoop(Visualizer visualizer, MainMenu mainMenu)
     {
         _visualizer = visualizer;
-        _stopWatch = stopWatch;
+        _mainMenu = mainMenu;
     }
 
     private async Task RepaintLoop()
     {
-        var menuOptions = new[] {
-            (ConsoleKey.Escape, "Quit"),
-            (ConsoleKey.S, "Start/stop"),
-            (ConsoleKey.R, "Reset"),
-            (ConsoleKey.M, "Mark")
-        };
-
         for(;;)
         {
-            _visualizer.PaintFrame(menuOptions);
-            _visualizer.PaintContent();
+            _visualizer.PaintScreen();
             await Task.Delay(30);
         }
     }
 
-    public void Run()
+    public async Task Run()
     {
-        Task.Run(async () => await RepaintLoop());
+        var commands = _mainMenu.MenuItems.ToDictionary(key => key.Shortcut, value => value);
 
-        ConsoleKey? key;
+        new Thread(async () => await RepaintLoop()).Start();
+
+        ConsoleKey key;
 
         for(;;)
         {
             key = ReadKey(true).Key;
 
-            switch (key)
+            if (key == ConsoleKey.Escape) return;
+
+            if (!commands.TryGetValue(key, out var selectedCommand))
             {
-                case ConsoleKey.Escape:
-                    return;
-
-                case ConsoleKey.S:
-                    _stopWatch.ToggleStartStop();
-                    break;
-
-                case ConsoleKey.R:
-                    _stopWatch.Reset();
-                    _visualizer.InvalidateFrame();
-                    break;
-
-                case ConsoleKey.M:
-                    _stopWatch.Mark();
-                    break;
-
-                default:
-                    break;
+                continue;
             }
+
+            await selectedCommand.Execute();
         }
     }
 }

@@ -1,6 +1,6 @@
 namespace Time;
 
-public class StopWatch
+public class Stopwatch
 {
     public DateTime Start { get; private set; }
     public DateTime Stop { get; private set; }

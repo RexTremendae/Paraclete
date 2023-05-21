@@ -7,4 +7,4 @@ Console.Clear();
 
 var services = Configurator.Configure();
 
-services.GetRequiredService<MainLoop>().Run();
+await services.GetRequiredService<MainLoop>().Run();
