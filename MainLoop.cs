@@ -2,56 +2,19 @@ using static System.Console;
 
 namespace Time;
 
-public static class MainLoop
+public class MainLoop
 {
-    public static int updateInterval = 50;
-    private static int _windowHeight = 0;
-    private static int _windowWidth = 0;
+    private readonly Visualizer _visualizer;
+    private readonly StopWatch _stopWatch;
 
-    public static async Task Run()
+    public MainLoop(Visualizer visualizer, StopWatch stopWatch)
     {
-        var currentTimeSettings = new Settings() with {
-            FontSize = 3,
-            Color = ConsoleColor.White,
-            ShowHours = true,
-            ShowSeconds = true,
-            ShowMilliseconds = false
-        };
+        _visualizer = visualizer;
+        _stopWatch = stopWatch;
+    }
 
-        var stopWatchSettings = new Settings() with {
-            FontSize = 2,
-            ShowHours = true,
-            ShowSeconds = true,
-            ShowMilliseconds = true,
-            Color = ConsoleColor.Magenta,
-            MillisecondsColor = ConsoleColor.DarkMagenta
-        };
-
-        var markTimeSettings = new Settings() with {
-            FontSize = 1,
-            ShowHours = true,
-            ShowSeconds = true,
-            ShowMilliseconds = true,
-            Color = ConsoleColor.Magenta,
-            MillisecondsColor = ConsoleColor.DarkMagenta
-        };
-
-        var now = default(DateTime);
-        var currentTimeWriter = new TimeWriter(currentTimeSettings);
-        var stopWatchWriter = new TimeWriter(stopWatchSettings);
-        var markTimeWriter = new TimeWriter(markTimeSettings);
-
-        var currentTimePosition = (x: 3, y: 2);
-        var stopWatchPosition = (x: 3, y: 12);
-        var markTimesPosition = (x: 3, y: 18);
-
-        var markedTimes = new List<TimeSpan>();
-
-        ConsoleKey? key;
-        var stopWatchStart = default(DateTime);
-        var stopWatchStop = default(DateTime);
-        var isStopWatchRunning = false;
-
+    private async Task RepaintLoop()
+    {
         var menuOptions = new[] {
             (ConsoleKey.Escape, "Quit"),
             (ConsoleKey.S, "Start/stop"),
@@ -61,14 +24,21 @@ public static class MainLoop
 
         for(;;)
         {
-            if (WindowWidth != _windowWidth || WindowHeight != _windowHeight)
-            {
-                _windowWidth = WindowWidth;
-                _windowHeight = WindowHeight;
-                PaintFrame(menuOptions);
-            }
+            _visualizer.PaintFrame(menuOptions);
+            _visualizer.PaintContent();
+            await Task.Delay(30);
+        }
+    }
 
-            key = KeyAvailable ? ReadKey(true).Key : null;
+    public void Run()
+    {
+        Task.Run(async () => await RepaintLoop());
+
+        ConsoleKey? key;
+
+        for(;;)
+        {
+            key = ReadKey(true).Key;
 
             switch (key)
             {
@@ -76,109 +46,21 @@ public static class MainLoop
                     return;
 
                 case ConsoleKey.S:
-                    if (isStopWatchRunning)
-                    {
-                        isStopWatchRunning = false;
-                        stopWatchStop = DateTime.Now;
-                    }
-                    else
-                    {
-                        isStopWatchRunning = true;
-                        if (stopWatchStart == default)
-                        {
-                            stopWatchStart = DateTime.Now;
-                        }
-                        else
-                        {
-                            stopWatchStart += (DateTime.Now - stopWatchStop);
-                        }
-                    }
+                    _stopWatch.ToggleStartStop();
                     break;
 
                 case ConsoleKey.R:
-                    stopWatchStart = isStopWatchRunning
-                        ? DateTime.Now
-                        : default;
-                    stopWatchStop = default;
-                    markedTimes.Clear();
-                    PaintFrame(menuOptions);
+                    _stopWatch.Reset();
+                    _visualizer.InvalidateFrame();
                     break;
 
                 case ConsoleKey.M:
-                    var mark = (isStopWatchRunning ? DateTime.Now : stopWatchStop)
-                        - stopWatchStart;
-                    if (markedTimes.LastOrDefault() != mark)
-                    {
-                        markedTimes.Add(mark);
-                    }
+                    _stopWatch.Mark();
                     break;
 
                 default:
                     break;
             }
-
-            now = DateTime.Now;
-            currentTimeWriter.Write(now, currentTimePosition);
-
-            if (stopWatchStart != default)
-            {
-                var stopWatchTime = (isStopWatchRunning ? DateTime.Now : stopWatchStop)
-                    - stopWatchStart;
-                stopWatchWriter.Write(stopWatchTime, stopWatchPosition);
-            }
-
-            var mx = markTimesPosition.x;
-            var my = markTimesPosition.y;
-            foreach (var mark in markedTimes)
-            {
-                markTimeWriter.Write(mark, (mx, my++));
-            }
-
-            await Task.Delay(updateInterval);
-        }
-    }
-
-    private static void PaintFrame(params (ConsoleKey key, string description)[] menuOptions)
-    {
-        CursorLeft = 0;
-        CursorTop = 0;
-        var frameRows = new string[_windowHeight];
-        frameRows[0] = $"╔{"".PadLeft(_windowWidth-2, '═')}╗";
-        for (int y = 1; y < WindowHeight-1; y++)
-        {
-            if (y == 10 || y == WindowHeight-3)
-            {
-                frameRows[y] = $"╟{"".PadLeft(_windowWidth-2, '─')}╢";
-            }
-            else
-            {
-                frameRows[y] = $"║{"".PadLeft(_windowWidth-2)}║";
-            }
-        }
-        frameRows[_windowHeight-1] = $"╚{"".PadLeft(_windowWidth-2, '═')}╝";
-
-        for (int y = 0; y < _windowHeight; y++)
-        {
-            CursorLeft = 0;
-            CursorTop = y;
-            if (_windowHeight != WindowHeight || _windowWidth != WindowWidth)
-            {
-                return;
-            }
-            Write(frameRows[y]);
-        }
-
-        CursorLeft = 2;
-        CursorTop = _windowHeight-2;
-
-        foreach (var (key, description) in menuOptions)
-        {
-            Write("[");
-            ForegroundColor = ConsoleColor.Green;
-            Write(key);
-            ResetColor();
-            Write("] ");
-            Write(description + "    ");
         }
     }
 }

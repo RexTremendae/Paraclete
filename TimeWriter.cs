@@ -5,9 +5,9 @@ namespace Time;
 public class TimeWriter
 {
     private readonly Dictionary<char, string[]> _font;
-    private readonly Settings _settings;
+    private readonly TimeWriterSettings _settings;
 
-    public TimeWriter(Settings settings)
+    public TimeWriter(TimeWriterSettings settings)
     {
         _settings = settings;
         _font = Font.OfSize(settings.FontSize);
@@ -52,7 +52,7 @@ public class TimeWriter
         if (_settings.ShowSeconds)
         {
             parts.Add($":{secondPart}");
-            partColors.Add(_settings.Color);
+            partColors.Add(_settings.SecondsColor);
         }
 
         if (_settings.ShowMilliseconds)

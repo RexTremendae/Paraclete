@@ -1,10 +1,11 @@
 namespace Time;
 
-public readonly record struct Settings
+public readonly record struct TimeWriterSettings
 {
-    public Settings()
+    public TimeWriterSettings()
     {
         Color = ConsoleColor.Gray;
+        SecondsColor = ConsoleColor.Gray;
         MillisecondsColor = ConsoleColor.DarkGray;
         ShowMilliseconds = false;
         ShowSeconds = true;
@@ -15,6 +16,7 @@ public readonly record struct Settings
 
     public ConsoleColor Color { get; init; }
     public ConsoleColor MillisecondsColor { get; init; }
+    public ConsoleColor SecondsColor { get; init; }
     public bool ShowMilliseconds { get; init; }
     public bool ShowSeconds { get; init; }
     public bool ShowHours { get; init; }
