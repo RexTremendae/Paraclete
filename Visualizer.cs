@@ -9,6 +9,8 @@ public class Visualizer
     private readonly MainMenu _mainMenu;
     private readonly FrameInvalidator _frameInvalidator;
 
+    private int _1stColumnWidth = 63;
+
     private int _windowHeight;
     private int _windowWidth;
 
@@ -26,7 +28,7 @@ public class Visualizer
         _mainMenu = mainMenu;
         _frameInvalidator = frameInvalidator;
 
-        _currentTimePosition = (x: 3, y:  2);
+        _currentTimePosition = (x: 5, y:  2);
         _stopWatchPosition   = (x: 3, y: 12);
         _markTimesPosition   = (x: 3, y: 18);
 
@@ -80,19 +82,29 @@ public class Visualizer
         _windowHeight = WindowHeight;
         _windowWidth = WindowWidth;
 
+        var _2ndColumnWidth = _windowWidth-3-_1stColumnWidth;
+
         CursorLeft = 0;
         CursorTop = 0;
         var frameRows = new string[_windowHeight];
-        frameRows[0] = $"╔{"".PadLeft(_windowWidth-2, '═')}╗";
+        frameRows[0] = $"╔{"".PadLeft(_1stColumnWidth, '═')}╤{"".PadLeft(_2ndColumnWidth, '═')}╗";
         for (int y = 1; y < WindowHeight-1; y++)
         {
-            if (y == 10 || y == WindowHeight-3)
+            if (y == 10)
             {
-                frameRows[y] = $"╟{"".PadLeft(_windowWidth-2, '─')}╢";
+                frameRows[y] = $"╟{"".PadLeft(_1stColumnWidth, '─')}┤{"".PadLeft(_2ndColumnWidth)}║";
+            }
+            else if (y == WindowHeight-3)
+            {
+                frameRows[y] = $"╟{"".PadLeft(_1stColumnWidth, '─')}┴{"".PadLeft(_2ndColumnWidth, '─')}╢";
+            }
+            else if (y == WindowHeight-2)
+            {
+                frameRows[y] = $"║{"".PadLeft(_windowWidth-2)}║";
             }
             else
             {
-                frameRows[y] = $"║{"".PadLeft(_windowWidth-2)}║";
+                frameRows[y] = $"║{"".PadLeft(_1stColumnWidth)}│{"".PadLeft(_2ndColumnWidth)}║";
             }
         }
         frameRows[_windowHeight-1] = $"╚{"".PadLeft(_windowWidth-2, '═')}╝";
@@ -130,9 +142,11 @@ public class Visualizer
 
     private void PaintContent()
     {
+        // Current time
         var now = DateTime.Now;
         _currentTimeWriter.Write(now, _currentTimePosition);
 
+        // Stopwatch
         if (_stopWatch.Start != default)
         {
             var stopWatchTime = (_stopWatch.IsRunning ? DateTime.Now : _stopWatch.Stop)
@@ -140,11 +154,28 @@ public class Visualizer
             _stopWatchWriter.Write(stopWatchTime, _stopWatchPosition);
         }
 
+        // Marked time
         var mx = _markTimesPosition.x;
         var my = _markTimesPosition.y;
         foreach (var mark in _stopWatch.MarkedTimes)
         {
             _markTimeWriter.Write(mark, (mx, my++));
         }
+
+        // \x1b[m   - reset
+        // \x1b[90m - change fg color to 90 (dark gray)
+        // \x1b[93m - change fg color to 93 (yellow)
+        // \x1b[97m - change fg color to 97 (white)
+        // \x1b[9m  - start strike-through
+
+        // TODOs
+        SetCursorPosition(_1stColumnWidth+4, 2);
+        Write("\x1b[97mTODO:\x1b[m");
+        SetCursorPosition(_1stColumnWidth+4, 3);
+        Write("- \x1b[9m\x1b[90mAdd TODO section\x1b[m");
+        SetCursorPosition(_1stColumnWidth+4, 4);
+        Write("- \x1b[93mEnable add/edit/remove TODO items\x1b[m");
+        SetCursorPosition(_1stColumnWidth+4, 5);
+        Write("- \x1b[93mPersist TODO items\x1b[m");
     }
 }
