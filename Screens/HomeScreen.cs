@@ -128,10 +128,10 @@ public class HomeScreen : ScreenBase
             position: (_1stColumnWidth+4, 2),
             rows: new[]
             {
-                "\x1b[97mTODO:\x1b[m",
-                "- \x1b[9m\x1b[90mAdd TODO section\x1b[m",
-                "- \x1b[93mEnable add/edit/remove TODO items\x1b[m",
-                "- \x1b[93mPersist TODO items\x1b[m"
+                $"{AnsiConstants.ForegroundColor.White}TODO:{AnsiConstants.Reset}",
+                $"- {AnsiConstants.ForegroundColor.Gray}{AnsiConstants.StrikeThrough}Add TODO section{AnsiConstants.Reset}",
+                $"- {AnsiConstants.ForegroundColor.Yellow}Enable add/edit/remove TODO items{AnsiConstants.Reset}",
+                $"- {AnsiConstants.ForegroundColor.Yellow}Persist TODO items{AnsiConstants.Reset}"
             });
     }
 }

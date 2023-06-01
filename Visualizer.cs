@@ -51,7 +51,7 @@ public class Visualizer
                 fr.Append(GetAnsiColorCode(r.colors[idx]));
                 fr.Append(r.parts[idx]);
             }
-            fr.Append("\x1b[m");
+            fr.Append(AnsiConstants.Reset);
             formattedRows.Add(fr.ToString());
         }
 
@@ -106,29 +106,24 @@ public class Visualizer
         Paint(data, (2, _windowHeight-2), true);
     }
 
-    private string GetAnsiColorCode(ConsoleColor color)
+    private string GetAnsiColorCode(ConsoleColor color) => color switch
     {
-        var colorCode = color switch
-        {
-            ConsoleColor.Black => "30",
-            ConsoleColor.DarkRed => "31",
-            ConsoleColor.DarkGreen => "32",
-            ConsoleColor.DarkYellow => "33",
-            ConsoleColor.DarkBlue => "34",
-            ConsoleColor.DarkMagenta => "35",
-            ConsoleColor.DarkCyan => "36",
-            ConsoleColor.Gray => "37",
-            ConsoleColor.DarkGray => "90",
-            ConsoleColor.Red => "91",
-            ConsoleColor.Green => "92",
-            ConsoleColor.Yellow => "93",
-            ConsoleColor.Blue => "94",
-            ConsoleColor.Magenta => "95",
-            ConsoleColor.Cyan => "96",
-            ConsoleColor.White => "97",
-            _ => throw new ArgumentException(message: $"Undefined color: {color}", paramName: nameof(color))
-        };
-
-        return $"\x1b[{colorCode}m";
-    }
+        ConsoleColor.Black       => AnsiConstants.ForegroundColor.Black,
+        ConsoleColor.DarkRed     => AnsiConstants.ForegroundColor.DarkRed,
+        ConsoleColor.DarkGreen   => AnsiConstants.ForegroundColor.DarkGreen,
+        ConsoleColor.DarkYellow  => AnsiConstants.ForegroundColor.DarkYellow,
+        ConsoleColor.DarkBlue    => AnsiConstants.ForegroundColor.DarkBlue,
+        ConsoleColor.DarkMagenta => AnsiConstants.ForegroundColor.DarkMagenta,
+        ConsoleColor.DarkCyan    => AnsiConstants.ForegroundColor.DarkCyan,
+        ConsoleColor.Gray        => AnsiConstants.ForegroundColor.Gray,
+        ConsoleColor.DarkGray    => AnsiConstants.ForegroundColor.DarkGray,
+        ConsoleColor.Red         => AnsiConstants.ForegroundColor.Red,
+        ConsoleColor.Green       => AnsiConstants.ForegroundColor.Green,
+        ConsoleColor.Yellow      => AnsiConstants.ForegroundColor.Yellow,
+        ConsoleColor.Blue        => AnsiConstants.ForegroundColor.Blue,
+        ConsoleColor.Magenta     => AnsiConstants.ForegroundColor.Magenta,
+        ConsoleColor.Cyan        => AnsiConstants.ForegroundColor.Cyan,
+        ConsoleColor.White       => AnsiConstants.ForegroundColor.White,
+        _ => throw new ArgumentException(message: $"Undefined color: {color}", paramName: nameof(color))
+    };
 }

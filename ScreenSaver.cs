@@ -67,7 +67,8 @@ public class ScreenSaver
             _currentTimePosition.y + currentTimeHeight >= WindowHeight)
         {
             _lastChange = now;
-            Clear();
+            Write(AnsiConstants.ClearScreen);
+            Console.CursorVisible = false;
             _currentTimePosition = (Random.Shared.Next(WindowWidth-56), Random.Shared.Next(WindowHeight-7));
             var (color, secondColor) = _timeColors[Random.Shared.Next(_timeColors.Length)];
             _currentTimeSettings = _currentTimeSettings with
