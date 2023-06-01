@@ -24,7 +24,12 @@ public class ScreenSaver
         }
     }
 
-    TimeWriterSettings _currentTimeSettings = new TimeWriterSettings() with {
+    public ScreenSaver(Visualizer visualizer)
+    {
+        _visualizer = visualizer;
+    }
+
+    private TimeWriterSettings _currentTimeSettings = new TimeWriterSettings() with {
         FontSize = 3,
         Color = ConsoleColor.White,
         SecondsColor = ConsoleColor.DarkGray,
@@ -32,6 +37,8 @@ public class ScreenSaver
         ShowSeconds = true,
         ShowMilliseconds = false
     };
+
+    private readonly Visualizer _visualizer;
 
     private (int x, int y) _currentTimePosition;
     private TimeSpan _changeInterval = TimeSpan.FromSeconds(30);
@@ -81,6 +88,6 @@ public class ScreenSaver
     private void WriteTime(DateTime now)
     {
         var timeWriter = new TimeWriter(_currentTimeSettings);
-        timeWriter.Write(now, _currentTimePosition);
+        timeWriter.Write(now, _currentTimePosition, _visualizer);
     }
 }

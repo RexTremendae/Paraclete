@@ -9,7 +9,6 @@ public class MarkTimeCommand : ICommand
         _stopwatch = stopwatch;
     }
 
-    public MenuCategory Category => MenuCategory.Stopwatch;
     public ConsoleKey Shortcut => ConsoleKey.M;
     public string Description => "Mark";
 

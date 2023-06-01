@@ -4,7 +4,7 @@ using Time.Menu.Stopwatch;
 
 namespace Time.Menu;
 
-public class MainMenu
+public class MainMenu : IMenu
 {
     public ICommand[] MenuItems { get; }
 

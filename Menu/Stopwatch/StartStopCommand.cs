@@ -9,7 +9,6 @@ public class StartStopCommand : ICommand
         _stopwatch = stopwatch;
     }
 
-    public MenuCategory Category => MenuCategory.Stopwatch;
     public ConsoleKey Shortcut => ConsoleKey.S;
     public string Description => "Start/stop";
 

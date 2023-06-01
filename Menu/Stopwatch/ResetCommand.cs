@@ -11,7 +11,6 @@ public class ResetCommand : ICommand
         _frameInvalidator = frameInvalidator;
     }
 
-    public MenuCategory Category => MenuCategory.Stopwatch;
     public ConsoleKey Shortcut => ConsoleKey.R;
     public string Description => "Reset";
 
