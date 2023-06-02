@@ -8,31 +8,33 @@ namespace Time;
 public class Visualizer
 {
     private readonly FrameInvalidator _frameInvalidator;
-
-    private ScreenBase _currentScreen;
+    private readonly ScreenSelector _screenSelector;
 
     private int _windowHeight;
     private int _windowWidth;
 
-    public Visualizer(HomeScreen homeScreen, FrameInvalidator frameInvalidator)
+    public Visualizer(ScreenSelector screenSelector, FrameInvalidator frameInvalidator)
     {
-        _currentScreen = homeScreen;
         _frameInvalidator = frameInvalidator;
+        _screenSelector = screenSelector;
     }
 
     public void PaintScreen()
     {
         if (!_frameInvalidator.IsValid || _windowHeight != WindowHeight || _windowWidth != WindowWidth)
         {
+            Console.Write(AnsiConstants.ClearScreen);
+            Console.CursorVisible = false;
+
             _windowHeight = WindowHeight;
             _windowWidth = WindowWidth;
-            _currentScreen.PaintFrame(this, _windowWidth, _windowHeight);
+            _screenSelector.SelectedScreen.PaintFrame(this, _windowWidth, _windowHeight);
+            _frameInvalidator.Reset();
         }
 
-        _currentScreen.PaintContent(this);
+        _screenSelector.SelectedScreen.PaintContent(this);
 
         PaintMenu();
-        _frameInvalidator.Reset();
     }
 
     public void Paint((string[] parts, ConsoleColor[] colors) data, (int x, int y)? position = null, bool debug = false)
@@ -87,7 +89,7 @@ public class Visualizer
         CursorTop = _windowHeight-2;
 
         var row = (parts: new List<string>(), colors: new List<ConsoleColor>());
-        foreach (var (key, description) in _currentScreen.Menu.MenuItems.Select(_ => (_.Shortcut, _.Description)))
+        foreach (var (key, description) in _screenSelector.SelectedScreen.Menu.MenuItems.Select(_ => (_.Key, _.Value.Description)))
         {
             row.parts.Add("[");
             row.colors.Add(ConsoleColor.White);

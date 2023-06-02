@@ -1,11 +1,12 @@
 using Time.Menu;
+using Time.Menu.General;
 
 namespace Time.Screens;
 
 public class HomeScreen : ScreenBase
 {
-    private IMenu _menu;
-    public override IMenu Menu => _menu;
+    private MenuBase _menu;
+    public override MenuBase Menu => _menu;
 
     private Stopwatch _stopWatch;
     private FrameInvalidator _frameInvalidator;
@@ -20,7 +21,7 @@ public class HomeScreen : ScreenBase
 
     private int _1stColumnWidth = 63;
 
-    public HomeScreen(Stopwatch stopWatch, MainMenu mainMenu, FrameInvalidator frameInvalidator)
+    public HomeScreen(Stopwatch stopWatch, _MainMenu mainMenu, FrameInvalidator frameInvalidator)
     {
         _menu = mainMenu;
 

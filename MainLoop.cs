@@ -1,4 +1,4 @@
-using Time.Menu;
+using Time.Screens;
 using static System.Console;
 
 namespace Time;
@@ -6,15 +6,15 @@ namespace Time;
 public class MainLoop
 {
     private readonly Visualizer _visualizer;
-    private readonly MainMenu _mainMenu;
+    private readonly ScreenSelector _screenSelector;
     private readonly ScreenSaver _screenSaver;
     private readonly FrameInvalidator _frameInvalidator;
 
-    public MainLoop(Visualizer visualizer, MainMenu mainMenu, ScreenSaver screenSaver, FrameInvalidator frameInvalidator)
+    public MainLoop(Visualizer visualizer, ScreenSelector screenSelector, ScreenSaver screenSaver, FrameInvalidator frameInvalidator)
     {
         _visualizer = visualizer;
-        _mainMenu = mainMenu;
         _screenSaver = screenSaver;
+        _screenSelector = screenSelector;
         _frameInvalidator = frameInvalidator;
     }
 
@@ -46,7 +46,7 @@ public class MainLoop
     public async Task Run()
     {
         _screenSaver.Inactivate();
-        var commands = _mainMenu.MenuItems.ToDictionary(key => key.Shortcut, value => value);
+        _screenSelector.SwitchTo<HomeScreen>();
 
         new Thread(async () => await RepaintLoop()).Start();
 
@@ -56,11 +56,11 @@ public class MainLoop
         {
             key = ReadKey(true).Key;
 
-            if (key == ConsoleKey.Escape) return;
-
             _screenSaver.Inactivate();
 
-            if (!commands.TryGetValue(key, out var selectedCommand))
+            var currentMenu = _screenSelector.SelectedScreen.Menu.MenuItems;
+
+            if (!currentMenu.TryGetValue(key, out var selectedCommand))
             {
                 continue;
             }

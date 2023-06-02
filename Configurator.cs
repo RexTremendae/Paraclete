@@ -13,13 +13,14 @@ public static class Configurator
         services
             .AddScoped<FrameInvalidator>()
             .AddScoped<MainLoop>()
-            .AddScoped<MainMenu>()
             .AddScoped<ScreenSaver>()
+            .AddScoped<ScreenSelector>()
             .AddScoped<Stopwatch>()
             .AddScoped<Visualizer>()
 
             .AddImplementationsOf<ICommand>()
             .AddImplementationsOf<ScreenBase>()
+            .AddImplementationsOf<MenuBase>()
         ;
 
         return services.BuildServiceProvider();
