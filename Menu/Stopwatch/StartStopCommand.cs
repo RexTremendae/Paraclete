@@ -11,6 +11,7 @@ public class StartStopCommand : ICommand
 
     public ConsoleKey Shortcut => ConsoleKey.S;
     public string Description => "[S]tart/stop";
+    public bool IsScreenSaverResistant => true;
 
     public Task Execute()
     {

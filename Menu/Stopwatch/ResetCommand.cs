@@ -13,6 +13,7 @@ public class ResetCommand : ICommand
 
     public ConsoleKey Shortcut => ConsoleKey.R;
     public string Description => "[R]eset";
+    public bool IsScreenSaverResistant => true;
 
     public Task Execute()
     {

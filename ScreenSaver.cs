@@ -4,6 +4,9 @@ namespace Time;
 
 public class ScreenSaver
 {
+    private TimeSpan _changeInterval = TimeSpan.FromSeconds(30);
+    private TimeSpan _activationInterval = TimeSpan.FromMinutes(5);
+
     public bool IsActive
     {
         get
@@ -41,8 +44,6 @@ public class ScreenSaver
     private readonly Painter _painter;
 
     private (int x, int y) _currentTimePosition;
-    private TimeSpan _changeInterval = TimeSpan.FromSeconds(30);
-    private TimeSpan _activationInterval = TimeSpan.FromMinutes(5);
     private DateTime _lastChange;
     private DateTime _inactivationTime;
 

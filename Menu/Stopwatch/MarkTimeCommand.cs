@@ -11,6 +11,7 @@ public class MarkTimeCommand : ICommand
 
     public ConsoleKey Shortcut => ConsoleKey.M;
     public string Description => "[M]ark";
+    public bool IsScreenSaverResistant => true;
 
     public Task Execute()
     {

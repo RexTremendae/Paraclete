@@ -56,11 +56,17 @@ public class MainLoop
         {
             key = ReadKey(true).Key;
 
+            var screenSaverWasActive = _screenSaver.IsActive;
             _screenSaver.Inactivate();
 
             var currentMenu = _screenSelector.SelectedScreen.Menu.MenuItems;
 
             if (!currentMenu.TryGetValue(key, out var selectedCommand))
+            {
+                continue;
+            }
+
+            if (screenSaverWasActive && !selectedCommand.IsScreenSaverResistant)
             {
                 continue;
             }
