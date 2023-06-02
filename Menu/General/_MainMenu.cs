@@ -11,7 +11,8 @@ public class _MainMenu : MenuBase
         typeof(StartStopCommand),
         typeof(ResetCommand),
         typeof(MarkTimeCommand),
-        typeof(GotoTodoMenuCommand)
+        typeof(GotoTodoScreenCommand),
+        typeof(GotoShowroomScreenCommand)
     })
     {}
 }

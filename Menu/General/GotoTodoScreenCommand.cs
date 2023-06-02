@@ -2,7 +2,7 @@ using Time.Screens;
 
 namespace Time.Menu.General;
 
-public class GotoTodoMenuCommand : ICommand
+public class GotoTodoScreenCommand : ICommand
 {
     private ScreenSelector _screenSelector;
 
@@ -10,7 +10,7 @@ public class GotoTodoMenuCommand : ICommand
 
     public string Description => "Edit [T]ODOs";
 
-    public GotoTodoMenuCommand(ScreenSelector screenSelector)
+    public GotoTodoScreenCommand(ScreenSelector screenSelector)
     {
         _screenSelector = screenSelector;
     }
