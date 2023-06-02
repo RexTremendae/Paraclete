@@ -16,7 +16,7 @@ public static class Configurator
             .AddScoped<ScreenSaver>()
             .AddScoped<ScreenSelector>()
             .AddScoped<Stopwatch>()
-            .AddScoped<Visualizer>()
+            .AddScoped<Painter>()
 
             .AddImplementationsOf<ICommand>()
             .AddImplementationsOf<ScreenBase>()

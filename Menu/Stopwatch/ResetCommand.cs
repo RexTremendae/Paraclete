@@ -12,7 +12,7 @@ public class ResetCommand : ICommand
     }
 
     public ConsoleKey Shortcut => ConsoleKey.R;
-    public string Description => "Reset";
+    public string Description => "[R]eset";
 
     public Task Execute()
     {

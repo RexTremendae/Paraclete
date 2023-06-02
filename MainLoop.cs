@@ -5,12 +5,12 @@ namespace Time;
 
 public class MainLoop
 {
-    private readonly Visualizer _visualizer;
+    private readonly Painter _visualizer;
     private readonly ScreenSelector _screenSelector;
     private readonly ScreenSaver _screenSaver;
     private readonly FrameInvalidator _frameInvalidator;
 
-    public MainLoop(Visualizer visualizer, ScreenSelector screenSelector, ScreenSaver screenSaver, FrameInvalidator frameInvalidator)
+    public MainLoop(Painter visualizer, ScreenSelector screenSelector, ScreenSaver screenSaver, FrameInvalidator frameInvalidator)
     {
         _visualizer = visualizer;
         _screenSaver = screenSaver;

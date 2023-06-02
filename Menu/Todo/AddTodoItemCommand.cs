@@ -4,7 +4,7 @@ public class AddTodoItemCommand : ICommand
 {
     public ConsoleKey Shortcut => ConsoleKey.A;
 
-    public string Description => "Add item";
+    public string Description => "[A]dd item";
 
     public Task Execute()
     {

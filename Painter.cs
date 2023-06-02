@@ -5,7 +5,7 @@ using static System.Console;
 
 namespace Time;
 
-public class Visualizer
+public class Painter
 {
     private readonly FrameInvalidator _frameInvalidator;
     private readonly ScreenSelector _screenSelector;
@@ -13,7 +13,7 @@ public class Visualizer
     private int _windowHeight;
     private int _windowWidth;
 
-    public Visualizer(ScreenSelector screenSelector, FrameInvalidator frameInvalidator)
+    public Painter(ScreenSelector screenSelector, FrameInvalidator frameInvalidator)
     {
         _frameInvalidator = frameInvalidator;
         _screenSelector = screenSelector;
@@ -23,8 +23,8 @@ public class Visualizer
     {
         if (!_frameInvalidator.IsValid || _windowHeight != WindowHeight || _windowWidth != WindowWidth)
         {
-            Console.Write(AnsiSequences.ClearScreen);
-            Console.CursorVisible = false;
+            Write(AnsiSequences.ClearScreen);
+            CursorVisible = false;
 
             _windowHeight = WindowHeight;
             _windowWidth = WindowWidth;
@@ -50,7 +50,7 @@ public class Visualizer
             var fr = new StringBuilder();
             for (int idx = 0; idx < r.parts.Length; idx++)
             {
-                fr.Append(GetAnsiColorCode(r.colors[idx]));
+                fr.Append(r.colors[idx].GetAnsiColorCode());
                 fr.Append(r.parts[idx]);
             }
             fr.Append(AnsiSequences.Reset);
@@ -88,44 +88,67 @@ public class Visualizer
         CursorLeft = 2;
         CursorTop = _windowHeight-2;
 
+        var menuItems = _screenSelector.SelectedScreen.Menu.MenuItems;
         var row = (parts: new List<string>(), colors: new List<ConsoleColor>());
-        foreach (var (key, description) in _screenSelector.SelectedScreen.Menu.MenuItems.Select(_ => (_.Key, _.Value.Description)))
+
+        var isFirst = true;
+        foreach (var (key, description) in menuItems.Select(_ => (_.Key, _.Value.Description)))
         {
-            row.parts.Add("[");
-            row.colors.Add(ConsoleColor.White);
+            if (isFirst)
+            {
+                isFirst = false;
+            }
+            else
+            {
+                row.parts.Add("    ");
+                row.colors.Add(ConsoleColor.Gray);
+            }
 
-            row.parts.Add(key.ToString());
-            row.colors.Add(ConsoleColor.Green);
-
-            row.parts.Add("] ");
-            row.colors.Add(ConsoleColor.White);
-
-            row.parts.Add(description + "    ");
-            row.colors.Add(ConsoleColor.Gray);
+            var (parts, colors) = GetMenuParts(key, description);
+            row.parts.AddRange(parts);
+            row.colors.AddRange(colors);
         }
 
         var data = new[] { row }.Select(_ => (_.parts.ToArray(), _.colors.ToArray())).ToArray();
         Paint(data, (2, _windowHeight-2), true);
     }
 
-    private string GetAnsiColorCode(ConsoleColor color) => color switch
+    private (IEnumerable<string> parts, IEnumerable<ConsoleColor> colors) GetMenuParts(ConsoleKey key, string description)
     {
-        ConsoleColor.Black       => AnsiSequences.ForegroundColors.Black,
-        ConsoleColor.DarkRed     => AnsiSequences.ForegroundColors.DarkRed,
-        ConsoleColor.DarkGreen   => AnsiSequences.ForegroundColors.DarkGreen,
-        ConsoleColor.DarkYellow  => AnsiSequences.ForegroundColors.DarkYellow,
-        ConsoleColor.DarkBlue    => AnsiSequences.ForegroundColors.DarkBlue,
-        ConsoleColor.DarkMagenta => AnsiSequences.ForegroundColors.DarkMagenta,
-        ConsoleColor.DarkCyan    => AnsiSequences.ForegroundColors.DarkCyan,
-        ConsoleColor.Gray        => AnsiSequences.ForegroundColors.Gray,
-        ConsoleColor.DarkGray    => AnsiSequences.ForegroundColors.DarkGray,
-        ConsoleColor.Red         => AnsiSequences.ForegroundColors.Red,
-        ConsoleColor.Green       => AnsiSequences.ForegroundColors.Green,
-        ConsoleColor.Yellow      => AnsiSequences.ForegroundColors.Yellow,
-        ConsoleColor.Blue        => AnsiSequences.ForegroundColors.Blue,
-        ConsoleColor.Magenta     => AnsiSequences.ForegroundColors.Magenta,
-        ConsoleColor.Cyan        => AnsiSequences.ForegroundColors.Cyan,
-        ConsoleColor.White       => AnsiSequences.ForegroundColors.White,
-        _ => throw new ArgumentException(message: $"Undefined color: {color}", paramName: nameof(color))
-    };
+        var bracketColor = ConsoleColor.White;
+        var shortcutColor = ConsoleColor.Green;
+        var descriptionColor = ConsoleColor.Gray;
+
+        var parts = new List<string>();
+        var colors = new List<ConsoleColor>();
+
+        var startBracketIndex = description.IndexOf('[');
+        var endBracketIndex = -1;
+        if (startBracketIndex >= 0)
+        {
+            endBracketIndex = description.IndexOf(']', startBracketIndex);
+        }
+
+        var explicitBrackets = startBracketIndex >= 0 && endBracketIndex >= 0;
+
+        if (explicitBrackets)
+        {
+            parts.Add(description[..startBracketIndex]);
+            colors.Add(descriptionColor);
+        }
+
+        parts.Add("[");
+        colors.Add(bracketColor);
+
+        parts.Add(key.ToString());
+        colors.Add(shortcutColor);
+
+        parts.Add(explicitBrackets ? "]" : "] ");
+        colors.Add(bracketColor);
+
+        parts.Add(description[(endBracketIndex+1)..]);
+        colors.Add(descriptionColor);
+
+        return (parts, colors);
+    }
 }

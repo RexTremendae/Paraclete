@@ -10,7 +10,7 @@ public class StartStopCommand : ICommand
     }
 
     public ConsoleKey Shortcut => ConsoleKey.S;
-    public string Description => "Start/stop";
+    public string Description => "[S]tart/stop";
 
     public Task Execute()
     {

@@ -10,13 +10,13 @@ public class TodoScreen : ScreenBase
 
     private readonly FrameInvalidator _frameInvalidator;
     private readonly TimeWriter _currentTimeWriter;
-    private readonly Visualizer _visualizer;
+    private readonly Painter _painter;
 
-    public TodoScreen(Stopwatch stopWatch, _TodoMenu todoMenu, FrameInvalidator frameInvalidator, Visualizer visualizer)
+    public TodoScreen(Stopwatch stopWatch, _TodoMenu todoMenu, FrameInvalidator frameInvalidator, Painter painter)
     {
         _menu = todoMenu;
         _frameInvalidator = frameInvalidator;
-        _visualizer = visualizer;
+        _painter = painter;
         _currentTimeWriter = new TimeWriter(new() {
             FontSize = 1,
             Color = ConsoleColor.White,
@@ -25,7 +25,7 @@ public class TodoScreen : ScreenBase
         });
     }
 
-    public override void PaintFrame(Visualizer visualizer, int windowWidth, int windowHeight)
+    public override void PaintFrame(Painter painter, int windowWidth, int windowHeight)
     {
         var frameRows = new string[windowHeight];
         frameRows[0] = $"╔{"".PadLeft(windowWidth-2, '═')}╗";
@@ -42,13 +42,13 @@ public class TodoScreen : ScreenBase
         }
         frameRows[windowHeight-1] = $"╚{"".PadLeft(windowWidth-2, '═')}╝";
 
-        visualizer.Paint(frameRows);
+        painter.Paint(frameRows);
     }
 
-    public override void PaintContent(Visualizer visualizer)
+    public override void PaintContent(Painter painter)
     {
         // TODOs
-        visualizer.Paint(
+        painter.Paint(
             position: (2, 1),
             rows: new[]
             {
@@ -59,6 +59,6 @@ public class TodoScreen : ScreenBase
             });
 
         // Current time
-        _currentTimeWriter.Write(DateTime.Now, (Console.WindowWidth-7, 1), _visualizer);
+        _currentTimeWriter.Write(DateTime.Now, (Console.WindowWidth-7, 1), _painter);
     }
 }

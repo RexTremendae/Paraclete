@@ -9,17 +9,17 @@ public class TimeWriter
         _settings = settings;
     }
 
-    public void Write(TimeSpan timestamp, (int x, int y) cursorPos, Visualizer visualizer)
+    public void Write(TimeSpan timestamp, (int x, int y) cursorPos, Painter painter)
     {
-        Write(timestamp.Hours, timestamp.Minutes, timestamp.Seconds, timestamp.Milliseconds, cursorPos, visualizer);
+        Write(timestamp.Hours, timestamp.Minutes, timestamp.Seconds, timestamp.Milliseconds, cursorPos, painter);
     }
 
-    public void Write(DateTime timestamp, (int x, int y) cursorPos, Visualizer visualizer)
+    public void Write(DateTime timestamp, (int x, int y) cursorPos, Painter painter)
     {
-        Write(timestamp.Hour, timestamp.Minute, timestamp.Second, timestamp.Millisecond, cursorPos, visualizer);
+        Write(timestamp.Hour, timestamp.Minute, timestamp.Second, timestamp.Millisecond, cursorPos, painter);
     }
 
-    private void Write(int hour, int minute, int second, int millisecond, (int x, int y) cursorPos, Visualizer visualizer)
+    private void Write(int hour, int minute, int second, int millisecond, (int x, int y) cursorPos, Painter painter)
     {
         var hourPart = hour.ToString().PadLeft(2, '0');
         var minutePart = minute.ToString().PadLeft(2, '0');
@@ -50,10 +50,10 @@ public class TimeWriter
             partColors.Add(_settings.MillisecondsColor);
         }
 
-        Write(parts, partColors, cursorPos, visualizer);
+        Write(parts, partColors, cursorPos, painter);
     }
 
-    private void Write(List<string> textParts, List<ConsoleColor> colors, (int x, int y) cursorPos, Visualizer visualizer)
+    private void Write(List<string> textParts, List<ConsoleColor> colors, (int x, int y) cursorPos, Painter painter)
     {
         var font = Font.OfSize(_settings.FontSize, _settings.DigitDisplayChar);
         var rows = new List<(List<string> parts, List<ConsoleColor> colors)>();
@@ -87,6 +87,6 @@ public class TimeWriter
         var data = rows
             .Select(_ => (_.parts.ToArray(), _.colors.ToArray()))
             .ToArray();
-        visualizer.Paint(data, cursorPos, true);
+        painter.Paint(data, cursorPos, true);
     }
 }

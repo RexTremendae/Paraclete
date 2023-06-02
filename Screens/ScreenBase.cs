@@ -6,6 +6,6 @@ public abstract class ScreenBase
 {
     public abstract MenuBase Menu { get; }
 
-    public abstract void PaintContent(Visualizer visualizer);
-    public abstract void PaintFrame(Visualizer visualizer, int windowWidth, int windowHeight);
+    public abstract void PaintContent(Painter visualizer);
+    public abstract void PaintFrame(Painter visualizer, int windowWidth, int windowHeight);
 }

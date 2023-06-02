@@ -24,9 +24,9 @@ public class ScreenSaver
         }
     }
 
-    public ScreenSaver(Visualizer visualizer)
+    public ScreenSaver(Painter painter)
     {
-        _visualizer = visualizer;
+        _painter = painter;
     }
 
     private TimeWriterSettings _currentTimeSettings = new TimeWriterSettings() with {
@@ -38,7 +38,7 @@ public class ScreenSaver
         ShowMilliseconds = false
     };
 
-    private readonly Visualizer _visualizer;
+    private readonly Painter _painter;
 
     private (int x, int y) _currentTimePosition;
     private TimeSpan _changeInterval = TimeSpan.FromSeconds(30);
@@ -89,6 +89,6 @@ public class ScreenSaver
     private void WriteTime(DateTime now)
     {
         var timeWriter = new TimeWriter(_currentTimeSettings);
-        timeWriter.Write(now, _currentTimePosition, _visualizer);
+        timeWriter.Write(now, _currentTimePosition, _painter);
     }
 }

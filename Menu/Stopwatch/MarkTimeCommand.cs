@@ -10,7 +10,7 @@ public class MarkTimeCommand : ICommand
     }
 
     public ConsoleKey Shortcut => ConsoleKey.M;
-    public string Description => "Mark";
+    public string Description => "[M]ark";
 
     public Task Execute()
     {

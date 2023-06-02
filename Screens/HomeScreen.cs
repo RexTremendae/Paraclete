@@ -66,7 +66,7 @@ public class HomeScreen : ScreenBase
         _markTimeWriter = new TimeWriter(markTimeSettings);
     }
 
-    public override void PaintFrame(Visualizer visualizer, int windowWidth, int windowHeight)
+    public override void PaintFrame(Painter painter, int windowWidth, int windowHeight)
     {
         var _2ndColumnWidth = windowWidth-3-_1stColumnWidth;
 
@@ -99,21 +99,21 @@ public class HomeScreen : ScreenBase
         }
         frameRows[windowHeight-1] = $"╚{"".PadLeft(windowWidth-2, '═')}╝";
 
-        visualizer.Paint(frameRows);
+        painter.Paint(frameRows);
     }
 
-    public override void PaintContent(Visualizer visualizer)
+    public override void PaintContent(Painter painter)
     {
         // Current time
         var now = DateTime.Now;
-        _currentTimeWriter.Write(now, _currentTimePosition, visualizer);
+        _currentTimeWriter.Write(now, _currentTimePosition, painter);
 
         // Stopwatch
         if (_stopWatch.Start != default)
         {
             var stopWatchTime = (_stopWatch.IsRunning ? DateTime.Now : _stopWatch.Stop)
                 - _stopWatch.Start;
-            _stopWatchWriter.Write(stopWatchTime, _stopWatchPosition, visualizer);
+            _stopWatchWriter.Write(stopWatchTime, _stopWatchPosition, painter);
         }
 
         // Marked time
@@ -121,11 +121,11 @@ public class HomeScreen : ScreenBase
         var my = _markTimesPosition.y;
         foreach (var mark in _stopWatch.MarkedTimes)
         {
-            _markTimeWriter.Write(mark, (mx, my++), visualizer);
+            _markTimeWriter.Write(mark, (mx, my++), painter);
         }
 
         // TODOs
-        visualizer.Paint(
+        painter.Paint(
             position: (_1stColumnWidth+4, 2),
             rows: new[]
             {

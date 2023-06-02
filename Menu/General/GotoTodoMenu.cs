@@ -8,7 +8,7 @@ public class GotoTodoMenuCommand : ICommand
 
     public ConsoleKey Shortcut => ConsoleKey.T;
 
-    public string Description => "Edit TODOs";
+    public string Description => "Edit [T]ODOs";
 
     public GotoTodoMenuCommand(ScreenSelector screenSelector)
     {
