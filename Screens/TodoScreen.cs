@@ -52,10 +52,10 @@ public class TodoScreen : ScreenBase
             position: (2, 1),
             rows: new[]
             {
-                $"{AnsiConstants.ForegroundColor.White}TODO:{AnsiConstants.Reset}",
-                $"- {AnsiConstants.ForegroundColor.Gray}{AnsiConstants.StrikeThrough}Add TODO section{AnsiConstants.Reset}",
-                $"- {AnsiConstants.ForegroundColor.Yellow}Enable add/edit/remove TODO items{AnsiConstants.Reset}",
-                $"- {AnsiConstants.ForegroundColor.Yellow}Persist TODO items{AnsiConstants.Reset}"
+                $"{AnsiSequences.ForegroundColors.White}TODO:{AnsiSequences.Reset}",
+                $"- {AnsiSequences.ForegroundColors.DarkGray}{AnsiSequences.StrikeThrough}Add TODO section{AnsiSequences.Reset}",
+                $"- {AnsiSequences.ForegroundColors.Yellow}Enable add/edit/remove TODO items{AnsiSequences.Reset}",
+                $"- {AnsiSequences.ForegroundColors.Yellow}Persist TODO items{AnsiSequences.Reset}"
             });
 
         // Current time

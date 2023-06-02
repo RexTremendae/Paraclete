@@ -23,7 +23,7 @@ public class Visualizer
     {
         if (!_frameInvalidator.IsValid || _windowHeight != WindowHeight || _windowWidth != WindowWidth)
         {
-            Console.Write(AnsiConstants.ClearScreen);
+            Console.Write(AnsiSequences.ClearScreen);
             Console.CursorVisible = false;
 
             _windowHeight = WindowHeight;
@@ -53,7 +53,7 @@ public class Visualizer
                 fr.Append(GetAnsiColorCode(r.colors[idx]));
                 fr.Append(r.parts[idx]);
             }
-            fr.Append(AnsiConstants.Reset);
+            fr.Append(AnsiSequences.Reset);
             formattedRows.Add(fr.ToString());
         }
 
@@ -110,22 +110,22 @@ public class Visualizer
 
     private string GetAnsiColorCode(ConsoleColor color) => color switch
     {
-        ConsoleColor.Black       => AnsiConstants.ForegroundColor.Black,
-        ConsoleColor.DarkRed     => AnsiConstants.ForegroundColor.DarkRed,
-        ConsoleColor.DarkGreen   => AnsiConstants.ForegroundColor.DarkGreen,
-        ConsoleColor.DarkYellow  => AnsiConstants.ForegroundColor.DarkYellow,
-        ConsoleColor.DarkBlue    => AnsiConstants.ForegroundColor.DarkBlue,
-        ConsoleColor.DarkMagenta => AnsiConstants.ForegroundColor.DarkMagenta,
-        ConsoleColor.DarkCyan    => AnsiConstants.ForegroundColor.DarkCyan,
-        ConsoleColor.Gray        => AnsiConstants.ForegroundColor.Gray,
-        ConsoleColor.DarkGray    => AnsiConstants.ForegroundColor.DarkGray,
-        ConsoleColor.Red         => AnsiConstants.ForegroundColor.Red,
-        ConsoleColor.Green       => AnsiConstants.ForegroundColor.Green,
-        ConsoleColor.Yellow      => AnsiConstants.ForegroundColor.Yellow,
-        ConsoleColor.Blue        => AnsiConstants.ForegroundColor.Blue,
-        ConsoleColor.Magenta     => AnsiConstants.ForegroundColor.Magenta,
-        ConsoleColor.Cyan        => AnsiConstants.ForegroundColor.Cyan,
-        ConsoleColor.White       => AnsiConstants.ForegroundColor.White,
+        ConsoleColor.Black       => AnsiSequences.ForegroundColors.Black,
+        ConsoleColor.DarkRed     => AnsiSequences.ForegroundColors.DarkRed,
+        ConsoleColor.DarkGreen   => AnsiSequences.ForegroundColors.DarkGreen,
+        ConsoleColor.DarkYellow  => AnsiSequences.ForegroundColors.DarkYellow,
+        ConsoleColor.DarkBlue    => AnsiSequences.ForegroundColors.DarkBlue,
+        ConsoleColor.DarkMagenta => AnsiSequences.ForegroundColors.DarkMagenta,
+        ConsoleColor.DarkCyan    => AnsiSequences.ForegroundColors.DarkCyan,
+        ConsoleColor.Gray        => AnsiSequences.ForegroundColors.Gray,
+        ConsoleColor.DarkGray    => AnsiSequences.ForegroundColors.DarkGray,
+        ConsoleColor.Red         => AnsiSequences.ForegroundColors.Red,
+        ConsoleColor.Green       => AnsiSequences.ForegroundColors.Green,
+        ConsoleColor.Yellow      => AnsiSequences.ForegroundColors.Yellow,
+        ConsoleColor.Blue        => AnsiSequences.ForegroundColors.Blue,
+        ConsoleColor.Magenta     => AnsiSequences.ForegroundColors.Magenta,
+        ConsoleColor.Cyan        => AnsiSequences.ForegroundColors.Cyan,
+        ConsoleColor.White       => AnsiSequences.ForegroundColors.White,
         _ => throw new ArgumentException(message: $"Undefined color: {color}", paramName: nameof(color))
     };
 }
