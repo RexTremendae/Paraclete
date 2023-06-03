@@ -23,23 +23,24 @@ public static class AnsiSequences
 
     public static class ForegroundColors
     {
-        public static readonly string Black       = "\x1b[30m";
-        public static readonly string DarkRed     = "\x1b[31m";
-        public static readonly string DarkGreen   = "\x1b[32m";
-        public static readonly string DarkYellow  = "\x1b[33m";
-        public static readonly string DarkBlue    = "\x1b[34m";
-        public static readonly string DarkMagenta = "\x1b[35m";
-        public static readonly string DarkCyan    = ForegroundColor(  0, 100, 100);
-        public static readonly string Gray        = ForegroundColor(180, 180, 180);
-        public static readonly string DarkGray    = ForegroundColor(100, 100, 100);
-        public static readonly string Red         = "\x1b[91m";
-        public static readonly string Green       = "\x1b[92m";
-        public static readonly string Yellow      = "\x1b[93m";
-        public static readonly string Blue        = ForegroundColor(100, 150, 255);
-        public static readonly string Magenta     = "\x1b[95m";
-        public static readonly string Cyan        = ForegroundColor(  0, 255, 255);
-        public static readonly string White       = ForegroundColor(255, 255, 255);
+        public static readonly string Black       = ForegroundColor(   0,   0,   0 );
+        public static readonly string DarkRed     = ForegroundColor( 100,   0,   0 );
+        public static readonly string DarkGreen   = ForegroundColor(   0,  80,   0 );
+        public static readonly string DarkYellow  = ForegroundColor(  80,  80,   0 );
+        public static readonly string DarkBlue    = ForegroundColor(   0,  50, 120 );
+        public static readonly string DarkMagenta = ForegroundColor( 100,   0, 100 );
+        public static readonly string DarkCyan    = ForegroundColor(   0, 100, 100 );
+        public static readonly string Gray        = ForegroundColor( 100, 100, 100 );
+        public static readonly string DarkGray    = ForegroundColor(  50,  50,  50 );
+        public static readonly string Red         = ForegroundColor( 200,  50,  50 );
+        public static readonly string Green       = ForegroundColor(   0, 200,   0 );
+        public static readonly string Yellow      = ForegroundColor( 200, 200,   0 );
+        public static readonly string Blue        = ForegroundColor( 100, 150, 255 );
+        public static readonly string Magenta     = ForegroundColor( 200,   0, 200 );
+        public static readonly string Cyan        = ForegroundColor(   0, 255, 255 );
+        public static readonly string White       = ForegroundColor( 255, 255, 255 );
     }
 
     public static string ForegroundColor(int r, int g, int b) => $"\x1b[38;2;{r};{g};{b}m";
+    public static string BackgroundColor(int r, int g, int b) => $"\x1b[48;2;{r};{g};{b}m";
 }

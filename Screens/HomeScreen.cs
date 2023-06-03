@@ -36,7 +36,7 @@ public class HomeScreen : IScreen
             FontSize = Font.Size.L,
             SecondsFontSize = Font.Size.M,
             Color = ConsoleColor.White,
-            SecondsColor = ConsoleColor.DarkGray,
+            SecondsColor = ConsoleColor.Gray,
             ShowHours = true,
             ShowSeconds = true,
             ShowMilliseconds = false

@@ -48,13 +48,13 @@ public class ScreenSaver
     private DateTime _inactivationTime;
 
     private (ConsoleColor color, ConsoleColor secondColor)[] _timeColors = new[] {
-        (ConsoleColor.White, ConsoleColor.DarkGray),
-        (ConsoleColor.Yellow, ConsoleColor.DarkYellow),
-        (ConsoleColor.Cyan, ConsoleColor.DarkCyan),
-        (ConsoleColor.Blue, ConsoleColor.DarkBlue),
-        (ConsoleColor.Green, ConsoleColor.DarkGreen),
+        (ConsoleColor.White,   ConsoleColor.Gray),
+        (ConsoleColor.Yellow,  ConsoleColor.DarkYellow),
+        (ConsoleColor.Cyan,    ConsoleColor.DarkCyan),
+        (ConsoleColor.Blue,    ConsoleColor.DarkBlue),
+        (ConsoleColor.Green,   ConsoleColor.DarkGreen),
         (ConsoleColor.Magenta, ConsoleColor.DarkMagenta),
-        (ConsoleColor.Red, ConsoleColor.DarkRed)
+        (ConsoleColor.Red,     ConsoleColor.DarkRed)
     };
 
     public void PaintScreen()

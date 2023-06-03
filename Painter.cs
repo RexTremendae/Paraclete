@@ -100,8 +100,9 @@ public class Painter
 
         if (!string.IsNullOrEmpty(screen.Name))
         {
-            row.parts.AddRange(new[] { $" {screen.Name} ", " |    " });
-            row.colors.AddRange(new[] { ConsoleColor.White, ConsoleColor.Gray });
+            var labelFormat = AnsiSequences.BackgroundColor(100,150,200);
+            row.parts.AddRange(new[] { $"{labelFormat} {screen.Name} {AnsiSequences.Reset}", " |    " });
+            row.colors.AddRange(new[] { ConsoleColor.Black, ConsoleColor.Gray });
         }
 
         var isFirst = true;
