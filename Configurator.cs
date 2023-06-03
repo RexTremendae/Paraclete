@@ -19,7 +19,7 @@ public static class Configurator
             .AddScoped<Painter>()
 
             .AddImplementationsOf<ICommand>()
-            .AddImplementationsOf<ScreenBase>()
+            .AddImplementationsOf<IScreen>()
             .AddImplementationsOf<MenuBase>()
         ;
 

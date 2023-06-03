@@ -10,8 +10,7 @@ public readonly record struct TimeWriterSettings
         ShowMilliseconds = false;
         ShowSeconds = true;
         ShowHours = true;
-        FontSize = 2;
-        DigitDisplayChar = '█';
+        FontSize = Font.Size.M;
     }
 
     public ConsoleColor Color { get; init; }
@@ -20,6 +19,5 @@ public readonly record struct TimeWriterSettings
     public bool ShowMilliseconds { get; init; }
     public bool ShowSeconds { get; init; }
     public bool ShowHours { get; init; }
-    public int FontSize { get; init; }
-    public char DigitDisplayChar { get; init; }
+    public Font.Size FontSize { get; init; }
 }

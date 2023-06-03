@@ -3,10 +3,10 @@ using Time.Menu.Todo;
 
 namespace Time.Screens;
 
-public class ShowroomScreen : ScreenBase
+public class ShowroomScreen : IScreen
 {
     private MenuBase _menu;
-    public override MenuBase Menu => _menu;
+    public MenuBase Menu => _menu;
 
     private readonly TimeWriter _currentTimeWriter;
     private readonly Painter _painter;
@@ -16,14 +16,14 @@ public class ShowroomScreen : ScreenBase
         _menu = showroomMenu;
         _painter = painter;
         _currentTimeWriter = new TimeWriter(new() {
-            FontSize = 1,
+            FontSize = Font.Size.XS,
             Color = ConsoleColor.White,
             ShowSeconds = false,
             ShowMilliseconds = false
         });
     }
 
-    public override void PaintFrame(Painter painter, int windowWidth, int windowHeight)
+    public void PaintFrame(Painter painter, int windowWidth, int windowHeight)
     {
         var frameRows = new string[windowHeight];
         frameRows[0] = $"╔{"".PadLeft(windowWidth-2, '═')}╗";
@@ -43,19 +43,28 @@ public class ShowroomScreen : ScreenBase
         painter.Paint(frameRows);
     }
 
-    public override void PaintContent(Painter painter)
+    public void PaintContent(Painter painter)
     {
         // Font exhibition
         var text = "0123456789:.";
 
-        var fontWriter = FontWriter.Create(1, '#');
-        fontWriter.Write(text, ConsoleColor.Gray, (2, 2), _painter);
+        var x = 2;
+        var y = 2;
 
-        fontWriter = FontWriter.Create(2, '#');
-        fontWriter.Write(text, ConsoleColor.DarkCyan, (2, 5), _painter);
+        var colors = new Dictionary<Font.Size, ConsoleColor>{
+            { Font.Size.XS, ConsoleColor.DarkBlue },
+            { Font.Size.S,  ConsoleColor.Blue },
+            { Font.Size.M,  ConsoleColor.DarkCyan },
+            { Font.Size.L,  ConsoleColor.Cyan }
+        };
 
-        fontWriter = FontWriter.Create(3, '#');
-        fontWriter.Write(text, ConsoleColor.DarkBlue, (2, 12), _painter);
+        foreach (var size in Enum.GetValues<Font.Size>())
+        {
+            var fontWriter = FontWriter.Create(size);
+            _painter.Paint($"{size.ToString()}:".PadRight(4), (x, y));
+            fontWriter.Write(text, colors[size], (x + 4, y), _painter);
+            y += fontWriter.Font.CharacterHeight + 1;
+        }
 
         // Current time
         _currentTimeWriter.Write(DateTime.Now, (Console.WindowWidth-7, 1), _painter);

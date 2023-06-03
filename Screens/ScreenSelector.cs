@@ -4,11 +4,11 @@ namespace Time.Screens;
 
 public class ScreenSelector
 {
-    private ScreenBase? _selectedScreen;
-    public ScreenBase SelectedScreen => _selectedScreen ?? throw new InvalidOperationException("No screen selected.");
+    private IScreen? _selectedScreen;
+    public IScreen SelectedScreen => _selectedScreen ?? throw new InvalidOperationException("No screen selected.");
 
     public void SwitchTo<T>()
-        where T : ScreenBase
+        where T : IScreen
     {
         _selectedScreen = _serviceProvider.GetRequiredService<T>();
         _frameInvalidator.Invalidate();

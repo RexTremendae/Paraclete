@@ -33,7 +33,7 @@ public class ScreenSaver
     }
 
     private TimeWriterSettings _currentTimeSettings = new TimeWriterSettings() with {
-        FontSize = 3,
+        FontSize = Font.Size.L,
         Color = ConsoleColor.White,
         SecondsColor = ConsoleColor.DarkGray,
         ShowHours = true,

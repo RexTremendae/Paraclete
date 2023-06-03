@@ -3,10 +3,10 @@ using Time.Menu.General;
 
 namespace Time.Screens;
 
-public class HomeScreen : ScreenBase
+public class HomeScreen : IScreen
 {
     private MenuBase _menu;
-    public override MenuBase Menu => _menu;
+    public MenuBase Menu => _menu;
 
     private Stopwatch _stopWatch;
     private FrameInvalidator _frameInvalidator;
@@ -33,7 +33,7 @@ public class HomeScreen : ScreenBase
         _markTimesPosition   = (x: 3, y: 18);
 
         var currentTimeSettings = new TimeWriterSettings() with {
-            FontSize = 3,
+            FontSize = Font.Size.L,
             Color = ConsoleColor.White,
             SecondsColor = ConsoleColor.DarkGray,
             ShowHours = true,
@@ -42,7 +42,7 @@ public class HomeScreen : ScreenBase
         };
 
         var stopWatchSettings = new TimeWriterSettings() with {
-            FontSize = 2,
+            FontSize = Font.Size.M,
             ShowHours = true,
             ShowSeconds = true,
             ShowMilliseconds = true,
@@ -52,7 +52,7 @@ public class HomeScreen : ScreenBase
         };
 
         var markTimeSettings = new TimeWriterSettings() with {
-            FontSize = 1,
+            FontSize = Font.Size.XS,
             ShowHours = true,
             ShowSeconds = true,
             ShowMilliseconds = true,
@@ -66,7 +66,7 @@ public class HomeScreen : ScreenBase
         _markTimeWriter = new TimeWriter(markTimeSettings);
     }
 
-    public override void PaintFrame(Painter painter, int windowWidth, int windowHeight)
+    public void PaintFrame(Painter painter, int windowWidth, int windowHeight)
     {
         var _2ndColumnWidth = windowWidth-3-_1stColumnWidth;
 
@@ -102,7 +102,7 @@ public class HomeScreen : ScreenBase
         painter.Paint(frameRows);
     }
 
-    public override void PaintContent(Painter painter)
+    public void PaintContent(Painter painter)
     {
         // Current time
         var now = DateTime.Now;

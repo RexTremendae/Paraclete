@@ -3,10 +3,10 @@ using Time.Menu.Todo;
 
 namespace Time.Screens;
 
-public class TodoScreen : ScreenBase
+public class TodoScreen : IScreen
 {
     private MenuBase _menu;
-    public override MenuBase Menu => _menu;
+    public MenuBase Menu => _menu;
 
     private readonly FrameInvalidator _frameInvalidator;
     private readonly TimeWriter _currentTimeWriter;
@@ -18,14 +18,14 @@ public class TodoScreen : ScreenBase
         _frameInvalidator = frameInvalidator;
         _painter = painter;
         _currentTimeWriter = new TimeWriter(new() {
-            FontSize = 1,
+            FontSize = Font.Size.XS,
             Color = ConsoleColor.White,
             ShowSeconds = false,
             ShowMilliseconds = false
         });
     }
 
-    public override void PaintFrame(Painter painter, int windowWidth, int windowHeight)
+    public void PaintFrame(Painter painter, int windowWidth, int windowHeight)
     {
         var frameRows = new string[windowHeight];
         frameRows[0] = $"╔{"".PadLeft(windowWidth-2, '═')}╗";
@@ -45,7 +45,7 @@ public class TodoScreen : ScreenBase
         painter.Paint(frameRows);
     }
 
-    public override void PaintContent(Painter painter)
+    public void PaintContent(Painter painter)
     {
         // TODOs
         painter.Paint(

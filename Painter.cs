@@ -37,12 +37,12 @@ public class Painter
         PaintMenu();
     }
 
-    public void Paint((string[] parts, ConsoleColor[] colors) data, (int x, int y)? position = null, bool debug = false)
+    public void Paint((string[] parts, ConsoleColor[] colors) data, (int x, int y)? position = null)
     {
-        Paint(new[] { data }, position, debug);
+        Paint(new[] { data }, position);
     }
 
-    public void Paint((string[] parts, ConsoleColor[] colors)[] rows, (int x, int y)? position = null, bool debug = false)
+    public void Paint((string[] parts, ConsoleColor[] colors)[] rows, (int x, int y)? position = null)
     {
         var formattedRows = new List<string>();
         foreach (var r in rows)
@@ -50,17 +50,23 @@ public class Painter
             var fr = new StringBuilder();
             for (int idx = 0; idx < r.parts.Length; idx++)
             {
-                fr.Append(r.colors[idx].GetAnsiColorCode());
+                fr.Append(r.colors[idx].ToAnsiColorCode());
                 fr.Append(r.parts[idx]);
             }
             fr.Append(AnsiSequences.Reset);
             formattedRows.Add(fr.ToString());
         }
 
-        Paint(formattedRows.ToArray(), position, debug);
+        Paint(formattedRows.ToArray(), position);
     }
 
-    public void Paint(string[] rows, (int x, int y)? position = null, bool debug = false)
+    public void Paint(string text, (int x, int y)? position = null, ConsoleColor? color = null)
+    {
+        var formattedText = (color.HasValue ? color.Value.ToAnsiColorCode() : "") + text;
+        Paint(new[] { formattedText }, position);
+    }
+
+    public void Paint(string[] rows, (int x, int y)? position = null)
     {
         var pos = position ?? (0, 0);
 
@@ -110,7 +116,7 @@ public class Painter
         }
 
         var data = new[] { row }.Select(_ => (_.parts.ToArray(), _.colors.ToArray())).ToArray();
-        Paint(data, (2, _windowHeight-2), true);
+        Paint(data, (2, _windowHeight-2));
     }
 
     private (IEnumerable<string> parts, IEnumerable<ConsoleColor> colors) GetMenuParts(ConsoleKey key, string description)

@@ -55,7 +55,7 @@ public class TimeWriter
 
     private void Write(List<string> textParts, List<ConsoleColor> colors, (int x, int y) cursorPos, Painter painter)
     {
-        var font = Font.OfSize(_settings.FontSize, _settings.DigitDisplayChar);
+        var font = Font.OfSize(_settings.FontSize);
         var rows = new List<(List<string> parts, List<ConsoleColor> colors)>();
         rows.AddRange(
             Enumerable.Range(0, font.CharacterHeight)
@@ -87,6 +87,6 @@ public class TimeWriter
         var data = rows
             .Select(_ => (_.parts.ToArray(), _.colors.ToArray()))
             .ToArray();
-        painter.Paint(data, cursorPos, true);
+        painter.Paint(data, cursorPos);
     }
 }

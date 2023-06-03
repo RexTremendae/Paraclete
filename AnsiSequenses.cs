@@ -29,15 +29,15 @@ public static class AnsiSequences
         public static readonly string DarkYellow  = "\x1b[33m";
         public static readonly string DarkBlue    = "\x1b[34m";
         public static readonly string DarkMagenta = "\x1b[35m";
-        public static readonly string DarkCyan    = "\x1b[36m";
+        public static readonly string DarkCyan    = ForegroundColor(  0, 100, 100);
         public static readonly string Gray        = ForegroundColor(180, 180, 180);
         public static readonly string DarkGray    = ForegroundColor(100, 100, 100);
         public static readonly string Red         = "\x1b[91m";
         public static readonly string Green       = "\x1b[92m";
         public static readonly string Yellow      = "\x1b[93m";
-        public static readonly string Blue        = "\x1b[94m";
+        public static readonly string Blue        = ForegroundColor(100, 150, 255);
         public static readonly string Magenta     = "\x1b[95m";
-        public static readonly string Cyan        = "\x1b[96m";
+        public static readonly string Cyan        = ForegroundColor(  0, 255, 255);
         public static readonly string White       = ForegroundColor(255, 255, 255);
     }
 
