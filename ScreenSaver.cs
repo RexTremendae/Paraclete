@@ -18,8 +18,7 @@ public class ScreenSaver
 
             if (_inactivationTime + _activationInterval < DateTime.Now)
             {
-                _inactivationTime = default;
-                _lastChange = default;
+                Activate();
                 return true;
             }
 
@@ -34,6 +33,7 @@ public class ScreenSaver
 
     private TimeWriterSettings _currentTimeSettings = new TimeWriterSettings() with {
         FontSize = Font.Size.L,
+        SecondsFontSize = Font.Size.M,
         Color = ConsoleColor.White,
         SecondsColor = ConsoleColor.DarkGray,
         ShowHours = true,
@@ -80,6 +80,12 @@ public class ScreenSaver
         }
 
         WriteTime(now);
+    }
+
+    public void Activate()
+    {
+        _inactivationTime = default;
+        _lastChange = default;
     }
 
     public void Inactivate()

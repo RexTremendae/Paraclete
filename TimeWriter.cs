@@ -28,56 +28,74 @@ public class TimeWriter
 
         var parts = new List<string>();
         var partColors = new List<ConsoleColor>();
+        var partFonts = new List<Font>();
+        var font = Font.OfSize(_settings.FontSize);
 
         if (_settings.ShowHours)
         {
             parts.Add($"{hourPart}:");
             partColors.Add(_settings.Color);
+            partFonts.Add(font);
         }
 
         parts.Add($"{minutePart}");
         partColors.Add(_settings.Color);
+        partFonts.Add(font);
 
         if (_settings.ShowSeconds)
         {
             parts.Add($":{secondPart}");
             partColors.Add(_settings.SecondsColor);
+            partFonts.Add(_settings.SecondsFontSize == Font.Size.Undefined
+                ? font
+                : Font.OfSize(_settings.SecondsFontSize));
         }
 
         if (_settings.ShowMilliseconds)
         {
             parts.Add($".{millisecondPart}");
             partColors.Add(_settings.MillisecondsColor);
+            partFonts.Add(_settings.MillisecondsFontSize == Font.Size.Undefined
+                ? font
+                : Font.OfSize(_settings.MillisecondsFontSize));
         }
 
-        Write(parts, partColors, cursorPos, painter);
+        Write(parts, partColors, partFonts, cursorPos, painter);
     }
 
-    private void Write(List<string> textParts, List<ConsoleColor> colors, (int x, int y) cursorPos, Painter painter)
+    private void Write(List<string> textParts, List<ConsoleColor> colors, List<Font> fonts, (int x, int y) cursorPos, Painter painter)
     {
-        var font = Font.OfSize(_settings.FontSize);
         var rows = new List<(List<string> parts, List<ConsoleColor> colors)>();
+        var textHeight = fonts.Max(_ => _.CharacterHeight);
         rows.AddRange(
-            Enumerable.Range(0, font.CharacterHeight)
+            Enumerable.Range(0, textHeight)
             .Select(_ => (new List<string>(), new List<ConsoleColor>())));
 
         for (int idx = 0; idx < textParts.Count; idx++)
         {
-            var textPartRows = new List<string>(
-                Enumerable.Range(0, font.CharacterHeight)
-                    .Select(_ => ""));
+            var font = fonts[idx];
+
+            var textPartRows = new string[textHeight];
 
             var text = textParts[idx];
             foreach (var c in text)
             {
                 var fontCharacter = font[c];
-                for (var y = 0; y < font.CharacterHeight; y++)
+                var yOffset = textHeight-font.CharacterHeight;
+                for (var y = 0; y < textHeight; y++)
                 {
-                    textPartRows[y] += fontCharacter[y];
+                    if (y < yOffset)
+                    {
+                        textPartRows[y] += "".PadLeft(font.CharacterWidth);
+                    }
+                    else
+                    {
+                        textPartRows[y] += fontCharacter[y-yOffset];
+                    }
                 }
             }
 
-            for (var y = 0; y < font.CharacterHeight; y++)
+            for (var y = 0; y < textHeight; y++)
             {
                 rows[y].parts.Add(textPartRows[y]);
                 rows[y].colors.Add(colors[idx]);

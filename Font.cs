@@ -71,6 +71,7 @@ public class Font
 
     public enum Size
     {
+        Undefined = 0,
         XS, S, M, L
     }
 
@@ -133,12 +134,12 @@ public class Font
                           "▄▄▀ " }),
 
             (':', new[] { "    ",
-                          "    ",
-                          "    " }),
+                          " ▀  ",
+                          " ▀  " }),
 
             ('.', new[] { "    ",
                           "    ",
-                          "    " })
+                          " ▄  " })
         ),
 
         Size.M => new(Size.M,

@@ -1,5 +1,5 @@
 using Time.Menu;
-using Time.Menu.Todo;
+using Time.Menu.Showroom;
 
 namespace Time.Screens;
 
@@ -61,6 +61,7 @@ public class ShowroomScreen : IScreen
 
         foreach (var size in Enum.GetValues<Font.Size>())
         {
+            if (size == Font.Size.Undefined) continue;
             var fontWriter = FontWriter.Create(size);
             _painter.Paint($"{size.ToString()}:".PadRight(4), (x, y));
             fontWriter.Write(text, colors[size], (x + 4, y), _painter);

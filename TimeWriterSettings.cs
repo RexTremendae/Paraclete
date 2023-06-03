@@ -11,6 +11,8 @@ public readonly record struct TimeWriterSettings
         ShowSeconds = true;
         ShowHours = true;
         FontSize = Font.Size.M;
+        SecondsFontSize = Font.Size.Undefined;
+        MillisecondsFontSize = Font.Size.Undefined;
     }
 
     public ConsoleColor Color { get; init; }
@@ -20,4 +22,6 @@ public readonly record struct TimeWriterSettings
     public bool ShowSeconds { get; init; }
     public bool ShowHours { get; init; }
     public Font.Size FontSize { get; init; }
+    public Font.Size SecondsFontSize { get; init; }
+    public Font.Size MillisecondsFontSize { get; init; }
 }

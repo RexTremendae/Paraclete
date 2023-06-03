@@ -19,7 +19,7 @@ public class HomeScreen : IScreen
     private TimeWriter _stopWatchWriter;
     private TimeWriter _markTimeWriter;
 
-    private int _1stColumnWidth = 63;
+    private int _1stColumnWidth = 60;
 
     public HomeScreen(Stopwatch stopWatch, _MainMenu mainMenu, FrameInvalidator frameInvalidator)
     {
@@ -28,12 +28,13 @@ public class HomeScreen : IScreen
         _stopWatch = stopWatch;
         _frameInvalidator = frameInvalidator;
 
-        _currentTimePosition = (x: 5, y:  2);
+        _currentTimePosition = (x: 6, y:  2);
         _stopWatchPosition   = (x: 3, y: 12);
         _markTimesPosition   = (x: 3, y: 18);
 
         var currentTimeSettings = new TimeWriterSettings() with {
             FontSize = Font.Size.L,
+            SecondsFontSize = Font.Size.M,
             Color = ConsoleColor.White,
             SecondsColor = ConsoleColor.DarkGray,
             ShowHours = true,
@@ -43,6 +44,7 @@ public class HomeScreen : IScreen
 
         var stopWatchSettings = new TimeWriterSettings() with {
             FontSize = Font.Size.M,
+            MillisecondsFontSize = Font.Size.S,
             ShowHours = true,
             ShowSeconds = true,
             ShowMilliseconds = true,
