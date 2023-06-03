@@ -3,6 +3,7 @@ namespace Time;
 public class TimeWriter
 {
     private readonly TimeWriterSettings _settings;
+    private (int hour, int minute, int second, int millisecond, (int x, int y) cursorPos) _cache;
 
     public TimeWriter(TimeWriterSettings settings)
     {
@@ -21,6 +22,13 @@ public class TimeWriter
 
     private void Write(int hour, int minute, int second, int millisecond, (int x, int y) cursorPos, Painter painter)
     {
+        var newCache = (hour, minute, second, millisecond, cursorPos);
+        if (newCache == _cache)
+        {
+            return;
+        }
+        _cache = newCache;
+
         var hourPart = hour.ToString().PadLeft(2, '0');
         var minutePart = minute.ToString().PadLeft(2, '0');
         var secondPart = second.ToString().PadLeft(2, '0');

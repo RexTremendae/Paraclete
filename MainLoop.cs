@@ -9,13 +9,17 @@ public class MainLoop
     private readonly ScreenSelector _screenSelector;
     private readonly ScreenSaver _screenSaver;
     private readonly FrameInvalidator _frameInvalidator;
+    private readonly FpsCounter _fpsCounter;
 
-    public MainLoop(Painter visualizer, ScreenSelector screenSelector, ScreenSaver screenSaver, FrameInvalidator frameInvalidator)
+    public MainLoop(Painter visualizer, ScreenSelector screenSelector, ScreenSaver screenSaver, FrameInvalidator frameInvalidator, FpsCounter fpsCounter)
     {
         _visualizer = visualizer;
         _screenSaver = screenSaver;
         _screenSelector = screenSelector;
         _frameInvalidator = frameInvalidator;
+        _fpsCounter = fpsCounter;
+
+        _fpsCounter.IsEnabled = false;
     }
 
     private async Task RepaintLoop()
@@ -40,6 +44,8 @@ public class MainLoop
             }
 
             await Task.Delay(30);
+            _fpsCounter.Update();
+            _fpsCounter.Print();
         }
     }
 

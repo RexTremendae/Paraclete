@@ -11,6 +11,7 @@ public static class Configurator
         var services = new ServiceCollection();
 
         services
+            .AddScoped<FpsCounter>()
             .AddScoped<FrameInvalidator>()
             .AddScoped<MainLoop>()
             .AddScoped<ScreenSaver>()
