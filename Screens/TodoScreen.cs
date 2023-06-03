@@ -7,6 +7,7 @@ public class TodoScreen : IScreen
 {
     private MenuBase _menu;
     public MenuBase Menu => _menu;
+    public string Name => "TODO";
 
     private readonly FrameInvalidator _frameInvalidator;
     private readonly TimeWriter _currentTimeWriter;
@@ -52,7 +53,7 @@ public class TodoScreen : IScreen
             position: (2, 1),
             rows: new[]
             {
-                $"{AnsiSequences.ForegroundColors.White}TODO:{AnsiSequences.Reset}",
+                $"{AnsiSequences.ForegroundColors.White}TODO list:{AnsiSequences.Reset}",
                 $"- {AnsiSequences.ForegroundColors.DarkGray}{AnsiSequences.StrikeThrough}Add TODO section{AnsiSequences.Reset}",
                 $"- {AnsiSequences.ForegroundColors.Yellow}Enable add/edit/remove TODO items{AnsiSequences.Reset}",
                 $"- {AnsiSequences.ForegroundColors.Yellow}Persist TODO items{AnsiSequences.Reset}"

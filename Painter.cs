@@ -94,8 +94,15 @@ public class Painter
         CursorLeft = 2;
         CursorTop = _windowHeight-2;
 
-        var menuItems = _screenSelector.SelectedScreen.Menu.MenuItems;
+        var screen = _screenSelector.SelectedScreen;
+        var menuItems = screen.Menu.MenuItems;
         var row = (parts: new List<string>(), colors: new List<ConsoleColor>());
+
+        if (!string.IsNullOrEmpty(screen.Name))
+        {
+            row.parts.AddRange(new[] { $" {screen.Name} ", " |    " });
+            row.colors.AddRange(new[] { ConsoleColor.White, ConsoleColor.Gray });
+        }
 
         var isFirst = true;
         foreach (var (key, description) in menuItems.Select(_ => (_.Key, _.Value.Description)))

@@ -7,6 +7,7 @@ public class ShowroomScreen : IScreen
 {
     private MenuBase _menu;
     public MenuBase Menu => _menu;
+    public string Name => "Showroom";
 
     private readonly TimeWriter _currentTimeWriter;
     private readonly Painter _painter;
