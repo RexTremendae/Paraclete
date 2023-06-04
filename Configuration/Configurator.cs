@@ -16,6 +16,7 @@ public static class Configurator
             .AddScoped<FpsCounter>()
             .AddScoped<FrameInvalidator>()
             .AddScoped<MainLoop>()
+            .AddScoped<MenuPainter>()
             .AddScoped<ScreenSaver>()
             .AddScoped<ScreenSelector>()
             .AddScoped<Settings>()

@@ -10,9 +10,7 @@ public class _MainMenu : MenuBase
         typeof(ExitApplicationCommand),
         typeof(StartStopCommand),
         typeof(ResetCommand),
-        typeof(MarkTimeCommand),
-        typeof(GotoTodoScreenCommand),
-        typeof(GotoShowroomScreenCommand)
+        typeof(MarkTimeCommand)
     })
     {}
 }

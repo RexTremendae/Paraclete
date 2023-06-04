@@ -1,3 +1,4 @@
+using Time.Menu;
 using Time.Screens;
 using static System.Console;
 
@@ -10,10 +11,11 @@ public class MainLoop
     private readonly ScreenSaver _screenSaver;
     private readonly FrameInvalidator _frameInvalidator;
     private readonly FpsCounter _fpsCounter;
+    private readonly IServiceProvider _services;
 
     private readonly int _repaintLoopInterval;
 
-    public MainLoop(Painter painter, ScreenSelector screenSelector, ScreenSaver screenSaver, FrameInvalidator frameInvalidator, FpsCounter fpsCounter, Settings settings)
+    public MainLoop(Painter painter, ScreenSelector screenSelector, ScreenSaver screenSaver, FrameInvalidator frameInvalidator, FpsCounter fpsCounter, Settings settings, IServiceProvider services)
     {
         _painter = painter;
         _screenSaver = screenSaver;
@@ -21,6 +23,7 @@ public class MainLoop
         _frameInvalidator = frameInvalidator;
         _fpsCounter = fpsCounter;
         _repaintLoopInterval = settings.RepaintLoopInterval;
+        _services = services;
     }
 
     private async Task RepaintLoop()
@@ -59,6 +62,14 @@ public class MainLoop
 
         ConsoleKey key;
 
+        var screens = new Dictionary<ConsoleKey, IScreen>();
+        var functionKey = ConsoleKey.F1;
+        foreach (var screen in TypeUtility.EnumerateImplementatingInstancesOf<IScreen>(_services))
+        {
+            screens.Add(functionKey, screen);
+            functionKey++;
+        }
+
         for(;;)
         {
             key = ReadKey(true).Key;
@@ -68,17 +79,73 @@ public class MainLoop
 
             var currentMenu = _screenSelector.SelectedScreen.Menu.MenuItems;
 
-            if (!currentMenu.TryGetValue(key, out var selectedCommand))
+            var anyKeyMatch = false;
+            if (currentMenu.TryGetValue(key, out var selectedCommand))
+            {
+                anyKeyMatch = true;
+            }
+            else
+            {
+                selectedCommand = new NoCommand();
+            }
+
+            if (screens.TryGetValue(key, out var selectedScreen))
+            {
+                anyKeyMatch = true;
+            }
+            else
+            {
+                selectedScreen = new NoScreen();
+            }
+
+            if (!anyKeyMatch)
             {
                 continue;
             }
 
-            if (screenSaverWasActive && !selectedCommand.IsScreenSaverResistant)
+            if (screenSaverWasActive)
             {
-                continue;
+                if (!selectedCommand.IsScreenSaverResistant)
+                {
+                    continue;
+                }
             }
 
-            await selectedCommand.Execute();
+            if (selectedScreen is not NoScreen)
+            {
+                _screenSelector.SwitchTo(selectedScreen);
+            }
+            else if (selectedCommand is not NoCommand)
+            {
+                await selectedCommand.Execute();
+            }
+        }
+    }
+
+    [ExcludeFromEnumeration]
+    private class NoScreen : IScreen
+    {
+        public MenuBase Menu => throw new NotImplementedException();
+
+        public void PaintContent(Painter visualizer)
+        {
+        }
+
+        public void PaintFrame(Painter visualizer, int windowWidth, int windowHeight)
+        {
+        }
+    }
+
+    [ExcludeFromEnumeration]
+    private class NoCommand : ICommand
+    {
+        public ConsoleKey Shortcut => ConsoleKey.NoName;
+
+        public string Description => string.Empty;
+
+        public Task Execute()
+        {
+            return Task.CompletedTask;
         }
     }
 }

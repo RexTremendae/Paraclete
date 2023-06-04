@@ -7,6 +7,7 @@ public class HomeScreen : IScreen
 {
     private MenuBase _menu;
     public MenuBase Menu => _menu;
+    public string Name => "Home";
 
     private Stopwatch _stopWatch;
     private FrameInvalidator _frameInvalidator;
@@ -86,11 +87,11 @@ public class HomeScreen : IScreen
             {
                 frameRows[y] = $"╟{"".PadLeft(_1stColumnWidth, '─')}┤{"".PadLeft(_2ndColumnWidth)}║";
             }
-            else if (y == windowHeight-3)
+            else if (y == windowHeight-4)
             {
                 frameRows[y] = $"╟{"".PadLeft(_1stColumnWidth, '─')}┴{"".PadLeft(_2ndColumnWidth, '─')}╢";
             }
-            else if (y == windowHeight-2)
+            else if (y == windowHeight-2 || y == windowHeight-3)
             {
                 frameRows[y] = $"║{"".PadLeft(windowWidth-2)}║";
             }

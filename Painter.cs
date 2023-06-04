@@ -9,14 +9,16 @@ public class Painter
 {
     private readonly FrameInvalidator _frameInvalidator;
     private readonly ScreenSelector _screenSelector;
+    private readonly MenuPainter _menuPainter;
 
     private int _windowHeight;
     private int _windowWidth;
 
-    public Painter(ScreenSelector screenSelector, FrameInvalidator frameInvalidator)
+    public Painter(ScreenSelector screenSelector, FrameInvalidator frameInvalidator, MenuPainter menuPainter)
     {
         _frameInvalidator = frameInvalidator;
         _screenSelector = screenSelector;
+        _menuPainter = menuPainter;
     }
 
     public void PaintScreen()
@@ -33,8 +35,7 @@ public class Painter
         }
 
         _screenSelector.SelectedScreen.PaintContent(this);
-
-        PaintMenu();
+        _menuPainter.PaintMenu(this);
     }
 
     public void Paint(IEnumerable<string> parts, IEnumerable<ConsoleColor> colors, (int x, int y)? position = null)
@@ -87,81 +88,5 @@ public class Painter
 
             Write(rows[y]);
         }
-    }
-
-    private void PaintMenu()
-    {
-        CursorLeft = 2;
-        CursorTop = _windowHeight-2;
-
-        var screen = _screenSelector.SelectedScreen;
-        var menuItems = screen.Menu.MenuItems;
-        var row = (parts: new List<string>(), colors: new List<ConsoleColor>());
-
-        if (!string.IsNullOrEmpty(screen.Name))
-        {
-            var label = $"{AnsiSequences.BackgroundColors.Blue} {screen.Name} {AnsiSequences.Reset}";
-            row.parts.AddRange(new[] { label, " |    " });
-            row.colors.AddRange(new[] { ConsoleColor.Black, ConsoleColor.Gray });
-        }
-
-        var isFirst = true;
-        foreach (var (key, description) in menuItems.Select(_ => (_.Key, _.Value.Description)))
-        {
-            if (isFirst)
-            {
-                isFirst = false;
-            }
-            else
-            {
-                row.parts.Add("    ");
-                row.colors.Add(ConsoleColor.Gray);
-            }
-
-            var (parts, colors) = GetMenuParts(key, description);
-            row.parts.AddRange(parts);
-            row.colors.AddRange(colors);
-        }
-
-        Paint(row.parts, row.colors, (2, _windowHeight-2));
-    }
-
-    private (IEnumerable<string> parts, IEnumerable<ConsoleColor> colors) GetMenuParts(ConsoleKey key, string description)
-    {
-        var bracketColor = ConsoleColor.White;
-        var shortcutColor = ConsoleColor.Green;
-        var descriptionColor = ConsoleColor.Gray;
-
-        var parts = new List<string>();
-        var colors = new List<ConsoleColor>();
-
-        var startBracketIndex = description.IndexOf('[');
-        var endBracketIndex = -1;
-        if (startBracketIndex >= 0)
-        {
-            endBracketIndex = description.IndexOf(']', startBracketIndex);
-        }
-
-        var explicitBrackets = startBracketIndex >= 0 && endBracketIndex >= 0;
-
-        if (explicitBrackets)
-        {
-            parts.Add(description[..startBracketIndex]);
-            colors.Add(descriptionColor);
-        }
-
-        parts.Add("[");
-        colors.Add(bracketColor);
-
-        parts.Add(key.ToDisplayString());
-        colors.Add(shortcutColor);
-
-        parts.Add(explicitBrackets ? "]" : "] ");
-        colors.Add(bracketColor);
-
-        parts.Add(description[(endBracketIndex+1)..]);
-        colors.Add(descriptionColor);
-
-        return (parts, colors);
     }
 }

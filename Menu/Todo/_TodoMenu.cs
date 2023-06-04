@@ -5,7 +5,6 @@ public class _TodoMenu : MenuBase
     public _TodoMenu(IServiceProvider services)
         : base(services, new Type[]
     {
-        typeof(GotoMainMenuCommand),
         typeof(AddTodoItemCommand)
     })
     {}

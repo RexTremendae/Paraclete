@@ -7,6 +7,12 @@ public class ScreenSelector
     private IScreen? _selectedScreen;
     public IScreen SelectedScreen => _selectedScreen ?? throw new InvalidOperationException("No screen selected.");
 
+    public void SwitchTo(IScreen screen)
+    {
+        _selectedScreen = (IScreen)_serviceProvider.GetRequiredService(screen.GetType());
+        _frameInvalidator.Invalidate();
+    }
+
     public void SwitchTo<T>()
         where T : IScreen
     {

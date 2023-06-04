@@ -32,7 +32,7 @@ public class TodoScreen : IScreen
         frameRows[0] = $"╔{"".PadLeft(windowWidth-2, '═')}╗";
         for (int y = 1; y < windowHeight-1; y++)
         {
-            if (y == windowHeight-3)
+            if (y == windowHeight-4)
             {
                 frameRows[y] = $"╟{"".PadLeft(windowWidth-2, '─')}╢";
             }
