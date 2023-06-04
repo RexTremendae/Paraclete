@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Time.Menu;
+using Time.Painting;
 using Time.Screens;
-using Time.Screens.Showroom;
 
 namespace Time.Configuration;
 

@@ -3,7 +3,7 @@ using Time.Screens;
 
 using static System.Console;
 
-namespace Time;
+namespace Time.Painting;
 
 public class Painter
 {

@@ -1,5 +1,3 @@
-using Time.Screens.Showroom;
-
 namespace Time.Screens;
 
 public class ExhibitionSelector

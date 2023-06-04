@@ -1,6 +1,7 @@
+using Time.Painting;
 using static System.Console;
 
-namespace Time;
+namespace Time.Screens;
 
 public class ScreenSaver
 {

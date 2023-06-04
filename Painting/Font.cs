@@ -1,6 +1,6 @@
 using System.Collections.Concurrent;
 
-namespace Time;
+namespace Time.Painting;
 
 public class Font
 {

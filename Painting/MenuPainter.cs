@@ -1,6 +1,6 @@
 using Time.Screens;
 
-namespace Time;
+namespace Time.Painting;
 
 public class MenuPainter
 {

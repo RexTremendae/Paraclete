@@ -1,4 +1,5 @@
 using Time.Menu;
+using Time.Painting;
 using Time.Screens;
 using static System.Console;
 

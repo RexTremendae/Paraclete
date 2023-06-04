@@ -1,3 +1,5 @@
+using Time.Screens;
+
 namespace Time.Menu.Showroom;
 
 public class TriggerScreenSaverCommand : ICommand

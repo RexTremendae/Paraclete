@@ -1,4 +1,6 @@
-namespace Time.Screens.Showroom;
+using Time.Painting;
+
+namespace Time.Screens;
 
 public interface IExhibition
 {

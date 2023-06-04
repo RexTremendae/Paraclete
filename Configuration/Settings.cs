@@ -1,3 +1,5 @@
+using Time.Painting;
+
 namespace Time.Configuration;
 
 public class Settings

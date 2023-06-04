@@ -1,4 +1,4 @@
-namespace Time;
+namespace Time.Painting;
 
 public readonly record struct TimeWriterSettings
 {

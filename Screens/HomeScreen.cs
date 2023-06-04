@@ -1,5 +1,6 @@
 using Time.Menu;
 using Time.Menu.General;
+using Time.Painting;
 
 namespace Time.Screens;
 
