@@ -9,15 +9,20 @@ public class ScreenSelector
 
     public void SwitchTo(IScreen screen)
     {
-        _selectedScreen = (IScreen)_serviceProvider.GetRequiredService(screen.GetType());
+        if (screen == _selectedScreen)
+        {
+            return;
+        }
+
+        _selectedScreen = screen;
         _frameInvalidator.Invalidate();
     }
 
     public void SwitchTo<T>()
         where T : IScreen
     {
-        _selectedScreen = _serviceProvider.GetRequiredService<T>();
-        _frameInvalidator.Invalidate();
+        var screenToSelect = _serviceProvider.GetRequiredService<T>();
+        SwitchTo(screenToSelect);
     }
 
     private readonly IServiceProvider _serviceProvider;
