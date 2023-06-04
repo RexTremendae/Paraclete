@@ -3,22 +3,22 @@ namespace Time;
 public class FpsCounter
 {
     private readonly List<int> _fpsHistory = new();
+    private readonly int _maxFpsHistory;
+    private readonly bool _isEnabled;
 
     private int _frameCount;
     private DateTime _frameCountStart;
-    private int _maxFpsHistory = 30;
     private double _fpsAverage;
 
-    public bool IsEnabled { get; set; }
-
-    public void Enable()
+    public FpsCounter(Settings settings)
     {
-        IsEnabled = true;
+        _maxFpsHistory = settings.FpsCounter.HistoryLength;
+        _isEnabled = settings.FpsCounter.IsEnabled;
     }
 
     public void Update()
     {
-        if (!IsEnabled) return;
+        if (!_isEnabled) return;
 
         _frameCount++;
         var now = DateTime.Now;
@@ -35,7 +35,7 @@ public class FpsCounter
 
     public void Print()
     {
-        if (!IsEnabled) return;
+        if (!_isEnabled) return;
 
         Console.SetCursorPosition(1,1);
         Console.Write(

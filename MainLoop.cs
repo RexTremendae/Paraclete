@@ -5,21 +5,22 @@ namespace Time;
 
 public class MainLoop
 {
-    private readonly Painter _visualizer;
+    private readonly Painter _painter;
     private readonly ScreenSelector _screenSelector;
     private readonly ScreenSaver _screenSaver;
     private readonly FrameInvalidator _frameInvalidator;
     private readonly FpsCounter _fpsCounter;
 
-    public MainLoop(Painter visualizer, ScreenSelector screenSelector, ScreenSaver screenSaver, FrameInvalidator frameInvalidator, FpsCounter fpsCounter)
+    private readonly int _repaintLoopInterval;
+
+    public MainLoop(Painter painter, ScreenSelector screenSelector, ScreenSaver screenSaver, FrameInvalidator frameInvalidator, FpsCounter fpsCounter, Settings settings)
     {
-        _visualizer = visualizer;
+        _painter = painter;
         _screenSaver = screenSaver;
         _screenSelector = screenSelector;
         _frameInvalidator = frameInvalidator;
         _fpsCounter = fpsCounter;
-
-        _fpsCounter.IsEnabled = false;
+        _repaintLoopInterval = settings.RepaintLoopInterval;
     }
 
     private async Task RepaintLoop()
@@ -40,10 +41,10 @@ public class MainLoop
                     screenSaverIsActive = false;
                     _frameInvalidator.Invalidate();
                 }
-                _visualizer.PaintScreen();
+                _painter.PaintScreen();
             }
 
-            await Task.Delay(30);
+            await Task.Delay(_repaintLoopInterval);
             _fpsCounter.Update();
             _fpsCounter.Print();
         }

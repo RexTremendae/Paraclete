@@ -2,7 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Time.Menu;
 using Time.Screens;
 
-namespace Time;
+namespace Time.Configuration;
 
 public static class Configurator
 {
@@ -16,6 +16,7 @@ public static class Configurator
             .AddScoped<MainLoop>()
             .AddScoped<ScreenSaver>()
             .AddScoped<ScreenSelector>()
+            .AddScoped<Settings>()
             .AddScoped<Stopwatch>()
             .AddScoped<Painter>()
 

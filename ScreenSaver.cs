@@ -4,8 +4,13 @@ namespace Time;
 
 public class ScreenSaver
 {
-    private TimeSpan _changeInterval = TimeSpan.FromSeconds(30);
-    private TimeSpan _activationInterval = TimeSpan.FromMinutes(5);
+    private readonly TimeSpan _changeInterval;
+    private readonly TimeSpan _activationInterval;
+
+    private readonly int _currentTimeWidth;
+    private readonly int _currentTimeHeight;
+
+    private TimeWriterSettings _currentTimeSettings;
 
     public bool IsActive
     {
@@ -26,20 +31,28 @@ public class ScreenSaver
         }
     }
 
-    public ScreenSaver(Painter painter)
+    public ScreenSaver(Painter painter, Settings settings)
     {
         _painter = painter;
-    }
+        _changeInterval = settings.ScreenSaver.ContentChangeInterval;
+        _activationInterval = settings.ScreenSaver.ActivationInterval;
 
-    private TimeWriterSettings _currentTimeSettings = new TimeWriterSettings() with {
-        FontSize = Font.Size.L,
-        SecondsFontSize = Font.Size.M,
-        Color = ConsoleColor.White,
-        SecondsColor = ConsoleColor.DarkGray,
-        ShowHours = true,
-        ShowSeconds = true,
-        ShowMilliseconds = false
-    };
+        _currentTimeSettings = new TimeWriterSettings() with {
+            FontSize = settings.ScreenSaver.FontSize,
+            SecondsFontSize = settings.ScreenSaver.SecondsFontSize,
+            Color = ConsoleColor.White,
+            SecondsColor = ConsoleColor.DarkGray,
+            ShowHours = true,
+            ShowSeconds = true,
+            ShowMilliseconds = false
+        };
+
+        var font = Font.OfSize(settings.ScreenSaver.FontSize);
+        var secondsFont = Font.OfSize(settings.ScreenSaver.SecondsFontSize);
+
+        _currentTimeHeight = int.Max(font.CharacterHeight, secondsFont.CharacterHeight);
+        _currentTimeWidth = font.CharacterWidth*5 + secondsFont.CharacterWidth*3;
+    }
 
     private readonly Painter _painter;
 
@@ -59,18 +72,18 @@ public class ScreenSaver
 
     public void PaintScreen()
     {
-        var currentTimeWidth = 56;
-        var currentTimeHeight = 7;
-
         var now = DateTime.Now;
         if (now - _lastChange > _changeInterval ||
-            _currentTimePosition.x + currentTimeWidth >= WindowWidth ||
-            _currentTimePosition.y + currentTimeHeight >= WindowHeight)
+            _currentTimePosition.x + _currentTimeWidth >= WindowWidth ||
+            _currentTimePosition.y + _currentTimeHeight >= WindowHeight)
         {
             _lastChange = now;
             Write(AnsiSequences.ClearScreen);
             Console.CursorVisible = false;
-            _currentTimePosition = (Random.Shared.Next(WindowWidth-56), Random.Shared.Next(WindowHeight-7));
+
+            var x = Random.Shared.Next(WindowWidth - _currentTimeWidth);
+            var y = Random.Shared.Next(WindowHeight - _currentTimeHeight);
+            _currentTimePosition = (x, y);
             var (color, secondColor) = _timeColors[Random.Shared.Next(_timeColors.Length)];
             _currentTimeSettings = _currentTimeSettings with
             {
