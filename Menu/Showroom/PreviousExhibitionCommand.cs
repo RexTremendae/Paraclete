@@ -1,6 +1,6 @@
-using Time.Screens;
+using Paraclete.Screens;
 
-namespace Time.Menu.Showroom;
+namespace Paraclete.Menu.Showroom;
 
 public class PreviousExhibitionCommand : ICommand
 {

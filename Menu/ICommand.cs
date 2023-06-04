@@ -1,4 +1,4 @@
-namespace Time.Menu;
+namespace Paraclete.Menu;
 
 public interface ICommand
 {

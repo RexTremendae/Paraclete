@@ -1,6 +1,6 @@
-using Time.Menu.Stopwatch;
+using Paraclete.Menu.Stopwatch;
 
-namespace Time.Menu.General;
+namespace Paraclete.Menu.General;
 
 public class _MainMenu : MenuBase
 {

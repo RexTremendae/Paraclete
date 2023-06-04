@@ -1,6 +1,6 @@
-using Time.Screens;
+using Paraclete.Screens;
 
-namespace Time.Painting;
+namespace Paraclete.Painting;
 
 public class MenuPainter
 {

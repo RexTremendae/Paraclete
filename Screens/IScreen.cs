@@ -1,7 +1,7 @@
-using Time.Menu;
-using Time.Painting;
+using Paraclete.Menu;
+using Paraclete.Painting;
 
-namespace Time.Screens;
+namespace Paraclete.Screens;
 
 public interface IScreen
 {

@@ -1,9 +1,9 @@
-using Time.Menu;
-using Time.Painting;
-using Time.Screens;
+using Paraclete.Menu;
+using Paraclete.Painting;
+using Paraclete.Screens;
 using static System.Console;
 
-namespace Time;
+namespace Paraclete;
 
 public class MainLoop
 {

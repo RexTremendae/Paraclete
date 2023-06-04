@@ -1,6 +1,6 @@
-using Time.Painting;
+using Paraclete.Painting;
 
-namespace Time.Configuration;
+namespace Paraclete.Configuration;
 
 public class Settings
 {

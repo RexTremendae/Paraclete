@@ -1,4 +1,4 @@
-namespace Time.Menu.Showroom;
+namespace Paraclete.Menu.Showroom;
 
 public class _ShowroomMenu : MenuBase
 {

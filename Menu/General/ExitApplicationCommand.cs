@@ -1,4 +1,4 @@
-namespace Time.Menu.General;
+namespace Paraclete.Menu.General;
 
 public class ExitApplicationCommand : ICommand
 {

@@ -1,10 +1,10 @@
-namespace Time.Menu.Stopwatch;
+namespace Paraclete.Menu.Stopwatch;
 
 public class StartStopCommand : ICommand
 {
-    private readonly Time.Stopwatch _stopwatch;
+    private readonly Paraclete.Stopwatch _stopwatch;
 
-    public StartStopCommand(Time.Stopwatch stopwatch)
+    public StartStopCommand(Paraclete.Stopwatch stopwatch)
     {
         _stopwatch = stopwatch;
     }

@@ -1,8 +1,8 @@
-using Time.Menu;
-using Time.Menu.Showroom;
-using Time.Painting;
+using Paraclete.Menu;
+using Paraclete.Menu.Showroom;
+using Paraclete.Painting;
 
-namespace Time.Screens;
+namespace Paraclete.Screens;
 
 public class ShowroomScreen : IScreen
 {

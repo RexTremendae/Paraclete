@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Time.Menu;
+namespace Paraclete.Menu;
 
 public abstract class MenuBase
 {

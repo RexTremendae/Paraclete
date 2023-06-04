@@ -1,8 +1,8 @@
-using Time.Menu;
-using Time.Menu.Todo;
-using Time.Painting;
+using Paraclete.Menu;
+using Paraclete.Menu.Todo;
+using Paraclete.Painting;
 
-namespace Time.Screens;
+namespace Paraclete.Screens;
 
 public class TodoScreen : IScreen
 {

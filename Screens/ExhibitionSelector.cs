@@ -1,4 +1,4 @@
-namespace Time.Screens;
+namespace Paraclete.Screens;
 
 public class ExhibitionSelector
 {

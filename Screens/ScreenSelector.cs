@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Time.Screens;
+namespace Paraclete.Screens;
 
 public class ScreenSelector
 {

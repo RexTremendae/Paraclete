@@ -1,4 +1,4 @@
-namespace Time.Menu.Todo;
+namespace Paraclete.Menu.Todo;
 
 public class AddTodoItemCommand : ICommand
 {

@@ -1,4 +1,4 @@
-namespace Time;
+namespace Paraclete;
 
 public static class AnsiSequences
 {

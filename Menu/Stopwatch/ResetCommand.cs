@@ -1,11 +1,11 @@
-namespace Time.Menu.Stopwatch;
+namespace Paraclete.Menu.Stopwatch;
 
 public class ResetCommand : ICommand
 {
-    private readonly Time.Stopwatch _stopwatch;
+    private readonly Paraclete.Stopwatch _stopwatch;
     private readonly FrameInvalidator _frameInvalidator;
 
-    public ResetCommand(Time.Stopwatch stopwatch, FrameInvalidator frameInvalidator)
+    public ResetCommand(Paraclete.Stopwatch stopwatch, FrameInvalidator frameInvalidator)
     {
         _stopwatch = stopwatch;
         _frameInvalidator = frameInvalidator;

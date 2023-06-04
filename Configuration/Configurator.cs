@@ -1,9 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
-using Time.Menu;
-using Time.Painting;
-using Time.Screens;
+using Paraclete.Menu;
+using Paraclete.Painting;
+using Paraclete.Screens;
 
-namespace Time.Configuration;
+namespace Paraclete.Configuration;
 
 public static class Configurator
 {

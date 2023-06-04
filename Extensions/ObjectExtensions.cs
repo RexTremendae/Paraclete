@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace Time.Extensions;
+namespace Paraclete.Extensions;
 
 public static class ObjectExtensions
 {

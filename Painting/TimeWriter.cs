@@ -1,4 +1,4 @@
-namespace Time.Painting;
+namespace Paraclete.Painting;
 
 public class TimeWriter
 {

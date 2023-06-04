@@ -1,8 +1,8 @@
-using Time.Menu;
-using Time.Menu.General;
-using Time.Painting;
+using Paraclete.Menu;
+using Paraclete.Menu.General;
+using Paraclete.Painting;
 
-namespace Time.Screens;
+namespace Paraclete.Screens;
 
 public class HomeScreen : IScreen
 {

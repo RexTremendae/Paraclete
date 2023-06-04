@@ -1,9 +1,9 @@
 using System.Text;
-using Time.Screens;
+using Paraclete.Screens;
 
 using static System.Console;
 
-namespace Time.Painting;
+namespace Paraclete.Painting;
 
 public class Painter
 {

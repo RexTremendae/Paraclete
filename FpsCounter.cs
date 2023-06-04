@@ -1,4 +1,4 @@
-namespace Time;
+namespace Paraclete;
 
 public class FpsCounter
 {

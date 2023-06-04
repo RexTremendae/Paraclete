@@ -1,6 +1,6 @@
-using Time.Screens;
+using Paraclete.Screens;
 
-namespace Time.Menu;
+namespace Paraclete.Menu;
 
 public class GotoMainMenuCommand : ICommand
 {

@@ -1,7 +1,7 @@
-using Time.Painting;
+using Paraclete.Painting;
 using static System.Console;
 
-namespace Time.Screens;
+namespace Paraclete.Screens;
 
 public class ScreenSaver
 {

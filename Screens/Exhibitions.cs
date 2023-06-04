@@ -1,6 +1,6 @@
-using Time.Painting;
+using Paraclete.Painting;
 
-namespace Time.Screens;
+namespace Paraclete.Screens;
 
 public interface IExhibition
 {
