@@ -15,6 +15,7 @@ public class ScreenSelector
         }
 
         _selectedScreen = screen;
+        _selectedScreen.OnAfterSwitch();
         _frameInvalidator.Invalidate();
     }
 

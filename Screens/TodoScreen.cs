@@ -14,19 +14,26 @@ public class ToDoScreen : IScreen
     private readonly TimeWriter _currentTimeWriter;
     private readonly Painter _painter;
     private readonly ToDoListPainter _toDoListPainter;
+    private readonly ToDoList _toDoList;
 
-    public ToDoScreen(Stopwatch stopWatch, _ToDoMenu toDoMenu, FrameInvalidator frameInvalidator, Painter painter, ToDoListPainter toDoListPainter)
+    public ToDoScreen(Stopwatch stopWatch, _ToDoMenu toDoMenu, FrameInvalidator frameInvalidator, Painter painter, ToDoList toDoList, ToDoListPainter toDoListPainter)
     {
         _menu = toDoMenu;
         _frameInvalidator = frameInvalidator;
         _painter = painter;
         _toDoListPainter = toDoListPainter;
+        _toDoList = toDoList;
         _currentTimeWriter = new TimeWriter(new() {
             FontSize = Font.Size.XS,
             Color = ConsoleColor.White,
             ShowSeconds = false,
             ShowMilliseconds = false
         });
+    }
+
+    public void OnAfterSwitch()
+    {
+        _toDoList.ResetSelection();
     }
 
     public void PaintFrame(Painter painter, int windowWidth, int windowHeight)
@@ -51,7 +58,7 @@ public class ToDoScreen : IScreen
 
     public void PaintContent(Painter painter)
     {
-        _toDoListPainter.Paint((2, 1));
+        _toDoListPainter.Paint((2, 1), true);
         _currentTimeWriter.Write(DateTime.Now, (Console.WindowWidth-7, 1), _painter);
     }
 }

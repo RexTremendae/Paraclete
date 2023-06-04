@@ -6,8 +6,11 @@ public class _ToDoMenu : MenuBase
         : base(services, new Type[]
     {
         typeof(AddToDoItemCommand),
-        typeof(SelectPreviousItemCommand),
-        typeof(SelectNextItemCommand)
+        typeof(EditToDoItemCommand),
+        typeof(ToggleItemDoneCommand),
+        typeof(ToggleItemMoveModeCommand),
+        typeof(PreviousItemCommand),
+        typeof(NextItemCommand)
     })
     {}
 }
