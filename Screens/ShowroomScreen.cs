@@ -10,12 +10,12 @@ public class ShowroomScreen : IScreen
     public string Name => "Showroom";
 
     private readonly TimeWriter _currentTimeWriter;
-    private readonly Painter _painter;
+    private readonly ExhibitionSelector _exhibitionSelector;
 
-    public ShowroomScreen(_ShowroomMenu showroomMenu, Painter painter)
+    public ShowroomScreen(_ShowroomMenu showroomMenu, ExhibitionSelector exhibitionSelector)
     {
+        _exhibitionSelector = exhibitionSelector;
         _menu = showroomMenu;
-        _painter = painter;
         _currentTimeWriter = new TimeWriter(new() {
             FontSize = Font.Size.XS,
             Color = ConsoleColor.White,
@@ -46,29 +46,15 @@ public class ShowroomScreen : IScreen
 
     public void PaintContent(Painter painter)
     {
-        // Font exhibition
-        var text = "0123456789:.";
+        var exhibition = _exhibitionSelector.SelectedExhibition;
+        exhibition.Paint(painter, (2, 5));
+        var exhibitionName =
+            string.Concat(exhibition.GetType().Name.RemoveEnding("Exhibition"), " exhibition") +
+            $" ({_exhibitionSelector.SelectedExhibitionIndex + 1}/{_exhibitionSelector.ExhibitionCount})";
 
-        var x = 2;
-        var y = 2;
+        painter.Paint(exhibitionName, (2, 2), ConsoleColor.Blue);
+        painter.Paint("".PadLeft(exhibitionName.Length, '-'), (2, 3), ConsoleColor.Blue);
 
-        var colors = new Dictionary<Font.Size, ConsoleColor>{
-            { Font.Size.XS, ConsoleColor.DarkBlue },
-            { Font.Size.S,  ConsoleColor.Blue },
-            { Font.Size.M,  ConsoleColor.DarkCyan },
-            { Font.Size.L,  ConsoleColor.Cyan }
-        };
-
-        foreach (var size in Enum.GetValues<Font.Size>())
-        {
-            if (size == Font.Size.Undefined) continue;
-            var fontWriter = FontWriter.Create(size);
-            _painter.Paint($"{size.ToString()}:".PadRight(4), (x, y));
-            fontWriter.Write(text, colors[size], (x + 4, y), _painter);
-            y += fontWriter.Font.CharacterHeight + 1;
-        }
-
-        // Current time
-        _currentTimeWriter.Write(DateTime.Now, (Console.WindowWidth-7, 1), _painter);
+        _currentTimeWriter.Write(DateTime.Now, (Console.WindowWidth-7, 1), painter);
     }
 }

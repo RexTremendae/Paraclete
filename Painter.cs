@@ -100,8 +100,8 @@ public class Painter
 
         if (!string.IsNullOrEmpty(screen.Name))
         {
-            var labelFormat = AnsiSequences.BackgroundColor(100,150,200);
-            row.parts.AddRange(new[] { $"{labelFormat} {screen.Name} {AnsiSequences.Reset}", " |    " });
+            var label = $"{AnsiSequences.BackgroundColors.Blue} {screen.Name} {AnsiSequences.Reset}";
+            row.parts.AddRange(new[] { label, " |    " });
             row.colors.AddRange(new[] { ConsoleColor.Black, ConsoleColor.Gray });
         }
 
@@ -153,7 +153,7 @@ public class Painter
         parts.Add("[");
         colors.Add(bracketColor);
 
-        parts.Add(key.ToString());
+        parts.Add(key.ToDisplayString());
         colors.Add(shortcutColor);
 
         parts.Add(explicitBrackets ? "]" : "] ");

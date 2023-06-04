@@ -6,7 +6,9 @@ public class _ShowroomMenu : MenuBase
         : base(services, new Type[]
     {
         typeof(GotoMainMenuCommand),
-        typeof(TriggerScreenSaverCommand)
+        typeof(TriggerScreenSaverCommand),
+        typeof(NextExhibitionCommand),
+        typeof(PreviousExhibitionCommand)
     })
     {}
 }

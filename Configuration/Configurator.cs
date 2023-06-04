@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Time.Menu;
 using Time.Screens;
+using Time.Screens.Showroom;
 
 namespace Time.Configuration;
 
@@ -11,6 +12,7 @@ public static class Configurator
         var services = new ServiceCollection();
 
         services
+            .AddScoped<ExhibitionSelector>()
             .AddScoped<FpsCounter>()
             .AddScoped<FrameInvalidator>()
             .AddScoped<MainLoop>()
@@ -21,6 +23,7 @@ public static class Configurator
             .AddScoped<Painter>()
 
             .AddImplementationsOf<ICommand>()
+            .AddImplementationsOf<IExhibition>()
             .AddImplementationsOf<IScreen>()
             .AddImplementationsOf<MenuBase>()
         ;
@@ -30,9 +33,7 @@ public static class Configurator
 
     private static IServiceCollection AddImplementationsOf<T>(this IServiceCollection services)
     {
-        var implementationTypes = typeof(ICommand).Assembly.GetTypes()
-            .Where(_ => _.IsAssignableTo(typeof(T)) && !_.IsAbstract);
-        foreach (var menuItemType in implementationTypes)
+        foreach (var menuItemType in TypeUtility.EnumerateImplementingTypesOf<T>())
         {
             services.AddScoped(menuItemType);
         }
