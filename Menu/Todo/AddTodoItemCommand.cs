@@ -1,6 +1,6 @@
-namespace Paraclete.Menu.Todo;
+namespace Paraclete.Menu.ToDo;
 
-public class AddTodoItemCommand : ICommand
+public class AddToDoItemCommand : ICommand
 {
     public ConsoleKey Shortcut => ConsoleKey.A;
 

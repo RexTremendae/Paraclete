@@ -1,11 +1,11 @@
-namespace Paraclete.Menu.Todo;
+namespace Paraclete.Menu.ToDo;
 
-public class _TodoMenu : MenuBase
+public class _ToDoMenu : MenuBase
 {
-    public _TodoMenu(IServiceProvider services)
+    public _ToDoMenu(IServiceProvider services)
         : base(services, new Type[]
     {
-        typeof(AddTodoItemCommand)
+        typeof(AddToDoItemCommand)
     })
     {}
 }

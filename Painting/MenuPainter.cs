@@ -24,10 +24,14 @@ public class MenuPainter
         var first = true;
         foreach (var screen in TypeUtility.EnumerateImplementatingInstancesOf<IScreen>(_services))
         {
-            var format = (selectedScreen.Name == screen.Name)
+            var isSelected = selectedScreen.Name == screen.Name;
+            var format = isSelected
                 ? AnsiSequences.BackgroundColors.Blue
                 : AnsiSequences.BackgroundColors.DarkBlue;
-            var label = $"{(first ? "" : "  ")}{format} {screen.Name} {AnsiSequences.Reset}  ";
+            var startingBracket = isSelected ? "[" : " ";
+            var endingBracket = isSelected ? "]" : " ";
+            var label = $"{format}{startingBracket} {screen.Name} {endingBracket}{AnsiSequences.Reset}  ";
+            if (!first) { label = "  " + label; }
             rows[0].parts.Add(label);
             rows[0].colors.Add(ConsoleColor.Black);
             first = false;
@@ -73,23 +77,23 @@ public class MenuPainter
 
         var explicitBrackets = startBracketIndex >= 0 && endBracketIndex >= 0;
 
+        parts.Add("[");
+        colors.Add(bracketColor);
+
         if (explicitBrackets)
         {
             parts.Add(description[..startBracketIndex]);
             colors.Add(descriptionColor);
         }
 
-        parts.Add("[");
-        colors.Add(bracketColor);
-
-        parts.Add(key.ToDisplayString());
+        parts.Add(key.ToDisplayString() + (explicitBrackets ? "" : " "));
         colors.Add(shortcutColor);
-
-        parts.Add(explicitBrackets ? "]" : "] ");
-        colors.Add(bracketColor);
 
         parts.Add(description[(endBracketIndex+1)..]);
         colors.Add(descriptionColor);
+
+        parts.Add("]");
+        colors.Add(bracketColor);
 
         return (parts, colors);
     }

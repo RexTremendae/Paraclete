@@ -1,22 +1,22 @@
 using Paraclete.Menu;
-using Paraclete.Menu.Todo;
+using Paraclete.Menu.ToDo;
 using Paraclete.Painting;
 
 namespace Paraclete.Screens;
 
-public class TodoScreen : IScreen
+public class ToDoScreen : IScreen
 {
     private MenuBase _menu;
     public MenuBase Menu => _menu;
-    public string Name => "TODO";
+    public string Name => "ToDo";
 
     private readonly FrameInvalidator _frameInvalidator;
     private readonly TimeWriter _currentTimeWriter;
     private readonly Painter _painter;
 
-    public TodoScreen(Stopwatch stopWatch, _TodoMenu todoMenu, FrameInvalidator frameInvalidator, Painter painter)
+    public ToDoScreen(Stopwatch stopWatch, _ToDoMenu toDoMenu, FrameInvalidator frameInvalidator, Painter painter)
     {
-        _menu = todoMenu;
+        _menu = toDoMenu;
         _frameInvalidator = frameInvalidator;
         _painter = painter;
         _currentTimeWriter = new TimeWriter(new() {
@@ -49,18 +49,16 @@ public class TodoScreen : IScreen
 
     public void PaintContent(Painter painter)
     {
-        // TODOs
         painter.PaintRows(
             position: (2, 1),
             rows: new AnsiString[]
             {
-                $"{AnsiSequences.ForegroundColors.White}TODO list:{AnsiSequences.Reset}",
-                $"- {AnsiSequences.ForegroundColors.DarkGray}{AnsiSequences.StrikeThrough}Add TODO section{AnsiSequences.Reset}",
-                $"- {AnsiSequences.ForegroundColors.Yellow}Enable add/edit/remove TODO items{AnsiSequences.Reset}",
-                $"- {AnsiSequences.ForegroundColors.Yellow}Persist TODO items{AnsiSequences.Reset}"
+                $"{AnsiSequences.ForegroundColors.White}ToDo list:{AnsiSequences.Reset}",
+                $"- {AnsiSequences.ForegroundColors.DarkGray}{AnsiSequences.StrikeThrough}Add ToDo section{AnsiSequences.Reset}",
+                $"- {AnsiSequences.ForegroundColors.Yellow}Enable add/edit/remove ToDo items{AnsiSequences.Reset}",
+                $"- {AnsiSequences.ForegroundColors.Yellow}Persist ToDo items{AnsiSequences.Reset}"
             });
 
-        // Current time
         _currentTimeWriter.Write(DateTime.Now, (Console.WindowWidth-7, 1), _painter);
     }
 }

@@ -128,15 +128,15 @@ public class HomeScreen : IScreen
             _markTimeWriter.Write(mark, (mx, my++), painter);
         }
 
-        // TODOs
+        // ToDos
         painter.PaintRows(
             position: (_1stColumnWidth+4, 2),
             rows: new AnsiString[]
             {
-                $"{AnsiSequences.ForegroundColors.White}TODO:{AnsiSequences.Reset}",
-                $"- {AnsiSequences.ForegroundColors.DarkGray}{AnsiSequences.StrikeThrough}Add TODO section{AnsiSequences.Reset}",
-                $"- {AnsiSequences.ForegroundColors.Yellow}Enable add/edit/remove TODO items{AnsiSequences.Reset}",
-                $"- {AnsiSequences.ForegroundColors.Yellow}Persist TODO items{AnsiSequences.Reset}"
+                $"{AnsiSequences.ForegroundColors.White}ToDo:{AnsiSequences.Reset}",
+                $"- {AnsiSequences.ForegroundColors.DarkGray}{AnsiSequences.StrikeThrough}Add ToDo section{AnsiSequences.Reset}",
+                $"- {AnsiSequences.ForegroundColors.Yellow}Enable add/edit/remove ToDo items{AnsiSequences.Reset}",
+                $"- {AnsiSequences.ForegroundColors.Yellow}Persist ToDo items{AnsiSequences.Reset}"
             });
     }
 }
