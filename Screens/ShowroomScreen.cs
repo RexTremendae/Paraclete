@@ -26,7 +26,7 @@ public class ShowroomScreen : IScreen
 
     public void PaintFrame(Painter painter, int windowWidth, int windowHeight)
     {
-        var frameRows = new string[windowHeight];
+        var frameRows = new AnsiString[windowHeight];
         frameRows[0] = $"╔{"".PadLeft(windowWidth-2, '═')}╗";
         for (int y = 1; y < windowHeight-1; y++)
         {
@@ -41,7 +41,7 @@ public class ShowroomScreen : IScreen
         }
         frameRows[windowHeight-1] = $"╚{"".PadLeft(windowWidth-2, '═')}╝";
 
-        painter.Paint(frameRows);
+        painter.PaintRows(frameRows);
     }
 
     public void PaintContent(Painter painter)

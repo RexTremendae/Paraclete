@@ -36,7 +36,7 @@ public class FontWriter
         {
             var textPartRows = new List<string>(
                 Enumerable.Range(0, Font.CharacterHeight)
-                    .Select(_ => ""));
+                    .Select(_ => string.Empty));
 
             var text = textParts[idx];
             foreach (var c in text)
@@ -56,8 +56,8 @@ public class FontWriter
         }
 
         var data = rows
-            .Select(_ => (_.parts.ToArray(), _.colors.ToArray()))
+            .Select(_ => ((IEnumerable<string>)_.parts, (IEnumerable<ConsoleColor>)_.colors))
             .ToArray();
-        painter.Paint(data, cursorPos);
+        painter.PaintRows(data, cursorPos);
     }
 }

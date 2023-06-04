@@ -37,36 +37,36 @@ public class Painter
         PaintMenu();
     }
 
-    public void Paint((string[] parts, ConsoleColor[] colors) data, (int x, int y)? position = null)
-    {
-        Paint(new[] { data }, position);
-    }
+    public void Paint(IEnumerable<string> parts, IEnumerable<ConsoleColor> colors, (int x, int y)? position = null)
+    => PaintRows(new[] { (parts, colors) }, position);
 
-    public void Paint((string[] parts, ConsoleColor[] colors)[] rows, (int x, int y)? position = null)
-    {
-        var formattedRows = new List<string>();
-        foreach (var r in rows)
-        {
-            var fr = new StringBuilder();
-            for (int idx = 0; idx < r.parts.Length; idx++)
-            {
-                fr.Append(r.colors[idx].ToAnsiColorCode());
-                fr.Append(r.parts[idx]);
-            }
-            fr.Append(AnsiSequences.Reset);
-            formattedRows.Add(fr.ToString());
-        }
-
-        Paint(formattedRows.ToArray(), position);
-    }
-
-    public void Paint(string text, (int x, int y)? position = null, ConsoleColor? color = null)
+    public void Paint(AnsiString text, (int x, int y)? position = null, ConsoleColor? color = null)
     {
         var formattedText = (color.HasValue ? color.Value.ToAnsiColorCode() : "") + text;
-        Paint(new[] { formattedText }, position);
+        PaintRows(new[] { formattedText }, position);
     }
 
-    public void Paint(string[] rows, (int x, int y)? position = null)
+    public void PaintRows((IEnumerable<string> parts, IEnumerable<ConsoleColor> colors)[] rows, (int x, int y)? position = null)
+    {
+        var formattedRows = new List<AnsiString>();
+        foreach (var r in rows)
+        {
+            var parts = r.parts.ToArray();
+            var colors = r.colors.ToArray();
+            var builder = new StringBuilder();
+            for (int idx = 0; idx < parts.Length; idx++)
+            {
+                builder.Append(colors[idx].ToAnsiColorCode());
+                builder.Append(parts[idx]);
+            }
+            builder.Append(AnsiSequences.Reset);
+            formattedRows.Add(builder.ToString());
+        }
+
+        PaintRows(formattedRows.ToArray(), position);
+    }
+
+    public void PaintRows(AnsiString[] rows, (int x, int y)? position = null)
     {
         var pos = position ?? (0, 0);
 
@@ -123,8 +123,7 @@ public class Painter
             row.colors.AddRange(colors);
         }
 
-        var data = new[] { row }.Select(_ => (_.parts.ToArray(), _.colors.ToArray())).ToArray();
-        Paint(data, (2, _windowHeight-2));
+        Paint(row.parts, row.colors, (2, _windowHeight-2));
     }
 
     private (IEnumerable<string> parts, IEnumerable<ConsoleColor> colors) GetMenuParts(ConsoleKey key, string description)

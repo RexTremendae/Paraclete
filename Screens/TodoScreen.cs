@@ -28,7 +28,7 @@ public class TodoScreen : IScreen
 
     public void PaintFrame(Painter painter, int windowWidth, int windowHeight)
     {
-        var frameRows = new string[windowHeight];
+        var frameRows = new AnsiString[windowHeight];
         frameRows[0] = $"╔{"".PadLeft(windowWidth-2, '═')}╗";
         for (int y = 1; y < windowHeight-1; y++)
         {
@@ -43,15 +43,15 @@ public class TodoScreen : IScreen
         }
         frameRows[windowHeight-1] = $"╚{"".PadLeft(windowWidth-2, '═')}╝";
 
-        painter.Paint(frameRows);
+        painter.PaintRows(frameRows);
     }
 
     public void PaintContent(Painter painter)
     {
         // TODOs
-        painter.Paint(
+        painter.PaintRows(
             position: (2, 1),
-            rows: new[]
+            rows: new AnsiString[]
             {
                 $"{AnsiSequences.ForegroundColors.White}TODO list:{AnsiSequences.Reset}",
                 $"- {AnsiSequences.ForegroundColors.DarkGray}{AnsiSequences.StrikeThrough}Add TODO section{AnsiSequences.Reset}",

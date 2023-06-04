@@ -2,7 +2,7 @@ namespace Time.Extensions;
 
 public static class ConsoleColorExtensions
 {
-    public static string ToAnsiColorCode(this ConsoleColor color) => color switch
+    public static AnsiString ToAnsiColorCode(this ConsoleColor color) => color switch
     {
         ConsoleColor.Black       => AnsiSequences.ForegroundColors.Black,
         ConsoleColor.DarkRed     => AnsiSequences.ForegroundColors.DarkRed,

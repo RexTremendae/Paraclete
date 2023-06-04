@@ -111,8 +111,8 @@ public class TimeWriter
         }
 
         var data = rows
-            .Select(_ => (_.parts.ToArray(), _.colors.ToArray()))
+            .Select(_ => ((IEnumerable<string>)_.parts, (IEnumerable<ConsoleColor>)_.colors))
             .ToArray();
-        painter.Paint(data, cursorPos);
+        painter.PaintRows(data, cursorPos);
     }
 }

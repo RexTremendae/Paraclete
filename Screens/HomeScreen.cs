@@ -78,7 +78,7 @@ public class HomeScreen : IScreen
         if (_2ndColumnWidth < 0)
             throw new ArgumentOutOfRangeException(nameof(_2ndColumnWidth));
 
-        var frameRows = new string[windowHeight];
+        var frameRows = new AnsiString[windowHeight];
         frameRows[0] = $"╔{"".PadLeft(_1stColumnWidth, '═')}╤{"".PadLeft(_2ndColumnWidth, '═')}╗";
         for (int y = 1; y < windowHeight-1; y++)
         {
@@ -101,7 +101,7 @@ public class HomeScreen : IScreen
         }
         frameRows[windowHeight-1] = $"╚{"".PadLeft(windowWidth-2, '═')}╝";
 
-        painter.Paint(frameRows);
+        painter.PaintRows(frameRows);
     }
 
     public void PaintContent(Painter painter)
@@ -127,9 +127,9 @@ public class HomeScreen : IScreen
         }
 
         // TODOs
-        painter.Paint(
+        painter.PaintRows(
             position: (_1stColumnWidth+4, 2),
-            rows: new[]
+            rows: new AnsiString[]
             {
                 $"{AnsiSequences.ForegroundColors.White}TODO:{AnsiSequences.Reset}",
                 $"- {AnsiSequences.ForegroundColors.DarkGray}{AnsiSequences.StrikeThrough}Add TODO section{AnsiSequences.Reset}",
