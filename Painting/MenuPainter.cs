@@ -63,7 +63,7 @@ public class MenuPainter
     {
         var bracketColor = ConsoleColor.White;
         var shortcutColor = ConsoleColor.Green;
-        var descriptionColor = ConsoleColor.DarkGray;
+        var descriptionColor = ConsoleColor.Gray;
 
         var parts = new List<string>();
         var colors = new List<ConsoleColor>();

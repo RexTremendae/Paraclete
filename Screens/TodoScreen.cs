@@ -13,12 +13,14 @@ public class ToDoScreen : IScreen
     private readonly FrameInvalidator _frameInvalidator;
     private readonly TimeWriter _currentTimeWriter;
     private readonly Painter _painter;
+    private readonly ToDoListPainter _toDoListPainter;
 
-    public ToDoScreen(Stopwatch stopWatch, _ToDoMenu toDoMenu, FrameInvalidator frameInvalidator, Painter painter)
+    public ToDoScreen(Stopwatch stopWatch, _ToDoMenu toDoMenu, FrameInvalidator frameInvalidator, Painter painter, ToDoListPainter toDoListPainter)
     {
         _menu = toDoMenu;
         _frameInvalidator = frameInvalidator;
         _painter = painter;
+        _toDoListPainter = toDoListPainter;
         _currentTimeWriter = new TimeWriter(new() {
             FontSize = Font.Size.XS,
             Color = ConsoleColor.White,
@@ -49,16 +51,7 @@ public class ToDoScreen : IScreen
 
     public void PaintContent(Painter painter)
     {
-        painter.PaintRows(
-            position: (2, 1),
-            rows: new AnsiString[]
-            {
-                $"{AnsiSequences.ForegroundColors.White}ToDo list:{AnsiSequences.Reset}",
-                $"- {AnsiSequences.ForegroundColors.DarkGray}{AnsiSequences.StrikeThrough}Add ToDo section{AnsiSequences.Reset}",
-                $"- {AnsiSequences.ForegroundColors.Yellow}Enable add/edit/remove ToDo items{AnsiSequences.Reset}",
-                $"- {AnsiSequences.ForegroundColors.Yellow}Persist ToDo items{AnsiSequences.Reset}"
-            });
-
+        _toDoListPainter.Paint((2, 1));
         _currentTimeWriter.Write(DateTime.Now, (Console.WindowWidth-7, 1), _painter);
     }
 }

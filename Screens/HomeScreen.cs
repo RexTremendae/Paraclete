@@ -12,6 +12,7 @@ public class HomeScreen : IScreen
 
     private Stopwatch _stopWatch;
     private FrameInvalidator _frameInvalidator;
+    private ToDoListPainter _toDoListPainter;
 
     private (int x, int y) _currentTimePosition;
     private (int x, int y) _stopWatchPosition;
@@ -23,12 +24,13 @@ public class HomeScreen : IScreen
 
     private int _1stColumnWidth = 60;
 
-    public HomeScreen(Stopwatch stopWatch, _MainMenu mainMenu, FrameInvalidator frameInvalidator)
+    public HomeScreen(Stopwatch stopWatch, _MainMenu mainMenu, FrameInvalidator frameInvalidator, ToDoListPainter toDoListPainter)
     {
         _menu = mainMenu;
 
         _stopWatch = stopWatch;
         _frameInvalidator = frameInvalidator;
+        _toDoListPainter = toDoListPainter;
 
         _currentTimePosition = (x: 6, y:  2);
         _stopWatchPosition   = (x: 3, y: 12);
@@ -129,14 +131,6 @@ public class HomeScreen : IScreen
         }
 
         // ToDos
-        painter.PaintRows(
-            position: (_1stColumnWidth+4, 2),
-            rows: new AnsiString[]
-            {
-                $"{AnsiSequences.ForegroundColors.White}ToDo:{AnsiSequences.Reset}",
-                $"- {AnsiSequences.ForegroundColors.DarkGray}{AnsiSequences.StrikeThrough}Add ToDo section{AnsiSequences.Reset}",
-                $"- {AnsiSequences.ForegroundColors.Yellow}Enable add/edit/remove ToDo items{AnsiSequences.Reset}",
-                $"- {AnsiSequences.ForegroundColors.Yellow}Persist ToDo items{AnsiSequences.Reset}"
-            });
+        _toDoListPainter.Paint((_1stColumnWidth+4, 2));
     }
 }
