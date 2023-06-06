@@ -3,7 +3,7 @@ namespace Paraclete.Screens;
 public class ExhibitionSelector
 {
     private readonly List<IExhibition> Exhibitions;
-    private readonly FrameInvalidator _frameInvalidator;
+    private readonly ScreenInvalidator _screenInvalidator;
 
     public int ExhibitionCount => Exhibitions.Count;
     public int SelectedExhibitionIndex { get; private set; }
@@ -13,19 +13,19 @@ public class ExhibitionSelector
     {
         SelectedExhibitionIndex++;
         if (SelectedExhibitionIndex >= Exhibitions.Count) SelectedExhibitionIndex = 0;
-        _frameInvalidator.Invalidate();
+        _screenInvalidator.Invalidate();
     }
 
     public void SelectPrevious()
     {
         SelectedExhibitionIndex--;
         if (SelectedExhibitionIndex < 0) SelectedExhibitionIndex = Exhibitions.Count-1;
-        _frameInvalidator.Invalidate();
+        _screenInvalidator.Invalidate();
     }
 
-    public ExhibitionSelector(IServiceProvider services, FrameInvalidator frameInvalidator)
+    public ExhibitionSelector(IServiceProvider services, ScreenInvalidator screenInvalidator)
     {
         Exhibitions = new(TypeUtility.EnumerateImplementatingInstancesOf<IExhibition>(services));
-        _frameInvalidator = frameInvalidator;
+        _screenInvalidator = screenInvalidator;
     }
 }

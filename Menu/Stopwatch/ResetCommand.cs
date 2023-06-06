@@ -3,12 +3,12 @@ namespace Paraclete.Menu.Stopwatch;
 public class ResetCommand : ICommand
 {
     private readonly Paraclete.Stopwatch _stopwatch;
-    private readonly FrameInvalidator _frameInvalidator;
+    private readonly ScreenInvalidator _screenInvalidator;
 
-    public ResetCommand(Paraclete.Stopwatch stopwatch, FrameInvalidator frameInvalidator)
+    public ResetCommand(Paraclete.Stopwatch stopwatch, ScreenInvalidator screenInvalidator)
     {
         _stopwatch = stopwatch;
-        _frameInvalidator = frameInvalidator;
+        _screenInvalidator = screenInvalidator;
     }
 
     public ConsoleKey Shortcut => ConsoleKey.R;
@@ -18,7 +18,7 @@ public class ResetCommand : ICommand
     public Task Execute()
     {
         _stopwatch.Reset();
-        _frameInvalidator.Invalidate();
+        _screenInvalidator.Invalidate();
 
         return Task.CompletedTask;
     }

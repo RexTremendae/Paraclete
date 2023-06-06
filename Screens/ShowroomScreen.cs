@@ -1,3 +1,4 @@
+using Paraclete.Layouts;
 using Paraclete.Menu;
 using Paraclete.Menu.Showroom;
 using Paraclete.Painting;
@@ -6,43 +7,25 @@ namespace Paraclete.Screens;
 
 public class ShowroomScreen : IScreen
 {
-    private MenuBase _menu;
-    public MenuBase Menu => _menu;
     public string Name => "Showroom";
+
+    public MenuBase Menu { get; private set; }
+    public ILayout Layout { get; private set; }
 
     private readonly TimeWriter _currentTimeWriter;
     private readonly ExhibitionSelector _exhibitionSelector;
 
-    public ShowroomScreen(_ShowroomMenu showroomMenu, ExhibitionSelector exhibitionSelector)
+    public ShowroomScreen(_ShowroomMenu showroomMenu, ExhibitionSelector exhibitionSelector, OneFrameLayout layout)
     {
+        Menu = showroomMenu;
+        Layout = layout;
         _exhibitionSelector = exhibitionSelector;
-        _menu = showroomMenu;
         _currentTimeWriter = new TimeWriter(new() {
             FontSize = Font.Size.XS,
             Color = ConsoleColor.White,
             ShowSeconds = false,
             ShowMilliseconds = false
         });
-    }
-
-    public void PaintFrame(Painter painter, int windowWidth, int windowHeight)
-    {
-        var frameRows = new AnsiString[windowHeight];
-        frameRows[0] = $"╔{"".PadLeft(windowWidth-2, '═')}╗";
-        for (int y = 1; y < windowHeight-1; y++)
-        {
-            if (y == windowHeight-4)
-            {
-                frameRows[y] = $"╟{"".PadLeft(windowWidth-2, '─')}╢";
-            }
-            else
-            {
-                frameRows[y] = $"║{"".PadLeft(windowWidth-2)}║";
-            }
-        }
-        frameRows[windowHeight-1] = $"╚{"".PadLeft(windowWidth-2, '═')}╝";
-
-        painter.PaintRows(frameRows);
     }
 
     public void PaintContent(Painter painter)

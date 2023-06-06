@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Paraclete.Layouts;
 using Paraclete.Menu;
 using Paraclete.Painting;
 using Paraclete.Screens;
@@ -14,7 +15,7 @@ public static class Configurator
         services
             .AddScoped<ExhibitionSelector>()
             .AddScoped<FpsCounter>()
-            .AddScoped<FrameInvalidator>()
+            .AddScoped<ScreenInvalidator>()
             .AddScoped<MainLoop>()
             .AddScoped<MenuPainter>()
             .AddScoped<ScreenSaver>()
@@ -27,6 +28,7 @@ public static class Configurator
 
             .AddImplementationsOf<ICommand>()
             .AddImplementationsOf<IExhibition>()
+            .AddImplementationsOf<ILayout>()
             .AddImplementationsOf<IScreen>()
             .AddImplementationsOf<MenuBase>()
         ;

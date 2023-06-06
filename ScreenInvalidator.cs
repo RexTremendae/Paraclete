@@ -1,6 +1,6 @@
 namespace Paraclete;
 
-public class FrameInvalidator
+public class ScreenInvalidator
 {
     public bool IsValid { get; private set; } = true;
 

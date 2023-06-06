@@ -1,3 +1,4 @@
+using Paraclete.Layouts;
 using Paraclete.Menu;
 using Paraclete.Painting;
 
@@ -6,9 +7,9 @@ namespace Paraclete.Screens;
 public interface IScreen
 {
     MenuBase Menu { get; }
+    ILayout Layout { get; }
     string Name => "";
 
     public virtual void OnAfterSwitch() { }
-    void PaintContent(Painter visualizer);
-    void PaintFrame(Painter visualizer, int windowWidth, int windowHeight);
+    void PaintContent(Painter painter);
 }

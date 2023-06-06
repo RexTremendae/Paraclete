@@ -16,7 +16,7 @@ public class ScreenSelector
 
         _selectedScreen = screen;
         _selectedScreen.OnAfterSwitch();
-        _frameInvalidator.Invalidate();
+        _screenInvalidator.Invalidate();
     }
 
     public void SwitchTo<T>()
@@ -27,11 +27,11 @@ public class ScreenSelector
     }
 
     private readonly IServiceProvider _serviceProvider;
-    private readonly FrameInvalidator _frameInvalidator;
+    private readonly ScreenInvalidator _screenInvalidator;
 
-    public ScreenSelector(IServiceProvider serviceProvider, FrameInvalidator frameInvalidator)
+    public ScreenSelector(IServiceProvider serviceProvider, ScreenInvalidator screenInvalidator)
     {
         _serviceProvider = serviceProvider;
-        _frameInvalidator = frameInvalidator;
+        _screenInvalidator = screenInvalidator;
     }
 }

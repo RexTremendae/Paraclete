@@ -7,31 +7,31 @@ namespace Paraclete.Painting;
 
 public class Painter
 {
-    private readonly FrameInvalidator _frameInvalidator;
+    private readonly ScreenInvalidator _screenInvalidator;
     private readonly ScreenSelector _screenSelector;
     private readonly MenuPainter _menuPainter;
 
     private int _windowHeight;
     private int _windowWidth;
 
-    public Painter(ScreenSelector screenSelector, FrameInvalidator frameInvalidator, MenuPainter menuPainter)
+    public Painter(ScreenSelector screenSelector, ScreenInvalidator screenInvalidator, MenuPainter menuPainter)
     {
-        _frameInvalidator = frameInvalidator;
+        _screenInvalidator = screenInvalidator;
         _screenSelector = screenSelector;
         _menuPainter = menuPainter;
     }
 
     public void PaintScreen()
     {
-        if (!_frameInvalidator.IsValid || _windowHeight != WindowHeight || _windowWidth != WindowWidth)
+        if (!_screenInvalidator.IsValid || _windowHeight != WindowHeight || _windowWidth != WindowWidth)
         {
             Write(AnsiSequences.ClearScreen);
             CursorVisible = false;
 
             _windowHeight = WindowHeight;
             _windowWidth = WindowWidth;
-            _screenSelector.SelectedScreen.PaintFrame(this, _windowWidth, _windowHeight);
-            _frameInvalidator.Reset();
+            _screenSelector.SelectedScreen.Layout.Paint(this, _windowWidth, _windowHeight);
+            _screenInvalidator.Reset();
         }
 
         _screenSelector.SelectedScreen.PaintContent(this);

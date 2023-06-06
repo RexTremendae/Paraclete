@@ -1,3 +1,4 @@
+using Paraclete.Layouts;
 using Paraclete.Menu;
 using Paraclete.Menu.General;
 using Paraclete.Painting;
@@ -6,12 +7,16 @@ namespace Paraclete.Screens;
 
 public class HomeScreen : IScreen
 {
-    private MenuBase _menu;
-    public MenuBase Menu => _menu;
     public string Name => "Home";
 
+    public MenuBase Menu { get; private set; }
+
+    private const int _1stColumnWidth = 60;
+    private ColumnBasedLayout _layout = new(firstColumnWidth: _1stColumnWidth);
+    public ILayout Layout => _layout;
+
     private Stopwatch _stopWatch;
-    private FrameInvalidator _frameInvalidator;
+    private ScreenInvalidator _screenInvalidator;
     private ToDoListPainter _toDoListPainter;
 
     private (int x, int y) _currentTimePosition;
@@ -22,14 +27,12 @@ public class HomeScreen : IScreen
     private TimeWriter _stopWatchWriter;
     private TimeWriter _markTimeWriter;
 
-    private int _1stColumnWidth = 60;
-
-    public HomeScreen(Stopwatch stopWatch, _MainMenu mainMenu, FrameInvalidator frameInvalidator, ToDoListPainter toDoListPainter)
+    public HomeScreen(Stopwatch stopWatch, _MainMenu mainMenu, ScreenInvalidator screenInvalidator, ToDoListPainter toDoListPainter)
     {
-        _menu = mainMenu;
+        Menu = mainMenu;
 
         _stopWatch = stopWatch;
-        _frameInvalidator = frameInvalidator;
+        _screenInvalidator = screenInvalidator;
         _toDoListPainter = toDoListPainter;
 
         _currentTimePosition = (x: 6, y:  2);
@@ -70,42 +73,6 @@ public class HomeScreen : IScreen
         _currentTimeWriter = new TimeWriter(currentTimeSettings);
         _stopWatchWriter = new TimeWriter(stopWatchSettings);
         _markTimeWriter = new TimeWriter(markTimeSettings);
-    }
-
-    public void PaintFrame(Painter painter, int windowWidth, int windowHeight)
-    {
-        var _2ndColumnWidth = windowWidth-3-_1stColumnWidth;
-
-        if (_1stColumnWidth < 0)
-            throw new ArgumentOutOfRangeException(nameof(_1stColumnWidth));
-
-        if (_2ndColumnWidth < 0)
-            throw new ArgumentOutOfRangeException(nameof(_2ndColumnWidth));
-
-        var frameRows = new AnsiString[windowHeight];
-        frameRows[0] = $"╔{"".PadLeft(_1stColumnWidth, '═')}╤{"".PadLeft(_2ndColumnWidth, '═')}╗";
-        for (int y = 1; y < windowHeight-1; y++)
-        {
-            if (y == 10)
-            {
-                frameRows[y] = $"╟{"".PadLeft(_1stColumnWidth, '─')}┤{"".PadLeft(_2ndColumnWidth)}║";
-            }
-            else if (y == windowHeight-4)
-            {
-                frameRows[y] = $"╟{"".PadLeft(_1stColumnWidth, '─')}┴{"".PadLeft(_2ndColumnWidth, '─')}╢";
-            }
-            else if (y == windowHeight-2 || y == windowHeight-3)
-            {
-                frameRows[y] = $"║{"".PadLeft(windowWidth-2)}║";
-            }
-            else
-            {
-                frameRows[y] = $"║{"".PadLeft(_1stColumnWidth)}│{"".PadLeft(_2ndColumnWidth)}║";
-            }
-        }
-        frameRows[windowHeight-1] = $"╚{"".PadLeft(windowWidth-2, '═')}╝";
-
-        painter.PaintRows(frameRows);
     }
 
     public void PaintContent(Painter painter)

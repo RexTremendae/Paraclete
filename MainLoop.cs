@@ -1,3 +1,4 @@
+using Paraclete.Layouts;
 using Paraclete.Menu;
 using Paraclete.Painting;
 using Paraclete.Screens;
@@ -10,18 +11,18 @@ public class MainLoop
     private readonly Painter _painter;
     private readonly ScreenSelector _screenSelector;
     private readonly ScreenSaver _screenSaver;
-    private readonly FrameInvalidator _frameInvalidator;
+    private readonly ScreenInvalidator _screenInvalidator;
     private readonly FpsCounter _fpsCounter;
     private readonly IServiceProvider _services;
 
     private readonly int _repaintLoopInterval;
 
-    public MainLoop(Painter painter, ScreenSelector screenSelector, ScreenSaver screenSaver, FrameInvalidator frameInvalidator, FpsCounter fpsCounter, Settings settings, IServiceProvider services)
+    public MainLoop(Painter painter, ScreenSelector screenSelector, ScreenSaver screenSaver, ScreenInvalidator screenInvalidator, FpsCounter fpsCounter, Settings settings, IServiceProvider services)
     {
         _painter = painter;
         _screenSaver = screenSaver;
         _screenSelector = screenSelector;
-        _frameInvalidator = frameInvalidator;
+        _screenInvalidator = screenInvalidator;
         _fpsCounter = fpsCounter;
         _repaintLoopInterval = settings.RepaintLoopInterval;
         _services = services;
@@ -43,7 +44,7 @@ public class MainLoop
                 if (screenSaverIsActive)
                 {
                     screenSaverIsActive = false;
-                    _frameInvalidator.Invalidate();
+                    _screenInvalidator.Invalidate();
                 }
                 _painter.PaintScreen();
             }
@@ -127,12 +128,9 @@ public class MainLoop
     private class NoScreen : IScreen
     {
         public MenuBase Menu => throw new NotImplementedException();
+        public ILayout Layout => throw new NotImplementedException();
 
         public void PaintContent(Painter visualizer)
-        {
-        }
-
-        public void PaintFrame(Painter visualizer, int windowWidth, int windowHeight)
         {
         }
     }
