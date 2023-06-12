@@ -1,4 +1,5 @@
 using Paraclete.Screens;
+using Paraclete.Menu;
 
 namespace Paraclete.Painting;
 
@@ -22,18 +23,32 @@ public class MenuPainter
             .ToArray();
 
         var first = true;
-        foreach (var screen in TypeUtility.EnumerateImplementatingInstancesOf<IScreen>(_services))
+        foreach (var (shortcut, screen) in ScreenMenu.Get(_services))
         {
             var isSelected = selectedScreen.Name == screen.Name;
             var format = isSelected
                 ? AnsiSequences.BackgroundColors.Blue
-                : AnsiSequences.BackgroundColors.DarkBlue;
-            var startingBracket = isSelected ? "[" : " ";
-            var endingBracket = isSelected ? "]" : " ";
-            var label = $"{format}{startingBracket} {screen.Name} {endingBracket}{AnsiSequences.Reset}  ";
-            if (!first) { label = "  " + label; }
+                : AnsiSequences.BackgroundColors.DarkBlue + AnsiSequences.ForegroundColors.Blue;
+            var label = $"{format} {screen.Name} {AnsiSequences.Reset}";
+
+            if (!first)
+            {
+                rows[0].parts.Add("  ");
+                rows[0].colors.Add(ConsoleColor.Gray);
+            }
+
+            rows[0].parts.Add("[");
+            rows[0].colors.Add(ConsoleColor.White);
+
+            rows[0].parts.Add($"{shortcut} ");
+            rows[0].colors.Add(ConsoleColor.Green);
+
             rows[0].parts.Add(label);
             rows[0].colors.Add(ConsoleColor.Black);
+
+            rows[0].parts.Add("]");
+            rows[0].colors.Add(ConsoleColor.White);
+
             first = false;
         }
 

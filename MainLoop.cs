@@ -62,15 +62,13 @@ public class MainLoop
 
         new Thread(async () => await RepaintLoop()).Start();
 
-        ConsoleKey key;
-
         var screens = new Dictionary<ConsoleKey, IScreen>();
-        var functionKey = ConsoleKey.F1;
-        foreach (var screen in TypeUtility.EnumerateImplementatingInstancesOf<IScreen>(_services))
+        foreach (var (shortcut, screen) in ScreenMenu.Get(_services))
         {
-            screens.Add(functionKey, screen);
-            functionKey++;
+            screens.Add(shortcut, screen);
         }
+
+        ConsoleKey key;
 
         for(;;)
         {
