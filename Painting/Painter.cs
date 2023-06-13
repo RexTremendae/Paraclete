@@ -10,15 +10,19 @@ public class Painter
     private readonly ScreenInvalidator _screenInvalidator;
     private readonly ScreenSelector _screenSelector;
     private readonly MenuPainter _menuPainter;
+    private readonly DataInputter _dataInputter;
+    private readonly DataInputPainter _dataInputPainter;
 
     private int _windowHeight;
     private int _windowWidth;
 
-    public Painter(ScreenSelector screenSelector, ScreenInvalidator screenInvalidator, MenuPainter menuPainter)
+    public Painter(ScreenSelector screenSelector, ScreenInvalidator screenInvalidator, MenuPainter menuPainter, DataInputter dataInputter, DataInputPainter dataInputPainter)
     {
         _screenInvalidator = screenInvalidator;
         _screenSelector = screenSelector;
         _menuPainter = menuPainter;
+        _dataInputter = dataInputter;
+        _dataInputPainter = dataInputPainter;
     }
 
     public void PaintScreen()
@@ -35,7 +39,14 @@ public class Painter
         }
 
         _screenSelector.SelectedScreen.PaintContent(this);
-        _menuPainter.PaintMenu(this);
+        if (_dataInputter.IsActive)
+        {
+            _dataInputPainter.PaintInput(this, _windowWidth, _windowHeight);
+        }
+        else
+        {
+            _menuPainter.PaintMenu(this);
+        }
     }
 
     public void Paint(IEnumerable<string> parts, IEnumerable<ConsoleColor> colors, (int x, int y)? position = null)
@@ -70,6 +81,14 @@ public class Painter
     public void PaintRows(AnsiString[] rows, (int x, int y)? position = null)
     {
         var pos = position ?? (0, 0);
+        if (pos.x < 0)
+        {
+            pos = (pos.x + _windowWidth, pos.y);
+        }
+        if (pos.y < 0)
+        {
+            pos = (pos.x, pos.y + _windowHeight);
+        }
 
         for (int y = 0; y < rows.Length; y++)
         {

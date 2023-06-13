@@ -13,11 +13,13 @@ public static class Configurator
         var services = new ServiceCollection();
 
         services
+            .AddScoped<DataInputPainter>()
+            .AddScoped<DataInputter>()
             .AddScoped<ExhibitionSelector>()
             .AddScoped<FpsCounter>()
-            .AddScoped<ScreenInvalidator>()
             .AddScoped<MainLoop>()
             .AddScoped<MenuPainter>()
+            .AddScoped<ScreenInvalidator>()
             .AddScoped<ScreenSaver>()
             .AddScoped<ScreenSelector>()
             .AddScoped<Settings>()

@@ -80,7 +80,7 @@ public class ScreenSaver
         {
             _lastChange = now;
             Write(AnsiSequences.ClearScreen);
-            Console.CursorVisible = false;
+            CursorVisible = false;
 
             var x = Random.Shared.Next(WindowWidth - _currentTimeWidth);
             var y = Random.Shared.Next(WindowHeight - _currentTimeHeight);

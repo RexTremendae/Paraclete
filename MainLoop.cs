@@ -14,10 +14,11 @@ public class MainLoop
     private readonly ScreenInvalidator _screenInvalidator;
     private readonly FpsCounter _fpsCounter;
     private readonly IServiceProvider _services;
+    private readonly DataInputter _dataInputter;
 
     private readonly int _repaintLoopInterval;
 
-    public MainLoop(Painter painter, ScreenSelector screenSelector, ScreenSaver screenSaver, ScreenInvalidator screenInvalidator, FpsCounter fpsCounter, Settings settings, IServiceProvider services)
+    public MainLoop(Painter painter, ScreenSelector screenSelector, ScreenSaver screenSaver, ScreenInvalidator screenInvalidator, FpsCounter fpsCounter, Settings settings, IServiceProvider services, DataInputter dataInputter)
     {
         _painter = painter;
         _screenSaver = screenSaver;
@@ -26,6 +27,7 @@ public class MainLoop
         _fpsCounter = fpsCounter;
         _repaintLoopInterval = settings.RepaintLoopInterval;
         _services = services;
+        _dataInputter = dataInputter;
     }
 
     private async Task RepaintLoop()
@@ -68,11 +70,11 @@ public class MainLoop
             screens.Add(shortcut, screen);
         }
 
-        ConsoleKey key;
+        ConsoleKeyInfo key;
 
         for(;;)
         {
-            key = ReadKey(true).Key;
+            key = ReadKey(true);
 
             var screenSaverWasActive = _screenSaver.IsActive;
             _screenSaver.Inactivate();
@@ -80,22 +82,23 @@ public class MainLoop
             var currentMenu = _screenSelector.SelectedScreen.Menu.MenuItems;
 
             var anyKeyMatch = false;
-            if (currentMenu.TryGetValue(key, out var selectedCommand))
+
+            ICommand selectedCommand = new NoCommand();
+            if (_dataInputter.IsActive)
             {
-                anyKeyMatch = true;
+                _dataInputter.Input(key);
             }
-            else
+            else if (currentMenu.TryGetValue(key.Key, out var selectedMenuCommand))
             {
-                selectedCommand = new NoCommand();
+                selectedCommand = selectedMenuCommand;
+                anyKeyMatch = true;
             }
 
-            if (screens.TryGetValue(key, out var selectedScreen))
+            IScreen selectedScreen = new NoScreen();
+            if (!_dataInputter.IsActive && screens.TryGetValue(key.Key, out var selectedForSwitchScreen))
             {
+                selectedScreen = selectedForSwitchScreen;
                 anyKeyMatch = true;
-            }
-            else
-            {
-                selectedScreen = new NoScreen();
             }
 
             if (!anyKeyMatch)
@@ -111,13 +114,13 @@ public class MainLoop
                 }
             }
 
-            if (selectedScreen is not NoScreen)
-            {
-                _screenSelector.SwitchTo(selectedScreen);
-            }
-            else if (selectedCommand is not NoCommand)
+            if (selectedCommand is not NoCommand)
             {
                 await selectedCommand.Execute();
+            }
+            else if (selectedScreen is not NoScreen)
+            {
+                _screenSelector.SwitchTo(selectedScreen);
             }
         }
     }

@@ -4,6 +4,7 @@ public class ToDoListPainter
 {
     private Painter _painter;
     private ToDoList _toDoList;
+    private int _maxToDoItemLength;
 
     public ToDoListPainter(Painter painter, ToDoList toDoList)
     {
@@ -13,13 +14,19 @@ public class ToDoListPainter
 
     public void Paint((int x, int y) position, bool paintSelectionMaker = false)
     {
+        var toDoItemEmptyPadding = int.Max(_toDoList.MaxItemLength - _maxToDoItemLength, 0);
+        toDoItemEmptyPadding = _maxToDoItemLength + toDoItemEmptyPadding - _toDoList.MaxItemLength;
+        _maxToDoItemLength = _toDoList.MaxItemLength;
+
         var rows = new List<AnsiString>(new AnsiString[] { $"{AnsiSequences.ForegroundColors.White}ToDo:{AnsiSequences.Reset}" });
 
         rows.AddRange(_toDoList.ToDoItems.Select(_ =>
             ResolveMarker(_, paintSelectionMaker) +
-            (_.Done ? (AnsiSequences.ForegroundColors.Gray + AnsiSequences.StrikeThrough) : AnsiSequences.ForegroundColors.Yellow) +
-            _.Description.PadRight(_toDoList.MaxItemLength) +
-            AnsiSequences.Reset
+            (_.Done
+                ? (AnsiSequences.ForegroundColors.Gray + AnsiSequences.StrikeThrough)
+                : AnsiSequences.ForegroundColors.Yellow) +
+            _.Description.PadRight(_toDoList.MaxItemLength) + AnsiSequences.Reset +
+            "".PadRight(toDoItemEmptyPadding, ' ')
         ));
 
         _painter.PaintRows(rows.ToArray(), position);

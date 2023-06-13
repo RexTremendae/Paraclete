@@ -88,7 +88,7 @@ public class ToDoList
         UpdateMaxItemLength();
     }
 
-    private void UpdateMaxItemLength()
+    public void UpdateMaxItemLength()
     {
         MaxItemLength = _toDoItems.Max(_ => _.Description.Length);
     }
@@ -96,7 +96,7 @@ public class ToDoList
 
 public class ToDoItem
 {
-    public string Description { get; }
+    public string Description { get; set; }
     public bool Done { get; private set; }
 
     public ToDoItem(string description, bool done = false)
