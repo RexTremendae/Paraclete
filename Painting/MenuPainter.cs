@@ -22,7 +22,11 @@ public class MenuPainter
             .Select<int, (List<string> parts, List<ConsoleColor> colors)>(_ => new (new List<string>(), new List<ConsoleColor>()))
             .ToArray();
 
-        var first = true;
+        var isFirst = true;
+
+        rows[0].parts.Add("【");
+        rows[0].colors.Add(ConsoleColor.White);
+
         foreach (var (shortcut, screen) in ScreenMenu.Get(_services))
         {
             var isSelected = selectedScreen.Name == screen.Name;
@@ -31,43 +35,38 @@ public class MenuPainter
                 : AnsiSequences.BackgroundColors.DarkBlue + AnsiSequences.ForegroundColors.Blue;
             var label = $"{format} {screen.Name} {AnsiSequences.Reset}";
 
-            if (!first)
+            if (!isFirst)
             {
-                rows[0].parts.Add("  ");
-                rows[0].colors.Add(ConsoleColor.Gray);
+                rows[0].parts.Add(" · ");
+                rows[0].colors.Add(ConsoleColor.White);
             }
 
-            rows[0].parts.Add("[");
-            rows[0].colors.Add(ConsoleColor.White);
-
-            rows[0].parts.Add($"{shortcut} ");
+            rows[0].parts.Add($"{shortcut.ToString()} ");
             rows[0].colors.Add(ConsoleColor.Green);
 
             rows[0].parts.Add(label);
             rows[0].colors.Add(ConsoleColor.Black);
 
-            rows[0].parts.Add("]");
-            rows[0].colors.Add(ConsoleColor.White);
-
-            first = false;
+            isFirst = false;
         }
 
-        var isFirst = true;
+        rows[0].parts.Add("】");
+        rows[0].colors.Add(ConsoleColor.White);
+
+        isFirst = true;
         foreach (var (key, description) in menuItems.Select(_ => (_.Key, _.Value.Description)))
         {
-            if (isFirst)
+            if (!isFirst)
             {
-                isFirst = false;
-            }
-            else
-            {
-                rows[1].parts.Add("    ");
+                rows[1].parts.Add("  ");
                 rows[1].colors.Add(ConsoleColor.Gray);
             }
 
             var (parts, colors) = GetMenuParts(key, description);
             rows[1].parts.AddRange(parts);
             rows[1].colors.AddRange(colors);
+
+            isFirst = false;
         }
 
         var paintableRows = rows.Select(_ => ((IEnumerable<string>)_.parts, (IEnumerable<ConsoleColor>)_.colors)).ToArray();
@@ -92,7 +91,7 @@ public class MenuPainter
 
         var explicitBrackets = startBracketIndex >= 0 && endBracketIndex >= 0;
 
-        parts.Add("[");
+        parts.Add("【");
         colors.Add(bracketColor);
 
         if (explicitBrackets)
@@ -107,7 +106,7 @@ public class MenuPainter
         parts.Add(description[(endBracketIndex+1)..]);
         colors.Add(descriptionColor);
 
-        parts.Add("]");
+        parts.Add("】");
         colors.Add(bracketColor);
 
         return (parts, colors);
