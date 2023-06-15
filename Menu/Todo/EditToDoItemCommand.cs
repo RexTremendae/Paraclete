@@ -26,9 +26,9 @@ public class EditToDoItemCommand : IInputCommand<string>
         return Task.CompletedTask;
     }
 
-    public void CompleteInput(string data)
+    public async Task CompleteInput(string data)
     {
         _toDoList.SelectedToDoItem.Description = data;
-        _toDoList.UpdateMaxItemLength();
+        await _toDoList.Update();
     }
 }

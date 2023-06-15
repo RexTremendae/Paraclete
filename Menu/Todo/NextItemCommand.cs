@@ -13,9 +13,8 @@ public class NextItemCommand : ICommand
         _toDoList = toDoList;
     }
 
-    public Task Execute()
+    public async Task Execute()
     {
-        _toDoList.SelectNextItem();
-        return Task.CompletedTask;
+        await _toDoList.SelectNextItem();
     }
 }

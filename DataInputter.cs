@@ -67,14 +67,14 @@ public class DataInputter
         _screenInvalidator.Invalidate();
     }
 
-    public void Input(ConsoleKeyInfo keyInfo)
+    public async Task Input(ConsoleKeyInfo keyInfo)
     {
         var key = keyInfo.Key;
 
         if (key == ConsoleKey.Enter)
         {
             IsActive = false;
-            CompleteInput();
+            await CompleteInput();
             _command = null;
             return;
         }
@@ -103,7 +103,7 @@ public class DataInputter
         }
     }
 
-    private void CompleteInput()
+    private async Task CompleteInput()
     {
         const BindingFlags publicInstanceFlags = BindingFlags.Instance | BindingFlags.Public;
         var methodInfo = _command
@@ -135,6 +135,6 @@ public class DataInputter
             throw new NotSupportedException($"Input of type '{_inputType.Name}' not supported.");
         }
 
-        methodInfo!.Invoke(_command, new object[] { convertedInput });
+        await (Task)(methodInfo!.Invoke(_command, new object[] { convertedInput }))!;
     }
 }

@@ -1,4 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
 using Paraclete.Layouts;
 using Paraclete.Menu;
 using Paraclete.Painting;
@@ -8,9 +7,9 @@ namespace Paraclete.Configuration;
 
 public static class Configurator
 {
-    public static IServiceProvider Configure()
+    public static async Task<IServiceProvider> Configure()
     {
-        var services = new ServiceCollection();
+        var services = new ServiceConfigurator();
 
         services
             .AddScoped<DataInputPainter>()
@@ -35,16 +34,9 @@ public static class Configurator
             .AddImplementationsOf<MenuBase>()
         ;
 
-        return services.BuildServiceProvider();
-    }
+        var serviceProvider = services.BuildServiceProvider();
+        await services.InvokeInitializers(serviceProvider);
 
-    private static IServiceCollection AddImplementationsOf<T>(this IServiceCollection services)
-    {
-        foreach (var menuItemType in TypeUtility.EnumerateImplementingTypesOf<T>())
-        {
-            services.AddScoped(menuItemType);
-        }
-
-        return services;
+        return serviceProvider;
     }
 }

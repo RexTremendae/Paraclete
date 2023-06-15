@@ -13,7 +13,7 @@ public class AddToDoItemCommand : ICommand
         _toDoList = toDoList;
     }
 
-    public Task Execute()
+    public async Task Execute()
     {
         var newItems = new[]
         {
@@ -29,7 +29,6 @@ public class AddToDoItemCommand : ICommand
             "Compile a Linux kernel"
         };
 
-        _toDoList.AddItem(newItems[Random.Shared.Next(newItems.Length)]);
-        return Task.CompletedTask;
+        await _toDoList.AddItem(newItems[Random.Shared.Next(newItems.Length)]);
     }
 }

@@ -86,7 +86,7 @@ public class MainLoop
             ICommand selectedCommand = new NoCommand();
             if (_dataInputter.IsActive)
             {
-                _dataInputter.Input(key);
+                await _dataInputter.Input(key);
             }
             else if (currentMenu.TryGetValue(key.Key, out var selectedMenuCommand))
             {

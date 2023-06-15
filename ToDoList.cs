@@ -1,6 +1,6 @@
 namespace Paraclete;
 
-public class ToDoList
+public class ToDoList : IInitializer
 {
     private List<ToDoItem> _toDoItems;
     public IEnumerable<ToDoItem> ToDoItems => _toDoItems;
@@ -11,14 +11,11 @@ public class ToDoList
     public bool MoveItemMode { get; private set; }
     public int MaxItemLength { get; private set; }
 
+    const string _todoFileName = "todo.txt";
+
     public ToDoList()
     {
-        _toDoItems = new()
-        {
-            new ToDoItem("Add ToDo section", true),
-            new ToDoItem("Enable add/edit/remove ToDo items"),
-            new ToDoItem("Persist ToDo items")
-        };
+        _toDoItems = new();
         UpdateMaxItemLength();
     }
 
@@ -28,7 +25,7 @@ public class ToDoList
         MoveItemMode = false;
     }
 
-    public void SelectPreviousItem()
+    public async Task SelectPreviousItem()
     {
         int newPosition;
 
@@ -48,9 +45,10 @@ public class ToDoList
             _toDoItems.Insert(newPosition, itemToMove);
         }
         _selectedToDoItemIndex = newPosition;
+        await Update();
     }
 
-    public void SelectNextItem()
+    public async Task SelectNextItem()
     {
         int newPosition;
 
@@ -70,11 +68,13 @@ public class ToDoList
             _toDoItems.Insert(newPosition, itemToMove);
         }
         _selectedToDoItemIndex = newPosition;
+        await Update();
     }
 
-    public void ToggleSelectedDoneState()
+    public async Task ToggleSelectedDoneState()
     {
         SelectedToDoItem.ToggleDoneState();
+        await Update();
     }
 
     public void ToggleMoveItemMode()
@@ -82,15 +82,39 @@ public class ToDoList
         MoveItemMode = !MoveItemMode;
     }
 
-    public void AddItem(string description)
+    public async Task AddItem(string description)
     {
         _toDoItems.Add(new(description));
-        UpdateMaxItemLength();
+        await Update();
     }
 
     public void UpdateMaxItemLength()
     {
-        MaxItemLength = _toDoItems.Max(_ => _.Description.Length);
+        MaxItemLength = _toDoItems.Any()
+            ? _toDoItems.Max(_ => _.Description.Length)
+            : 0;
+    }
+
+    public async Task Initialize()
+    {
+        if (!File.Exists(_todoFileName))
+        {
+            return;
+        }
+
+        foreach (var line in await File.ReadAllLinesAsync(_todoFileName))
+        {
+            if (string.IsNullOrEmpty(line)) continue;
+            _toDoItems.Add(new(line[1..], done: line[0] == '-'));
+        }
+
+        UpdateMaxItemLength();
+    }
+
+    public async Task Update()
+    {
+        UpdateMaxItemLength();
+        await File.WriteAllLinesAsync(_todoFileName, _toDoItems.Select(_ => (_.Done ? '-' : ' ') + _.Description));
     }
 }
 

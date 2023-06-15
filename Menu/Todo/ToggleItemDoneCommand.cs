@@ -13,9 +13,8 @@ public class ToggleItemDoneCommand : ICommand
         _toDoList = toDoList;
     }
 
-    public Task Execute()
+    public async Task Execute()
     {
-        _toDoList.ToggleSelectedDoneState();
-        return Task.CompletedTask;
+        await _toDoList.ToggleSelectedDoneState();
     }
 }
