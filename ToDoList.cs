@@ -2,7 +2,9 @@ namespace Paraclete;
 
 public class ToDoList : IInitializer
 {
-    private List<ToDoItem> _toDoItems;
+    private readonly List<ToDoItem> _toDoItems;
+    private readonly ScreenInvalidator _screenInvalidator;
+
     public IEnumerable<ToDoItem> ToDoItems => _toDoItems;
 
     public int _selectedToDoItemIndex;
@@ -13,8 +15,9 @@ public class ToDoList : IInitializer
 
     const string _todoFileName = "todo.txt";
 
-    public ToDoList()
+    public ToDoList(ScreenInvalidator screenInvalidator)
     {
+        _screenInvalidator = screenInvalidator;
         _toDoItems = new();
         UpdateMaxItemLength();
     }
@@ -86,6 +89,18 @@ public class ToDoList : IInitializer
     {
         _toDoItems.Add(new(description));
         await Update();
+    }
+
+    public async Task DeleteSelectedItem()
+    {
+        _toDoItems.RemoveAt(_selectedToDoItemIndex);
+        if (_selectedToDoItemIndex >= _toDoItems.Count)
+        {
+            _selectedToDoItemIndex = Math.Max(_toDoItems.Count-1, 0);
+        }
+
+        await Update();
+        _screenInvalidator.Invalidate();
     }
 
     public void UpdateMaxItemLength()

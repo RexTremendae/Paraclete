@@ -1,34 +1,28 @@
 namespace Paraclete.Menu.ToDo;
 
-public class AddToDoItemCommand : ICommand
+public class AddToDoItemCommand : ICommand, IInputCommand<string>
 {
     public ConsoleKey Shortcut => ConsoleKey.A;
 
     public string Description => "[A]dd item";
 
     private readonly ToDoList _toDoList;
+    private readonly DataInputter _dataInputter;
 
-    public AddToDoItemCommand(ToDoList toDoList)
+    public AddToDoItemCommand(DataInputter dataInputter, ToDoList toDoList)
     {
         _toDoList = toDoList;
+        _dataInputter = dataInputter;
     }
 
-    public async Task Execute()
+    public Task Execute()
     {
-        var newItems = new[]
-        {
-            "Clean the kitchen",
-            "Go shopping",
-            "Sign up for a knitting class",
-            "Rob a bank",
-            "Learn Mandarin",
-            "Punch yourself in the face",
-            "Start smoking",
-            "Buy a car",
-            "Watch TV",
-            "Compile a Linux kernel"
-        };
+        _dataInputter.StartInput<string>(this, "Enter new ToDo item description:");
+        return Task.CompletedTask;
+    }
 
-        await _toDoList.AddItem(newItems[Random.Shared.Next(newItems.Length)]);
+    public async Task CompleteInput(string data)
+    {
+        await _toDoList.AddItem(new (data));
     }
 }
