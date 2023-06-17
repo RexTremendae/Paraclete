@@ -1,6 +1,4 @@
-using Paraclete.Menu.Shortcuts;
-
-namespace Paraclete.Menu;
+namespace Paraclete.Menu.Shortcuts;
 
 public class _ShortcutsMenu : MenuBase
 {
@@ -8,7 +6,8 @@ public class _ShortcutsMenu : MenuBase
         : base(services, new Type[]
     {
         typeof(StartTaskManagerCommand),
-        typeof(HibernateCommand)
+        typeof(HibernateCommand),
+        typeof(PowerShellCommand)
     })
     {}
 }
