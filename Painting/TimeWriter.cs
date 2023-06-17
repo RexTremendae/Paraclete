@@ -73,16 +73,14 @@ public class TimeWriter
 
     private void Write(List<string> textParts, List<ConsoleColor> colors, List<Font> fonts, (int x, int y) cursorPos, Painter painter)
     {
-        var rows = new List<(List<string> parts, List<ConsoleColor> colors)>();
         var textHeight = fonts.Max(_ => _.CharacterHeight);
-        rows.AddRange(
-            Enumerable.Range(0, textHeight)
-            .Select(_ => (new List<string>(), new List<ConsoleColor>())));
+        var rows = Enumerable.Range(0, textHeight)
+            .Select(_ => new PaintRowBuilder())
+            .ToArray();
 
         for (int idx = 0; idx < textParts.Count; idx++)
         {
             var font = fonts[idx];
-
             var textPartRows = new string[textHeight];
 
             var text = textParts[idx];
@@ -105,14 +103,10 @@ public class TimeWriter
 
             for (var y = 0; y < textHeight; y++)
             {
-                rows[y].parts.Add(textPartRows[y]);
-                rows[y].colors.Add(colors[idx]);
+                rows[y].Append((textPartRows[y], colors[idx]));
             }
         }
 
-        var data = rows
-            .Select(_ => ((IEnumerable<string>)_.parts, (IEnumerable<ConsoleColor>)_.colors))
-            .ToArray();
-        painter.PaintRows(data, cursorPos);
+        painter.PaintRows(rows.Select(_ => _.Build()).ToArray(), cursorPos);
     }
 }

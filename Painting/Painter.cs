@@ -49,8 +49,8 @@ public class Painter
         }
     }
 
-    public void Paint(IEnumerable<string> parts, IEnumerable<ConsoleColor> colors, (int x, int y)? position = null)
-    => PaintRows(new[] { (parts, colors) }, position);
+    public void Paint(IEnumerable<PaintSection> sections, (int x, int y)? position = null)
+    => PaintRows(new[] { new PaintRow(sections.ToArray()) }, position);
 
     public void Paint(AnsiString text, (int x, int y)? position = null, ConsoleColor? color = null)
     {
@@ -58,18 +58,17 @@ public class Painter
         PaintRows(new[] { formattedText }, position);
     }
 
-    public void PaintRows((IEnumerable<string> parts, IEnumerable<ConsoleColor> colors)[] rows, (int x, int y)? position = null)
+    public void PaintRows(PaintRow[] rows, (int x, int y)? position = null)
     {
         var formattedRows = new List<AnsiString>();
         foreach (var r in rows)
         {
-            var parts = r.parts.ToArray();
-            var colors = r.colors.ToArray();
             var builder = new StringBuilder();
-            for (int idx = 0; idx < parts.Length; idx++)
+            for (int idx = 0; idx < r.Sections.Length; idx++)
             {
-                builder.Append(colors[idx].ToAnsiColorCode());
-                builder.Append(parts[idx]);
+                var part = r.Sections[idx];
+                builder.Append(part.Color.ToAnsiColorCode());
+                builder.Append(part.Text);
             }
             builder.Append(AnsiSequences.Reset);
             formattedRows.Add(builder.ToString());

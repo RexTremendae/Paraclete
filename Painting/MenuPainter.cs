@@ -17,48 +17,41 @@ public class MenuPainter
     public void PaintMenu(Painter painter)
     {
         var selectedScreen = _screenSelector.SelectedScreen;
-        var rows = Enumerable.Range(0, 2)
-            .Select<int, (List<string> parts, List<ConsoleColor> colors)>(_ => new (new List<string>(), new List<ConsoleColor>()))
-            .ToArray();
+        var rows = new PaintRow[2];
 
         rows[0] = GetScreenSelectionMenuRowParts(selectedScreen);
         rows[1] = GetSelectedScreenMenuRowParts(selectedScreen.Menu.MenuItems);
 
-        var paintableRows = rows.Select(_ => ((IEnumerable<string>)_.parts, (IEnumerable<ConsoleColor>)_.colors)).ToArray();
-        painter.PaintRows(paintableRows, (2, Console.WindowHeight-3));
+        painter.PaintRows(rows, (2, Console.WindowHeight-3));
     }
 
-    private (List<string> parts, List<ConsoleColor> colors) GetSelectedScreenMenuRowParts(IReadOnlyDictionary<ConsoleKey, ICommand> menuItems)
+    private PaintRow GetSelectedScreenMenuRowParts(IReadOnlyDictionary<ConsoleKey, ICommand> menuItems)
     {
-        var row = (parts: new List<string>(), colors: new List<ConsoleColor>());
+        var row = new List<PaintSection>();
 
         var isFirst = true;
         foreach (var (key, description) in menuItems.Select(_ => (_.Key, _.Value.Description)))
         {
             if (!isFirst)
             {
-                row.parts.Add("  ");
-                row.colors.Add(ConsoleColor.Gray);
+                row.Add(new ("  ", ConsoleColor.Gray));
             }
 
-            var (parts, colors) = GetMenuParts(key, description);
-            row.parts.AddRange(parts);
-            row.colors.AddRange(colors);
+            row.AddRange(GetMenuParts(key, description));
 
             isFirst = false;
         }
 
-        return row;
+        return new (row.ToArray());
     }
 
-    private (List<string> parts, List<ConsoleColor> colors) GetScreenSelectionMenuRowParts(IScreen selectedScreen)
+    private PaintRow GetScreenSelectionMenuRowParts(IScreen selectedScreen)
     {
-        var row = (parts: new List<string>(), colors: new List<ConsoleColor>());
+        var row = new List<PaintSection>();
 
         var isFirst = true;
 
-        row.parts.Add("【");
-        row.colors.Add(ConsoleColor.White);
+        row.Add(new ("【", ConsoleColor.White));
 
         foreach (var screen in TypeUtility.EnumerateImplementatingInstancesOf<IScreen>(_services).OrderBy(_ => _.Shortcut))
         {
@@ -70,33 +63,27 @@ public class MenuPainter
 
             if (!isFirst)
             {
-                row.parts.Add(" · ");
-                row.colors.Add(ConsoleColor.White);
+                row.Add(new (" · ", ConsoleColor.White));
             }
 
-            row.parts.Add($"{screen.Shortcut.ToString()} ");
-            row.colors.Add(ConsoleColor.Green);
-
-            row.parts.Add(label);
-            row.colors.Add(ConsoleColor.Black);
+            row.Add(new ($"{screen.Shortcut.ToString()} ", ConsoleColor.Green));
+            row.Add(new (label, ConsoleColor.Black));
 
             isFirst = false;
         }
 
-        row.parts.Add("】");
-        row.colors.Add(ConsoleColor.White);
+        row.Add(new ("】", ConsoleColor.White));
 
-        return row;
+        return new (row.ToArray());
     }
 
-    private (IEnumerable<string> parts, IEnumerable<ConsoleColor> colors) GetMenuParts(ConsoleKey key, string description)
+    private IEnumerable<PaintSection> GetMenuParts(ConsoleKey key, string description)
     {
         var bracketColor = ConsoleColor.White;
         var shortcutColor = ConsoleColor.Green;
         var descriptionColor = ConsoleColor.Gray;
 
-        var parts = new List<string>();
-        var colors = new List<ConsoleColor>();
+        var sections = new List<PaintSection>();
 
         var startBracketIndex = description.IndexOf('[');
         var endBracketIndex = -1;
@@ -107,24 +94,17 @@ public class MenuPainter
 
         var explicitBrackets = startBracketIndex >= 0 && endBracketIndex >= 0;
 
-        parts.Add("【");
-        colors.Add(bracketColor);
+        sections.Add(new ("【", bracketColor));
 
         if (explicitBrackets)
         {
-            parts.Add(description[..startBracketIndex]);
-            colors.Add(descriptionColor);
+            sections.Add(new (description[..startBracketIndex], descriptionColor));
         }
 
-        parts.Add(key.ToDisplayString() + (explicitBrackets ? "" : " "));
-        colors.Add(shortcutColor);
+        sections.Add(new (key.ToDisplayString() + (explicitBrackets ? "" : " "), shortcutColor));
+        sections.Add(new (description[(endBracketIndex+1)..], descriptionColor));
+        sections.Add(new ("】", bracketColor));
 
-        parts.Add(description[(endBracketIndex+1)..]);
-        colors.Add(descriptionColor);
-
-        parts.Add("】");
-        colors.Add(bracketColor);
-
-        return (parts, colors);
+        return sections;
     }
 }
