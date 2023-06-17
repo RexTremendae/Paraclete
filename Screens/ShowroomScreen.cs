@@ -8,6 +8,8 @@ namespace Paraclete.Screens;
 public class ShowroomScreen : IScreen
 {
     public string Name => "Showroom";
+    public int Ordinal => 100;
+    public ConsoleKey Shortcut => ConsoleKey.F12;
 
     public MenuBase Menu { get; private set; }
     public ILayout Layout { get; private set; }

@@ -17,17 +17,50 @@ public class MenuPainter
     public void PaintMenu(Painter painter)
     {
         var selectedScreen = _screenSelector.SelectedScreen;
-        var menuItems = selectedScreen.Menu.MenuItems;
         var rows = Enumerable.Range(0, 2)
             .Select<int, (List<string> parts, List<ConsoleColor> colors)>(_ => new (new List<string>(), new List<ConsoleColor>()))
             .ToArray();
 
+        rows[0] = GetScreenSelectionMenuRowParts(selectedScreen);
+        rows[1] = GetSelectedScreenMenuRowParts(selectedScreen.Menu.MenuItems);
+
+        var paintableRows = rows.Select(_ => ((IEnumerable<string>)_.parts, (IEnumerable<ConsoleColor>)_.colors)).ToArray();
+        painter.PaintRows(paintableRows, (2, Console.WindowHeight-3));
+    }
+
+    private (List<string> parts, List<ConsoleColor> colors) GetSelectedScreenMenuRowParts(IReadOnlyDictionary<ConsoleKey, ICommand> menuItems)
+    {
+        var row = (parts: new List<string>(), colors: new List<ConsoleColor>());
+
+        var isFirst = true;
+        foreach (var (key, description) in menuItems.Select(_ => (_.Key, _.Value.Description)))
+        {
+            if (!isFirst)
+            {
+                row.parts.Add("  ");
+                row.colors.Add(ConsoleColor.Gray);
+            }
+
+            var (parts, colors) = GetMenuParts(key, description);
+            row.parts.AddRange(parts);
+            row.colors.AddRange(colors);
+
+            isFirst = false;
+        }
+
+        return row;
+    }
+
+    private (List<string> parts, List<ConsoleColor> colors) GetScreenSelectionMenuRowParts(IScreen selectedScreen)
+    {
+        var row = (parts: new List<string>(), colors: new List<ConsoleColor>());
+
         var isFirst = true;
 
-        rows[0].parts.Add("【");
-        rows[0].colors.Add(ConsoleColor.White);
+        row.parts.Add("【");
+        row.colors.Add(ConsoleColor.White);
 
-        foreach (var (shortcut, screen) in ScreenMenu.Get(_services))
+        foreach (var screen in TypeUtility.EnumerateImplementatingInstancesOf<IScreen>(_services).OrderBy(_ => _.Shortcut))
         {
             var isSelected = selectedScreen.Name == screen.Name;
             var format = isSelected
@@ -37,40 +70,23 @@ public class MenuPainter
 
             if (!isFirst)
             {
-                rows[0].parts.Add(" · ");
-                rows[0].colors.Add(ConsoleColor.White);
+                row.parts.Add(" · ");
+                row.colors.Add(ConsoleColor.White);
             }
 
-            rows[0].parts.Add($"{shortcut.ToString()} ");
-            rows[0].colors.Add(ConsoleColor.Green);
+            row.parts.Add($"{screen.Shortcut.ToString()} ");
+            row.colors.Add(ConsoleColor.Green);
 
-            rows[0].parts.Add(label);
-            rows[0].colors.Add(ConsoleColor.Black);
+            row.parts.Add(label);
+            row.colors.Add(ConsoleColor.Black);
 
             isFirst = false;
         }
 
-        rows[0].parts.Add("】");
-        rows[0].colors.Add(ConsoleColor.White);
+        row.parts.Add("】");
+        row.colors.Add(ConsoleColor.White);
 
-        isFirst = true;
-        foreach (var (key, description) in menuItems.Select(_ => (_.Key, _.Value.Description)))
-        {
-            if (!isFirst)
-            {
-                rows[1].parts.Add("  ");
-                rows[1].colors.Add(ConsoleColor.Gray);
-            }
-
-            var (parts, colors) = GetMenuParts(key, description);
-            rows[1].parts.AddRange(parts);
-            rows[1].colors.AddRange(colors);
-
-            isFirst = false;
-        }
-
-        var paintableRows = rows.Select(_ => ((IEnumerable<string>)_.parts, (IEnumerable<ConsoleColor>)_.colors)).ToArray();
-        painter.PaintRows(paintableRows, (2, Console.WindowHeight-3));
+        return row;
     }
 
     private (IEnumerable<string> parts, IEnumerable<ConsoleColor> colors) GetMenuParts(ConsoleKey key, string description)

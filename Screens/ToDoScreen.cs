@@ -7,12 +7,14 @@ namespace Paraclete.Screens;
 
 public class ToDoScreen : IScreen
 {
+    public string Name => "ToDo";
+    public int Ordinal => 10;
+    public ConsoleKey Shortcut => ConsoleKey.F2;
+
     public MenuBase Menu { get; private set; }
 
     private OneFrameLayout _layout = new();
     public ILayout Layout => _layout;
-
-    public string Name => "ToDo";
 
     private readonly ScreenInvalidator _screenInvalidator;
     private readonly TimeWriter _currentTimeWriter;

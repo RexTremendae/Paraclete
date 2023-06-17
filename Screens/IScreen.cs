@@ -8,7 +8,9 @@ public interface IScreen
 {
     MenuBase Menu { get; }
     ILayout Layout { get; }
-    string Name => "";
+    string Name { get; }
+    int Ordinal { get; }
+    ConsoleKey Shortcut { get; }
 
     public virtual void OnAfterSwitch() { }
     void PaintContent(Painter painter);

@@ -65,9 +65,9 @@ public class MainLoop
         new Thread(async () => await RepaintLoop()).Start();
 
         var screens = new Dictionary<ConsoleKey, IScreen>();
-        foreach (var (shortcut, screen) in ScreenMenu.Get(_services))
+        foreach (var screen in TypeUtility.EnumerateImplementatingInstancesOf<IScreen>(_services))
         {
-            screens.Add(shortcut, screen);
+            screens.Add(screen.Shortcut, screen);
         }
 
         ConsoleKeyInfo key;
@@ -130,6 +130,9 @@ public class MainLoop
     {
         public MenuBase Menu => throw new NotImplementedException();
         public ILayout Layout => throw new NotImplementedException();
+        public string Name => throw new NotImplementedException();
+        public int Ordinal => throw new NotImplementedException();
+        public ConsoleKey Shortcut => throw new NotImplementedException();
 
         public void PaintContent(Painter visualizer)
         {

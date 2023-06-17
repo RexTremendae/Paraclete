@@ -5,8 +5,9 @@ public class ExitApplicationCommand : ICommand
     public ConsoleKey Shortcut => ConsoleKey.Escape;
     public string Description => "Quit";
 
-    public async Task Execute()
+    public Task Execute()
     {
-        await Task.CompletedTask;
+        Environment.Exit(0);
+        return Task.CompletedTask;
     }
 }
