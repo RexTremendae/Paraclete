@@ -6,8 +6,9 @@ public class _ShortcutsMenu : MenuBase
         : base(services, new Type[]
     {
         typeof(StartTaskManagerCommand),
-        typeof(HibernateCommand),
-        typeof(PowerShellCommand)
+        typeof(OutlookCommand),
+        typeof(PowerShellCommand),
+        typeof(HibernateCommand)
     })
     {}
 }
