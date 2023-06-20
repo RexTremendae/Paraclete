@@ -2,6 +2,7 @@ using Paraclete.Layouts;
 using Paraclete.Menu;
 using Paraclete.Painting;
 using Paraclete.Screens;
+using Serilog;
 
 namespace Paraclete.Configuration;
 
@@ -38,5 +39,12 @@ public static class Configurator
         await services.InvokeInitializers(serviceProvider);
 
         return serviceProvider;
+    }
+
+    public static void ConfigureLogging()
+    {
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.File("log-.txt", rollingInterval: RollingInterval.Day)
+            .CreateLogger();
     }
 }

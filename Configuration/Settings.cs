@@ -5,6 +5,7 @@ namespace Paraclete.Configuration;
 public class Settings
 {
     public int RepaintLoopInterval => 30;
+    public bool EnableLogging => false;
 
     public class FpsCounterSettings
     {
