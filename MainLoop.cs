@@ -1,5 +1,7 @@
+using Microsoft.Extensions.DependencyInjection;
 using Paraclete.Layouts;
 using Paraclete.Menu;
+using Paraclete.Menu.Shortcuts;
 using Paraclete.Painting;
 using Paraclete.Screens;
 using static System.Console;
@@ -15,20 +17,25 @@ public class MainLoop
     private readonly FpsCounter _fpsCounter;
     private readonly IServiceProvider _services;
     private readonly DataInputter _dataInputter;
+    private readonly _ShortcutsMenu _shortcutsMenu;
 
     private readonly int _repaintLoopInterval;
 
-    public MainLoop(Painter painter, ScreenSelector screenSelector, ScreenSaver screenSaver, ScreenInvalidator screenInvalidator, FpsCounter fpsCounter, Settings settings, IServiceProvider services, DataInputter dataInputter)
+    public MainLoop(IServiceProvider services)
     {
-        _painter = painter;
-        _screenSaver = screenSaver;
-        _screenSelector = screenSelector;
-        _screenInvalidator = screenInvalidator;
-        _fpsCounter = fpsCounter;
-        _repaintLoopInterval = settings.RepaintLoopInterval;
         _services = services;
-        _dataInputter = dataInputter;
+        _painter = services.GetRequiredService<Painter>();
+        _screenSaver = services.GetRequiredService<ScreenSaver>();
+        _screenSelector = services.GetRequiredService<ScreenSelector>();
+        _screenInvalidator = services.GetRequiredService<ScreenInvalidator>();
+        _fpsCounter = services.GetRequiredService<FpsCounter>();
+        _dataInputter = services.GetRequiredService<DataInputter>();
+        _shortcutsMenu = services.GetRequiredService<_ShortcutsMenu>();
+
+        _repaintLoopInterval = services.GetRequiredService<Settings>().RepaintLoopInterval;
     }
+
+    private bool _escapeState = false;
 
     private async Task RepaintLoop()
     {
@@ -36,6 +43,8 @@ public class MainLoop
 
         for(;;)
         {
+            _escapeState = Keyboard.GetAsyncKeyState(Keyboard.VirtKey.ESCAPE) != 0;
+
             if (_screenSaver.IsActive)
             {
                 _screenSaver.PaintScreen();
@@ -48,7 +57,7 @@ public class MainLoop
                     screenSaverIsActive = false;
                     _screenInvalidator.Invalidate();
                 }
-                _painter.PaintScreen();
+                _painter.PaintScreen(_escapeState);
             }
 
             await Task.Delay(_repaintLoopInterval);
@@ -79,7 +88,7 @@ public class MainLoop
             var screenSaverWasActive = _screenSaver.IsActive;
             _screenSaver.Inactivate();
 
-            var currentMenu = _screenSelector.SelectedScreen.Menu.MenuItems;
+            var currentMenu = _screenSelector.SelectedScreen.Menu;
 
             var anyKeyMatch = false;
 
@@ -88,7 +97,7 @@ public class MainLoop
             {
                 await _dataInputter.Input(key);
             }
-            else if (currentMenu.TryGetValue(key.Key, out var selectedMenuCommand))
+            else if ((_escapeState ? _shortcutsMenu : currentMenu).MenuItems.TryGetValue(key.Key, out var selectedMenuCommand))
             {
                 selectedCommand = selectedMenuCommand;
                 anyKeyMatch = true;
@@ -131,7 +140,6 @@ public class MainLoop
         public MenuBase Menu => throw new NotImplementedException();
         public ILayout Layout => throw new NotImplementedException();
         public string Name => throw new NotImplementedException();
-        public int Ordinal => throw new NotImplementedException();
         public ConsoleKey Shortcut => throw new NotImplementedException();
 
         public void PaintContent(Painter visualizer)

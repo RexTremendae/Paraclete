@@ -75,7 +75,7 @@ public class TimeWriter
     {
         var textHeight = fonts.Max(_ => _.CharacterHeight);
         var rows = Enumerable.Range(0, textHeight)
-            .Select(_ => new PaintRowBuilder())
+            .Select(_ => new AnsiStringBuilder())
             .ToArray();
 
         for (int idx = 0; idx < textParts.Count; idx++)

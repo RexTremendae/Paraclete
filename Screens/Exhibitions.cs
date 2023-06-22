@@ -68,7 +68,8 @@ public class AnsiExhibition : IExhibition
             "\\u001b[41;3m",
             "\\u001b[31mRed Text\\u001b[m",
             "\\u001b[31mRed\\u001b[33mGreen\\u001b[m",
-            "Three \\u001b[38;2;0;0;0m\\u001b[48;2;140;150;0mSeparate\\u001b[m \\u001b[100mWords"
+            "Three \\u001b[38;2;0;0;0m\\u001b[48;2;140;150;0mSeparate\\u001b[m \\u001b[100mWords",
+            "\\u001b[38;2;255;255;255m[\\u001b[38;2;0;200;0mS\\u001b[38;2;100;100;100mtart\\u001b[38;2;255;255;255m]"
         })
         {
             Paint(text, position.x, position.y, painter);

@@ -21,7 +21,7 @@ public class FontWriter
     {
         var textRows = Enumerable
             .Range(0, Font.CharacterHeight)
-            .Select(_ => new PaintRowBuilder())
+            .Select(_ => new AnsiStringBuilder())
             .ToArray();
 
         foreach (var c in text)

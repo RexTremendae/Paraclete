@@ -8,7 +8,8 @@ public class _ShortcutsMenu : MenuBase
         typeof(StartTaskManagerCommand),
         typeof(OutlookCommand),
         typeof(PowerShellCommand),
-        typeof(HibernateCommand)
+        typeof(HibernateCommand),
+        typeof(ExitApplicationCommand)
     })
     {}
 }

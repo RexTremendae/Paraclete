@@ -17,33 +17,33 @@ public class AnsiString
         Length = length;
     }
 
-    public int Length { get; private set; }
+    public int Length { get; }
 
-    public static AnsiString Empty => new AnsiString(string.Empty);
+    public static AnsiString Empty => new (string.Empty);
 
     private int CalculateLength(string data)
     {
         var length = 0;
-
         var lastIdx = 0;
-        for(;;)
+
+        for (;;)
         {
-            var nextIdx = data.IndexOf(AnsiSequenceStart, lastIdx);
+            var nextIdx = data.IndexOf(AnsiSequenceStart, lastIdx, StringComparison.Ordinal);
             if (nextIdx < 0)
             {
-                length += data.Length-lastIdx;
+                length += int.Max(data.Length - lastIdx, 0);
                 break;
             }
-            length += nextIdx-lastIdx-1;
+            length += int.Max(nextIdx - lastIdx, 0);
 
-            nextIdx = data.IndexOf("m", lastIdx);
+            nextIdx = data.IndexOf("m", nextIdx + AnsiSequenceStart.Length, StringComparison.Ordinal);
             if (nextIdx < 0)
             {
-                length += data.Length-lastIdx;
+                length += int.Max(data.Length - lastIdx, 0);
                 break;
             }
 
-            lastIdx = nextIdx+1;
+            lastIdx = nextIdx + 1;
         }
 
         return length;

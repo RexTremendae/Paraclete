@@ -25,7 +25,7 @@ public class Painter
         _dataInputPainter = dataInputPainter;
     }
 
-    public void PaintScreen()
+    public void PaintScreen(bool shortcutsMenuActive)
     {
         if (!_screenInvalidator.IsValid || _windowHeight != WindowHeight || _windowWidth != WindowWidth)
         {
@@ -45,7 +45,7 @@ public class Painter
         }
         else
         {
-            _menuPainter.PaintMenu(this);
+            _menuPainter.PaintMenu(this, shortcutsMenuActive, _windowWidth);
         }
     }
 
@@ -54,7 +54,7 @@ public class Painter
 
     public void Paint(AnsiString text, (int x, int y)? position = null, ConsoleColor? color = null)
     {
-        var formattedText = (color.HasValue ? color.Value.ToAnsiColorCode() : "") + text;
+        var formattedText = (color.HasValue ? color.Value.ToAnsiForegroundColorCode() : "") + text;
         PaintRows(new[] { formattedText }, position);
     }
 
@@ -67,7 +67,14 @@ public class Painter
             for (int idx = 0; idx < r.Sections.Length; idx++)
             {
                 var part = r.Sections[idx];
-                builder.Append(part.Color.ToAnsiColorCode());
+                if (part.ForegroundColor.HasValue)
+                {
+                    builder.Append(part.ForegroundColor.Value.ToAnsiForegroundColorCode());
+                }
+                if (part.BackgroundColor.HasValue)
+                {
+                    builder.Append(part.BackgroundColor.Value.ToAnsiBackgroundColorCode());
+                }
                 builder.Append(part.Text);
             }
             builder.Append(AnsiSequences.Reset);

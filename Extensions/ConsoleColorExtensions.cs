@@ -2,7 +2,7 @@ namespace Paraclete.Extensions;
 
 public static class ConsoleColorExtensions
 {
-    public static AnsiString ToAnsiColorCode(this ConsoleColor color) => color switch
+    public static AnsiString ToAnsiForegroundColorCode(this ConsoleColor color) => color switch
     {
         ConsoleColor.Black       => AnsiSequences.ForegroundColors.Black,
         ConsoleColor.DarkRed     => AnsiSequences.ForegroundColors.DarkRed,
@@ -20,6 +20,27 @@ public static class ConsoleColorExtensions
         ConsoleColor.Magenta     => AnsiSequences.ForegroundColors.Magenta,
         ConsoleColor.Cyan        => AnsiSequences.ForegroundColors.Cyan,
         ConsoleColor.White       => AnsiSequences.ForegroundColors.White,
+        _ => throw new ArgumentException(message: $"Undefined color: {color}", paramName: nameof(color))
+    };
+
+    public static AnsiString ToAnsiBackgroundColorCode(this ConsoleColor color) => color switch
+    {
+        ConsoleColor.Black       => AnsiSequences.BackgroundColors.Black,
+        ConsoleColor.DarkRed     => AnsiSequences.BackgroundColors.DarkRed,
+        ConsoleColor.DarkGreen   => AnsiSequences.BackgroundColors.DarkGreen,
+        ConsoleColor.DarkYellow  => AnsiSequences.BackgroundColors.DarkYellow,
+        ConsoleColor.DarkBlue    => AnsiSequences.BackgroundColors.DarkBlue,
+        ConsoleColor.DarkMagenta => AnsiSequences.BackgroundColors.DarkMagenta,
+        ConsoleColor.DarkCyan    => AnsiSequences.BackgroundColors.DarkCyan,
+        ConsoleColor.Gray        => AnsiSequences.BackgroundColors.Gray,
+        ConsoleColor.DarkGray    => AnsiSequences.BackgroundColors.DarkGray,
+        ConsoleColor.Red         => AnsiSequences.BackgroundColors.Red,
+        ConsoleColor.Green       => AnsiSequences.BackgroundColors.Green,
+        ConsoleColor.Yellow      => AnsiSequences.BackgroundColors.Yellow,
+        ConsoleColor.Blue        => AnsiSequences.BackgroundColors.Blue,
+        ConsoleColor.Magenta     => AnsiSequences.BackgroundColors.Magenta,
+        ConsoleColor.Cyan        => AnsiSequences.BackgroundColors.Cyan,
+        ConsoleColor.White       => AnsiSequences.BackgroundColors.White,
         _ => throw new ArgumentException(message: $"Undefined color: {color}", paramName: nameof(color))
     };
 }

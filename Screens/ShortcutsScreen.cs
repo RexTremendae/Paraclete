@@ -8,7 +8,6 @@ namespace Paraclete.Screens;
 public class ShortcutsScreen : IScreen
 {
     public string Name => "Shortcuts";
-    public int Ordinal => 20;
     public ConsoleKey Shortcut => ConsoleKey.F3;
 
     public MenuBase Menu { get; private set; }
