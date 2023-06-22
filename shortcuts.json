@@ -1,0 +1,12 @@
+{
+    "Shortcuts":
+    [
+        {
+            "Key": "X",
+            "ShortDescription": "[X]ommand",
+            "LongDescription": "Custom command",
+            "Command": "powershell",
+            "Arguments": [ "-noprofile", "C:\\dev\\x.ps1" ]
+        }
+    ]
+}

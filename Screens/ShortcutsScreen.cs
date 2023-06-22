@@ -38,11 +38,16 @@ public class ShortcutsScreen : IScreen
         foreach (var (key, command) in Menu.MenuItems)
         {
             var shortcut = (IShortcut)command;
+            var description = AnsiSequences.ForegroundColors.White + (command is CustomShortcutCommand
+                ? "Custom command: " + AnsiSequences.ForegroundColors.Gray + shortcut.LongDescription
+                : shortcut.LongDescription);
+
             var row =
                 AnsiSequences.ForegroundColors.Gray + "[" +
                 AnsiSequences.ForegroundColors.Green + key.ToString() +
                 AnsiSequences.ForegroundColors.Gray + "] " +
-                AnsiSequences.ForegroundColors.White + shortcut.LongDescription;
+                description;
+
             rows.Add(row);
         }
 

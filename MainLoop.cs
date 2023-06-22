@@ -71,6 +71,8 @@ public class MainLoop
         _screenSaver.Inactivate();
         _screenSelector.SwitchTo<HomeScreen>();
 
+        await _shortcutsMenu.LoadCustomCommands("shortcuts.json");
+
         new Thread(async () => await RepaintLoop()).Start();
 
         var screens = new Dictionary<ConsoleKey, IScreen>();

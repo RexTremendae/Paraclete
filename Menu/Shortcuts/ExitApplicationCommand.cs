@@ -1,6 +1,6 @@
 namespace Paraclete.Menu.Shortcuts;
 
-public class ExitApplicationCommand : StartProcessCommandBase, IShortcut
+public class ExitApplicationCommand : IShortcut
 {
     public ConsoleKey Shortcut => ConsoleKey.Q;
     public string Description => "[Q]uit";
