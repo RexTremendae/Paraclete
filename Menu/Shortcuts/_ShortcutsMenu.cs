@@ -2,8 +2,10 @@ using System.Text.Json;
 
 namespace Paraclete.Menu.Shortcuts;
 
-public class _ShortcutsMenu : MenuBase
+public class _ShortcutsMenu : MenuBase, IInitializer
 {
+    private const string _shortcutsFilename = "shortcuts.json";
+
     public _ShortcutsMenu(IServiceProvider services)
         : base(services, new Type[]
     {
@@ -15,14 +17,14 @@ public class _ShortcutsMenu : MenuBase
     })
     {}
 
-    public async Task LoadCustomCommands(string filepath)
+    public async Task Initialize()
     {
-        if (!File.Exists(filepath))
+        if (!File.Exists(_shortcutsFilename))
         {
             return;
         }
 
-        var json = await File.ReadAllTextAsync(filepath);
+        var json = await File.ReadAllTextAsync(_shortcutsFilename);
         var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         var shortcutList = JsonSerializer.Deserialize<CustomShortcutList>(json, options)?.Shortcuts
             ?? Array.Empty<CustomShortcut>();

@@ -17,6 +17,11 @@ public class EditToDoItemCommand : IInputCommand<string>
 
     public Task Execute()
     {
+        if (_toDoList.SelectedToDoItem == null)
+        {
+            throw new InvalidOperationException("No ToDo item selected!");
+        }
+
         var selectedTodoItem = _toDoList.SelectedToDoItem.Description;
         var value = string.IsNullOrEmpty(selectedTodoItem)
             ? null
@@ -28,6 +33,11 @@ public class EditToDoItemCommand : IInputCommand<string>
 
     public async Task CompleteInput(string data)
     {
+        if (_toDoList.SelectedToDoItem == null)
+        {
+            throw new InvalidOperationException("No ToDo item selected!");
+        }
+
         _toDoList.SelectedToDoItem.Description = data;
         await _toDoList.Update();
     }

@@ -3,28 +3,34 @@ namespace Paraclete;
 public class ToDoList : IInitializer
 {
     private readonly List<ToDoItem> _toDoItems;
+    private readonly List<ToDoItem> _doneItems;
     private readonly ScreenInvalidator _screenInvalidator;
 
     public IEnumerable<ToDoItem> ToDoItems => _toDoItems;
+    public IEnumerable<ToDoItem> DoneItems => _doneItems;
 
+    private List<ToDoItem> _selectedList = new();
     public int _selectedToDoItemIndex;
-    public ToDoItem SelectedToDoItem => _toDoItems[_selectedToDoItemIndex];
+    public ToDoItem? SelectedToDoItem => _selectedList.Count == 0 ? null : _selectedList[_selectedToDoItemIndex];
 
     public bool MoveItemMode { get; private set; }
     public int MaxItemLength { get; private set; }
 
-    const string _todoFileName = "todo.txt";
+    private const string _todoFilename = "todo.txt";
 
     public ToDoList(ScreenInvalidator screenInvalidator)
     {
         _screenInvalidator = screenInvalidator;
         _toDoItems = new();
+        _doneItems = new();
+        _selectedList = _toDoItems;
         UpdateMaxItemLength();
     }
 
     public void ResetSelection()
     {
         _selectedToDoItemIndex = 0;
+        _selectedList = _toDoItems.Any() ? _toDoItems : _doneItems;
         MoveItemMode = false;
     }
 
@@ -34,7 +40,11 @@ public class ToDoList : IInitializer
 
         if (_selectedToDoItemIndex == 0)
         {
-            newPosition = _toDoItems.Count-1;
+            if (!MoveItemMode)
+            {
+                SwitchSelectedList();
+            }
+            newPosition = _selectedList.Count-1;
         }
         else
         {
@@ -43,9 +53,9 @@ public class ToDoList : IInitializer
 
         if (MoveItemMode)
         {
-            var itemToMove = _toDoItems[_selectedToDoItemIndex];
-            _toDoItems.RemoveAt(_selectedToDoItemIndex);
-            _toDoItems.Insert(newPosition, itemToMove);
+            var itemToMove = _selectedList[_selectedToDoItemIndex];
+            _selectedList.RemoveAt(_selectedToDoItemIndex);
+            _selectedList.Insert(newPosition, itemToMove);
         }
         _selectedToDoItemIndex = newPosition;
         await Update();
@@ -55,8 +65,12 @@ public class ToDoList : IInitializer
     {
         int newPosition;
 
-        if (_selectedToDoItemIndex >= _toDoItems.Count-1)
+        if (_selectedToDoItemIndex >= _selectedList.Count-1)
         {
+            if (!MoveItemMode)
+            {
+                SwitchSelectedList();
+            }
             newPosition = 0;
         }
         else
@@ -66,17 +80,38 @@ public class ToDoList : IInitializer
 
         if (MoveItemMode)
         {
-            var itemToMove = _toDoItems[_selectedToDoItemIndex];
-            _toDoItems.RemoveAt(_selectedToDoItemIndex);
-            _toDoItems.Insert(newPosition, itemToMove);
+            var itemToMove = _selectedList[_selectedToDoItemIndex];
+            _selectedList.RemoveAt(_selectedToDoItemIndex);
+            _selectedList.Insert(newPosition, itemToMove);
         }
         _selectedToDoItemIndex = newPosition;
         await Update();
     }
 
+    private void SwitchSelectedList()
+    {
+        var newSelectedList = (_selectedList == _toDoItems ? _doneItems : _toDoItems);
+        if (newSelectedList.Count > 0)
+        {
+            _selectedList = (_selectedList == _toDoItems ? _doneItems : _toDoItems);
+        }
+    }
+
     public async Task ToggleSelectedDoneState()
     {
-        SelectedToDoItem.ToggleDoneState();
+        var todoItem = _selectedList[_selectedToDoItemIndex];
+        _selectedList.Remove(todoItem);
+        (_selectedList == _toDoItems ? _doneItems : _toDoItems).Add(todoItem);
+
+        if (!_selectedList.Any())
+        {
+            SwitchSelectedList();
+        }
+        else if (_selectedToDoItemIndex >= _selectedList.Count)
+        {
+            _selectedToDoItemIndex = _selectedList.Count - 1;
+        }
+
         await Update();
     }
 
@@ -105,22 +140,32 @@ public class ToDoList : IInitializer
 
     public void UpdateMaxItemLength()
     {
-        MaxItemLength = _toDoItems.Any()
-            ? _toDoItems.Max(_ => _.Description.Length)
+        var maxToDoLength = _toDoItems.Any()
+            ? _toDoItems.Max(_ => _.ToDisplayString(false).Length)
             : 0;
+
+        var maxDoneLength = _doneItems.Any()
+            ? _doneItems.Max(_ => _.ToDisplayString(true).Length)
+            : 0;
+
+        MaxItemLength = int.Max(maxToDoLength, maxDoneLength);
     }
 
     public async Task Initialize()
     {
-        if (!File.Exists(_todoFileName))
+        if (!File.Exists(_todoFilename))
         {
             return;
         }
 
-        foreach (var line in await File.ReadAllLinesAsync(_todoFileName))
+        foreach (var line in await File.ReadAllLinesAsync(_todoFilename))
         {
             if (string.IsNullOrEmpty(line)) continue;
-            _toDoItems.Add(new(line[1..], done: line[0] == '-'));
+            var done = line[0] == '-';
+
+            (done ? _doneItems : _toDoItems).Add(new(
+                description: line[13..],
+                expirationDate: DateOnly.Parse(line[2..12])));
         }
 
         UpdateMaxItemLength();
@@ -129,23 +174,46 @@ public class ToDoList : IInitializer
     public async Task Update()
     {
         UpdateMaxItemLength();
-        await File.WriteAllLinesAsync(_todoFileName, _toDoItems.Select(_ => (_.Done ? '-' : ' ') + _.Description));
+        await File.WriteAllLinesAsync(_todoFilename,
+            _toDoItems.Select(_ => _.ToPersistString(false))
+            .Concat(_doneItems.Select(_ => _.ToPersistString(true)))
+        );
     }
 }
 
 public class ToDoItem
 {
     public string Description { get; set; }
-    public bool Done { get; private set; }
+    public DateOnly ExpirationDate { get; }
 
-    public ToDoItem(string description, bool done = false)
+    public ToDoItem(string description, DateOnly expirationDate = default)
     {
         Description = description;
-        Done = done;
+        ExpirationDate = expirationDate;
     }
 
-    public void ToggleDoneState()
+    public AnsiString ToDisplayString(bool done)
     {
-        Done = !Done;
+        var now = DateOnly.FromDateTime(DateTime.Now.Date);
+        var descriptionColor = done
+            ? AnsiSequences.ForegroundColors.Gray
+            : now switch
+            {
+                var x when ExpirationDate == default => AnsiSequences.ForegroundColors.Yellow,
+                var x when ExpirationDate < now      => AnsiSequences.ForegroundColors.Red,
+                var x when ExpirationDate == now     => AnsiSequences.ForegroundColors.Orange,
+                _                                    => AnsiSequences.ForegroundColors.Yellow
+            };
+
+        var expirationDate = (ExpirationDate != default
+            ? AnsiSequences.ForegroundColors.Gray + ExpirationDate.ToString(" (yyyy-MM-dd)")
+            : "");
+
+        return descriptionColor + Description + expirationDate + AnsiSequences.Reset;
     }
+
+    public string ToPersistString(bool done) =>
+        (done ? "- " : "  ") +
+        ExpirationDate.ToString("yyyy-MM-dd ") +
+        Description;
 }
