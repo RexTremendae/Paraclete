@@ -24,7 +24,7 @@ public class FontExhibition : IExhibition
         {
             if (size == Font.Size.Undefined) continue;
             var fontWriter = FontWriter.Create(size);
-            painter.Paint($"{size.ToString()}:".PadRight(4), position);
+            painter.Paint($"{AnsiSequences.ForegroundColors.White}{size.ToString()}:".PadRight(4), position);
             fontWriter.Write(text, colors[size], (position.x + 4, position.y), painter);
             position = (position.x, position.y + fontWriter.Font.CharacterHeight + 1);
         }

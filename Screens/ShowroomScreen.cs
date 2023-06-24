@@ -10,16 +10,15 @@ public class ShowroomScreen : IScreen
     public string Name => "Showroom";
     public ConsoleKey Shortcut => ConsoleKey.F12;
 
-    public MenuBase Menu { get; private set; }
-    public ILayout Layout { get; private set; }
+    public MenuBase Menu { get; }
+    public ILayout Layout => new SinglePanelLayout();
 
     private readonly TimeWriter _currentTimeWriter;
     private readonly ExhibitionSelector _exhibitionSelector;
 
-    public ShowroomScreen(_ShowroomMenu showroomMenu, ExhibitionSelector exhibitionSelector, OneFrameLayout layout)
+    public ShowroomScreen(_ShowroomMenu showroomMenu, ExhibitionSelector exhibitionSelector)
     {
         Menu = showroomMenu;
-        Layout = layout;
         _exhibitionSelector = exhibitionSelector;
         _currentTimeWriter = new TimeWriter(new() {
             FontSize = Font.Size.XS,

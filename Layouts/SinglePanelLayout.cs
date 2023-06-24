@@ -2,7 +2,7 @@ using Paraclete.Painting;
 
 namespace Paraclete.Layouts;
 
-public class OneFrameLayout : ILayout
+public class SinglePanelLayout : ILayout
 {
     public void Paint(Painter painter, int windowWidth, int windowHeight)
     {

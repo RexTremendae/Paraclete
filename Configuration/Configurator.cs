@@ -30,7 +30,6 @@ public static class Configurator
 
             .AddImplementationsOf<ICommand>()
             .AddImplementationsOf<IExhibition>()
-            .AddImplementationsOf<ILayout>()
             .AddImplementationsOf<IScreen>()
             .AddImplementationsOf<MenuBase>()
         ;

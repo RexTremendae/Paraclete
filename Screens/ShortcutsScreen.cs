@@ -10,10 +10,8 @@ public class ShortcutsScreen : IScreen
     public string Name => "Shortcuts";
     public ConsoleKey Shortcut => ConsoleKey.F3;
 
-    public MenuBase Menu { get; private set; }
-
-    private OneFrameLayout _layout = new();
-    public ILayout Layout => _layout;
+    public MenuBase Menu { get; }
+    public ILayout Layout => new SinglePanelLayout();
 
     private ScreenInvalidator _screenInvalidator;
     private readonly TimeWriter _currentTimeWriter;

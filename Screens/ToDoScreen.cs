@@ -10,10 +10,8 @@ public class ToDoScreen : IScreen
     public string Name => "ToDo";
     public ConsoleKey Shortcut => ConsoleKey.F2;
 
-    public MenuBase Menu { get; private set; }
-
-    private OneFrameLayout _layout = new();
-    public ILayout Layout => _layout;
+    public MenuBase Menu { get; }
+    public ILayout Layout => new SinglePanelLayout();
 
     private readonly ScreenInvalidator _screenInvalidator;
     private readonly TimeWriter _currentTimeWriter;

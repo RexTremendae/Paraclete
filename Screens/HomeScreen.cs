@@ -10,10 +10,13 @@ public class HomeScreen : IScreen
     public string Name => "Home";
     public ConsoleKey Shortcut => ConsoleKey.F1;
 
-    public MenuBase Menu { get; private set; }
+    public MenuBase Menu { get; }
 
-    private const int _1stColumnWidth = 60;
-    private ColumnBasedLayout _layout = new(firstColumnWidth: _1stColumnWidth);
+    private const int _1stColumnWidth = 59;
+    private ColumnBasedLayout _layout = new(new ColumnBasedLayout.ColumnDefinition[] {
+        new (width: _1stColumnWidth, 9)
+    });
+
     public ILayout Layout => _layout;
 
     private Stopwatch _stopWatch;
