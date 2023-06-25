@@ -1,23 +1,24 @@
-using Paraclete.Menu;
+using Paraclete.IO;
 
 namespace Paraclete.Painting;
 
 public class DataInputPainter
 {
-    private readonly IServiceProvider _services;
     private readonly DataInputter _dataInputter;
+    private readonly Settings _settings;
 
-    public DataInputPainter(IServiceProvider services, DataInputter dataInputter)
+    public DataInputPainter(Settings settings, DataInputter dataInputter)
     {
-        _services = services;
         _dataInputter = dataInputter;
+        _settings = settings;
     }
 
     public void PaintInput(Painter painter, int windowWidth, int windowHeight)
     {
         var rows = new AnsiString[] {
-            AnsiSequences.ForegroundColors.White + _dataInputter.Label,
-            AnsiSequences.ForegroundColors.Yellow + _dataInputter.CurrentInput + AnsiSequences.ForegroundColors.White + "▂".PadRight(windowWidth - _dataInputter.CurrentInput.Length - 5)
+            _settings.Colors.InputLabel + _dataInputter.Label,
+            _settings.Colors.InputData + _dataInputter.CurrentInput
+            + _settings.Colors.InputLabel + "▂".PadRight(windowWidth - _dataInputter.CurrentInput.Length - 5)
         };
 
         painter.PaintRows(rows, (2, -3));

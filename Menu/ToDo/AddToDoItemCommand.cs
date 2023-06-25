@@ -1,3 +1,5 @@
+using Paraclete.IO;
+
 namespace Paraclete.Menu.ToDo;
 
 public class AddToDoItemCommand : ICommand, IInputCommand<string>
@@ -15,10 +17,9 @@ public class AddToDoItemCommand : ICommand, IInputCommand<string>
         _dataInputter = dataInputter;
     }
 
-    public Task Execute()
+    public async Task Execute()
     {
-        _dataInputter.StartInput<string>(this, "Enter new ToDo item description:");
-        return Task.CompletedTask;
+        await _dataInputter.StartInput(this, "Enter new ToDo item description:");
     }
 
     public async Task CompleteInput(string data)

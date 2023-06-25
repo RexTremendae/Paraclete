@@ -2,34 +2,41 @@ using System.Reflection;
 using System.Text;
 using Paraclete.Menu;
 
-namespace Paraclete;
+namespace Paraclete.IO;
 
 public class DataInputter
 {
-    private IInputCommand? _command;
     private readonly ScreenInvalidator _screenInvalidator;
+
+    private IInputCommand? _command;
     private StringBuilder _input;
-    private Type _inputType;
-    private string _alphabet;
+    private Dictionary<Type, IDataTypeInputter> _availableInputters;
+    private IDataTypeInputter _selectedInputter;
 
     public bool IsActive { get; private set; }
     public string CurrentInput { get; private set; }
-    public string Label { get; private set; }
+    public AnsiString Label { get; private set; }
 
-    public DataInputter(ScreenInvalidator screenInvalidator)
+    public DataInputter(ScreenInvalidator screenInvalidator, IServiceProvider services)
     {
         _screenInvalidator = screenInvalidator;
         _input = new();
         CurrentInput = string.Empty;
         Label = string.Empty;
-        _alphabet = string.Empty;
-        _inputType = typeof(object);
+        _availableInputters = new();
+        _selectedInputter = IDataTypeInputter.NoInputter;
+
+        foreach (var dataInputter in TypeUtility.EnumerateImplementatingInstancesOf<IDataTypeInputter>(services))
+        {
+            _availableInputters.Add(dataInputter.DataType, dataInputter);
+        }
     }
 
-    public void StartInput<T>(IInputCommand<T> inputCommand, string? label, NullableGeneric<T>? valueToEdit = null)
+    public Task StartInput<T>(IInputCommand<T> inputCommand, AnsiString? label, NullableGeneric<T>? valueToEdit = null)
     {
         _input.Clear();
         CurrentInput = string.Empty;
+        _selectedInputter = IDataTypeInputter.NoInputter;
 
         if (valueToEdit != null)
         {
@@ -43,28 +50,16 @@ public class DataInputter
         }
 
         _command = inputCommand;
-
-        _inputType = typeof(T);
-
-        if (_inputType == typeof(string))
-        {
-            _alphabet =
-                "abcdefghijklmnopqrstuvwxyzåäö" +
-                "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ" +
-                "0123456789" +
-                ".,:;/\\@#$%& !?_-+=()[]{}<>";
-        }
-        else if (_inputType == typeof(int))
-        {
-            _alphabet = "0123456789";
-        }
-        else
+        if (!_availableInputters.TryGetValue(typeof(T), out var inputter))
         {
             throw new NotSupportedException($"Input of type {typeof(T)} is not supported.");
         }
+        _selectedInputter = inputter;
 
         IsActive = true;
         _screenInvalidator.Invalidate();
+
+        return Task.CompletedTask;
     }
 
     public async Task Input(ConsoleKeyInfo keyInfo)
@@ -73,9 +68,18 @@ public class DataInputter
 
         if (key == ConsoleKey.Enter)
         {
+            if (_selectedInputter.MinLength > _input.Length)
+            {
+                return;
+            }
+            if (_selectedInputter.MaxLength < _input.Length)
+            {
+                return;
+            }
+
             IsActive = false;
             await CompleteInput();
-            _command = null;
+            _command = IInputCommand.NoInputCommand;
             return;
         }
 
@@ -95,8 +99,13 @@ public class DataInputter
             return;
         }
 
+        if (_selectedInputter.MaxLength <= _input.Length)
+        {
+            return;
+        }
+
         var keyChar = keyInfo.KeyChar;
-        if (_alphabet.Contains(keyChar))
+        if (_selectedInputter.Alphabet.Contains(keyChar))
         {
             _input.Append(keyChar);
             CurrentInput = _input.ToString();
@@ -111,29 +120,8 @@ public class DataInputter
             ?.GetMethod(nameof(IInputCommand<int>.CompleteInput), publicInstanceFlags)
             ?? throw new InvalidOperationException("Could not find the CompleteInput method.");
 
-        var input = _input.ToString();
-
-        object convertedInput = new();
-
-        if (_inputType == typeof(int))
-        {
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                convertedInput = 0;
-            }
-            else
-            {
-                convertedInput = int.Parse(input);
-            }
-        }
-        else if(_inputType == typeof(string))
-        {
-            convertedInput = input;
-        }
-        else
-        {
-            throw new NotSupportedException($"Input of type '{_inputType.Name}' not supported.");
-        }
+        var inputData = _input.ToString();
+        var convertedInput = _selectedInputter.CompleteInput(inputData);
 
         await (Task)(methodInfo!.Invoke(_command, new object[] { convertedInput }))!;
     }

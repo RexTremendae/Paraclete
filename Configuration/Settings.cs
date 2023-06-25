@@ -22,4 +22,11 @@ public class Settings
         public TimeSpan ContentChangeInterval => TimeSpan.FromSeconds(30);
     }
     public ScreenSaverSettings ScreenSaver => new();
+
+    public class ColorSettings
+    {
+        public AnsiString InputLabel => AnsiSequences.ForegroundColors.White;
+        public AnsiString InputData => AnsiSequences.ForegroundColors.Yellow;
+    }
+    public ColorSettings Colors => new();
 }

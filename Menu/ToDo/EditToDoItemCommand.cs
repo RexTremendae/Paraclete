@@ -1,3 +1,5 @@
+using Paraclete.IO;
+
 namespace Paraclete.Menu.ToDo;
 
 public class EditToDoItemCommand : IInputCommand<string>
@@ -15,11 +17,11 @@ public class EditToDoItemCommand : IInputCommand<string>
         _dataInputter = dataInputter;
     }
 
-    public Task Execute()
+    public async Task Execute()
     {
         if (_toDoList.SelectedToDoItem == null)
         {
-            throw new InvalidOperationException("No ToDo item selected!");
+            return;
         }
 
         var selectedTodoItem = _toDoList.SelectedToDoItem.Description;
@@ -27,8 +29,7 @@ public class EditToDoItemCommand : IInputCommand<string>
             ? null
             : new NullableGeneric<string>(selectedTodoItem);
 
-        _dataInputter.StartInput<string>(this, "Enter ToDo item description:", value);
-        return Task.CompletedTask;
+        await _dataInputter.StartInput(this, "Enter ToDo item description:", value);
     }
 
     public async Task CompleteInput(string data)

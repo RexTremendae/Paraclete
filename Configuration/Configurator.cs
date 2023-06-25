@@ -1,8 +1,7 @@
-using Paraclete.Layouts;
+using Paraclete.IO;
 using Paraclete.Menu;
 using Paraclete.Painting;
 using Paraclete.Screens;
-using Serilog;
 
 namespace Paraclete.Configuration;
 
@@ -32,6 +31,7 @@ public static class Configurator
             .AddImplementationsOf<IExhibition>()
             .AddImplementationsOf<IScreen>()
             .AddImplementationsOf<MenuBase>()
+            .AddImplementationsOf<IDataTypeInputter>()
         ;
 
         var serviceProvider = services.BuildServiceProvider();

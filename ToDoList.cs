@@ -99,6 +99,11 @@ public class ToDoList : IInitializer
 
     public async Task ToggleSelectedDoneState()
     {
+        if (!_selectedList.Any())
+        {
+            return;
+        }
+
         var todoItem = _selectedList[_selectedToDoItemIndex];
         _selectedList.Remove(todoItem);
         (_selectedList == _toDoItems ? _doneItems : _toDoItems).Add(todoItem);
@@ -123,12 +128,22 @@ public class ToDoList : IInitializer
     public async Task AddItem(string description)
     {
         _toDoItems.Add(new(description));
+        if (!_selectedList.Any())
+        {
+            SwitchSelectedList();
+        }
+
         await Update();
     }
 
     public async Task DeleteSelectedItem()
     {
-        _toDoItems.RemoveAt(_selectedToDoItemIndex);
+        if (!_selectedList.Any())
+        {
+            return;
+        }
+
+        _selectedList.RemoveAt(_selectedToDoItemIndex);
         if (_selectedToDoItemIndex >= _toDoItems.Count)
         {
             _selectedToDoItemIndex = Math.Max(_toDoItems.Count-1, 0);

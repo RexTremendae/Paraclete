@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using Paraclete.Layouts;
+using Paraclete.IO;
 using Paraclete.Menu;
 using Paraclete.Menu.Shortcuts;
 using Paraclete.Painting;
@@ -43,7 +43,7 @@ public class MainLoop
 
         for(;;)
         {
-            _escapeState = Keyboard.GetAsyncKeyState(Keyboard.VirtKey.ESCAPE) != 0;
+            _escapeState = PInvoke.Keyboard.GetAsyncKeyState(PInvoke.Keyboard.VirtKey.ESCAPE) != 0;
 
             if (_screenSaver.IsActive)
             {
@@ -92,7 +92,7 @@ public class MainLoop
 
             var anyKeyMatch = false;
 
-            ICommand selectedCommand = new NoCommand();
+            var selectedCommand = ICommand.NoCommand;
             if (_dataInputter.IsActive)
             {
                 await _dataInputter.Input(key);
@@ -103,7 +103,7 @@ public class MainLoop
                 anyKeyMatch = true;
             }
 
-            IScreen selectedScreen = new NoScreen();
+            var selectedScreen = IScreen.NoScreen;
             if (!_dataInputter.IsActive && screens.TryGetValue(key.Key, out var selectedForSwitchScreen))
             {
                 selectedScreen = selectedForSwitchScreen;
@@ -123,40 +123,14 @@ public class MainLoop
                 }
             }
 
-            if (selectedCommand is not NoCommand)
+            if (selectedCommand != ICommand.NoCommand)
             {
                 await selectedCommand.Execute();
             }
-            else if (selectedScreen is not NoScreen)
+            else if (selectedScreen != IScreen.NoScreen)
             {
                 _screenSelector.SwitchTo(selectedScreen);
             }
-        }
-    }
-
-    [ExcludeFromEnumeration]
-    private class NoScreen : IScreen
-    {
-        public MenuBase Menu => throw new NotImplementedException();
-        public ILayout Layout => throw new NotImplementedException();
-        public string Name => throw new NotImplementedException();
-        public ConsoleKey Shortcut => throw new NotImplementedException();
-
-        public void PaintContent(Painter visualizer)
-        {
-        }
-    }
-
-    [ExcludeFromEnumeration]
-    private class NoCommand : ICommand
-    {
-        public ConsoleKey Shortcut => ConsoleKey.NoName;
-
-        public string Description => string.Empty;
-
-        public Task Execute()
-        {
-            return Task.CompletedTask;
         }
     }
 }

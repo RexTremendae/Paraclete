@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace Paraclete;
+namespace Paraclete.PInvoke;
 
 public static class Keyboard
 {
