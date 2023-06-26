@@ -194,6 +194,18 @@ public class ToDoList : IInitializer
             .Concat(_doneItems.Select(_ => _.ToPersistString(true)))
         );
     }
+
+    public void SortToDoItems()
+    {
+        _toDoItems.Sort((_1, _2) => 0 switch
+        {
+            var x when _1.ExpirationDate == default && _2.ExpirationDate != default => 1,
+            var x when _1.ExpirationDate != default && _2.ExpirationDate == default => -1,
+            var x when _1.ExpirationDate > _2.ExpirationDate => 1,
+            var x when _1.ExpirationDate < _2.ExpirationDate => -1,
+            _ => 0
+        });
+    }
 }
 
 public class ToDoItem
