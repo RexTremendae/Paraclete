@@ -199,7 +199,7 @@ public class ToDoList : IInitializer
 public class ToDoItem
 {
     public string Description { get; set; }
-    public DateOnly ExpirationDate { get; }
+    public DateOnly ExpirationDate { get; set; }
 
     public ToDoItem(string description, DateOnly expirationDate = default)
     {

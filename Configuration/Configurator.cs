@@ -31,7 +31,7 @@ public static class Configurator
             .AddImplementationsOf<IExhibition>()
             .AddImplementationsOf<IScreen>()
             .AddImplementationsOf<MenuBase>()
-            .AddImplementationsOf<IDataTypeInputter>()
+            .AddImplementationsOf<IInputDefinition>()
         ;
 
         var serviceProvider = services.BuildServiceProvider();
