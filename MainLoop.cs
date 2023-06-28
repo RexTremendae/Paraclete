@@ -4,7 +4,6 @@ using Paraclete.Menu;
 using Paraclete.Menu.Shortcuts;
 using Paraclete.Painting;
 using Paraclete.Screens;
-using static System.Console;
 
 namespace Paraclete;
 
@@ -35,7 +34,7 @@ public class MainLoop
         _repaintLoopInterval = services.GetRequiredService<Settings>().RepaintLoopInterval;
     }
 
-    private bool _escapeState = false;
+    private bool _quickMenuIsActive = false;
 
     private async Task RepaintLoop()
     {
@@ -43,7 +42,7 @@ public class MainLoop
 
         for(;;)
         {
-            _escapeState = PInvoke.Keyboard.GetAsyncKeyState(PInvoke.Keyboard.VirtKey.ESCAPE) != 0;
+            _quickMenuIsActive = PInvoke.Keyboard.GetAsyncKeyState(PInvoke.Keyboard.VirtKey.TAB) != 0;
 
             if (_screenSaver.IsActive)
             {
@@ -57,7 +56,7 @@ public class MainLoop
                     screenSaverIsActive = false;
                     _screenInvalidator.Invalidate();
                 }
-                _painter.PaintScreen(_escapeState);
+                _painter.PaintScreen(_quickMenuIsActive);
             }
 
             await Task.Delay(_repaintLoopInterval);
@@ -83,7 +82,7 @@ public class MainLoop
 
         for(;;)
         {
-            key = ReadKey(true);
+            key = Console.ReadKey(true);
 
             var screenSaverWasActive = _screenSaver.IsActive;
             _screenSaver.Inactivate();
@@ -97,7 +96,7 @@ public class MainLoop
             {
                 await _dataInputter.Input(key);
             }
-            else if ((_escapeState ? _shortcutsMenu : currentMenu).MenuItems.TryGetValue(key.Key, out var selectedMenuCommand))
+            else if ((_quickMenuIsActive ? _shortcutsMenu : currentMenu).MenuItems.TryGetValue(key.Key, out var selectedMenuCommand))
             {
                 selectedCommand = selectedMenuCommand;
                 anyKeyMatch = true;

@@ -58,7 +58,7 @@ public class MenuPainter
         var row = new AnsiStringBuilder();
 
         row.Append(("[", _bracketColor));
-        row.Append(("ESC ", _shortcutColor));
+        row.Append(("TAB ", _shortcutColor));
 
         var format = (shortcutsMenuActive)
             ? AnsiSequences.BackgroundColors.Blue
