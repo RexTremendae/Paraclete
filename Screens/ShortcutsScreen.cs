@@ -13,8 +13,8 @@ public class ShortcutsScreen : IScreen
     public MenuBase Menu { get; }
     public ILayout Layout => new SinglePanelLayout();
 
-    private ScreenInvalidator _screenInvalidator;
     private readonly TimeWriter _currentTimeWriter;
+    private ScreenInvalidator _screenInvalidator;
 
     public ShortcutsScreen(ScreenInvalidator screenInvalidator, _ShortcutsMenu shortcutsMenu)
     {
