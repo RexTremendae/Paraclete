@@ -13,7 +13,7 @@ public class _ToDoMenu : MenuBase
         typeof(ToggleItemDoneCommand),
         typeof(ToggleItemMoveModeCommand),
         typeof(PreviousItemCommand),
-        typeof(NextItemCommand)
+        typeof(NextItemCommand),
     })
     { }
 }

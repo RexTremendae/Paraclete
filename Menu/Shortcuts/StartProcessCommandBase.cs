@@ -10,7 +10,7 @@ public abstract class StartProcessCommandBase
         {
             FileName = filename,
             CreateNoWindow = true,
-            UseShellExecute = true
+            UseShellExecute = true,
         };
         foreach (var a in args)
         {

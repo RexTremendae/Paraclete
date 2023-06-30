@@ -9,7 +9,7 @@ public class _MainMenu : MenuBase
     {
         typeof(StartStopCommand),
         typeof(ResetCommand),
-        typeof(MarkTimeCommand)
+        typeof(MarkTimeCommand),
     })
     { }
 }

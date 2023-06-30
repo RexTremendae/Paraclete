@@ -24,7 +24,7 @@ public class ShowroomScreen : IScreen
             FontSize = Font.Size.XS,
             Color = ConsoleColor.White,
             ShowSeconds = false,
-            ShowMilliseconds = false
+            ShowMilliseconds = false,
         });
     }
 

@@ -45,7 +45,7 @@ public class ScreenSaver
             SecondsColor = ConsoleColor.DarkGray,
             ShowHours = true,
             ShowSeconds = true,
-            ShowMilliseconds = false
+            ShowMilliseconds = false,
         };
 
         var font = Font.OfSize(settings.ScreenSaver.FontSize);
@@ -68,7 +68,7 @@ public class ScreenSaver
         (ConsoleColor.Blue,    ConsoleColor.DarkBlue),
         (ConsoleColor.Green,   ConsoleColor.DarkGreen),
         (ConsoleColor.Magenta, ConsoleColor.DarkMagenta),
-        (ConsoleColor.Red,     ConsoleColor.DarkRed)
+        (ConsoleColor.Red,     ConsoleColor.DarkRed),
     };
 
     public void PaintScreen()

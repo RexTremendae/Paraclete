@@ -7,7 +7,7 @@ public class _ShowroomMenu : MenuBase
     {
         typeof(TriggerScreenSaverCommand),
         typeof(PreviousExhibitionCommand),
-        typeof(NextExhibitionCommand)
+        typeof(NextExhibitionCommand),
     })
     { }
 }

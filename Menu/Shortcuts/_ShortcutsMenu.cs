@@ -13,7 +13,7 @@ public class _ShortcutsMenu : MenuBase, IInitializer
         typeof(StartTaskManagerCommand),
         typeof(OutlookCommand),
         typeof(PowerShellCommand),
-        typeof(HibernateCommand)
+        typeof(HibernateCommand),
     })
     { }
 

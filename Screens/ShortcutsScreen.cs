@@ -24,7 +24,7 @@ public class ShortcutsScreen : IScreen
             FontSize = Font.Size.XS,
             Color = ConsoleColor.White,
             ShowSeconds = false,
-            ShowMilliseconds = false
+            ShowMilliseconds = false,
         });
 
         Menu = shortcutsMenu;

@@ -18,7 +18,7 @@ public class DataInputPainter
         var rows = new AnsiString[] {
             _settings.Colors.InputLabel + _dataInputter.Label,
             _settings.Colors.InputData + _dataInputter.CurrentInput
-            + _settings.Colors.InputLabel + "▂".PadRight(windowWidth - _dataInputter.CurrentInput.Length - 5)
+            + _settings.Colors.InputLabel + "▂".PadRight(windowWidth - _dataInputter.CurrentInput.Length - 5),
         };
 
         painter.PaintRows(rows, (2, -3));
