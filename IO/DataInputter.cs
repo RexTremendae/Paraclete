@@ -59,6 +59,7 @@ public class DataInputter
         {
             throw new NotSupportedException($"Input of type {typeof(T)} is not supported.");
         }
+
         _selectedInputter = inputter;
 
         IsActive = true;
@@ -77,6 +78,7 @@ public class DataInputter
             {
                 return;
             }
+
             if (_selectedInputter.MaxLength < _input.Length)
             {
                 return;
@@ -106,6 +108,7 @@ public class DataInputter
                 _input.Remove(_input.Length-1, 1);
                 CurrentInput = _input.ToString();
             }
+
             return;
         }
 

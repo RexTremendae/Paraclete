@@ -72,12 +72,15 @@ public class Painter
                 {
                     builder.Append(part.foregroundColor.Value.ToAnsiForegroundColorCode());
                 }
+
                 if (part.backgroundColor.HasValue)
                 {
                     builder.Append(part.backgroundColor.Value.ToAnsiBackgroundColorCode());
                 }
+
                 builder.Append(part.text);
             }
+
             builder.Append(AnsiSequences.Reset);
             formattedRows.Add(builder.ToString());
         }
@@ -88,10 +91,12 @@ public class Painter
     public void PaintRows(AnsiString[] rows, (int x, int y)? position = null)
     {
         var pos = position ?? (0, 0);
+
         if (pos.x < 0)
         {
             pos = (pos.x + _windowWidth, pos.y);
         }
+
         if (pos.y < 0)
         {
             pos = (pos.x, pos.y + _windowHeight);
@@ -104,12 +109,14 @@ public class Painter
             {
                 break;
             }
+
             CursorTop = yy;
 
             if (pos.x >= WindowWidth)
             {
                 break;
             }
+
             CursorLeft = pos.x;
 
             Write(rows[y]);

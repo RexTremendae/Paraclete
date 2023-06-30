@@ -12,20 +12,24 @@ public class ExhibitionSelector
     public void SelectNext()
     {
         SelectedExhibitionIndex++;
+
         if (SelectedExhibitionIndex >= _exhibitions.Count)
         {
             SelectedExhibitionIndex = 0;
         }
+
         _screenInvalidator.Invalidate();
     }
 
     public void SelectPrevious()
     {
         SelectedExhibitionIndex--;
+
         if (SelectedExhibitionIndex < 0)
         {
             SelectedExhibitionIndex = _exhibitions.Count-1;
         }
+
         _screenInvalidator.Invalidate();
     }
 

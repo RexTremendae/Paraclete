@@ -45,6 +45,7 @@ public class ToDoList : IInitializer
             {
                 SwitchSelectedList();
             }
+
             newPosition = _selectedList.Count-1;
         }
         else
@@ -58,6 +59,7 @@ public class ToDoList : IInitializer
             _selectedList.RemoveAt(_selectedToDoItemIndex);
             _selectedList.Insert(newPosition, itemToMove);
         }
+
         _selectedToDoItemIndex = newPosition;
         await Update();
     }
@@ -72,6 +74,7 @@ public class ToDoList : IInitializer
             {
                 SwitchSelectedList();
             }
+
             newPosition = 0;
         }
         else
@@ -85,6 +88,7 @@ public class ToDoList : IInitializer
             _selectedList.RemoveAt(_selectedToDoItemIndex);
             _selectedList.Insert(newPosition, itemToMove);
         }
+
         _selectedToDoItemIndex = newPosition;
         await Update();
     }

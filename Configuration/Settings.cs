@@ -12,6 +12,7 @@ public class Settings
         public bool IsEnabled => false;
         public int HistoryLength => 30;
     }
+
     public FpsCounterSettings FpsCounter => new ();
 
     public class ScreenSaverSettings
@@ -21,6 +22,7 @@ public class Settings
         public TimeSpan ActivationInterval => TimeSpan.FromMinutes(5);
         public TimeSpan ContentChangeInterval => TimeSpan.FromSeconds(30);
     }
+
     public ScreenSaverSettings ScreenSaver => new ();
 
     public class ColorSettings
@@ -28,5 +30,6 @@ public class Settings
         public AnsiString InputLabel => AnsiSequences.ForegroundColors.White;
         public AnsiString InputData => AnsiSequences.ForegroundColors.Yellow;
     }
+
     public ColorSettings Colors => new ();
 }

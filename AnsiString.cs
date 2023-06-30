@@ -34,6 +34,7 @@ public class AnsiString
                 length += int.Max(data.Length - lastIdx, 0);
                 break;
             }
+
             length += int.Max(nextIdx - lastIdx, 0);
 
             nextIdx = data.IndexOf("m", nextIdx + AnsiSequenceStart.Length, StringComparison.Ordinal);

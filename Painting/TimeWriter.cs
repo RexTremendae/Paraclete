@@ -27,6 +27,7 @@ public class TimeWriter
         {
             return;
         }
+
         _cache = newCache;
 
         var hourPart = hour.ToString().PadLeft(2, '0');

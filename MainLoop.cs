@@ -124,6 +124,7 @@ public class MainLoop
                     screenSaverIsActive = false;
                     _screenInvalidator.Invalidate();
                 }
+
                 _painter.PaintScreen(_quickMenuIsActive);
             }
 

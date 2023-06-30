@@ -12,10 +12,12 @@ public abstract class StartProcessCommandBase
             CreateNoWindow = true,
             UseShellExecute = true,
         };
+
         foreach (var a in args)
         {
             startinfo.ArgumentList.Add(a);
         }
+
         var p = Process.Start(startinfo);
 
         return Task.CompletedTask;

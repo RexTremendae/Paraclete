@@ -26,6 +26,7 @@ public class FontExhibition : IExhibition
             {
                 continue;
             }
+
             var fontWriter = FontWriter.Create(size);
             painter.Paint($"{AnsiSequences.ForegroundColors.White}{size.ToString()}:".PadRight(4), position);
             fontWriter.Write(text, colors[size], (position.x + 4, position.y), painter);
@@ -50,6 +51,7 @@ public class ColorExhibition : IExhibition
             {
                 colorName = AnsiSequences.BackgroundColors.Gray + colorName + AnsiSequences.Reset;
             }
+
             painter.Paint(colorName, position, color);
             position = (colorNumber % 8 == 7)
                 ? (initialPosition.x, position.y + 1)

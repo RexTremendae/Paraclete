@@ -113,6 +113,7 @@ public class ColumnBasedLayout : ILayout
             {
                 return true;
             }
+
             totalHeight++;
         }
 
@@ -124,12 +125,14 @@ public class ColumnBasedLayout : ILayout
         var rowBuilder = new StringBuilder();
         rowBuilder.Append(leftBorder);
         var totalWidth = 1;
+
         foreach (var col in _columns)
         {
             rowBuilder.Append(string.Empty.PadRight(col.Width, padding));
             rowBuilder.Append(colBorder);
             totalWidth += col.Width + 1;
         }
+
         rowBuilder.Append(string.Empty.PadRight(int.Max(windowWidth - totalWidth - 1, 0), padding));
         rowBuilder.Append(rightBorder);
 
