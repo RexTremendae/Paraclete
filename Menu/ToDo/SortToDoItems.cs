@@ -2,9 +2,6 @@ namespace Paraclete.Menu.ToDo;
 
 public class SortToDoItemCommand : ICommand
 {
-    public ConsoleKey Shortcut => ConsoleKey.S;
-    public string Description => "[S]ort ToDo items";
-
     private readonly ToDoList _toDoList;
     private readonly ScreenInvalidator _screenInvalidator;
 
@@ -13,6 +10,9 @@ public class SortToDoItemCommand : ICommand
         _toDoList = toDoList;
         _screenInvalidator = screenInvalidator;
     }
+
+    public ConsoleKey Shortcut => ConsoleKey.S;
+    public string Description => "[S]ort ToDo items";
 
     public Task Execute()
     {

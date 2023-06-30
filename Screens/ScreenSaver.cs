@@ -11,26 +11,24 @@ public class ScreenSaver
     private readonly int _currentTimeWidth;
     private readonly int _currentTimeHeight;
 
+    private readonly Painter _painter;
+
     private TimeWriterSettings _currentTimeSettings;
 
-    public bool IsActive
+    private (int x, int y) _currentTimePosition;
+    private DateTime _lastChange;
+    private DateTime _inactivationTime;
+
+    private (ConsoleColor color, ConsoleColor secondColor)[] _timeColors = new[]
     {
-        get
-        {
-            if (_inactivationTime == default)
-            {
-                return true;
-            }
-
-            if (_inactivationTime + _activationInterval < DateTime.Now)
-            {
-                Activate();
-                return true;
-            }
-
-            return false;
-        }
-    }
+        (ConsoleColor.White,   ConsoleColor.Gray),
+        (ConsoleColor.Yellow,  ConsoleColor.DarkYellow),
+        (ConsoleColor.Cyan,    ConsoleColor.DarkCyan),
+        (ConsoleColor.Blue,    ConsoleColor.DarkBlue),
+        (ConsoleColor.Green,   ConsoleColor.DarkGreen),
+        (ConsoleColor.Magenta, ConsoleColor.DarkMagenta),
+        (ConsoleColor.Red,     ConsoleColor.DarkRed),
+    };
 
     public ScreenSaver(Painter painter, Settings settings)
     {
@@ -55,22 +53,24 @@ public class ScreenSaver
         _currentTimeWidth = (font.CharacterWidth * 5) + (secondsFont.CharacterWidth * 3);
     }
 
-    private readonly Painter _painter;
-
-    private (int x, int y) _currentTimePosition;
-    private DateTime _lastChange;
-    private DateTime _inactivationTime;
-
-    private (ConsoleColor color, ConsoleColor secondColor)[] _timeColors = new[]
+    public bool IsActive
     {
-        (ConsoleColor.White,   ConsoleColor.Gray),
-        (ConsoleColor.Yellow,  ConsoleColor.DarkYellow),
-        (ConsoleColor.Cyan,    ConsoleColor.DarkCyan),
-        (ConsoleColor.Blue,    ConsoleColor.DarkBlue),
-        (ConsoleColor.Green,   ConsoleColor.DarkGreen),
-        (ConsoleColor.Magenta, ConsoleColor.DarkMagenta),
-        (ConsoleColor.Red,     ConsoleColor.DarkRed),
-    };
+        get
+        {
+            if (_inactivationTime == default)
+            {
+                return true;
+            }
+
+            if (_inactivationTime + _activationInterval < DateTime.Now)
+            {
+                Activate();
+                return true;
+            }
+
+            return false;
+        }
+    }
 
     public void PaintScreen()
     {

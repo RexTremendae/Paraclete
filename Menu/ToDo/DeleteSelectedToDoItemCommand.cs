@@ -4,10 +4,6 @@ using Paraclete.IO;
 
 public class DeleteSelectedToDoItemCommand : IInputCommand<bool>
 {
-    public ConsoleKey Shortcut => ConsoleKey.X;
-
-    public string Description => "Delete selected item";
-
     private readonly ToDoList _toDoList;
     private readonly DataInputter _dataInputter;
     private readonly Settings _settings;
@@ -18,6 +14,9 @@ public class DeleteSelectedToDoItemCommand : IInputCommand<bool>
         _dataInputter = dataInputter;
         _settings = settings;
     }
+
+    public ConsoleKey Shortcut => ConsoleKey.X;
+    public string Description => "Delete selected item";
 
     public async Task Execute()
     {

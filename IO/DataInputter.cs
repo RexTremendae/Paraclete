@@ -13,10 +13,6 @@ public class DataInputter
     private Dictionary<Type, IInputDefinition> _availableInputters;
     private IInputDefinition _selectedInputter;
 
-    public bool IsActive { get; private set; }
-    public string CurrentInput { get; private set; }
-    public AnsiString Label { get; private set; }
-
     public DataInputter(ScreenInvalidator screenInvalidator, IServiceProvider services)
     {
         _screenInvalidator = screenInvalidator;
@@ -31,6 +27,10 @@ public class DataInputter
             _availableInputters.Add(dataInputter.DataType, dataInputter);
         }
     }
+
+    public bool IsActive { get; private set; }
+    public string CurrentInput { get; private set; }
+    public AnsiString Label { get; private set; }
 
     public Task StartInput<T>(IInputCommand<T> inputCommand, AnsiString? label, T valueToEdit)
     {

@@ -4,7 +4,17 @@ using Microsoft.Extensions.DependencyInjection;
 
 public class ScreenSelector
 {
+    private readonly IServiceProvider _serviceProvider;
+    private readonly ScreenInvalidator _screenInvalidator;
+
     private IScreen? _selectedScreen;
+
+    public ScreenSelector(IServiceProvider serviceProvider, ScreenInvalidator screenInvalidator)
+    {
+        _serviceProvider = serviceProvider;
+        _screenInvalidator = screenInvalidator;
+    }
+
     public IScreen SelectedScreen => _selectedScreen ?? throw new InvalidOperationException("No screen selected.");
 
     public void SwitchTo(IScreen screen)
@@ -24,14 +34,5 @@ public class ScreenSelector
     {
         var screenToSelect = _serviceProvider.GetRequiredService<T>();
         SwitchTo(screenToSelect);
-    }
-
-    private readonly IServiceProvider _serviceProvider;
-    private readonly ScreenInvalidator _screenInvalidator;
-
-    public ScreenSelector(IServiceProvider serviceProvider, ScreenInvalidator screenInvalidator)
-    {
-        _serviceProvider = serviceProvider;
-        _screenInvalidator = screenInvalidator;
     }
 }

@@ -4,16 +4,15 @@ using Paraclete.Screens;
 
 public class TriggerScreenSaverCommand : ICommand
 {
-    public ConsoleKey Shortcut => ConsoleKey.S;
-
-    public string Description => "Trigger [S]creen saver";
+    private ScreenSaver _screenSaver;
 
     public TriggerScreenSaverCommand(ScreenSaver screenSaver)
     {
         _screenSaver = screenSaver;
     }
 
-    private ScreenSaver _screenSaver;
+    public ConsoleKey Shortcut => ConsoleKey.S;
+    public string Description => "Trigger [S]creen saver";
 
     public Task Execute()
     {

@@ -5,18 +5,6 @@ using Paraclete.Painting;
 
 public class ColumnBasedLayout : ILayout
 {
-    public class ColumnDefinition
-    {
-        public int Width { get; }
-        public int[] CellHeights { get; }
-
-        public ColumnDefinition(int width, params int[] cellHeights)
-        {
-            Width = width;
-            CellHeights = cellHeights;
-        }
-    }
-
     private ColumnDefinition[] _columns;
 
     public ColumnBasedLayout(params ColumnDefinition[] columns)
@@ -137,5 +125,17 @@ public class ColumnBasedLayout : ILayout
         rowBuilder.Append(rightBorder);
 
         return rowBuilder.ToString();
+    }
+
+    public class ColumnDefinition
+    {
+        public ColumnDefinition(int width, params int[] cellHeights)
+        {
+            Width = width;
+            CellHeights = cellHeights;
+        }
+
+        public int Width { get; }
+        public int[] CellHeights { get; }
     }
 }

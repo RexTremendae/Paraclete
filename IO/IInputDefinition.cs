@@ -2,14 +2,15 @@ namespace Paraclete.IO;
 
 public interface IInputDefinition
 {
+    public static string NumericAlphabet = "0123456789";
+    public static readonly IInputDefinition NoInputter = new NoInputDefinitionImplementation();
+
     Type DataType { get; }
     string Alphabet { get; }
-    bool TryCompleteInput(string inputData, out object result);
     int? MinLength => null;
     int? MaxLength => null;
 
-    public static string NumericAlphabet = "0123456789";
-    public static readonly IInputDefinition NoInputter = new NoInputDefinitionImplementation();
+    bool TryCompleteInput(string inputData, out object result);
 
     [ExcludeFromEnumeration]
     private class NoInputDefinitionImplementation : IInputDefinition

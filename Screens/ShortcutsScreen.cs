@@ -7,12 +7,6 @@ using Paraclete.Painting;
 
 public class ShortcutsScreen : IScreen
 {
-    public string Name => "Shortcuts";
-    public ConsoleKey Shortcut => ConsoleKey.F3;
-
-    public MenuBase Menu { get; }
-    public ILayout Layout => new SinglePanelLayout();
-
     private readonly TimeWriter _currentTimeWriter;
     private ScreenInvalidator _screenInvalidator;
 
@@ -30,6 +24,12 @@ public class ShortcutsScreen : IScreen
 
         Menu = shortcutsMenu;
     }
+
+    public string Name => "Shortcuts";
+    public ConsoleKey Shortcut => ConsoleKey.F3;
+
+    public MenuBase Menu { get; }
+    public ILayout Layout => new SinglePanelLayout();
 
     public void PaintContent(Painter painter)
     {

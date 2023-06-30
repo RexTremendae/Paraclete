@@ -2,18 +2,26 @@ namespace Paraclete.Configuration;
 
 using Paraclete.Painting;
 
-public class Settings
+public partial class Settings
 {
     public int RepaintLoopInterval => 30;
     public bool EnableLogging => false;
+}
+
+public partial class Settings
+{
+    public FpsCounterSettings FpsCounter => new ();
 
     public class FpsCounterSettings
     {
         public bool IsEnabled => false;
         public int HistoryLength => 30;
     }
+}
 
-    public FpsCounterSettings FpsCounter => new ();
+public partial class Settings
+{
+    public ScreenSaverSettings ScreenSaver => new ();
 
     public class ScreenSaverSettings
     {
@@ -22,14 +30,15 @@ public class Settings
         public TimeSpan ActivationInterval => TimeSpan.FromMinutes(5);
         public TimeSpan ContentChangeInterval => TimeSpan.FromSeconds(30);
     }
+}
 
-    public ScreenSaverSettings ScreenSaver => new ();
+public partial class Settings
+{
+    public ColorSettings Colors => new ();
 
     public class ColorSettings
     {
         public AnsiString InputLabel => AnsiSequences.ForegroundColors.White;
         public AnsiString InputData => AnsiSequences.ForegroundColors.Yellow;
     }
-
-    public ColorSettings Colors => new ();
 }

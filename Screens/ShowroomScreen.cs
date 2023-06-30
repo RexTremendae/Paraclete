@@ -7,12 +7,6 @@ using Paraclete.Painting;
 
 public class ShowroomScreen : IScreen
 {
-    public string Name => "Showroom";
-    public ConsoleKey Shortcut => ConsoleKey.F12;
-
-    public MenuBase Menu { get; }
-    public ILayout Layout => new SinglePanelLayout();
-
     private readonly TimeWriter _currentTimeWriter;
     private readonly ExhibitionSelector _exhibitionSelector;
 
@@ -28,6 +22,12 @@ public class ShowroomScreen : IScreen
             ShowMilliseconds = false,
         });
     }
+
+    public string Name => "Showroom";
+    public ConsoleKey Shortcut => ConsoleKey.F12;
+
+    public MenuBase Menu { get; }
+    public ILayout Layout => new SinglePanelLayout();
 
     public void PaintContent(Painter painter)
     {

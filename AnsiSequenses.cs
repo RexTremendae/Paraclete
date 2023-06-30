@@ -43,6 +43,9 @@ public static class AnsiSequences
 
 #pragma warning restore SA1008 // Opening parenthesis should not be followed by a space
 
+    public static AnsiString ForegroundColor(int r, int g, int b) => $"\u001b[38;2;{r};{g};{b}m";
+    public static AnsiString BackgroundColor(int r, int g, int b) => $"\u001b[48;2;{r};{g};{b}m";
+
     public static class ForegroundColors
     {
         public static readonly AnsiString Black       = ForegroundColor(BlackDefinition.r,       BlackDefinition.g,       BlackDefinition.b      );
@@ -84,7 +87,4 @@ public static class AnsiSequences
         public static readonly AnsiString White       = BackgroundColor(WhiteDefinition.r,       WhiteDefinition.g,       WhiteDefinition.b      );
         public static readonly AnsiString Yellow      = BackgroundColor(YellowDefinition.r,      YellowDefinition.g,      YellowDefinition.b     );
     }
-
-    public static AnsiString ForegroundColor(int r, int g, int b) => $"\u001b[38;2;{r};{g};{b}m";
-    public static AnsiString BackgroundColor(int r, int g, int b) => $"\u001b[48;2;{r};{g};{b}m";
 }

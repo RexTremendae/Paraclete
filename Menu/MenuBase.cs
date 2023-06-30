@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 public abstract class MenuBase
 {
     private readonly Dictionary<ConsoleKey, ICommand> _menuItems;
-    public IReadOnlyDictionary<ConsoleKey, ICommand> MenuItems => _menuItems;
 
     public MenuBase(IServiceProvider services, Type[] commands)
     {
@@ -15,6 +14,8 @@ public abstract class MenuBase
             _menuItems.Add(command.Shortcut, command);
         }
     }
+
+    public IReadOnlyDictionary<ConsoleKey, ICommand> MenuItems => _menuItems;
 
     public void AddCommand(ConsoleKey key, ICommand command)
     {

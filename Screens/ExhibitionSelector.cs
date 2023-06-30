@@ -5,6 +5,12 @@ public class ExhibitionSelector
     private readonly List<IExhibition> _exhibitions;
     private readonly ScreenInvalidator _screenInvalidator;
 
+    public ExhibitionSelector(IServiceProvider services, ScreenInvalidator screenInvalidator)
+    {
+        _exhibitions = new (TypeUtility.EnumerateImplementatingInstancesOf<IExhibition>(services));
+        _screenInvalidator = screenInvalidator;
+    }
+
     public int ExhibitionCount => _exhibitions.Count;
     public int SelectedExhibitionIndex { get; private set; }
     public IExhibition SelectedExhibition => _exhibitions[SelectedExhibitionIndex];
@@ -31,11 +37,5 @@ public class ExhibitionSelector
         }
 
         _screenInvalidator.Invalidate();
-    }
-
-    public ExhibitionSelector(IServiceProvider services, ScreenInvalidator screenInvalidator)
-    {
-        _exhibitions = new (TypeUtility.EnumerateImplementatingInstancesOf<IExhibition>(services));
-        _screenInvalidator = screenInvalidator;
     }
 }

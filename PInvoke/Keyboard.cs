@@ -4,14 +4,6 @@ using System.Runtime.InteropServices;
 
 public static class Keyboard
 {
-    // The GetAsyncKeyState takes a virtual key code as the nVirtKey parameter. It then checks on the state of
-    // this key (down/up). The return code is either zero for up or any non-zero value for pressed,
-    // thus it's easiest to convert the result to a boolean and use that result.
-    [DllImport("user32.dll")]
-    public static extern short GetAsyncKeyState(int nVirtKey);
-
-    public static short GetAsyncKeyState(VirtKey nVirtKey) => GetAsyncKeyState((int)nVirtKey);
-
     // These are all the possible values in the VK enumeration. It covers most of the special buttons on a keyboard.
     // See http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winui/winui/WindowsUserInterface/UserInput/VirtualKeyCodes.asp
     // for full documentation.
@@ -102,4 +94,12 @@ public static class Keyboard
         Y = 0x59,
         Z = 0x5A,
     }
+
+    // The GetAsyncKeyState takes a virtual key code as the nVirtKey parameter. It then checks on the state of
+    // this key (down/up). The return code is either zero for up or any non-zero value for pressed,
+    // thus it's easiest to convert the result to a boolean and use that result.
+    [DllImport("user32.dll")]
+    public static extern short GetAsyncKeyState(int nVirtKey);
+
+    public static short GetAsyncKeyState(VirtKey nVirtKey) => GetAsyncKeyState((int)nVirtKey);
 }

@@ -4,10 +4,9 @@ using System.Collections.Concurrent;
 
 public class Font
 {
-    private Dictionary<char, string[]> _font;
+    private static ConcurrentDictionary<Size, Font> _fontsBySize = new ();
 
-    public int CharacterWidth { get; }
-    public int CharacterHeight { get; }
+    private Dictionary<char, string[]> _font;
 
     public Font(Size size, params (char key, string[] data)[] font)
     {
@@ -50,12 +49,22 @@ public class Font
         _font = new ();
     }
 
+    public enum Size
+    {
+        Undefined = 0,
+        XS,
+        S,
+        M,
+        L,
+    }
+
+    public int CharacterWidth { get; }
+    public int CharacterHeight { get; }
+
     public string[] this[char index]
     {
         get => _font[index];
     }
-
-    private static ConcurrentDictionary<Size, Font> _fontsBySize = new ();
 
     public static Font OfSize(Size size)
     {
@@ -67,15 +76,6 @@ public class Font
         font = GetFontDefinition(size);
         _fontsBySize[size] = font;
         return font;
-    }
-
-    public enum Size
-    {
-        Undefined = 0,
-        XS,
-        S,
-        M,
-        L,
     }
 
 #pragma warning disable SA1500 // Braces for multi-line statements should not share line
@@ -323,5 +323,4 @@ public class Font
     };
 
 #pragma warning restore SA1500 // Braces for multi-line statements should not share line
-
 }

@@ -4,10 +4,6 @@ using Paraclete.IO;
 
 public class EditToDoDateCommand : IInputCommand<DateOnly>
 {
-    public ConsoleKey Shortcut => ConsoleKey.T;
-
-    public string Description => "Edit da[T]e";
-
     private readonly ToDoList _toDoList;
     private readonly DataInputter _dataInputter;
 
@@ -16,6 +12,9 @@ public class EditToDoDateCommand : IInputCommand<DateOnly>
         _toDoList = toDoList;
         _dataInputter = dataInputter;
     }
+
+    public ConsoleKey Shortcut => ConsoleKey.T;
+    public string Description => "Edit da[T]e";
 
     public async Task Execute()
     {

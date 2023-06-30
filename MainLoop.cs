@@ -17,8 +17,9 @@ public class MainLoop
     private readonly IServiceProvider _services;
     private readonly DataInputter _dataInputter;
     private readonly _ShortcutsMenu _shortcutsMenu;
-
     private readonly int _repaintLoopInterval;
+
+    private bool _quickMenuIsActive = false;
 
     public MainLoop(IServiceProvider services)
     {
@@ -33,8 +34,6 @@ public class MainLoop
 
         _repaintLoopInterval = services.GetRequiredService<Settings>().RepaintLoopInterval;
     }
-
-    private bool _quickMenuIsActive = false;
 
     public async Task Run()
     {

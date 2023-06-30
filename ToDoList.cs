@@ -8,16 +8,8 @@ public class ToDoList : IInitializer
     private readonly List<ToDoItem> _doneItems;
     private readonly ScreenInvalidator _screenInvalidator;
 
-    public IEnumerable<ToDoItem> ToDoItems => _toDoItems;
-    public IEnumerable<ToDoItem> DoneItems => _doneItems;
-
     private int _selectedToDoItemIndex;
-
     private List<ToDoItem> _selectedList = new ();
-    public ToDoItem? SelectedToDoItem => _selectedList.Count == 0 ? null : _selectedList[_selectedToDoItemIndex];
-
-    public bool MoveItemMode { get; private set; }
-    public int MaxItemLength { get; private set; }
 
     public ToDoList(ScreenInvalidator screenInvalidator)
     {
@@ -27,6 +19,14 @@ public class ToDoList : IInitializer
         _selectedList = _toDoItems;
         UpdateMaxItemLength();
     }
+
+    public ToDoItem? SelectedToDoItem => _selectedList.Count == 0 ? null : _selectedList[_selectedToDoItemIndex];
+
+    public IEnumerable<ToDoItem> ToDoItems => _toDoItems;
+    public IEnumerable<ToDoItem> DoneItems => _doneItems;
+
+    public bool MoveItemMode { get; private set; }
+    public int MaxItemLength { get; private set; }
 
     public void ResetSelection()
     {
@@ -220,14 +220,14 @@ public class ToDoList : IInitializer
 
 public class ToDoItem
 {
-    public string Description { get; set; }
-    public DateOnly ExpirationDate { get; set; }
-
     public ToDoItem(string description, DateOnly expirationDate = default)
     {
         Description = description;
         ExpirationDate = expirationDate;
     }
+
+    public string Description { get; set; }
+    public DateOnly ExpirationDate { get; set; }
 
     public AnsiString ToDisplayString(bool done)
     {

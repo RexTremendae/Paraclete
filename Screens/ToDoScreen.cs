@@ -7,12 +7,6 @@ using Paraclete.Painting;
 
 public class ToDoScreen : IScreen
 {
-    public string Name => "ToDo";
-    public ConsoleKey Shortcut => ConsoleKey.F2;
-
-    public MenuBase Menu { get; }
-    public ILayout Layout => new SinglePanelLayout();
-
     private readonly ScreenInvalidator _screenInvalidator;
     private readonly TimeWriter _currentTimeWriter;
     private readonly Painter _painter;
@@ -34,6 +28,12 @@ public class ToDoScreen : IScreen
             ShowMilliseconds = false,
         });
     }
+
+    public string Name => "ToDo";
+    public ConsoleKey Shortcut => ConsoleKey.F2;
+
+    public MenuBase Menu { get; }
+    public ILayout Layout => new SinglePanelLayout();
 
     public void OnAfterSwitch()
     {

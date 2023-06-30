@@ -6,6 +6,8 @@ using Paraclete.Painting;
 
 public interface IScreen
 {
+    public static readonly IScreen NoScreen = new NoScreenImplementation();
+
     MenuBase Menu { get; }
     ILayout Layout { get; }
     string Name { get; }
@@ -16,8 +18,6 @@ public interface IScreen
     }
 
     void PaintContent(Painter painter);
-
-    public static readonly IScreen NoScreen = new NoScreenImplementation();
 
     [ExcludeFromEnumeration]
     private class NoScreenImplementation : IScreen

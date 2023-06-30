@@ -4,10 +4,6 @@ using Paraclete.IO;
 
 public class AddToDoItemCommand : ICommand, IInputCommand<string>
 {
-    public ConsoleKey Shortcut => ConsoleKey.A;
-
-    public string Description => "[A]dd item";
-
     private readonly ToDoList _toDoList;
     private readonly DataInputter _dataInputter;
 
@@ -16,6 +12,9 @@ public class AddToDoItemCommand : ICommand, IInputCommand<string>
         _toDoList = toDoList;
         _dataInputter = dataInputter;
     }
+
+    public ConsoleKey Shortcut => ConsoleKey.A;
+    public string Description => "[A]dd item";
 
     public async Task Execute()
     {

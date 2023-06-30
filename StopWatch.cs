@@ -2,10 +2,10 @@ namespace Paraclete;
 
 public class Stopwatch
 {
+    private readonly List<TimeSpan> _markedTimes = new ();
+
     public DateTime Start { get; private set; }
     public DateTime Stop { get; private set; }
-
-    private readonly List<TimeSpan> _markedTimes = new ();
 
     public bool IsRunning { get; private set; }
     public TimeSpan[] MarkedTimes => _markedTimes.ToArray();

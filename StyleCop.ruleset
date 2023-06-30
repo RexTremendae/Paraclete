@@ -26,10 +26,7 @@
     <Rule Id="SA1516" Action="None" /> <!-- SA1516: Elements should be separated by blank line -->
     <Rule Id="SA1633" Action="None" /> <!-- SA1633: The file header is missing or not located at the top of the file -->
 
-    <!-- Fix these (a lot of code to go through): -->
-    <Rule Id="SA1201" Action="None" /> <!-- SA1201: A field should not follow a property -->
-
-    <!-- Investigate and decide: -->
+    <!-- Decide what to do: -->
     <Rule Id="SA1300" Action="None" /> <!-- SA1300: Element '_MainMenu' should begin with an uppercase letter -->
   </Rules>
   <Rules AnalyzerId="DocumentationAnalyzers" RuleNamespace="DocumentationAnalyzers">

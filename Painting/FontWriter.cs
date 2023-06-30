@@ -2,12 +2,12 @@ namespace Paraclete.Painting;
 
 public class FontWriter
 {
-    public Font Font { get; }
-
     private FontWriter(Font font)
     {
         Font = font;
     }
+
+    public Font Font { get; }
 
     public static FontWriter Create(Font.Size fontSize)
     {
