@@ -2,6 +2,8 @@ namespace Paraclete;
 
 public class ToDoList : IInitializer
 {
+    private const string _todoFilename = "todo.txt";
+
     private readonly List<ToDoItem> _toDoItems;
     private readonly List<ToDoItem> _doneItems;
     private readonly ScreenInvalidator _screenInvalidator;
@@ -9,9 +11,7 @@ public class ToDoList : IInitializer
     public IEnumerable<ToDoItem> ToDoItems => _toDoItems;
     public IEnumerable<ToDoItem> DoneItems => _doneItems;
 
-    public int _selectedToDoItemIndex;
-
-    private const string _todoFilename = "todo.txt";
+    private int _selectedToDoItemIndex;
 
     private List<ToDoItem> _selectedList = new ();
     public ToDoItem? SelectedToDoItem => _selectedList.Count == 0 ? null : _selectedList[_selectedToDoItemIndex];
