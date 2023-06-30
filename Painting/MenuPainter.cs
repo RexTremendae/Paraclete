@@ -1,6 +1,6 @@
-using Paraclete.Screens;
 using Paraclete.Menu;
 using Paraclete.Menu.Shortcuts;
+using Paraclete.Screens;
 
 namespace Paraclete.Painting;
 
