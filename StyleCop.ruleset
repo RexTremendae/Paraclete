@@ -19,6 +19,7 @@
     <Rule Id="SA1111" Action="None" /> <!-- SA1111: Closing parenthesis should be on line of last parameter -->
     <Rule Id="SA1118" Action="None" /> <!-- SA1118: The parameter spans multiple lines -->
     <Rule Id="SA1119" Action="None" /> <!-- SA1119: Statement should not use unnecessary parenthesis -->
+    <Rule Id="SA1129" Action="None" /> <!-- SA1129: Do not use default value type constructor -->
 
     <!-- Fix these (a lot of code to go through): -->
     <Rule Id="SA1003" Action="None" /> <!-- SA1003: Operator <+-/> should be preceded by whitespac -->
@@ -27,8 +28,6 @@
     <Rule Id="SA1025" Action="None" /> <!-- SA1025: Code should not contain multiple whitespace characters in a row -->
 
     <!-- Investigate and decide: -->
-    <Rule Id="SA1129" Action="None" />
-    <Rule Id="SA1136" Action="None" />
     <Rule Id="SA1200" Action="None" />
     <Rule Id="SA1201" Action="None" />
     <Rule Id="SA1202" Action="None" />

@@ -72,7 +72,10 @@ public class Font
     public enum Size
     {
         Undefined = 0,
-        XS, S, M, L
+        XS,
+        S,
+        M,
+        L
     }
 
     private static Font GetFontDefinition(Size size) => size switch
