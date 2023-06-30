@@ -37,11 +37,11 @@ public class FpsCounter
     {
         if (!_isEnabled) return;
 
-        Console.SetCursorPosition(1,1);
+        Console.SetCursorPosition(1, 1);
         Console.Write(
-            AnsiSequences.BackgroundColor(120,60,120) +
-            AnsiSequences.ForegroundColor(0,60,120) +
-            $"{_fpsHistory.Last()} ({_fpsAverage:0.00})".Replace(",",".") +
+            AnsiSequences.BackgroundColor(120, 60, 120) +
+            AnsiSequences.ForegroundColor(0, 60, 120) +
+            $"{_fpsHistory.Last()} ({_fpsAverage:0.00})".Replace(",", ".") +
             AnsiSequences.Reset);
     }
 }
