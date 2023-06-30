@@ -15,7 +15,7 @@ public class _ShortcutsMenu : MenuBase, IInitializer
         typeof(PowerShellCommand),
         typeof(HibernateCommand)
     })
-    {}
+    { }
 
     public async Task Initialize()
     {

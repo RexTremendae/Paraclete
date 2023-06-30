@@ -9,5 +9,5 @@ public class _ShowroomMenu : MenuBase
         typeof(PreviousExhibitionCommand),
         typeof(NextExhibitionCommand)
     })
-    {}
+    { }
 }
