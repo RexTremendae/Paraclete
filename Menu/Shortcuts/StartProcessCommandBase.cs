@@ -12,9 +12,9 @@ public abstract class StartProcessCommandBase
             CreateNoWindow = true,
             UseShellExecute = true
         };
-        foreach (var _ in args)
+        foreach (var a in args)
         {
-            startinfo.ArgumentList.Add(_);
+            startinfo.ArgumentList.Add(a);
         }
         var p = Process.Start(startinfo);
 
