@@ -30,7 +30,7 @@ public class MenuPainter
         rows[0] = GetScreenSelectionMenuRowParts(selectedScreen, shortcutsMenuActive).Build().PadRight(paddingWidth);
         rows[1] = GetSelectedScreenMenuRowParts(shortcutsMenuActive ? _shortcutsMenu : selectedScreen.Menu).Build().PadRight(paddingWidth);
 
-        painter.PaintRows(rows, (2, Console.WindowHeight-3));
+        painter.PaintRows(rows, (2, Console.WindowHeight - 3));
     }
 
     private AnsiStringBuilder GetSelectedScreenMenuRowParts(MenuBase menu)
@@ -106,7 +106,7 @@ public class MenuPainter
 
         var shortcutText = key.ToDisplayString() + (explicitBrackets ? string.Empty : " ");
         sections.Add(new (shortcutText, foregroundColor: _shortcutColor, backgroundColor: null));
-        sections.Add(new (description[(endBracketIndex+1)..], foregroundColor: _textColor, backgroundColor: null));
+        sections.Add(new (description[(endBracketIndex + 1)..], foregroundColor: _textColor, backgroundColor: null));
         sections.Add(new ("]", foregroundColor: _bracketColor, backgroundColor: null));
 
         return sections;

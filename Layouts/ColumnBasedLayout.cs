@@ -29,16 +29,16 @@ public class ColumnBasedLayout : ILayout
         var frameRows = new AnsiString[windowHeight];
         frameRows[0] = GenerateStaticRow(leftBorder: '╔', rightBorder: '╗', colBorder: '╤', padding: '═', windowWidth);
 
-        for (int y = 1; y < windowHeight-4; y++)
+        for (int y = 1; y < windowHeight - 4; y++)
         {
             frameRows[y] = GenerateDynamicRow(y, windowWidth);
         }
 
         // Bottom menu
-        frameRows[windowHeight-4] = GenerateStaticRow(leftBorder: '╟', rightBorder: '╢', colBorder: '┴', padding: '─', windowWidth);
-        frameRows[windowHeight-3] = GenerateStaticRow(leftBorder: '║', rightBorder: '║', colBorder: ' ', padding: ' ', windowWidth);
-        frameRows[windowHeight-2] = GenerateStaticRow(leftBorder: '║', rightBorder: '║', colBorder: ' ', padding: ' ', windowWidth);
-        frameRows[windowHeight-1] = GenerateStaticRow(leftBorder: '╚', rightBorder: '╝', colBorder: '═', padding: '═', windowWidth);
+        frameRows[windowHeight - 4] = GenerateStaticRow(leftBorder: '╟', rightBorder: '╢', colBorder: '┴', padding: '─', windowWidth);
+        frameRows[windowHeight - 3] = GenerateStaticRow(leftBorder: '║', rightBorder: '║', colBorder: ' ', padding: ' ', windowWidth);
+        frameRows[windowHeight - 2] = GenerateStaticRow(leftBorder: '║', rightBorder: '║', colBorder: ' ', padding: ' ', windowWidth);
+        frameRows[windowHeight - 1] = GenerateStaticRow(leftBorder: '╚', rightBorder: '╝', colBorder: '═', padding: '═', windowWidth);
 
         painter.PaintRows(frameRows);
     }

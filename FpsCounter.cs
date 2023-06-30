@@ -33,7 +33,7 @@ public class FpsCounter
                 _fpsHistory.RemoveAt(0);
             }
 
-            _fpsAverage = ((double)_fpsHistory.Sum())/_fpsHistory.Count;
+            _fpsAverage = ((double)_fpsHistory.Sum()) / _fpsHistory.Count;
 
             _frameCount = 0;
             _frameCountStart = now;

@@ -105,7 +105,7 @@ public class DataInputter
         {
             if (_input.Length > 0)
             {
-                _input.Remove(_input.Length-1, 1);
+                _input.Remove(_input.Length - 1, 1);
                 CurrentInput = _input.ToString();
             }
 

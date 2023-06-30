@@ -51,6 +51,6 @@ public class ShortcutsScreen : IScreen
 
         painter.PaintRows(rows.ToArray(), (2, 2));
 
-        _currentTimeWriter.Write(DateTime.Now, (Console.WindowWidth-7, 1), painter);
+        _currentTimeWriter.Write(DateTime.Now, (Console.WindowWidth - 7, 1), painter);
     }
 }

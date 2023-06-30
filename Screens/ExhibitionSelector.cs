@@ -27,7 +27,7 @@ public class ExhibitionSelector
 
         if (SelectedExhibitionIndex < 0)
         {
-            SelectedExhibitionIndex = _exhibitions.Count-1;
+            SelectedExhibitionIndex = _exhibitions.Count - 1;
         }
 
         _screenInvalidator.Invalidate();

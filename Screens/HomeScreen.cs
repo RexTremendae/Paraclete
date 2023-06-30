@@ -101,6 +101,6 @@ public class HomeScreen : IScreen
         }
 
         // ToDos
-        _toDoListPainter.Paint((_1stColumnWidth+4, 2));
+        _toDoListPainter.Paint((_1stColumnWidth + 4, 2));
     }
 }

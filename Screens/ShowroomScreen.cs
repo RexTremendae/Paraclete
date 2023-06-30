@@ -39,6 +39,6 @@ public class ShowroomScreen : IScreen
         painter.Paint(exhibitionName, (2, 2), ConsoleColor.Blue);
         painter.Paint(string.Empty.PadLeft(exhibitionName.Length, '-'), (2, 3), ConsoleColor.Blue);
 
-        _currentTimeWriter.Write(DateTime.Now, (Console.WindowWidth-7, 1), painter);
+        _currentTimeWriter.Write(DateTime.Now, (Console.WindowWidth - 7, 1), painter);
     }
 }

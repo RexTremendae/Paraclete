@@ -46,11 +46,11 @@ public class ToDoList : IInitializer
                 SwitchSelectedList();
             }
 
-            newPosition = _selectedList.Count-1;
+            newPosition = _selectedList.Count - 1;
         }
         else
         {
-            newPosition = _selectedToDoItemIndex-1;
+            newPosition = _selectedToDoItemIndex - 1;
         }
 
         if (MoveItemMode)
@@ -68,7 +68,7 @@ public class ToDoList : IInitializer
     {
         int newPosition;
 
-        if (_selectedToDoItemIndex >= _selectedList.Count-1)
+        if (_selectedToDoItemIndex >= _selectedList.Count - 1)
         {
             if (!MoveItemMode)
             {
@@ -79,7 +79,7 @@ public class ToDoList : IInitializer
         }
         else
         {
-            newPosition = _selectedToDoItemIndex+1;
+            newPosition = _selectedToDoItemIndex + 1;
         }
 
         if (MoveItemMode)
@@ -142,7 +142,7 @@ public class ToDoList : IInitializer
         _selectedList.RemoveAt(_selectedToDoItemIndex);
         if (_selectedToDoItemIndex >= _toDoItems.Count)
         {
-            _selectedToDoItemIndex = Math.Max(_toDoItems.Count-1, 0);
+            _selectedToDoItemIndex = Math.Max(_toDoItems.Count - 1, 0);
         }
 
         await Update();

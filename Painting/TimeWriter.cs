@@ -88,7 +88,7 @@ public class TimeWriter
             foreach (var c in text)
             {
                 var fontCharacter = font[c];
-                var yOffset = textHeight-font.CharacterHeight;
+                var yOffset = textHeight - font.CharacterHeight;
                 for (var y = 0; y < textHeight; y++)
                 {
                     if (y < yOffset)
@@ -97,7 +97,7 @@ public class TimeWriter
                     }
                     else
                     {
-                        textPartRows[y] += fontCharacter[y-yOffset];
+                        textPartRows[y] += fontCharacter[y - yOffset];
                     }
                 }
             }

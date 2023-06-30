@@ -97,6 +97,6 @@ public class AnsiExhibition : IExhibition
 
         var countTextLeft = left + text.Replace("\\", "\"").Length + 2;
         painter.Paint(charactersCount, (countTextLeft, top));
-        painter.Paint(ansiFormattedText + AnsiSequences.Reset, (left, top+1));
+        painter.Paint(ansiFormattedText + AnsiSequences.Reset, (left, top + 1));
     }
 }
