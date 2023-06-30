@@ -13,8 +13,7 @@ public class HomeScreen : IScreen
     public MenuBase Menu { get; }
 
     private const int _1stColumnWidth = 59;
-    private ColumnBasedLayout _layout = new (new ColumnBasedLayout.ColumnDefinition[]
-        { new (width: _1stColumnWidth, 9) });
+    private ColumnBasedLayout _layout = new (new ColumnBasedLayout.ColumnDefinition[] { new (width: _1stColumnWidth, 9) });
 
     public ILayout Layout => _layout;
 

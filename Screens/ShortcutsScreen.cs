@@ -20,7 +20,8 @@ public class ShortcutsScreen : IScreen
     {
         _screenInvalidator = screenInvalidator;
 
-        _currentTimeWriter = new TimeWriter(new () {
+        _currentTimeWriter = new TimeWriter(new ()
+        {
             FontSize = Font.Size.XS,
             Color = ConsoleColor.White,
             ShowSeconds = false,

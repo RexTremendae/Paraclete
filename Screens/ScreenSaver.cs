@@ -61,7 +61,8 @@ public class ScreenSaver
     private DateTime _lastChange;
     private DateTime _inactivationTime;
 
-    private (ConsoleColor color, ConsoleColor secondColor)[] _timeColors = new[] {
+    private (ConsoleColor color, ConsoleColor secondColor)[] _timeColors = new[]
+    {
         (ConsoleColor.White,   ConsoleColor.Gray),
         (ConsoleColor.Yellow,  ConsoleColor.DarkYellow),
         (ConsoleColor.Cyan,    ConsoleColor.DarkCyan),

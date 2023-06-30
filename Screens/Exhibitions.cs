@@ -13,7 +13,8 @@ public class FontExhibition : IExhibition
     {
         var text = "0123456789:.";
 
-        var colors = new Dictionary<Font.Size, ConsoleColor> {
+        var colors = new Dictionary<Font.Size, ConsoleColor>
+        {
             { Font.Size.XS, ConsoleColor.DarkBlue },
             { Font.Size.S,  ConsoleColor.Blue },
             { Font.Size.M,  ConsoleColor.DarkCyan },

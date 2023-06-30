@@ -20,7 +20,8 @@ public class ShowroomScreen : IScreen
     {
         Menu = showroomMenu;
         _exhibitionSelector = exhibitionSelector;
-        _currentTimeWriter = new TimeWriter(new () {
+        _currentTimeWriter = new TimeWriter(new ()
+        {
             FontSize = Font.Size.XS,
             Color = ConsoleColor.White,
             ShowSeconds = false,

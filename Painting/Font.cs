@@ -78,6 +78,8 @@ public class Font
         L,
     }
 
+#pragma warning disable SA1500 // Braces for multi-line statements should not share line
+
     private static Font GetFontDefinition(Size size) => size switch
     {
         Size.XS => new (Size.XS,
@@ -319,4 +321,7 @@ public class Font
 
         _ => throw new InvalidOperationException($"Undefined size: {size}")
     };
+
+#pragma warning restore SA1500 // Braces for multi-line statements should not share line
+
 }

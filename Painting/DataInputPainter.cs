@@ -15,7 +15,8 @@ public class DataInputPainter
 
     public void PaintInput(Painter painter, int windowWidth, int windowHeight)
     {
-        var rows = new AnsiString[] {
+        var rows = new AnsiString[]
+        {
             _settings.Colors.InputLabel + _dataInputter.Label,
             _settings.Colors.InputData + _dataInputter.CurrentInput
             + _settings.Colors.InputLabel + "▂".PadRight(windowWidth - _dataInputter.CurrentInput.Length - 5),
