@@ -189,7 +189,8 @@ public class ToDoList : IInitializer
     public async Task Update()
     {
         UpdateMaxItemLength();
-        await File.WriteAllLinesAsync(_todoFilename,
+        await File.WriteAllLinesAsync(
+            _todoFilename,
             _toDoItems.Select(_ => _.ToPersistString(false))
             .Concat(_doneItems.Select(_ => _.ToPersistString(true)))
         );

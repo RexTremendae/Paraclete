@@ -13,14 +13,18 @@
     <Rule Id="IDE0003" Action="None" />
   </Rules>
   <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+    <!-- Decidedly disabled: -->
     <Rule Id="SA0001" Action="None" /> <!-- SA0001: XML comment analysis is disabled due to project configuration -->
+    <Rule Id="SA1101" Action="None" /> <!-- SA1101: Prefix local calls with this -->
+    <Rule Id="SA1111" Action="None" /> <!-- SA1111: Closing parenthesis should be on line of last parameter -->
+
+    <!-- Fix these (a lot of code to go through): -->
     <Rule Id="SA1003" Action="None" /> <!-- SA1003: Operator <+-/> should be preceded by whitespac -->
     <Rule Id="SA1008" Action="None" /> <!-- SA1008: Opening parenthesis should not be followed by a space -->
     <Rule Id="SA1009" Action="None" /> <!-- SA1009: Closing parenthesis should not be preceded by a space -->
     <Rule Id="SA1025" Action="None" /> <!-- SA1025: Code should not contain multiple whitespace characters in a row -->
-    <Rule Id="SA1101" Action="None" />
-    <Rule Id="SA1111" Action="None" />
-    <Rule Id="SA1116" Action="None" />
+
+    <!-- Investigate and decide: -->
     <Rule Id="SA1118" Action="None" />
     <Rule Id="SA1119" Action="None" />
     <Rule Id="SA1122" Action="None" />
