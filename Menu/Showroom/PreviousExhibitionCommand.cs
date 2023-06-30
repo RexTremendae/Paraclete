@@ -19,4 +19,5 @@ public class PreviousExhibitionCommand : ICommand
     public PreviousExhibitionCommand(ExhibitionSelector exhibitionSelector)
     {
         _exhibitionSelector = exhibitionSelector;
-    }}
+    }
+}
