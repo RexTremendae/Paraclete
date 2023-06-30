@@ -43,6 +43,6 @@ public class ToDoScreen : IScreen
     public void PaintContent(Painter painter)
     {
         _toDoListPainter.Paint((2, 1), true);
-        _currentTimeWriter.Write(DateTime.Now, (Console.WindowWidth - 7, 1), _painter);
+        _currentTimeWriter.Write(DateTime.Now, (-7, 1), _painter);
     }
 }

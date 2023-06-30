@@ -1,5 +1,6 @@
 namespace Paraclete.Configuration;
 
+using Paraclete.Calculator;
 using Paraclete.IO;
 using Paraclete.Menu;
 using Paraclete.Painting;
@@ -12,12 +13,15 @@ public static class Configurator
         var services = new ServiceConfigurator();
 
         services
+            .AddScoped<CalculatorHistory>()
             .AddScoped<DataInputPainter>()
             .AddScoped<DataInputter>()
             .AddScoped<ExhibitionSelector>()
+            .AddScoped<Expression>()
             .AddScoped<FpsCounter>()
             .AddScoped<MainLoop>()
             .AddScoped<MenuPainter>()
+            .AddScoped<Painter>()
             .AddScoped<ScreenInvalidator>()
             .AddScoped<ScreenSaver>()
             .AddScoped<ScreenSelector>()
@@ -25,13 +29,12 @@ public static class Configurator
             .AddScoped<Stopwatch>()
             .AddScoped<ToDoList>()
             .AddScoped<ToDoListPainter>()
-            .AddScoped<Painter>()
 
             .AddImplementationsOf<ICommand>()
             .AddImplementationsOf<IExhibition>()
+            .AddImplementationsOf<IInputDefinition>()
             .AddImplementationsOf<IScreen>()
             .AddImplementationsOf<MenuBase>()
-            .AddImplementationsOf<IInputDefinition>()
         ;
 
         var serviceProvider = services.BuildServiceProvider();
