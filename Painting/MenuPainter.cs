@@ -104,7 +104,7 @@ public class MenuPainter
             sections.Add(new (description[..startBracketIndex], ForegroundColor: _textColor, BackgroundColor: null));
         }
 
-        var shortcutText = key.ToDisplayString() + (explicitBrackets ? "" : " ");
+        var shortcutText = key.ToDisplayString() + (explicitBrackets ? string.Empty : " ");
         sections.Add(new (shortcutText, ForegroundColor: _shortcutColor, BackgroundColor: null));
         sections.Add(new (description[(endBracketIndex+1)..], ForegroundColor: _textColor, BackgroundColor: null));
         sections.Add(new ("]", ForegroundColor: _bracketColor, BackgroundColor: null));

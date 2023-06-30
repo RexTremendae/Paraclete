@@ -24,7 +24,7 @@ public class ToDoListPainter
 
         var rows = new List<AnsiString>();
 
-        rows.Add($"{_formatConfig.Header}ToDo:{AnsiSequences.Reset}{"".PadRight(toDoItemPadding)}");
+        rows.Add($"{_formatConfig.Header}ToDo:{AnsiSequences.Reset}{string.Empty.PadRight(toDoItemPadding)}");
 
         rows.AddRange(_toDoList.ToDoItems.Select(_ =>
             ResolveMarker(_, paintSelectionMaker) +
@@ -33,8 +33,8 @@ public class ToDoListPainter
             AnsiSequences.Reset
         ));
 
-        rows.Add("".PadRight(toDoItemPadding));
-        rows.Add($"{_formatConfig.Header}Done:{AnsiSequences.Reset}{"".PadRight(toDoItemPadding)}");
+        rows.Add(string.Empty.PadRight(toDoItemPadding));
+        rows.Add($"{_formatConfig.Header}Done:{AnsiSequences.Reset}{string.Empty.PadRight(toDoItemPadding)}");
 
         rows.AddRange(_toDoList.DoneItems.Select(_ =>
             ResolveMarker(_, paintSelectionMaker) +

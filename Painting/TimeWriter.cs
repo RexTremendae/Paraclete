@@ -92,7 +92,7 @@ public class TimeWriter
                 {
                     if (y < yOffset)
                     {
-                        textPartRows[y] += "".PadLeft(font.CharacterWidth);
+                        textPartRows[y] += string.Empty.PadLeft(font.CharacterWidth);
                     }
                     else
                     {

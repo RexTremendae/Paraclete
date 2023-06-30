@@ -55,7 +55,7 @@ public class Painter
 
     public void Paint(AnsiString text, (int x, int y)? position = null, ConsoleColor? color = null)
     {
-        var formattedText = (color.HasValue ? color.Value.ToAnsiForegroundColorCode() : "") + text;
+        var formattedText = (color.HasValue ? color.Value.ToAnsiForegroundColorCode() : string.Empty) + text;
         PaintRows(new[] { formattedText }, position);
     }
 

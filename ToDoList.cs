@@ -235,7 +235,7 @@ public class ToDoItem
 
         var expirationDate = (ExpirationDate != default
             ? AnsiSequences.ForegroundColors.Gray + ExpirationDate.ToString(" (yyyy-MM-dd)")
-            : "");
+            : string.Empty);
 
         return descriptionColor + Description + expirationDate + AnsiSequences.Reset;
     }

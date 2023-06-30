@@ -85,7 +85,7 @@ public class ColumnBasedLayout : ILayout
             };
 
             rowBuilder.Append(colDividerChar);
-            rowBuilder.Append("".PadRight(col.Width, colIsDivider ? '─' : ' '));
+            rowBuilder.Append(string.Empty.PadRight(col.Width, colIsDivider ? '─' : ' '));
             totalWidth += col.Width + 1;
             isFirst = false;
         }
@@ -93,7 +93,7 @@ public class ColumnBasedLayout : ILayout
         rowBuilder.Append(colIsDivider ? '┤' : '│');
         totalWidth++;
 
-        rowBuilder.Append("".PadRight(int.Max(windowWidth - totalWidth - 1, 0)));
+        rowBuilder.Append(string.Empty.PadRight(int.Max(windowWidth - totalWidth - 1, 0)));
         rowBuilder.Append("║");
 
         return rowBuilder.ToString();
@@ -126,11 +126,11 @@ public class ColumnBasedLayout : ILayout
         var totalWidth = 1;
         foreach (var col in _columns)
         {
-            rowBuilder.Append("".PadRight(col.Width, padding));
+            rowBuilder.Append(string.Empty.PadRight(col.Width, padding));
             rowBuilder.Append(colBorder);
             totalWidth += col.Width + 1;
         }
-        rowBuilder.Append("".PadRight(int.Max(windowWidth - totalWidth - 1, 0), padding));
+        rowBuilder.Append(string.Empty.PadRight(int.Max(windowWidth - totalWidth - 1, 0), padding));
         rowBuilder.Append(rightBorder);
 
         return rowBuilder.ToString();
