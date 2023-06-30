@@ -14,7 +14,7 @@ public readonly record struct PaintSection
 
 public class AnsiStringBuilder
 {
-    private List<PaintSection> _sections = new();
+    private List<PaintSection> _sections = new ();
 
     public void Append(PaintSection section) => _sections.Add(section);
 

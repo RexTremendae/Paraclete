@@ -13,12 +13,12 @@ public class Font
     {
         CharacterHeight = characterHeight;
         CharacterWidth = characterWidth;
-        _font = new();
+        _font = new ();
     }
 
     public Font(Size size, params (char key, string[] data)[] font)
     {
-        _font = new();
+        _font = new ();
 
         CharacterWidth = 0;
         CharacterHeight = 0;
@@ -55,7 +55,7 @@ public class Font
         get => _font[index];
     }
 
-    private static ConcurrentDictionary<Size, Font> _fontsBySize = new();
+    private static ConcurrentDictionary<Size, Font> _fontsBySize = new ();
 
     public static Font OfSize(Size size)
     {
@@ -77,7 +77,7 @@ public class Font
 
     private static Font GetFontDefinition(Size size) => size switch
     {
-        Size.XS => new(Size.XS,
+        Size.XS => new (Size.XS,
             ('0', new[] { "0" }),
             ('1', new[] { "1" }),
             ('2', new[] { "2" }),
@@ -92,7 +92,7 @@ public class Font
             ('.', new[] { "." })
         ),
 
-        Size.S => new(Size.S,
+        Size.S => new (Size.S,
             ('0', new[] { " ▄  ",
                           "█ █ ",
                           "▀▄▀ " }),
@@ -142,7 +142,7 @@ public class Font
                           " ▄  " })
         ),
 
-        Size.M => new(Size.M,
+        Size.M => new (Size.M,
             ('0', new[] { " ██  ",
                           "█  █ ",
                           "█  █ ",
@@ -216,7 +216,7 @@ public class Font
                           "  █  " })
         ),
 
-        Size.L => new(Size.L,
+        Size.L => new (Size.L,
             ('0', new[] { " ████  ",
                           "██  ██ ",
                           "██  ██ ",

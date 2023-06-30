@@ -25,7 +25,7 @@ public class ExhibitionSelector
 
     public ExhibitionSelector(IServiceProvider services, ScreenInvalidator screenInvalidator)
     {
-        Exhibitions = new(TypeUtility.EnumerateImplementatingInstancesOf<IExhibition>(services));
+        Exhibitions = new (TypeUtility.EnumerateImplementatingInstancesOf<IExhibition>(services));
         _screenInvalidator = screenInvalidator;
     }
 }

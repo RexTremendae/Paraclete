@@ -9,7 +9,7 @@ public class ToDoList : IInitializer
     public IEnumerable<ToDoItem> ToDoItems => _toDoItems;
     public IEnumerable<ToDoItem> DoneItems => _doneItems;
 
-    private List<ToDoItem> _selectedList = new();
+    private List<ToDoItem> _selectedList = new ();
     public int _selectedToDoItemIndex;
     public ToDoItem? SelectedToDoItem => _selectedList.Count == 0 ? null : _selectedList[_selectedToDoItemIndex];
 
@@ -21,8 +21,8 @@ public class ToDoList : IInitializer
     public ToDoList(ScreenInvalidator screenInvalidator)
     {
         _screenInvalidator = screenInvalidator;
-        _toDoItems = new();
-        _doneItems = new();
+        _toDoItems = new ();
+        _doneItems = new ();
         _selectedList = _toDoItems;
         UpdateMaxItemLength();
     }
@@ -127,7 +127,7 @@ public class ToDoList : IInitializer
 
     public async Task AddItem(string description)
     {
-        _toDoItems.Add(new(description));
+        _toDoItems.Add(new (description));
         if (!_selectedList.Any())
         {
             SwitchSelectedList();
@@ -178,7 +178,7 @@ public class ToDoList : IInitializer
             if (string.IsNullOrEmpty(line)) continue;
             var done = line[0] == '-';
 
-            (done ? _doneItems : _toDoItems).Add(new(
+            (done ? _doneItems : _toDoItems).Add(new (
                 description: line[13..],
                 expirationDate: DateOnly.Parse(line[2..12])));
         }

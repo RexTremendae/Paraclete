@@ -20,10 +20,10 @@ public class DataInputter
     public DataInputter(ScreenInvalidator screenInvalidator, IServiceProvider services)
     {
         _screenInvalidator = screenInvalidator;
-        _input = new();
+        _input = new ();
         CurrentInput = string.Empty;
         Label = string.Empty;
-        _availableInputters = new();
+        _availableInputters = new ();
         _selectedInputter = IInputDefinition.NoInputter;
 
         foreach (var dataInputter in TypeUtility.EnumerateImplementatingInstancesOf<IInputDefinition>(services))

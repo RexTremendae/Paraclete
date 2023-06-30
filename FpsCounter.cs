@@ -2,7 +2,7 @@ namespace Paraclete;
 
 public class FpsCounter
 {
-    private readonly List<int> _fpsHistory = new();
+    private readonly List<int> _fpsHistory = new ();
     private readonly int _maxFpsHistory;
     private readonly bool _isEnabled;
 

@@ -26,7 +26,7 @@ public class ToDoScreen : IScreen
         _painter = painter;
         _toDoListPainter = toDoListPainter;
         _toDoList = toDoList;
-        _currentTimeWriter = new TimeWriter(new() {
+        _currentTimeWriter = new TimeWriter(new () {
             FontSize = Font.Size.XS,
             Color = ConsoleColor.White,
             ShowSeconds = false,

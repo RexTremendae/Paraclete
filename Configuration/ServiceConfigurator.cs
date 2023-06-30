@@ -10,7 +10,7 @@ public class ServiceConfigurator
     public ServiceConfigurator()
     {
         _services = new ServiceCollection();
-        _initializers = new();
+        _initializers = new ();
     }
 
     public ServiceConfigurator AddScoped<T>() where T : class
