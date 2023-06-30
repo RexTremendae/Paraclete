@@ -50,12 +50,12 @@ public class AnsiString
         return length;
     }
 
-    public static AnsiString operator + (AnsiString as1, AnsiString as2)
+    public static AnsiString operator +(AnsiString as1, AnsiString as2)
     {
         return new AnsiString(as1._content + as2._content, as1.Length + as2.Length);
     }
 
     public static AnsiString Create(string input) => new AnsiString(input);
     public override string ToString() => _content;
-    public static implicit operator AnsiString (string input) => new AnsiString(input);
+    public static implicit operator AnsiString(string input) => new AnsiString(input);
 }

@@ -26,7 +26,6 @@
     <Rule Id="SA1633" Action="None" /> <!-- SA1633: The file header is missing or not located at the top of the file -->
 
     <!-- Fix these (a lot of code to go through): -->
-    <Rule Id="SA1008" Action="None" /> <!-- SA1008: Opening parenthesis should not be followed by a space -->
     <Rule Id="SA1009" Action="None" /> <!-- SA1009: Closing parenthesis should not be preceded by a space -->
     <Rule Id="SA1201" Action="None" /> <!-- SA1201: A field should not follow a property -->
 

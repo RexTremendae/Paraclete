@@ -21,6 +21,8 @@ public static class AnsiSequences
     public static readonly AnsiString NoReverse       = "\u001b[27m";
     public static readonly AnsiString NoStrikeThrough = "\u001b[29m";
 
+#pragma warning disable SA1008 // Opening parenthesis should not be followed by a space
+
     private static readonly (int r, int g, int b) BlackDefinition       = (   0,   0,   0 );
     private static readonly (int r, int g, int b) BlueDefinition        = ( 100, 150, 255 );
     private static readonly (int r, int g, int b) CyanDefinition        = (   0, 255, 255 );
@@ -38,6 +40,8 @@ public static class AnsiSequences
     private static readonly (int r, int g, int b) RedDefinition         = ( 200,  50,  50 );
     private static readonly (int r, int g, int b) YellowDefinition      = ( 200, 200,   0 );
     private static readonly (int r, int g, int b) WhiteDefinition       = ( 255, 255, 255 );
+
+#pragma warning restore SA1008 // Opening parenthesis should not be followed by a space
 
     public static class ForegroundColors
     {
