@@ -11,5 +11,6 @@ public class _MainMenu : MenuBase
         typeof(ResetCommand),
         typeof(MarkTimeCommand),
     })
-    { }
+    {
+    }
 }

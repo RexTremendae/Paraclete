@@ -11,7 +11,10 @@ public interface IScreen
     string Name { get; }
     ConsoleKey Shortcut { get; }
 
-    public virtual void OnAfterSwitch() { }
+    public virtual void OnAfterSwitch()
+    {
+    }
+
     void PaintContent(Painter painter);
 
     public static readonly IScreen NoScreen = new NoScreenImplementation();

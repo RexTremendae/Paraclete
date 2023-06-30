@@ -15,5 +15,6 @@ public class _ToDoMenu : MenuBase
         typeof(PreviousItemCommand),
         typeof(NextItemCommand),
     })
-    { }
+    {
+    }
 }
