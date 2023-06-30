@@ -91,7 +91,7 @@ public class ColumnBasedLayout : ILayout
         }
 
         rowBuilder.Append(colIsDivider ? '┤' : '│');
-        totalWidth ++;
+        totalWidth++;
 
         rowBuilder.Append("".PadRight(int.Max(windowWidth - totalWidth - 1, 0)));
         rowBuilder.Append("║");
@@ -113,7 +113,7 @@ public class ColumnBasedLayout : ILayout
             {
                 return true;
             }
-            totalHeight ++;
+            totalHeight++;
         }
 
         return false;

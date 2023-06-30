@@ -52,7 +52,7 @@ public class ColorExhibition : IExhibition
                 ? (initialPosition.x, position.y + 1)
                 : (position.x + columnWidth, position.y);
 
-            colorNumber ++;
+            colorNumber++;
         }
     }
 }
