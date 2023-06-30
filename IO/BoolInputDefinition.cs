@@ -3,7 +3,7 @@ namespace Paraclete.IO;
 public class BoolInputDefinition : IInputDefinition
 {
     public Type DataType => typeof(bool);
-    public string Alphabet => "YyNn"; 
+    public string Alphabet => "YyNn";
     public int? MinLength => 1;
     public int? MaxLength => 1;
 
