@@ -40,7 +40,7 @@ public class MainLoop
     {
         var screenSaverIsActive = false;
 
-        for (;;)
+        for (; ; )
         {
             _quickMenuIsActive = PInvoke.Keyboard.GetAsyncKeyState(PInvoke.Keyboard.VirtKey.TAB) != 0;
 
@@ -80,7 +80,7 @@ public class MainLoop
 
         ConsoleKeyInfo key;
 
-        for (;;)
+        for (; ; )
         {
             key = Console.ReadKey(true);
 

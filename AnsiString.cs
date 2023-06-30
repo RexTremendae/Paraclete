@@ -26,7 +26,7 @@ public class AnsiString
         var length = 0;
         var lastIdx = 0;
 
-        for (;;)
+        for (; ; )
         {
             var nextIdx = data.IndexOf(AnsiSequenceStart, lastIdx, StringComparison.Ordinal);
             if (nextIdx < 0)
