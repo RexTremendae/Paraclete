@@ -1,8 +1,8 @@
+namespace Paraclete.Painting;
+
 using Paraclete.Menu;
 using Paraclete.Menu.Shortcuts;
 using Paraclete.Screens;
-
-namespace Paraclete.Painting;
 
 public class MenuPainter
 {

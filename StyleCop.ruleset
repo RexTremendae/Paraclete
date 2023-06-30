@@ -21,6 +21,7 @@
     <Rule Id="SA1119" Action="None" /> <!-- SA1119: Statement should not use unnecessary parenthesis -->
     <Rule Id="SA1129" Action="None" /> <!-- SA1129: Do not use default value type constructor -->
     <Rule Id="SA1309" Action="None" /> <!-- SA1309: Field '_currentTimeHeight' should not begin with an underscore -->
+    <Rule Id="SA1516" Action="None" /> <!-- SA1516: Elements should be separated by blank line -->
     <Rule Id="SA1633" Action="None" /> <!-- SA1633: The file header is missing or not located at the top of the file -->
 
     <!-- Fix these (a lot of code to go through): -->
@@ -28,13 +29,11 @@
     <Rule Id="SA1008" Action="None" /> <!-- SA1008: Opening parenthesis should not be followed by a space -->
     <Rule Id="SA1009" Action="None" /> <!-- SA1009: Closing parenthesis should not be preceded by a space -->
     <Rule Id="SA1025" Action="None" /> <!-- SA1025: Code should not contain multiple whitespace characters in a row -->
+    <Rule Id="SA1201" Action="None" /> <!-- SA1201: A field should not follow a property -->
 
     <!-- Investigate and decide: -->
-    <Rule Id="SA1200" Action="None" /> <!-- SA1200: Using directive should appear within a namespace declaration -->
-    <Rule Id="SA1201" Action="None" /> <!-- SA1201: A field should not follow a property -->
     <Rule Id="SA1300" Action="None" /> <!-- SA1300: Element '_MainMenu' should begin with an uppercase letter -->
     <Rule Id="SA1500" Action="None" /> <!-- SA1500: Braces for multi-line statements should not share line -->
-    <Rule Id="SA1516" Action="None" /> <!-- SA1516: Elements should be separated by blank line -->
   </Rules>
   <Rules AnalyzerId="DocumentationAnalyzers" RuleNamespace="DocumentationAnalyzers">
     <Rule Id="DOC100" Action="None" />

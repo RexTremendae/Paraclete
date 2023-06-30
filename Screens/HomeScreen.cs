@@ -1,9 +1,9 @@
+namespace Paraclete.Screens;
+
 using Paraclete.Layouts;
 using Paraclete.Menu;
 using Paraclete.Menu.General;
 using Paraclete.Painting;
-
-namespace Paraclete.Screens;
 
 public class HomeScreen : IScreen
 {

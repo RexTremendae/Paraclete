@@ -1,6 +1,6 @@
-using System.Diagnostics;
-
 namespace Paraclete.Menu.Shortcuts;
+
+using System.Diagnostics;
 
 public abstract class StartProcessCommandBase
 {

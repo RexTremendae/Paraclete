@@ -1,6 +1,6 @@
-using Microsoft.Extensions.DependencyInjection;
-
 namespace Paraclete.Menu;
+
+using Microsoft.Extensions.DependencyInjection;
 
 public abstract class MenuBase
 {

@@ -1,6 +1,6 @@
-using Microsoft.Extensions.DependencyInjection;
-
 namespace Paraclete.Configuration;
+
+using Microsoft.Extensions.DependencyInjection;
 
 public class ServiceConfigurator
 {

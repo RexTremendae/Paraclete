@@ -1,6 +1,6 @@
-using System.Reflection;
-
 namespace Paraclete.Extensions;
+
+using System.Reflection;
 
 public static class ObjectExtensions
 {

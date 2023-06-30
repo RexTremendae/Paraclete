@@ -1,6 +1,6 @@
-using Paraclete.Painting;
-
 namespace Paraclete.Configuration;
+
+using Paraclete.Painting;
 
 public class Settings
 {

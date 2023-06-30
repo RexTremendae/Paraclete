@@ -1,9 +1,9 @@
+namespace Paraclete.Configuration;
+
 using Paraclete.IO;
 using Paraclete.Menu;
 using Paraclete.Painting;
 using Paraclete.Screens;
-
-namespace Paraclete.Configuration;
 
 public static class Configurator
 {

@@ -1,9 +1,9 @@
+namespace Paraclete.Screens;
+
 using Paraclete.Layouts;
 using Paraclete.Menu;
 using Paraclete.Menu.Shortcuts;
 using Paraclete.Painting;
-
-namespace Paraclete.Screens;
 
 public class ShortcutsScreen : IScreen
 {

@@ -1,6 +1,6 @@
-using Paraclete.Painting;
-
 namespace Paraclete.Screens;
+
+using Paraclete.Painting;
 
 public interface IExhibition
 {

@@ -1,7 +1,7 @@
+namespace Paraclete.Layouts;
+
 using System.Text;
 using Paraclete.Painting;
-
-namespace Paraclete.Layouts;
 
 public class ColumnBasedLayout : ILayout
 {

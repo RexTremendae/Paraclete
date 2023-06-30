@@ -1,6 +1,6 @@
-using System.Text.Json;
-
 namespace Paraclete.Menu.Shortcuts;
+
+using System.Text.Json;
 
 public class _ShortcutsMenu : MenuBase, IInitializer
 {

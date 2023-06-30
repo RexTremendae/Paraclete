@@ -1,7 +1,7 @@
+namespace Paraclete.Screens;
+
 using Paraclete.Painting;
 using static System.Console;
-
-namespace Paraclete.Screens;
 
 public class ScreenSaver
 {

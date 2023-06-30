@@ -1,6 +1,6 @@
-using Paraclete.Screens;
-
 namespace Paraclete.Menu;
+
+using Paraclete.Screens;
 
 public class GotoMainMenuCommand : ICommand
 {

@@ -1,6 +1,6 @@
-using Paraclete.Painting;
-
 namespace Paraclete.Layouts;
+
+using Paraclete.Painting;
 
 public class SinglePanelLayout : ILayout
 {

@@ -1,11 +1,11 @@
+namespace Paraclete;
+
 using Microsoft.Extensions.DependencyInjection;
 using Paraclete.IO;
 using Paraclete.Menu;
 using Paraclete.Menu.Shortcuts;
 using Paraclete.Painting;
 using Paraclete.Screens;
-
-namespace Paraclete;
 
 public class MainLoop
 {

@@ -1,6 +1,6 @@
-using Paraclete.Screens;
-
 namespace Paraclete.Menu.Showroom;
+
+using Paraclete.Screens;
 
 public class NextExhibitionCommand : ICommand
 {

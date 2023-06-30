@@ -1,5 +1,3 @@
-using System.Text;
-
 namespace Paraclete.Painting;
 
 public class FontWriter

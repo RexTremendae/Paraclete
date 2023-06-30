@@ -1,8 +1,8 @@
+namespace Paraclete.IO;
+
 using System.Reflection;
 using System.Text;
 using Paraclete.Menu;
-
-namespace Paraclete.IO;
 
 public class DataInputter
 {

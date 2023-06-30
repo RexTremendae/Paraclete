@@ -1,10 +1,10 @@
+namespace Paraclete.Painting;
+
 using System.Text;
 using Paraclete.IO;
 using Paraclete.Screens;
 
 using static System.Console;
-
-namespace Paraclete.Painting;
 
 public class Painter
 {

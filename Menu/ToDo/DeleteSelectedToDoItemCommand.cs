@@ -1,6 +1,6 @@
-using Paraclete.IO;
-
 namespace Paraclete.Menu.ToDo;
+
+using Paraclete.IO;
 
 public class DeleteSelectedToDoItemCommand : IInputCommand<bool>
 {

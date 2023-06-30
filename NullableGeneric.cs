@@ -1,6 +1,6 @@
-using System.Diagnostics.CodeAnalysis;
-
 namespace Paraclete;
+
+using System.Diagnostics.CodeAnalysis;
 
 public class NullableGeneric<T>
 {

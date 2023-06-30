@@ -1,8 +1,8 @@
+namespace Paraclete.Screens;
+
 using Paraclete.Layouts;
 using Paraclete.Menu;
 using Paraclete.Painting;
-
-namespace Paraclete.Screens;
 
 public interface IScreen
 {

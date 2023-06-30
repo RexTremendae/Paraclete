@@ -1,6 +1,6 @@
-using System.Collections.Concurrent;
-
 namespace Paraclete.Painting;
+
+using System.Collections.Concurrent;
 
 public class Font
 {

@@ -1,6 +1,6 @@
-using Microsoft.Extensions.DependencyInjection;
-
 namespace Paraclete.Screens;
+
+using Microsoft.Extensions.DependencyInjection;
 
 public class ScreenSelector
 {
