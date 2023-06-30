@@ -10,7 +10,7 @@ public class ShowroomScreen : IScreen
     private readonly TimeWriter _currentTimeWriter;
     private readonly ExhibitionSelector _exhibitionSelector;
 
-    public ShowroomScreen(_ShowroomMenu showroomMenu, ExhibitionSelector exhibitionSelector)
+    public ShowroomScreen(ShowroomMenu showroomMenu, ExhibitionSelector exhibitionSelector)
     {
         Menu = showroomMenu;
         _exhibitionSelector = exhibitionSelector;

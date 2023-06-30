@@ -2,11 +2,11 @@ namespace Paraclete.Menu.Shortcuts;
 
 using System.Text.Json;
 
-public class _ShortcutsMenu : MenuBase, IInitializer
+public class ShortcutsMenu : MenuBase, IInitializer
 {
     private const string _shortcutsFilename = "shortcuts.json";
 
-    public _ShortcutsMenu(IServiceProvider services)
+    public ShortcutsMenu(IServiceProvider services)
         : base(services, new Type[]
     {
         typeof(ExitApplicationCommand),

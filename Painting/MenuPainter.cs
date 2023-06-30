@@ -8,13 +8,13 @@ public class MenuPainter
 {
     private readonly ScreenSelector _screenSelector;
     private readonly IServiceProvider _services;
-    private readonly _ShortcutsMenu _shortcutsMenu;
+    private readonly ShortcutsMenu _shortcutsMenu;
 
     private readonly ConsoleColor _bracketColor = ConsoleColor.White;
     private readonly ConsoleColor _shortcutColor = ConsoleColor.Green;
     private readonly ConsoleColor _textColor = ConsoleColor.Gray;
 
-    public MenuPainter(ScreenSelector screenSelector, IServiceProvider services, _ShortcutsMenu shortcutsMenu)
+    public MenuPainter(ScreenSelector screenSelector, IServiceProvider services, ShortcutsMenu shortcutsMenu)
     {
         _screenSelector = screenSelector;
         _services = services;

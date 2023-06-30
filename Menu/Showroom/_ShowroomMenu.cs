@@ -1,8 +1,8 @@
 namespace Paraclete.Menu.Showroom;
 
-public class _ShowroomMenu : MenuBase
+public class ShowroomMenu : MenuBase
 {
-    public _ShowroomMenu(IServiceProvider services)
+    public ShowroomMenu(IServiceProvider services)
         : base(services, new Type[]
     {
         typeof(TriggerScreenSaverCommand),

@@ -22,7 +22,7 @@ public class HomeScreen : IScreen
     private TimeWriter _stopWatchWriter;
     private TimeWriter _markTimeWriter;
 
-    public HomeScreen(Stopwatch stopWatch, _MainMenu mainMenu, ScreenInvalidator screenInvalidator, ToDoListPainter toDoListPainter)
+    public HomeScreen(Stopwatch stopWatch, MainMenu mainMenu, ScreenInvalidator screenInvalidator, ToDoListPainter toDoListPainter)
     {
         Menu = mainMenu;
 

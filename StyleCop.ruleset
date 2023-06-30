@@ -13,7 +13,6 @@
     <Rule Id="IDE0003" Action="None" />
   </Rules>
   <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
-    <!-- Decidedly disabled: -->
     <Rule Id="SA0001" Action="None" /> <!-- SA0001: XML comment analysis is disabled due to project configuration -->
     <Rule Id="SA1009" Action="None" /> <!-- SA1009: Closing parenthesis should not be preceded by a space -->
     <Rule Id="SA1025" Action="None" /> <!-- SA1025: Code should not contain multiple whitespace characters in a row -->
@@ -25,9 +24,6 @@
     <Rule Id="SA1309" Action="None" /> <!-- SA1309: Field '_currentTimeHeight' should not begin with an underscore -->
     <Rule Id="SA1516" Action="None" /> <!-- SA1516: Elements should be separated by blank line -->
     <Rule Id="SA1633" Action="None" /> <!-- SA1633: The file header is missing or not located at the top of the file -->
-
-    <!-- Decide what to do: -->
-    <Rule Id="SA1300" Action="None" /> <!-- SA1300: Element '_MainMenu' should begin with an uppercase letter -->
   </Rules>
   <Rules AnalyzerId="DocumentationAnalyzers" RuleNamespace="DocumentationAnalyzers">
     <Rule Id="DOC100" Action="None" />

@@ -16,7 +16,7 @@ public class MainLoop
     private readonly FpsCounter _fpsCounter;
     private readonly IServiceProvider _services;
     private readonly DataInputter _dataInputter;
-    private readonly _ShortcutsMenu _shortcutsMenu;
+    private readonly ShortcutsMenu _shortcutsMenu;
     private readonly int _repaintLoopInterval;
 
     private bool _quickMenuIsActive = false;
@@ -30,7 +30,7 @@ public class MainLoop
         _screenInvalidator = services.GetRequiredService<ScreenInvalidator>();
         _fpsCounter = services.GetRequiredService<FpsCounter>();
         _dataInputter = services.GetRequiredService<DataInputter>();
-        _shortcutsMenu = services.GetRequiredService<_ShortcutsMenu>();
+        _shortcutsMenu = services.GetRequiredService<ShortcutsMenu>();
 
         _repaintLoopInterval = services.GetRequiredService<Settings>().RepaintLoopInterval;
     }

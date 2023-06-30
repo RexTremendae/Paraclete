@@ -1,4 +1,4 @@
-namespace Paraclete.Menu.Stopwatch;
+namespace Paraclete.Menu.General;
 
 public class StartStopCommand : ICommand
 {

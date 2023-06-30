@@ -10,7 +10,7 @@ public class ShortcutsScreen : IScreen
     private readonly TimeWriter _currentTimeWriter;
     private ScreenInvalidator _screenInvalidator;
 
-    public ShortcutsScreen(ScreenInvalidator screenInvalidator, _ShortcutsMenu shortcutsMenu)
+    public ShortcutsScreen(ScreenInvalidator screenInvalidator, ShortcutsMenu shortcutsMenu)
     {
         _screenInvalidator = screenInvalidator;
 
