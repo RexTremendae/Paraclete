@@ -18,5 +18,5 @@ public class CustomShortcutCommand : StartProcessCommandBase, IShortcut
     public string Description { get; }
     public string LongDescription { get; }
 
-    public async Task Execute() => await base.Execute(_command, _arguments);
+    public async Task Execute() => await Execute(_command, _arguments);
 }

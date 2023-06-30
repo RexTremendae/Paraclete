@@ -32,7 +32,7 @@ public class _ShortcutsMenu : MenuBase, IInitializer
         foreach (var shortcut in shortcutList)
         {
             var shortcutKey = Enum.Parse<ConsoleKey>(shortcut.Key);
-            base.AddCommand(shortcutKey, new CustomShortcutCommand(
+            AddCommand(shortcutKey, new CustomShortcutCommand(
                 shortcutKey,
                 shortDescription: shortcut.ShortDescription,
                 longDescription: shortcut.LongDescription,

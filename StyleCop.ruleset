@@ -18,7 +18,6 @@
     <Rule Id="SA1008" Action="None" /> <!-- SA1008: Opening parenthesis should not be followed by a space -->
     <Rule Id="SA1009" Action="None" /> <!-- SA1009: Closing parenthesis should not be preceded by a space -->
     <Rule Id="SA1025" Action="None" /> <!-- SA1025: Code should not contain multiple whitespace characters in a row -->
-    <Rule Id="SA1100" Action="None" />
     <Rule Id="SA1101" Action="None" />
     <Rule Id="SA1111" Action="None" />
     <Rule Id="SA1116" Action="None" />
