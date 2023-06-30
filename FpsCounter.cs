@@ -18,14 +18,21 @@ public class FpsCounter
 
     public void Update()
     {
-        if (!_isEnabled) return;
+        if (!_isEnabled)
+        {
+            return;
+        }
 
         _frameCount++;
         var now = DateTime.Now;
         if (now - _frameCountStart > TimeSpan.FromSeconds(1))
         {
             _fpsHistory.Add(_frameCount);
-            if (_fpsHistory.Count > _maxFpsHistory) _fpsHistory.RemoveAt(0);
+            if (_fpsHistory.Count > _maxFpsHistory)
+            {
+                _fpsHistory.RemoveAt(0);
+            }
+
             _fpsAverage = ((double)_fpsHistory.Sum())/_fpsHistory.Count;
 
             _frameCount = 0;
@@ -35,7 +42,10 @@ public class FpsCounter
 
     public void Print()
     {
-        if (!_isEnabled) return;
+        if (!_isEnabled)
+        {
+            return;
+        }
 
         Console.SetCursorPosition(1, 1);
         Console.Write(

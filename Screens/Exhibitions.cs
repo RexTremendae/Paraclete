@@ -22,7 +22,10 @@ public class FontExhibition : IExhibition
 
         foreach (var size in Enum.GetValues<Font.Size>())
         {
-            if (size == Font.Size.Undefined) continue;
+            if (size == Font.Size.Undefined)
+            {
+                continue;
+            }
             var fontWriter = FontWriter.Create(size);
             painter.Paint($"{AnsiSequences.ForegroundColors.White}{size.ToString()}:".PadRight(4), position);
             fontWriter.Write(text, colors[size], (position.x + 4, position.y), painter);

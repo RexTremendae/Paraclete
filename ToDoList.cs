@@ -167,7 +167,11 @@ public class ToDoList : IInitializer
 
         foreach (var line in await File.ReadAllLinesAsync(_todoFilename))
         {
-            if (string.IsNullOrEmpty(line)) continue;
+            if (string.IsNullOrEmpty(line))
+            {
+                continue;
+            }
+
             var done = line[0] == '-';
 
             (done ? _doneItems : _toDoItems).Add(new (

@@ -32,8 +32,7 @@
     <Rule Id="SA1200" Action="None" /> <!-- SA1200: Using directive should appear within a namespace declaration -->
     <Rule Id="SA1201" Action="None" /> <!-- SA1201: A field should not follow a property -->
     <Rule Id="SA1300" Action="None" /> <!-- SA1300: Element '_MainMenu' should begin with an uppercase letter -->
-    <Rule Id="SA1500" Action="None" />
-    <Rule Id="SA1501" Action="None" />
+    <Rule Id="SA1500" Action="None" /> <!-- SA1500: Braces for multi-line statements should not share line -->
     <Rule Id="SA1502" Action="None" />
     <Rule Id="SA1503" Action="None" />
     <Rule Id="SA1505" Action="None" />

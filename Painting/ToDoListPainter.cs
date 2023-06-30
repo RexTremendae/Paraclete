@@ -49,13 +49,22 @@ public class ToDoListPainter
     public string ResolveMarker(ToDoItem toDoItem, bool paintSelectionMaker)
     {
         // ToDo list without selection marker
-        if (!paintSelectionMaker) return "- ";
+        if (!paintSelectionMaker)
+        {
+            return "- ";
+        }
 
         // Selection marker is visible but current item is not selected
-        if (toDoItem != _toDoList.SelectedToDoItem) return "-  ";
+        if (toDoItem != _toDoList.SelectedToDoItem)
+        {
+            return "-  ";
+        }
 
         // Selected item in move item mode
-        if (_toDoList.MoveItemMode) return $"{_formatConfig.marker}⮝⮟ ";
+        if (_toDoList.MoveItemMode)
+        {
+            return $"{_formatConfig.marker}⮝⮟ ";
+        }
 
         // Selected item in normal mode
         return $"{_formatConfig.marker}=> ";
