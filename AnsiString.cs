@@ -17,9 +17,9 @@ public class AnsiString
         Length = length;
     }
 
-    public int Length { get; }
-
     public static AnsiString Empty => new (string.Empty);
+
+    public int Length { get; }
 
     private int CalculateLength(string data)
     {
