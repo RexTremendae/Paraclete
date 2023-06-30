@@ -9,13 +9,6 @@ public class Font
     public int CharacterWidth { get; }
     public int CharacterHeight { get; }
 
-    private Font(int characterWidth, int characterHeight)
-    {
-        CharacterHeight = characterHeight;
-        CharacterWidth = characterWidth;
-        _font = new ();
-    }
-
     public Font(Size size, params (char key, string[] data)[] font)
     {
         _font = new ();
@@ -48,6 +41,13 @@ public class Font
 
             _font.Add(key, data);
         }
+    }
+
+    private Font(int characterWidth, int characterHeight)
+    {
+        CharacterHeight = characterHeight;
+        CharacterWidth = characterWidth;
+        _font = new ();
     }
 
     public string[] this[char index]

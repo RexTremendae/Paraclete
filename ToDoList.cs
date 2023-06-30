@@ -9,14 +9,15 @@ public class ToDoList : IInitializer
     public IEnumerable<ToDoItem> ToDoItems => _toDoItems;
     public IEnumerable<ToDoItem> DoneItems => _doneItems;
 
-    private List<ToDoItem> _selectedList = new ();
     public int _selectedToDoItemIndex;
+
+    private const string _todoFilename = "todo.txt";
+
+    private List<ToDoItem> _selectedList = new ();
     public ToDoItem? SelectedToDoItem => _selectedList.Count == 0 ? null : _selectedList[_selectedToDoItemIndex];
 
     public bool MoveItemMode { get; private set; }
     public int MaxItemLength { get; private set; }
-
-    private const string _todoFilename = "todo.txt";
 
     public ToDoList(ScreenInvalidator screenInvalidator)
     {
@@ -86,15 +87,6 @@ public class ToDoList : IInitializer
         }
         _selectedToDoItemIndex = newPosition;
         await Update();
-    }
-
-    private void SwitchSelectedList()
-    {
-        var newSelectedList = (_selectedList == _toDoItems ? _doneItems : _toDoItems);
-        if (newSelectedList.Count > 0)
-        {
-            _selectedList = (_selectedList == _toDoItems ? _doneItems : _toDoItems);
-        }
     }
 
     public async Task ToggleSelectedDoneState()
@@ -206,6 +198,15 @@ public class ToDoList : IInitializer
             var x when _1.ExpirationDate < _2.ExpirationDate => -1,
             _ => 0
         });
+    }
+
+    private void SwitchSelectedList()
+    {
+        var newSelectedList = (_selectedList == _toDoItems ? _doneItems : _toDoItems);
+        if (newSelectedList.Count > 0)
+        {
+            _selectedList = (_selectedList == _toDoItems ? _doneItems : _toDoItems);
+        }
     }
 }
 

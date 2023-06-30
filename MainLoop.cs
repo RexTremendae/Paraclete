@@ -36,35 +36,6 @@ public class MainLoop
 
     private bool _quickMenuIsActive = false;
 
-    private async Task RepaintLoop()
-    {
-        var screenSaverIsActive = false;
-
-        for (; ; )
-        {
-            _quickMenuIsActive = PInvoke.Keyboard.GetAsyncKeyState(PInvoke.Keyboard.VirtKey.TAB) != 0;
-
-            if (_screenSaver.IsActive)
-            {
-                _screenSaver.PaintScreen();
-                screenSaverIsActive = true;
-            }
-            else
-            {
-                if (screenSaverIsActive)
-                {
-                    screenSaverIsActive = false;
-                    _screenInvalidator.Invalidate();
-                }
-                _painter.PaintScreen(_quickMenuIsActive);
-            }
-
-            await Task.Delay(_repaintLoopInterval);
-            _fpsCounter.Update();
-            _fpsCounter.Print();
-        }
-    }
-
     public async Task Run()
     {
         _screenSaver.Inactivate();
@@ -130,6 +101,35 @@ public class MainLoop
             {
                 _screenSelector.SwitchTo(selectedScreen);
             }
+        }
+    }
+
+    private async Task RepaintLoop()
+    {
+        var screenSaverIsActive = false;
+
+        for (; ; )
+        {
+            _quickMenuIsActive = PInvoke.Keyboard.GetAsyncKeyState(PInvoke.Keyboard.VirtKey.TAB) != 0;
+
+            if (_screenSaver.IsActive)
+            {
+                _screenSaver.PaintScreen();
+                screenSaverIsActive = true;
+            }
+            else
+            {
+                if (screenSaverIsActive)
+                {
+                    screenSaverIsActive = false;
+                    _screenInvalidator.Invalidate();
+                }
+                _painter.PaintScreen(_quickMenuIsActive);
+            }
+
+            await Task.Delay(_repaintLoopInterval);
+            _fpsCounter.Update();
+            _fpsCounter.Print();
         }
     }
 }
