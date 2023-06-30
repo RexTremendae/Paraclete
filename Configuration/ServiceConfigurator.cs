@@ -13,7 +13,8 @@ public class ServiceConfigurator
         _initializers = new ();
     }
 
-    public ServiceConfigurator AddScoped<T>() where T : class
+    public ServiceConfigurator AddScoped<T>()
+        where T : class
     {
         AddScoped(typeof(T));
         return this;
