@@ -97,17 +97,17 @@ public class MenuPainter
 
         var explicitBrackets = startBracketIndex >= 0 && endBracketIndex >= 0;
 
-        sections.Add(new ("[", ForegroundColor: _bracketColor, BackgroundColor: null));
+        sections.Add(new ("[", foregroundColor: _bracketColor, backgroundColor: null));
 
         if (explicitBrackets)
         {
-            sections.Add(new (description[..startBracketIndex], ForegroundColor: _textColor, BackgroundColor: null));
+            sections.Add(new (description[..startBracketIndex], foregroundColor: _textColor, backgroundColor: null));
         }
 
         var shortcutText = key.ToDisplayString() + (explicitBrackets ? string.Empty : " ");
-        sections.Add(new (shortcutText, ForegroundColor: _shortcutColor, BackgroundColor: null));
-        sections.Add(new (description[(endBracketIndex+1)..], ForegroundColor: _textColor, BackgroundColor: null));
-        sections.Add(new ("]", ForegroundColor: _bracketColor, BackgroundColor: null));
+        sections.Add(new (shortcutText, foregroundColor: _shortcutColor, backgroundColor: null));
+        sections.Add(new (description[(endBracketIndex+1)..], foregroundColor: _textColor, backgroundColor: null));
+        sections.Add(new ("]", foregroundColor: _bracketColor, backgroundColor: null));
 
         return sections;
     }

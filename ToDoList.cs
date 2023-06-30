@@ -190,12 +190,12 @@ public class ToDoList : IInitializer
 
     public void SortToDoItems()
     {
-        _toDoItems.Sort((_1, _2) => 0 switch
+        _toDoItems.Sort((first, second) => 0 switch
         {
-            var x when _1.ExpirationDate == default && _2.ExpirationDate != default => 1,
-            var x when _1.ExpirationDate != default && _2.ExpirationDate == default => -1,
-            var x when _1.ExpirationDate > _2.ExpirationDate => 1,
-            var x when _1.ExpirationDate < _2.ExpirationDate => -1,
+            var x when first.ExpirationDate == default && second.ExpirationDate != default => 1,
+            var x when first.ExpirationDate != default && second.ExpirationDate == default => -1,
+            var x when first.ExpirationDate > second.ExpirationDate => 1,
+            var x when first.ExpirationDate < second.ExpirationDate => -1,
             _ => 0
         });
     }

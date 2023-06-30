@@ -65,18 +65,18 @@ public class Painter
         foreach (var r in rows)
         {
             var builder = new StringBuilder();
-            for (int idx = 0; idx < r.Sections.Length; idx++)
+            for (int idx = 0; idx < r.sections.Length; idx++)
             {
-                var part = r.Sections[idx];
-                if (part.ForegroundColor.HasValue)
+                var part = r.sections[idx];
+                if (part.foregroundColor.HasValue)
                 {
-                    builder.Append(part.ForegroundColor.Value.ToAnsiForegroundColorCode());
+                    builder.Append(part.foregroundColor.Value.ToAnsiForegroundColorCode());
                 }
-                if (part.BackgroundColor.HasValue)
+                if (part.backgroundColor.HasValue)
                 {
-                    builder.Append(part.BackgroundColor.Value.ToAnsiBackgroundColorCode());
+                    builder.Append(part.backgroundColor.Value.ToAnsiBackgroundColorCode());
                 }
-                builder.Append(part.Text);
+                builder.Append(part.text);
             }
             builder.Append(AnsiSequences.Reset);
             formattedRows.Add(builder.ToString());

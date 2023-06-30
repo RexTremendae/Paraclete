@@ -11,10 +11,10 @@ public class ToDoListPainter
         _painter = painter;
         _toDoList = toDoList;
         _formatConfig = new (
-            Header: AnsiSequences.ForegroundColors.White,
-            Marker: AnsiSequences.ForegroundColors.Blue,
-            ToDo: AnsiSequences.ForegroundColors.Yellow,
-            Done: AnsiSequences.ForegroundColors.Gray + AnsiSequences.StrikeThrough
+            header: AnsiSequences.ForegroundColors.White,
+            marker: AnsiSequences.ForegroundColors.Blue,
+            toDo: AnsiSequences.ForegroundColors.Yellow,
+            done: AnsiSequences.ForegroundColors.Gray + AnsiSequences.StrikeThrough
         );
     }
 
@@ -24,21 +24,21 @@ public class ToDoListPainter
 
         var rows = new List<AnsiString>();
 
-        rows.Add($"{_formatConfig.Header}ToDo:{AnsiSequences.Reset}{string.Empty.PadRight(toDoItemPadding)}");
+        rows.Add($"{_formatConfig.header}ToDo:{AnsiSequences.Reset}{string.Empty.PadRight(toDoItemPadding)}");
 
         rows.AddRange(_toDoList.ToDoItems.Select(_ =>
             ResolveMarker(_, paintSelectionMaker) +
-            _formatConfig.ToDo +
+            _formatConfig.toDo +
             _.ToDisplayString(false).PadRight(_toDoList.MaxItemLength) +
             AnsiSequences.Reset
         ));
 
         rows.Add(string.Empty.PadRight(toDoItemPadding));
-        rows.Add($"{_formatConfig.Header}Done:{AnsiSequences.Reset}{string.Empty.PadRight(toDoItemPadding)}");
+        rows.Add($"{_formatConfig.header}Done:{AnsiSequences.Reset}{string.Empty.PadRight(toDoItemPadding)}");
 
         rows.AddRange(_toDoList.DoneItems.Select(_ =>
             ResolveMarker(_, paintSelectionMaker) +
-            _formatConfig.Done +
+            _formatConfig.done +
             _.ToDisplayString(true).PadRight(_toDoList.MaxItemLength) +
             AnsiSequences.Reset
         ));
@@ -55,17 +55,17 @@ public class ToDoListPainter
         if (toDoItem != _toDoList.SelectedToDoItem) return "-  ";
 
         // Selected item in move item mode
-        if (_toDoList.MoveItemMode) return $"{_formatConfig.Marker}⮝⮟ ";
+        if (_toDoList.MoveItemMode) return $"{_formatConfig.marker}⮝⮟ ";
 
         // Selected item in normal mode
-        return $"{_formatConfig.Marker}=> ";
+        return $"{_formatConfig.marker}=> ";
     }
 }
 
 public readonly record struct ToDoFormatConfiguration
 (
-    AnsiString Header,
-    AnsiString Marker,
-    AnsiString ToDo,
-    AnsiString Done
+    AnsiString header,
+    AnsiString marker,
+    AnsiString toDo,
+    AnsiString done
 );
