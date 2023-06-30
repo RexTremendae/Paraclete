@@ -52,7 +52,7 @@ public class ScreenSaver
         var secondsFont = Font.OfSize(settings.ScreenSaver.SecondsFontSize);
 
         _currentTimeHeight = int.Max(font.CharacterHeight, secondsFont.CharacterHeight);
-        _currentTimeWidth = font.CharacterWidth*5 + secondsFont.CharacterWidth*3;
+        _currentTimeWidth = (font.CharacterWidth * 5) + (secondsFont.CharacterWidth * 3);
     }
 
     private readonly Painter _painter;
