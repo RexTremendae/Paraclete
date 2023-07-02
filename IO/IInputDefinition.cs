@@ -10,7 +10,7 @@ public interface IInputDefinition
     int? MinLength => null;
     int? MaxLength => null;
 
-    bool TryCompleteInput(string inputData, out object result);
+    bool TryCompleteInput(string inputData, out object result, out string errorMessage);
 
     [ExcludeFromEnumeration]
     private class NoInputDefinitionImplementation : IInputDefinition
@@ -18,7 +18,7 @@ public interface IInputDefinition
         public Type DataType => throw new NotSupportedException();
         public string Alphabet => throw new NotSupportedException();
 
-        public bool TryCompleteInput(string inputData, out object result)
+        public bool TryCompleteInput(string inputData, out object result, out string errorMessage)
         {
             throw new NotSupportedException();
         }

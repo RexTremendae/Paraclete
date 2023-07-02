@@ -6,11 +6,13 @@ public class EditToDoItemCommand : IInputCommand<string>
 {
     private readonly ToDoList _toDoList;
     private readonly DataInputter _dataInputter;
+    private readonly ScreenInvalidator _screenInvalidator;
 
-    public EditToDoItemCommand(ToDoList toDoList, DataInputter dataInputter)
+    public EditToDoItemCommand(ToDoList toDoList, DataInputter dataInputter, ScreenInvalidator screenInvalidator)
     {
         _toDoList = toDoList;
         _dataInputter = dataInputter;
+        _screenInvalidator = screenInvalidator;
     }
 
     public ConsoleKey Shortcut => ConsoleKey.E;
@@ -40,5 +42,6 @@ public class EditToDoItemCommand : IInputCommand<string>
 
         _toDoList.SelectedToDoItem.Description = data;
         await _toDoList.Update();
+        _screenInvalidator.Invalidate();
     }
 }

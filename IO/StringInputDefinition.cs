@@ -9,8 +9,9 @@ public class StringInputDefinition : IInputDefinition
         ".,:;/\\@#$%& !?_-+=()[]{}<>" +
         IInputDefinition.NumericAlphabet;
 
-    public bool TryCompleteInput(string inputData, out object result)
+    public bool TryCompleteInput(string inputData, out object result, out string errorMessage)
     {
+        errorMessage = string.Empty;
         result = inputData;
         return true;
     }

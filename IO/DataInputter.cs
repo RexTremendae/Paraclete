@@ -9,17 +9,13 @@ public class DataInputter
     private readonly ScreenInvalidator _screenInvalidator;
 
     private IInputCommand? _command;
-    private StringBuilder _input;
-    private Dictionary<Type, IInputDefinition> _availableInputters;
+    private StringBuilder _input = new ();
+    private Dictionary<Type, IInputDefinition> _availableInputters = new ();
     private IInputDefinition _selectedInputter;
 
     public DataInputter(ScreenInvalidator screenInvalidator, IServiceProvider services)
     {
         _screenInvalidator = screenInvalidator;
-        _input = new ();
-        CurrentInput = string.Empty;
-        Label = string.Empty;
-        _availableInputters = new ();
         _selectedInputter = IInputDefinition.NoInputter;
 
         foreach (var dataInputter in TypeUtility.EnumerateImplementatingInstancesOf<IInputDefinition>(services))
@@ -29,8 +25,9 @@ public class DataInputter
     }
 
     public bool IsActive { get; private set; }
-    public string CurrentInput { get; private set; }
-    public AnsiString Label { get; private set; }
+    public string CurrentInput { get; private set; } = string.Empty;
+    public string ErrorMessage { get; private set; } = string.Empty;
+    public AnsiString Label { get; private set; } = AnsiString.Empty;
 
     public Task StartInput<T>(IInputCommand<T> inputCommand, AnsiString? label, T valueToEdit)
     {
@@ -40,6 +37,7 @@ public class DataInputter
     public Task StartInput<T>(IInputCommand<T> inputCommand, AnsiString? label, NullableGeneric<T>? valueToEdit = null)
     {
         _input.Clear();
+        ErrorMessage = string.Empty;
         CurrentInput = string.Empty;
         _selectedInputter = IInputDefinition.NoInputter;
 
@@ -76,16 +74,19 @@ public class DataInputter
         {
             if (_selectedInputter.MinLength > _input.Length)
             {
+                ErrorMessage = "Too short input, min length: " + _selectedInputter.MinLength;
                 return;
             }
 
             if (_selectedInputter.MaxLength < _input.Length)
             {
+                ErrorMessage = "Too long input, max length: " + _selectedInputter.MaxLength;
                 return;
             }
 
-            if (!_selectedInputter.TryCompleteInput(_input.ToString(), out var result))
+            if (!_selectedInputter.TryCompleteInput(_input.ToString(), out var result, out var errorMessage))
             {
+                ErrorMessage = errorMessage;
                 return;
             }
 
@@ -94,6 +95,8 @@ public class DataInputter
             _command = IInputCommand.NoInputCommand;
             return;
         }
+
+        ErrorMessage = string.Empty;
 
         if (key == ConsoleKey.Escape)
         {

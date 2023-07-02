@@ -40,5 +40,6 @@ public partial class Settings
     {
         public AnsiString InputLabel => AnsiSequences.ForegroundColors.White;
         public AnsiString InputData => AnsiSequences.ForegroundColors.Yellow;
+        public AnsiString ErroneousInputData => AnsiSequences.ForegroundColors.Red;
     }
 }

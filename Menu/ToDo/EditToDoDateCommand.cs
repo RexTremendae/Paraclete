@@ -6,11 +6,13 @@ public class EditToDoDateCommand : IInputCommand<DateOnly>
 {
     private readonly ToDoList _toDoList;
     private readonly DataInputter _dataInputter;
+    private readonly ScreenInvalidator _screenInvalidator;
 
-    public EditToDoDateCommand(ToDoList toDoList, DataInputter dataInputter)
+    public EditToDoDateCommand(ToDoList toDoList, DataInputter dataInputter, ScreenInvalidator screenInvalidator)
     {
         _toDoList = toDoList;
         _dataInputter = dataInputter;
+        _screenInvalidator = screenInvalidator;
     }
 
     public ConsoleKey Shortcut => ConsoleKey.T;
@@ -36,5 +38,6 @@ public class EditToDoDateCommand : IInputCommand<DateOnly>
 
         _toDoList.SelectedToDoItem.ExpirationDate = data;
         await _toDoList.Update();
+        _screenInvalidator.Invalidate();
     }
 }
