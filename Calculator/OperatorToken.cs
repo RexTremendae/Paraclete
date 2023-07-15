@@ -36,13 +36,6 @@ public class OperatorTokenNode : TokenNodeBase
         token.SetParent(this);
     }
 
-    public override void AddToString(StringBuilder builder)
-    {
-        LeftOperand.AddToString(builder);
-        builder.Append(_operator);
-        RightOperand.AddToString(builder);
-    }
-
     public override double Evaluate()
     {
         var left = LeftOperand.Evaluate();

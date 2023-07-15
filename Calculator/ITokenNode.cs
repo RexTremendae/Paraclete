@@ -8,7 +8,6 @@ public interface ITokenNode
 
     ITokenNode Parent { get; }
 
-    void AddToString(StringBuilder builder);
     void SetParent(ITokenNode parent);
     double Evaluate();
 
@@ -16,10 +15,6 @@ public interface ITokenNode
     public class EmptyTokenNodeImplementation : ITokenNode
     {
         public ITokenNode Parent => ITokenNode.Empty;
-
-        public void AddToString(StringBuilder builder)
-        {
-        }
 
         public double Evaluate() => 0;
 
@@ -30,8 +25,6 @@ public interface ITokenNode
 public abstract class TokenNodeBase : ITokenNode
 {
     public ITokenNode Parent { get; private set; } = ITokenNode.Empty;
-
-    public abstract void AddToString(StringBuilder builder);
 
     public virtual double Evaluate()
     {

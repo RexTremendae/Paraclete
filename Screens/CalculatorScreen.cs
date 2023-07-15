@@ -38,11 +38,24 @@ public class CalculatorScreen : IScreen
 
     public void PaintContent(Painter painter)
     {
+        var tokenFormat = AnsiSequences.BackgroundColors.DarkBlue + AnsiSequences.ForegroundColors.Blue;
+
         var position = (x: 2, y: 2);
         foreach (var entry in _calculatorHistory.Entries)
         {
             var builder = new StringBuilder();
-            entry.AddToString(builder);
+
+            var isFirst = true;
+            foreach (var (token, _) in entry.Tokens)
+            {
+                if (!isFirst)
+                {
+                    builder.Append(" ");
+                }
+
+                builder.Append(tokenFormat + token + AnsiSequences.Reset);
+                isFirst = false;
+            }
 
             var line =
                 builder.ToString() +

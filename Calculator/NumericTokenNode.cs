@@ -11,11 +11,6 @@ public class NumericTokenNode : TokenNodeBase
         _number = double.Parse(input);
     }
 
-    public override void AddToString(StringBuilder builder)
-    {
-        builder.Append(_number);
-    }
-
     public override double Evaluate() => _number;
 
     public override string ToString()

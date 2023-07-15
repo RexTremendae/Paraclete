@@ -1,6 +1,5 @@
 namespace Paraclete.Calculator;
 
-using System;
 using System.Text;
 
 public class Expression
@@ -10,11 +9,13 @@ public class Expression
     private Expression()
     {
         RootNode = ITokenNode.Empty;
+        Tokens = Enumerable.Empty<(string, TokenType)>();
     }
 
-    private Expression(ITokenNode rootNode)
+    private Expression(ITokenNode rootNode, IEnumerable<(string, TokenType)> tokens)
     {
         RootNode = rootNode;
+        Tokens = tokens;
     }
 
     public enum TokenType
@@ -27,19 +28,30 @@ public class Expression
 
     public static Expression Empty => _empty;
     public ITokenNode RootNode { get; }
+    public IEnumerable<(string token, TokenType type)> Tokens { get; }
 
     public static bool TryCreate(string inputData, out Expression expression)
     {
-        expression = Expression.Empty;
+        expression = Empty;
         var currentTokenType = TokenType.None;
         var currentToken = new StringBuilder();
         var tokens = new List<(string token, TokenType type)>();
+
+        var addToken = (StringBuilder tokenBuilder, TokenType type) =>
+        {
+            if (type == TokenType.Invalid || type == TokenType.None)
+            {
+                throw new InvalidOperationException($"Cannot add token of type {type}.");
+            }
+
+            tokens.Add((tokenBuilder.ToString().Trim(), type));
+        };
 
         foreach (var ch in inputData)
         {
             if (ch == ' ')
             {
-                tokens.Add((currentToken.ToString(), currentTokenType));
+                addToken(currentToken, currentTokenType);
                 currentToken.Clear();
                 currentTokenType = TokenType.None;
                 continue;
@@ -56,7 +68,7 @@ public class Expression
             {
                 if (ch == '+' || ch == '-')
                 {
-                    tokens.Add((currentToken.ToString(), currentTokenType));
+                    addToken(currentToken, currentTokenType);
                     currentToken.Clear();
                     currentTokenType = TokenType.Numeric;
                     currentToken.Append(ch);
@@ -77,7 +89,7 @@ public class Expression
             }
             else
             {
-                tokens.Add((currentToken.ToString(), currentTokenType));
+                addToken(currentToken, currentTokenType);
                 currentToken.Clear();
                 currentTokenType = nextTokenType;
             }
@@ -87,35 +99,20 @@ public class Expression
 
         if (currentToken.Length > 0)
         {
-            tokens.Add((currentToken.ToString(), currentTokenType));
+            addToken(currentToken, currentTokenType);
         }
 
-        if (!ExpressionTreeBuilder.TryBuildTree(tokens, out var rootToken))
+        if (!ExpressionTreeBuilder.TryBuildTree(tokens, out var rootTokenNode))
         {
             return false;
         }
 
-        expression = new Expression(rootToken);
+        expression = new Expression(rootTokenNode, tokens);
         return true;
     }
 
     public double Evaluate()
     {
         return RootNode.Evaluate();
-    }
-
-    public void AddToString(StringBuilder builder)
-    {
-        RootNode.AddToString(builder);
-    }
-
-    private static ITokenNode CreateNode(string token, TokenType type)
-    {
-        return type switch
-        {
-            TokenType.Operator => new OperatorTokenNode(token),
-            TokenType.Numeric => new NumericTokenNode(token),
-            _ => throw new InvalidOperationException($"Cannot create token from type {type}.")
-        };
     }
 }
