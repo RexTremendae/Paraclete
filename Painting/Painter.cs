@@ -39,7 +39,7 @@ public class Painter
             _screenInvalidator.Reset();
         }
 
-        _screenSelector.SelectedScreen.PaintContent(this);
+        _screenSelector.SelectedScreen.PaintContent(this, _windowWidth, _windowHeight);
         if (_dataInputter.IsActive)
         {
             _dataInputPainter.PaintInput(this, _windowWidth, _windowHeight);

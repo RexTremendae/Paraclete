@@ -17,7 +17,7 @@ public interface IScreen
     {
     }
 
-    void PaintContent(Painter painter);
+    void PaintContent(Painter painter, int windowWidth, int windowHeight);
 
     [ExcludeFromEnumeration]
     private class NoScreenImplementation : IScreen
@@ -27,7 +27,7 @@ public interface IScreen
         public string Name => throw new NotSupportedException();
         public ConsoleKey Shortcut => throw new NotSupportedException();
 
-        public void PaintContent(Painter visualizer)
+        public void PaintContent(Painter visualizer, int windowWidth, int windowHeight)
         {
         }
     }

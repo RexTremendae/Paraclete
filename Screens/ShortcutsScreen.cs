@@ -31,7 +31,7 @@ public class ShortcutsScreen : IScreen
     public MenuBase Menu { get; }
     public ILayout Layout => new SinglePanelLayout();
 
-    public void PaintContent(Painter painter)
+    public void PaintContent(Painter painter, int windowWidth, int windowHeight)
     {
         var rows = new List<AnsiString>();
         foreach (var (key, command) in Menu.MenuItems)

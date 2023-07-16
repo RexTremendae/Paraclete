@@ -34,12 +34,16 @@ public class DataInputter
         return StartInput<T>(inputCommand, label, new NullableGeneric<T>(valueToEdit));
     }
 
-    public Task StartInput<T>(IInputCommand<T> inputCommand, AnsiString? label, NullableGeneric<T>? valueToEdit = null)
+    public Task StartInput<T>(
+        IInputCommand<T> inputCommand,
+        AnsiString? label = null,
+        NullableGeneric<T>? valueToEdit = null,
+        IInputDefinition? inputDefinition = null)
     {
         _input.Clear();
         ErrorMessage = string.Empty;
         CurrentInput = string.Empty;
-        _selectedInputter = IInputDefinition.NoInputter;
+        _selectedInputter = inputDefinition ?? IInputDefinition.NoInputter;
 
         if (valueToEdit != null)
         {
@@ -53,12 +57,17 @@ public class DataInputter
         }
 
         _command = inputCommand;
-        if (!_availableInputters.TryGetValue(typeof(T), out var inputter))
+        if (_selectedInputter == IInputDefinition.NoInputter)
         {
-            throw new NotSupportedException($"Input of type {typeof(T)} is not supported.");
+            if (_availableInputters.TryGetValue(typeof(T), out var inputter))
+            {
+                _selectedInputter = inputter;
+            }
+            else
+            {
+                throw new NotSupportedException($"Input of type {typeof(T)} is not supported.");
+            }
         }
-
-        _selectedInputter = inputter;
 
         IsActive = true;
         _screenInvalidator.Invalidate();

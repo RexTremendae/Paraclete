@@ -29,7 +29,7 @@ public class ShowroomScreen : IScreen
     public MenuBase Menu { get; }
     public ILayout Layout => new SinglePanelLayout();
 
-    public void PaintContent(Painter painter)
+    public void PaintContent(Painter painter, int windowWidth, int windowHeight)
     {
         var exhibition = _exhibitionSelector.SelectedExhibition;
         exhibition.Paint(painter, (2, 5));

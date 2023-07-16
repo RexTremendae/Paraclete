@@ -3,19 +3,19 @@ namespace Paraclete.Menu.Calculator;
 using Paraclete.Calculator;
 using Paraclete.IO;
 
-public class NewExpressionCommand : IInputCommand<Expression>
+public class CalculateExpressionCommand : IInputCommand<Expression>
 {
     private readonly DataInputter _dataInputter;
     private readonly CalculatorHistory _calculatorHistory;
 
-    public NewExpressionCommand(DataInputter dataInputter, CalculatorHistory calculatorHistory)
+    public CalculateExpressionCommand(DataInputter dataInputter, CalculatorHistory calculatorHistory)
     {
         _dataInputter = dataInputter;
         _calculatorHistory = calculatorHistory;
     }
 
     public ConsoleKey Shortcut => ConsoleKey.E;
-    public string Description => "New [E]xpression";
+    public string Description => "Calculate [E]xpression";
 
     public Task Execute()
     {

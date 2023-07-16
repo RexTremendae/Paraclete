@@ -77,7 +77,7 @@ public class HomeScreen : IScreen
 
     public ILayout Layout => _layout;
 
-    public void PaintContent(Painter painter)
+    public void PaintContent(Painter painter, int windowWidth, int windowHeight)
     {
         // Current time
         var now = DateTime.Now;

@@ -1,5 +1,6 @@
 namespace Paraclete.Screens;
 
+using System.Numerics;
 using System.Text;
 using Paraclete.Calculator;
 using Paraclete.Layouts;
@@ -34,9 +35,9 @@ public class CalculatorScreen : IScreen
     public ConsoleKey Shortcut => ConsoleKey.F4;
 
     public MenuBase Menu { get; }
-    public ILayout Layout => new SinglePanelLayout();
+    public ILayout Layout => new ColumnBasedLayout(new ColumnBasedLayout.ColumnDefinition[] { new (100) });
 
-    public void PaintContent(Painter painter)
+    public void PaintContent(Painter painter, int windowWidth, int windowHeight)
     {
         var tokenFormat = AnsiSequences.BackgroundColors.DarkBlue + AnsiSequences.ForegroundColors.Blue;
 
@@ -66,6 +67,26 @@ public class CalculatorScreen : IScreen
 
             painter.Paint(text: line, position: position);
             position = (position.x, position.y + 1);
+        }
+
+        if (_calculatorHistory.RadixConversion is BigInteger radix)
+        {
+            var paddingWidth = windowWidth - 108;
+            var conversions = new[]
+            {
+                ("Dec", radix.ToString().PadRight(paddingWidth)),
+                ("Bin", radix.ToBinaryString().PadRight(paddingWidth)),
+                ("Hex", radix.ToHexadecimalString().PadRight(paddingWidth)),
+                ("Oct", radix.ToOctalString().PadRight(paddingWidth)),
+            };
+
+            position = (103, 2);
+            foreach (var (radixName, data) in conversions)
+            {
+                painter.Paint(AnsiSequences.ForegroundColors.White + radixName, position);
+                painter.Paint(AnsiSequences.ForegroundColors.Blue + data, (position.x + 4, position.y));
+                position = (position.x, position.y + 1);
+            }
         }
 
         _currentTimeWriter.Write(DateTime.Now, (-7, 1), painter);

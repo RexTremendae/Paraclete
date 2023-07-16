@@ -40,7 +40,7 @@ public class ToDoScreen : IScreen
         _toDoList.ResetSelection();
     }
 
-    public void PaintContent(Painter painter)
+    public void PaintContent(Painter painter, int windowWidth, int windowHeight)
     {
         _toDoListPainter.Paint((2, 1), true);
         _currentTimeWriter.Write(DateTime.Now, (-7, 1), _painter);
