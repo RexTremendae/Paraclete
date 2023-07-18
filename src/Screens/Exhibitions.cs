@@ -1,6 +1,10 @@
 namespace Paraclete.Screens;
 
+using System.Text;
+using Paraclete.Ansi;
 using Paraclete.Painting;
+
+using static Paraclete.Ansi.AnsiSequences;
 
 public interface IExhibition
 {
@@ -13,12 +17,12 @@ public class FontExhibition : IExhibition
     {
         var text = "0123456789:.";
 
-        var colors = new Dictionary<Font.Size, ConsoleColor>
+        var colors = new Dictionary<Font.Size, AnsiControlSequence>
         {
-            { Font.Size.XS, ConsoleColor.DarkBlue },
-            { Font.Size.S,  ConsoleColor.Blue },
-            { Font.Size.M,  ConsoleColor.DarkCyan },
-            { Font.Size.L,  ConsoleColor.Cyan },
+            { Font.Size.XS, ForegroundColors.DarkBlue },
+            { Font.Size.S,  ForegroundColors.Blue },
+            { Font.Size.M,  ForegroundColors.DarkCyan },
+            { Font.Size.L,  ForegroundColors.Cyan },
         };
 
         foreach (var size in Enum.GetValues<Font.Size>())
@@ -29,7 +33,7 @@ public class FontExhibition : IExhibition
             }
 
             var fontWriter = FontWriter.Create(size);
-            painter.Paint($"{AnsiSequences.ForegroundColors.White}{size.ToString()}:".PadRight(4), position);
+            painter.Paint($"{ForegroundColors.White}{size.ToString()}:".PadRight(4), position);
             fontWriter.Write(text, colors[size], (position.x + 4, position.y), painter);
             position = (position.x, position.y + fontWriter.Font.CharacterHeight + 1);
         }
@@ -41,19 +45,35 @@ public class ColorExhibition : IExhibition
     public void Paint(Painter painter, (int x, int y) position)
     {
         var initialPosition = position;
-        var columnWidth = 16;
 
+        var columnWidth = 16;
         var colorNumber = 0;
 
         foreach (var color in Enum.GetValues<ConsoleColor>())
         {
-            var colorName = AnsiString.Create(color.ToString());
-            if (color == ConsoleColor.Black)
-            {
-                colorName = AnsiSequences.BackgroundColors.Gray + colorName + AnsiSequences.Reset;
-            }
+            var colorName = color switch {
+                    ConsoleColor.Black       => ForegroundColors.Black + BackgroundColors.Gray,
+                    ConsoleColor.DarkBlue    => ForegroundColors.DarkBlue,
+                    ConsoleColor.DarkGreen   => ForegroundColors.DarkGreen,
+                    ConsoleColor.DarkCyan    => ForegroundColors.DarkCyan,
+                    ConsoleColor.DarkRed     => ForegroundColors.DarkRed,
+                    ConsoleColor.DarkMagenta => ForegroundColors.DarkMagenta,
+                    ConsoleColor.DarkYellow  => ForegroundColors.DarkYellow,
+                    ConsoleColor.Gray        => ForegroundColors.Gray,
+                    ConsoleColor.DarkGray    => ForegroundColors.DarkGray,
+                    ConsoleColor.Blue        => ForegroundColors.Blue,
+                    ConsoleColor.Green       => ForegroundColors.Green,
+                    ConsoleColor.Cyan        => ForegroundColors.Cyan,
+                    ConsoleColor.Red         => ForegroundColors.Red,
+                    ConsoleColor.Magenta     => ForegroundColors.Magenta,
+                    ConsoleColor.Yellow      => ForegroundColors.Yellow,
+                    ConsoleColor.White       => ForegroundColors.White,
+                    _ => throw new NotImplementedException()
+                }
 
-            painter.Paint(colorName, position, color);
+            + color.ToString() + AnsiSequences.Reset;
+
+            painter.Paint(colorName, position);
             position = (colorNumber % 8 == 7)
                 ? (initialPosition.x, position.y + 1)
                 : (position.x + columnWidth, position.y);
@@ -65,17 +85,21 @@ public class ColorExhibition : IExhibition
 
 public class AnsiExhibition : IExhibition
 {
+    private const char EscapeChr = AnsiSequences.EscapeCharacter;
+
     public void Paint(Painter painter, (int x, int y) position)
     {
-        foreach (var text in new[]
+        var esc = (string text) => new AnsiControlSequence(EscapeChr + text);
+
+        foreach (var text in new AnsiString[]
         {
             "No ANSI",
-            "\\u001b[m",
-            "\\u001b[41;3m",
-            "\\u001b[31mRed Text\\u001b[m",
-            "\\u001b[31mRed\\u001b[33mGreen\\u001b[m",
-            "Three \\u001b[38;2;0;0;0m\\u001b[48;2;140;150;0mSeparate\\u001b[m \\u001b[100mWords",
-            "\\u001b[38;2;255;255;255m[\\u001b[38;2;0;200;0mS\\u001b[38;2;100;100;100mtart\\u001b[38;2;255;255;255m]",
+            esc("[m"),
+            esc("[41;3m"),
+            esc("[31m") + "Red Text" + esc("[m"),
+            esc("[31m") + "Red" + esc("[33m") + "Green" + esc("[m"),
+            "Three " + esc("[38;2;0;0;0m") + esc("[48;2;140;150;0m") + "Separate" + esc("[m") + " " + esc("[100m") + "Words",
+            esc("[38;2;255;255;255m") + "[" + esc("[38;2;0;200;0m") + "S" + esc("[38;2;100;100;100m") + "tart" + esc("[38;2;255;255;255m") + "]",
         })
         {
             Paint(text, position.x, position.y, painter);
@@ -83,21 +107,41 @@ public class AnsiExhibition : IExhibition
         }
     }
 
-    private void Paint(string text, int left, int top, Painter painter)
+    private void Paint(AnsiString text, int left, int top, Painter painter)
     {
-        var ansiExposedText = text.Replace("\\u001b", "\u001b[107m\u001b[30m\\u001b\u001b[m");
-        var ansiFormattedText = text.Replace("\\u001b", "\u001b");
+        var ansiExposedTextBuilder = new StringBuilder();
 
-        painter.Paint(ansiExposedText + " ", (left, top));
+        foreach (var part in text.Parts)
+        {
+            var textToAppend = part switch
+            {
+                var x when x is AnsiStringTextPart => part.ToString(),
+                var x when x is AnsiStringControlSequencePart seqPart => FormatForDisplay(seqPart),
+                _ => throw new InvalidOperationException()
+            };
 
-        var dataLength = AnsiString.Create(ansiFormattedText).Length;
+            ansiExposedTextBuilder.Append(textToAppend);
+        }
+
+        painter.Paint(ansiExposedTextBuilder.ToString() + " " + ForegroundColors.Cyan + $"[{text.Length} printable characters]", (left, top));
+        painter.Paint(text + AnsiSequences.Reset + " ", (left, top + 1));
+
         var charactersCount =
-            AnsiSequences.ForegroundColors.Cyan +
-            $"[{dataLength} printable characters]" +
+            ForegroundColors.Cyan +
+            $"[{text.Length} printable characters]" +
             AnsiSequences.Reset;
+    }
 
-        var countTextLeft = left + text.Replace("\\", "\"").Length + 2;
-        painter.Paint(charactersCount, (countTextLeft, top));
-        painter.Paint(ansiFormattedText + AnsiSequences.Reset, (left, top + 1));
+    private string FormatForDisplay(AnsiStringControlSequencePart part)
+    {
+        var escapeStr =
+            ForegroundColors.Gray +
+            BackgroundColors.DarkGray +
+            "\\u001b" +
+            ForegroundColors.Black +
+            BackgroundColors.Gray;
+
+        var partStr = part.ToString() ?? string.Empty;
+        return partStr.Replace(EscapeChr.ToString(), escapeStr.ToString()) + AnsiSequences.Reset.ToString();
     }
 }

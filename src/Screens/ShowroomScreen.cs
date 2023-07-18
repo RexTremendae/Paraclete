@@ -1,5 +1,6 @@
 namespace Paraclete.Screens;
 
+using Paraclete.Ansi;
 using Paraclete.Layouts;
 using Paraclete.Menu;
 using Paraclete.Menu.Showroom;
@@ -17,7 +18,7 @@ public class ShowroomScreen : IScreen
         _currentTimeWriter = new TimeWriter(new ()
         {
             FontSize = Font.Size.XS,
-            Color = ConsoleColor.White,
+            Color = AnsiSequences.ForegroundColors.White,
             ShowSeconds = false,
             ShowMilliseconds = false,
         });
@@ -37,8 +38,13 @@ public class ShowroomScreen : IScreen
             string.Concat(exhibition.GetType().Name.RemoveEnding("Exhibition"), " exhibition") +
             $" ({_exhibitionSelector.SelectedExhibitionIndex + 1}/{_exhibitionSelector.ExhibitionCount})";
 
-        painter.Paint(exhibitionName, (2, 2), ConsoleColor.Blue);
-        painter.Paint(string.Empty.PadLeft(exhibitionName.Length, '-'), (2, 3), ConsoleColor.Blue);
+        painter.PaintRows(
+            new[]
+            {
+                AnsiSequences.ForegroundColors.Blue + exhibitionName,
+                string.Empty.PadLeft(exhibitionName.Length, '-'),
+            },
+            (2, 2));
 
         _currentTimeWriter.Write(DateTime.Now, (-7, 1), painter);
     }

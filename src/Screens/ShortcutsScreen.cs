@@ -1,5 +1,6 @@
 namespace Paraclete.Screens;
 
+using Paraclete.Ansi;
 using Paraclete.Layouts;
 using Paraclete.Menu;
 using Paraclete.Menu.Shortcuts;
@@ -17,7 +18,7 @@ public class ShortcutsScreen : IScreen
         _currentTimeWriter = new TimeWriter(new ()
         {
             FontSize = Font.Size.XS,
-            Color = ConsoleColor.White,
+            Color = AnsiSequences.ForegroundColors.White,
             ShowSeconds = false,
             ShowMilliseconds = false,
         });

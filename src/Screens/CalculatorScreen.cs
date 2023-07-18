@@ -2,6 +2,7 @@ namespace Paraclete.Screens;
 
 using System.Numerics;
 using System.Text;
+using Paraclete.Ansi;
 using Paraclete.Calculator;
 using Paraclete.Layouts;
 using Paraclete.Menu;
@@ -23,7 +24,7 @@ public class CalculatorScreen : IScreen
         _currentTimeWriter = new TimeWriter(new ()
         {
             FontSize = Font.Size.XS,
-            Color = ConsoleColor.White,
+            Color = AnsiSequences.ForegroundColors.White,
             ShowSeconds = false,
             ShowMilliseconds = false,
         });
@@ -65,7 +66,7 @@ public class CalculatorScreen : IScreen
                 AnsiSequences.ForegroundColors.Blue + entry.Evaluate().ToString() +
                 AnsiSequences.Reset;
 
-            painter.Paint(text: line, position: position);
+            painter.Paint(line, position);
             position = (position.x, position.y + 1);
         }
 

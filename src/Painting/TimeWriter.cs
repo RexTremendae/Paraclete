@@ -1,5 +1,7 @@
 namespace Paraclete.Painting;
 
+using Paraclete.Ansi;
+
 public class TimeWriter
 {
     private readonly TimeWriterSettings _settings;
@@ -36,7 +38,7 @@ public class TimeWriter
         var millisecondPart = millisecond.ToString().PadLeft(3, '0');
 
         var parts = new List<string>();
-        var partColors = new List<ConsoleColor>();
+        var partColors = new List<AnsiControlSequence>();
         var partFonts = new List<Font>();
         var font = Font.OfSize(_settings.FontSize);
 
@@ -72,7 +74,7 @@ public class TimeWriter
         Write(parts, partColors, partFonts, cursorPos, painter);
     }
 
-    private void Write(List<string> textParts, List<ConsoleColor> colors, List<Font> fonts, (int x, int y) cursorPos, Painter painter)
+    private void Write(List<string> textParts, List<AnsiControlSequence> colors, List<Font> fonts, (int x, int y) cursorPos, Painter painter)
     {
         var textHeight = fonts.Max(_ => _.CharacterHeight);
         var rows = Enumerable.Range(0, textHeight)
@@ -104,7 +106,7 @@ public class TimeWriter
 
             for (var y = 0; y < textHeight; y++)
             {
-                rows[y].Append((textPartRows[y], colors[idx]));
+                rows[y].Append(colors[idx]).Append(textPartRows[y]);
             }
         }
 

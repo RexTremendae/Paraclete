@@ -1,5 +1,6 @@
 namespace Paraclete.Screens;
 
+using Paraclete.Ansi;
 using Paraclete.Layouts;
 using Paraclete.Menu;
 using Paraclete.Menu.General;
@@ -37,8 +38,8 @@ public class HomeScreen : IScreen
         var currentTimeSettings = new TimeWriterSettings() with {
             FontSize = Font.Size.L,
             SecondsFontSize = Font.Size.M,
-            Color = ConsoleColor.White,
-            SecondsColor = ConsoleColor.Gray,
+            Color = AnsiSequences.ForegroundColors.White,
+            SecondsColor = AnsiSequences.ForegroundColors.Gray,
             ShowHours = true,
             ShowSeconds = true,
             ShowMilliseconds = false
@@ -50,9 +51,9 @@ public class HomeScreen : IScreen
             ShowHours = true,
             ShowSeconds = true,
             ShowMilliseconds = true,
-            Color = ConsoleColor.Magenta,
-            SecondsColor = ConsoleColor.Magenta,
-            MillisecondsColor = ConsoleColor.DarkMagenta
+            Color = AnsiSequences.ForegroundColors.Magenta,
+            SecondsColor = AnsiSequences.ForegroundColors.Magenta,
+            MillisecondsColor = AnsiSequences.ForegroundColors.DarkMagenta
         };
 
         var markTimeSettings = new TimeWriterSettings() with {
@@ -60,9 +61,9 @@ public class HomeScreen : IScreen
             ShowHours = true,
             ShowSeconds = true,
             ShowMilliseconds = true,
-            Color = ConsoleColor.Magenta,
-            SecondsColor = ConsoleColor.Magenta,
-            MillisecondsColor = ConsoleColor.DarkMagenta
+            Color = AnsiSequences.ForegroundColors.Magenta,
+            SecondsColor = AnsiSequences.ForegroundColors.Magenta,
+            MillisecondsColor = AnsiSequences.ForegroundColors.DarkMagenta
         };
 
         _currentTimeWriter = new TimeWriter(currentTimeSettings);

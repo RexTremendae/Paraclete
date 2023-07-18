@@ -1,6 +1,6 @@
 namespace Paraclete.Painting;
 
-using System.Text;
+using Paraclete.Ansi;
 using Paraclete.IO;
 using Paraclete.Screens;
 
@@ -50,42 +50,9 @@ public class Painter
         }
     }
 
-    public void Paint(IEnumerable<PaintSection> sections, (int x, int y)? position = null)
-    => PaintRows(new[] { new PaintRow(sections.ToArray()) }, position);
-
-    public void Paint(AnsiString text, (int x, int y)? position = null, ConsoleColor? color = null)
+    public void Paint(AnsiString row, (int x, int y)? position = null)
     {
-        var formattedText = (color.HasValue ? color.Value.ToAnsiForegroundColorCode() : string.Empty) + text;
-        PaintRows(new[] { formattedText }, position);
-    }
-
-    public void PaintRows(PaintRow[] rows, (int x, int y)? position = null)
-    {
-        var formattedRows = new List<AnsiString>();
-        foreach (var r in rows)
-        {
-            var builder = new StringBuilder();
-            for (int idx = 0; idx < r.sections.Length; idx++)
-            {
-                var part = r.sections[idx];
-                if (part.foregroundColor.HasValue)
-                {
-                    builder.Append(part.foregroundColor.Value.ToAnsiForegroundColorCode());
-                }
-
-                if (part.backgroundColor.HasValue)
-                {
-                    builder.Append(part.backgroundColor.Value.ToAnsiBackgroundColorCode());
-                }
-
-                builder.Append(part.text);
-            }
-
-            builder.Append(AnsiSequences.Reset);
-            formattedRows.Add(builder.ToString());
-        }
-
-        PaintRows(formattedRows.ToArray(), position);
+        PaintRows(new[] { row }, position);
     }
 
     public void PaintRows(AnsiString[] rows, (int x, int y)? position = null)
@@ -119,7 +86,7 @@ public class Painter
 
             CursorLeft = pos.x;
 
-            Write(rows[y]);
+            Write(AnsiSequences.Reset + rows[y]);
         }
     }
 }

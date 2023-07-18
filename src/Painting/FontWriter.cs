@@ -1,5 +1,7 @@
 namespace Paraclete.Painting;
 
+using Paraclete.Ansi;
+
 public class FontWriter
 {
     private FontWriter(Font font)
@@ -15,7 +17,7 @@ public class FontWriter
         return new FontWriter(font);
     }
 
-    public void Write(string text, ConsoleColor color, (int x, int y) cursorPos, Painter painter)
+    public void Write(string text, AnsiControlSequence color, (int x, int y) cursorPos, Painter painter)
     {
         var textRows = Enumerable
             .Range(0, Font.CharacterHeight)
@@ -27,7 +29,7 @@ public class FontWriter
             var fontCharacter = Font[c];
             for (var y = 0; y < Font.CharacterHeight; y++)
             {
-                textRows[y].Append((fontCharacter[y], color));
+                textRows[y].Append(color).Append(fontCharacter[y]);
             }
         }
 

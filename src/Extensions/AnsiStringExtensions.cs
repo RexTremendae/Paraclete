@@ -1,5 +1,7 @@
 namespace Paraclete.Extensions;
 
+using Paraclete.Ansi;
+
 public static class AnsiStringExtensions
 {
     public static AnsiString PadRight(this AnsiString stringToPad, int totalWidth, char paddingChar = ' ')

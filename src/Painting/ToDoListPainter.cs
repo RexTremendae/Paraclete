@@ -1,5 +1,7 @@
 namespace Paraclete.Painting;
 
+using Paraclete.Ansi;
+
 public class ToDoListPainter
 {
     private Painter _painter;
@@ -24,7 +26,7 @@ public class ToDoListPainter
 
         var rows = new List<AnsiString>();
 
-        rows.Add($"{_formatConfig.header}ToDo:{AnsiSequences.Reset}{string.Empty.PadRight(toDoItemPadding)}");
+        rows.Add(_formatConfig.header + "ToDo:" + AnsiSequences.Reset + string.Empty.PadRight(toDoItemPadding));
 
         rows.AddRange(_toDoList.ToDoItems.Select(_ =>
             ResolveMarker(_, paintSelectionMaker) +

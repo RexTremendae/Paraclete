@@ -1,5 +1,7 @@
 namespace Paraclete;
 
+using Paraclete.Ansi;
+
 public class FpsCounter
 {
     private readonly List<int> _fpsHistory = new ();

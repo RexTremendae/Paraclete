@@ -1,12 +1,14 @@
 namespace Paraclete.Painting;
 
+using Paraclete.Ansi;
+
 public readonly record struct TimeWriterSettings
 {
     public TimeWriterSettings()
     {
-        Color = ConsoleColor.Gray;
-        SecondsColor = ConsoleColor.Gray;
-        MillisecondsColor = ConsoleColor.DarkGray;
+        Color = AnsiSequences.ForegroundColors.Gray;
+        SecondsColor = AnsiSequences.ForegroundColors.Gray;
+        MillisecondsColor = AnsiSequences.ForegroundColors.DarkGray;
         ShowMilliseconds = false;
         ShowSeconds = true;
         ShowHours = true;
@@ -15,9 +17,9 @@ public readonly record struct TimeWriterSettings
         MillisecondsFontSize = Font.Size.Undefined;
     }
 
-    public ConsoleColor Color { get; init; }
-    public ConsoleColor MillisecondsColor { get; init; }
-    public ConsoleColor SecondsColor { get; init; }
+    public AnsiControlSequence Color { get; init; }
+    public AnsiControlSequence MillisecondsColor { get; init; }
+    public AnsiControlSequence SecondsColor { get; init; }
     public bool ShowMilliseconds { get; init; }
     public bool ShowSeconds { get; init; }
     public bool ShowHours { get; init; }

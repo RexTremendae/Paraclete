@@ -1,5 +1,6 @@
 namespace Paraclete.Screens;
 
+using Paraclete.Ansi;
 using Paraclete.Painting;
 using static System.Console;
 
@@ -19,15 +20,15 @@ public class ScreenSaver
     private DateTime _lastChange;
     private DateTime _inactivationTime;
 
-    private (ConsoleColor color, ConsoleColor secondColor)[] _timeColors = new[]
+    private (AnsiControlSequence color, AnsiControlSequence secondColor)[] _timeColors = new[]
     {
-        (ConsoleColor.White,   ConsoleColor.Gray),
-        (ConsoleColor.Yellow,  ConsoleColor.DarkYellow),
-        (ConsoleColor.Cyan,    ConsoleColor.DarkCyan),
-        (ConsoleColor.Blue,    ConsoleColor.DarkBlue),
-        (ConsoleColor.Green,   ConsoleColor.DarkGreen),
-        (ConsoleColor.Magenta, ConsoleColor.DarkMagenta),
-        (ConsoleColor.Red,     ConsoleColor.DarkRed),
+        (AnsiSequences.ForegroundColors.White,   AnsiSequences.ForegroundColors.Gray),
+        (AnsiSequences.ForegroundColors.Yellow,  AnsiSequences.ForegroundColors.DarkYellow),
+        (AnsiSequences.ForegroundColors.Cyan,    AnsiSequences.ForegroundColors.DarkCyan),
+        (AnsiSequences.ForegroundColors.Blue,    AnsiSequences.ForegroundColors.DarkBlue),
+        (AnsiSequences.ForegroundColors.Green,   AnsiSequences.ForegroundColors.DarkGreen),
+        (AnsiSequences.ForegroundColors.Magenta, AnsiSequences.ForegroundColors.DarkMagenta),
+        (AnsiSequences.ForegroundColors.Red,     AnsiSequences.ForegroundColors.DarkRed),
     };
 
     public ScreenSaver(Painter painter, Settings settings)
@@ -39,8 +40,8 @@ public class ScreenSaver
         _currentTimeSettings = new TimeWriterSettings() with {
             FontSize = settings.ScreenSaver.FontSize,
             SecondsFontSize = settings.ScreenSaver.SecondsFontSize,
-            Color = ConsoleColor.White,
-            SecondsColor = ConsoleColor.DarkGray,
+            Color = AnsiSequences.ForegroundColors.White,
+            SecondsColor = AnsiSequences.ForegroundColors.DarkGray,
             ShowHours = true,
             ShowSeconds = true,
             ShowMilliseconds = false,

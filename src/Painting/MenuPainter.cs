@@ -1,5 +1,6 @@
 namespace Paraclete.Painting;
 
+using Paraclete.Ansi;
 using Paraclete.Menu;
 using Paraclete.Menu.Shortcuts;
 using Paraclete.Screens;
@@ -10,9 +11,9 @@ public class MenuPainter
     private readonly IServiceProvider _services;
     private readonly ShortcutsMenu _shortcutsMenu;
 
-    private readonly ConsoleColor _bracketColor = ConsoleColor.White;
-    private readonly ConsoleColor _shortcutColor = ConsoleColor.Green;
-    private readonly ConsoleColor _textColor = ConsoleColor.Gray;
+    private readonly AnsiControlSequence _bracketColor = AnsiSequences.ForegroundColors.White;
+    private readonly AnsiControlSequence _shortcutColor = AnsiSequences.ForegroundColors.Green;
+    private readonly AnsiControlSequence _textColor = AnsiSequences.ForegroundColors.Gray;
 
     public MenuPainter(ScreenSelector screenSelector, IServiceProvider services, ShortcutsMenu shortcutsMenu)
     {
@@ -27,8 +28,8 @@ public class MenuPainter
         var rows = new AnsiString[2];
 
         var paddingWidth = windowWidth - 3;
-        rows[0] = GetScreenSelectionMenuRowParts(selectedScreen, shortcutsMenuActive).Build().PadRight(paddingWidth);
-        rows[1] = GetSelectedScreenMenuRowParts(shortcutsMenuActive ? _shortcutsMenu : selectedScreen.Menu).Build().PadRight(paddingWidth);
+        rows[0] = GetScreenSelectionMenuRowParts(selectedScreen, shortcutsMenuActive).Build().ToString().PadRight(paddingWidth);
+        rows[1] = GetSelectedScreenMenuRowParts(shortcutsMenuActive ? _shortcutsMenu : selectedScreen.Menu).Build().ToString().PadRight(paddingWidth);
 
         painter.PaintRows(rows, (2, Console.WindowHeight - 3));
     }
@@ -42,10 +43,10 @@ public class MenuPainter
         {
             if (!isFirst)
             {
-                row.Append(("  ", ConsoleColor.Gray));
+                row.Append("  ");
             }
 
-            row.Append(GetMenuParts(key, description));
+            AppendMenuParts(row, key, description);
 
             isFirst = false;
         }
@@ -57,13 +58,17 @@ public class MenuPainter
     {
         var row = new AnsiStringBuilder();
 
-        row.Append(("[", _bracketColor));
-        row.Append(("TAB ", _shortcutColor));
+        row
+            .Append(_bracketColor).Append("[")
+            .Append(_shortcutColor).Append("TAB ");
 
-        var format = (shortcutsMenuActive)
+        var format = shortcutsMenuActive
             ? AnsiSequences.BackgroundColors.Blue
             : AnsiSequences.BackgroundColors.DarkBlue + AnsiSequences.ForegroundColors.Blue;
-        row.Append(($"{format} Quick menu {AnsiSequences.Reset}", foregroundColor: ConsoleColor.Black));
+
+        row
+            .Append(AnsiSequences.ForegroundColors.Black)
+            .Append(format).Append(" Quick menu ").Append(AnsiSequences.Reset);
 
         foreach (var screen in TypeUtility.EnumerateImplementatingInstancesOf<IScreen>(_services).OrderBy(_ => _.Shortcut))
         {
@@ -73,21 +78,18 @@ public class MenuPainter
                 : AnsiSequences.BackgroundColors.DarkBlue + AnsiSequences.ForegroundColors.Blue;
             var label = $"{format} {screen.Name} {AnsiSequences.Reset}";
 
-            row.Append((" · ", _bracketColor));
-
-            row.Append(($"{screen.Shortcut.ToString()} ", _shortcutColor));
-            row.Append((label, ConsoleColor.Black));
+            row.Append(_bracketColor).Append(" · ");
+            row.Append(_shortcutColor).Append($"{screen.Shortcut.ToString()} ");
+            row.Append(AnsiSequences.ForegroundColors.Black).Append(label);
         }
 
-        row.Append(("]", _bracketColor));
+        row.Append(_bracketColor).Append("]");
 
         return row;
     }
 
-    private IEnumerable<PaintSection> GetMenuParts(ConsoleKey key, string description)
+    private void AppendMenuParts(AnsiStringBuilder builder, ConsoleKey key, string description)
     {
-        var sections = new List<PaintSection>();
-
         var startBracketIndex = description.IndexOf('[');
         var endBracketIndex = -1;
         if (startBracketIndex >= 0)
@@ -97,18 +99,16 @@ public class MenuPainter
 
         var explicitBrackets = startBracketIndex >= 0 && endBracketIndex >= 0;
 
-        sections.Add(new ("[", foregroundColor: _bracketColor, backgroundColor: null));
+        builder.Append(_bracketColor).Append("[");
 
         if (explicitBrackets)
         {
-            sections.Add(new (description[..startBracketIndex], foregroundColor: _textColor, backgroundColor: null));
+            builder.Append(_textColor).Append(description[..startBracketIndex]);
         }
 
         var shortcutText = key.ToDisplayString() + (explicitBrackets ? string.Empty : " ");
-        sections.Add(new (shortcutText, foregroundColor: _shortcutColor, backgroundColor: null));
-        sections.Add(new (description[(endBracketIndex + 1)..], foregroundColor: _textColor, backgroundColor: null));
-        sections.Add(new ("]", foregroundColor: _bracketColor, backgroundColor: null));
-
-        return sections;
+        builder.Append(_shortcutColor).Append(shortcutText);
+        builder.Append(_textColor).Append(description[(endBracketIndex + 1)..]);
+        builder.Append(_bracketColor).Append("]");
     }
 }

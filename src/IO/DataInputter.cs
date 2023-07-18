@@ -2,6 +2,7 @@ namespace Paraclete.IO;
 
 using System.Reflection;
 using System.Text;
+using Paraclete.Ansi;
 using Paraclete.Menu;
 
 public class DataInputter

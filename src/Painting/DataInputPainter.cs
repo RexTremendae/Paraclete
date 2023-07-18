@@ -1,5 +1,6 @@
 namespace Paraclete.Painting;
 
+using Paraclete.Ansi;
 using Paraclete.IO;
 
 public class DataInputPainter

@@ -1,5 +1,7 @@
 namespace Paraclete;
 
+using Paraclete.Ansi;
+
 public class ToDoList : IInitializer
 {
     private const string _todoFilename = "todo.txt";
