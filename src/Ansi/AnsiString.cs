@@ -54,4 +54,47 @@ public partial class AnsiString
     }
 
     public override string ToString() => _fullString;
+
+    public AnsiString PadRight(int totalWidth, char paddingChar = ' ')
+    {
+        var parts = Parts.ToList();
+        var paddingWidth = int.Max(0, totalWidth - Length);
+        if (paddingWidth > 0)
+        {
+            parts.Add(new AnsiStringTextPart(string.Empty.PadRight(paddingWidth, paddingChar)));
+        }
+
+        return new (parts);
+    }
+
+    public AnsiString Truncate(int maxLength)
+    {
+        var totalLength = 0;
+        var truncatedParts = new List<IAnsiStringPart>();
+
+        foreach (var part in Parts)
+        {
+            if (part is AnsiStringControlSequencePart ctrlPart)
+            {
+                truncatedParts.Add(part);
+                continue;
+            }
+
+            var textPart = part.ToString() ?? string.Empty;
+            var lengthLeft = maxLength - totalLength;
+
+            if (textPart.Length >= lengthLeft)
+            {
+                var tpart = textPart[..lengthLeft];
+                truncatedParts.Add(new AnsiStringTextPart(tpart));
+                totalLength += tpart.Length;
+                break;
+            }
+
+            truncatedParts.Add(part);
+            totalLength += textPart.Length;
+        }
+
+        return new (truncatedParts);
+    }
 }

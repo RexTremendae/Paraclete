@@ -28,10 +28,16 @@ public class MenuPainter
         var rows = new AnsiString[2];
 
         var paddingWidth = windowWidth - 3;
-        rows[0] = GetScreenSelectionMenuRowParts(selectedScreen, shortcutsMenuActive).Build().ToString().PadRight(paddingWidth);
-        rows[1] = GetSelectedScreenMenuRowParts(shortcutsMenuActive ? _shortcutsMenu : selectedScreen.Menu).Build().ToString().PadRight(paddingWidth);
 
-        painter.PaintRows(rows, (2, Console.WindowHeight - 3));
+        rows[0] = GetScreenSelectionMenuRowParts(selectedScreen, shortcutsMenuActive)
+            .Build()
+            .PadRight(paddingWidth);
+
+        rows[1] = GetSelectedScreenMenuRowParts(shortcutsMenuActive ? _shortcutsMenu : selectedScreen.Menu)
+            .Build()
+            .PadRight(paddingWidth);
+
+        painter.PaintRows(rows, (2, -3), (-1, -1));
     }
 
     private AnsiStringBuilder GetSelectedScreenMenuRowParts(MenuBase menu)
@@ -62,25 +68,33 @@ public class MenuPainter
             .Append(_bracketColor).Append("[")
             .Append(_shortcutColor).Append("TAB ");
 
-        var format = shortcutsMenuActive
-            ? AnsiSequences.BackgroundColors.Blue
-            : AnsiSequences.BackgroundColors.DarkBlue + AnsiSequences.ForegroundColors.Blue;
+        var appendFormat = (string text, bool isSelected) =>
+        {
+            var fgColor = isSelected
+                ? AnsiSequences.ForegroundColors.Black
+                : AnsiSequences.ForegroundColors.Blue;
 
-        row
-            .Append(AnsiSequences.ForegroundColors.Black)
-            .Append(format).Append(" Quick menu ").Append(AnsiSequences.Reset);
+            var bgColor = isSelected
+                ? AnsiSequences.BackgroundColors.Blue
+                : AnsiSequences.BackgroundColors.DarkBlue;
+
+            row
+                .Append(fgColor)
+                .Append(bgColor)
+                .Append($" {text} ")
+                .Append(AnsiSequences.Reset);
+        };
+
+        appendFormat("Quick menu", shortcutsMenuActive);
 
         foreach (var screen in TypeUtility.EnumerateImplementatingInstancesOf<IScreen>(_services).OrderBy(_ => _.Shortcut))
         {
-            var isSelected = selectedScreen.Name == screen.Name;
-            format = (isSelected && !shortcutsMenuActive)
-                ? AnsiSequences.BackgroundColors.Blue
-                : AnsiSequences.BackgroundColors.DarkBlue + AnsiSequences.ForegroundColors.Blue;
-            var label = $"{format} {screen.Name} {AnsiSequences.Reset}";
+            row
+                .Append(_bracketColor).Append(" · ")
+                .Append(_shortcutColor).Append($"{screen.Shortcut.ToString()} ");
 
-            row.Append(_bracketColor).Append(" · ");
-            row.Append(_shortcutColor).Append($"{screen.Shortcut.ToString()} ");
-            row.Append(AnsiSequences.ForegroundColors.Black).Append(label);
+            var isSelected = selectedScreen.Name == screen.Name;
+            appendFormat(screen.Name, isSelected && !shortcutsMenuActive);
         }
 
         row.Append(_bracketColor).Append("]");

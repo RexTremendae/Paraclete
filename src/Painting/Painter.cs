@@ -55,9 +55,10 @@ public class Painter
         PaintRows(new[] { row }, position);
     }
 
-    public void PaintRows(AnsiString[] rows, (int x, int y)? position = null)
+    public void PaintRows(AnsiString[] rows, (int x, int y)? position = null, (int x, int y)? boundary = null)
     {
         var pos = position ?? (0, 0);
+        var bound = boundary ?? (_windowWidth, _windowHeight);
 
         if (pos.x < 0)
         {
@@ -69,24 +70,45 @@ public class Painter
             pos = (pos.x, pos.y + _windowHeight);
         }
 
-        for (int y = 0; y < rows.Length; y++)
+        if (bound.x < 0)
         {
-            var yy = y + pos.y;
-            if (yy >= WindowHeight)
-            {
-                break;
-            }
-
-            CursorTop = yy;
-
-            if (pos.x >= WindowWidth)
-            {
-                break;
-            }
-
-            CursorLeft = pos.x;
-
-            Write(AnsiSequences.Reset + rows[y]);
+            bound = (bound.x + _windowWidth, bound.y);
         }
+
+        if (bound.y < 0)
+        {
+            bound = (bound.x, bound.y + _windowHeight);
+        }
+
+        try
+        {
+            for (int y = 0; y < rows.Length; y++)
+            {
+                WriteBounded(AnsiSequences.Reset + rows[y], (pos.x, pos.y + y), bound);
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error("Error when painting.", ex);
+        }
+    }
+
+    private void WriteBounded(AnsiString ansiString, (int x, int y) pos, (int x, int y) bound)
+    {
+        if (pos.y >= bound.y)
+        {
+            return;
+        }
+
+        CursorTop = pos.y;
+
+        if (pos.x >= bound.x)
+        {
+            return;
+        }
+
+        CursorLeft = pos.x;
+
+        Write(ansiString.Truncate(bound.x - pos.x));
     }
 }
