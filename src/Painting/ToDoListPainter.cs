@@ -45,7 +45,7 @@ public class ToDoListPainter
             AnsiSequences.Reset
         ));
 
-        _painter.PaintRows(rows.ToArray(), position);
+        _painter.PaintRows(rows, position);
     }
 
     public string ResolveMarker(ToDoItem toDoItem, bool paintSelectionMaker)

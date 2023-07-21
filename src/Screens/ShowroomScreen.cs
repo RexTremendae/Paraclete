@@ -28,15 +28,13 @@ public class ShowroomScreen : IScreen
     public ConsoleKey Shortcut => ConsoleKey.F12;
 
     public MenuBase Menu { get; }
-    public ILayout Layout => new SinglePanelLayout();
+    public ILayout Layout => _exhibitionSelector.SelectedExhibition.Layout;
 
     public void PaintContent(Painter painter, int windowWidth, int windowHeight)
     {
         var exhibition = _exhibitionSelector.SelectedExhibition;
         exhibition.Paint(painter, (2, 5));
-        var exhibitionName =
-            string.Concat(exhibition.GetType().Name.RemoveEnding("Exhibition"), " exhibition") +
-            $" ({_exhibitionSelector.SelectedExhibitionIndex + 1}/{_exhibitionSelector.ExhibitionCount})";
+        var exhibitionName = GetExhibitionNameString(exhibition);
 
         painter.PaintRows(
             new[]
@@ -47,5 +45,32 @@ public class ShowroomScreen : IScreen
             (2, 2));
 
         _currentTimeWriter.Write(DateTime.Now, (-7, 1), painter);
+    }
+
+    private string GetExhibitionNameString(IExhibition exhibition)
+    {
+        var camelCaseName = exhibition.GetType().Name;
+        var words = new List<string>();
+
+        var start = 0;
+
+        for (int idx = 0; idx < camelCaseName.Length; idx++)
+        {
+            var chr = camelCaseName[idx];
+            if (!char.IsUpper(chr) || start == idx)
+            {
+                continue;
+            }
+
+            words.Add(camelCaseName[start..idx]);
+            start = idx;
+        }
+
+        words.Add(camelCaseName[start..].ToLower());
+
+        var pageIdx = $" ({_exhibitionSelector.SelectedExhibitionIndex + 1}/{_exhibitionSelector.ExhibitionCount})";
+        var title = string.Join(" ", words) + pageIdx;
+
+        return char.ToUpper(title[0]) + title[1..];
     }
 }

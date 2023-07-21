@@ -2,17 +2,21 @@ namespace Paraclete.Screens;
 
 using System.Text;
 using Paraclete.Ansi;
+using Paraclete.Layouts;
 using Paraclete.Painting;
 
 using static Paraclete.Ansi.AnsiSequences;
 
 public interface IExhibition
 {
+    ILayout Layout { get; }
     void Paint(Painter painter, (int x, int y) position);
 }
 
 public class FontExhibition : IExhibition
 {
+    public ILayout Layout { get; } = new SinglePaneLayout();
+
     public void Paint(Painter painter, (int x, int y) position)
     {
         var text = "0123456789:.";
@@ -42,6 +46,8 @@ public class FontExhibition : IExhibition
 
 public class ColorExhibition : IExhibition
 {
+    public ILayout Layout { get; } = new SinglePaneLayout();
+
     public void Paint(Painter painter, (int x, int y) position)
     {
         var initialPosition = position;
@@ -86,6 +92,8 @@ public class ColorExhibition : IExhibition
 public class AnsiExhibition : IExhibition
 {
     private const char EscapeChr = AnsiSequences.EscapeCharacter;
+
+    public ILayout Layout { get; } = new SinglePaneLayout();
 
     public void Paint(Painter painter, (int x, int y) position)
     {
@@ -143,5 +151,85 @@ public class AnsiExhibition : IExhibition
 
         var partStr = part.ToString() ?? string.Empty;
         return partStr.Replace(EscapeChr.ToString(), escapeStr.ToString()) + AnsiSequences.Reset.ToString();
+    }
+}
+
+public class ColumnLayoutExhibition : IExhibition
+{
+    private static readonly int[][] PaneHeights = new int[][]
+    {
+        new int[] { },
+        new int[] { 5, 8, 12 },
+        new int[] { 18 },
+        new int[] { 15, 15 },
+    };
+
+    public ILayout Layout { get; } = new ColumnBasedLayout(new ColumnBasedLayout.ColumnDefinition[]
+    {
+        new (60, PaneHeights[0]),
+        new (10, PaneHeights[1]),
+        new (15, PaneHeights[2]),
+        new (20, PaneHeights[3]),
+    });
+
+    public void Paint(Painter painter, (int x, int y) position)
+    {
+        var rows = new List<AnsiString>();
+
+        var paneIdx = 0;
+        foreach (var pane in Layout.Panes)
+        {
+            rows.Clear();
+            for (int y = 0; y < pane.Size.y; y++)
+            {
+                var data = new AnsiString(string.Empty.PadRight(pane.Size.x));
+                var dataString = data.ToString();
+
+                if (y == 0)
+                {
+                    data =
+                        AnsiSequences.ForegroundColors.Gray + "*  #" +
+                        AnsiSequences.ForegroundColors.Blue +
+                        paneIdx.ToString("00") +
+                        AnsiSequences.ForegroundColors.Gray +
+                        (dataString.Length > 6 ? data.ToString()[6..^1] + "*" : string.Empty);
+                }
+                else if (y == pane.Size.y - 1)
+                {
+                    data =
+                        AnsiSequences.ForegroundColors.Gray + "*" +
+                        AnsiSequences.ForegroundColors.Blue +
+                        AnsiSequences.ForegroundColors.Gray +
+                        (dataString.Length > 1 ? data.ToString()[1..^1] + "*" : string.Empty);
+                }
+
+                rows.Add(AnsiSequences.BackgroundColor(0x22, 0x33, 0x44) + data);
+                painter.PaintRows(rows, pane.Position);
+            }
+
+            paneIdx++;
+        }
+
+        rows.Clear();
+
+        paneIdx = 0;
+        foreach (var pane in Layout.Panes)
+        {
+            var rowBuilder = new AnsiStringBuilder();
+            rowBuilder
+                .Append("pane ")
+                .Append(AnsiSequences.BackgroundColors.Gray)
+                .Append(AnsiSequences.ForegroundColors.Black)
+                .Append(paneIdx.ToString("00:"))
+                .Append(AnsiSequences.Reset)
+                .Append($" ({pane.Position.x.ToString().PadLeft(3)}, {pane.Position.y.ToString().PadLeft(3)})   ")
+                .Append($" ({pane.Size.x.ToString().PadLeft(3)} x {pane.Size.y.ToString().PadLeft(3)})   ")
+            ;
+
+            rows.Add(rowBuilder.Build());
+            paneIdx++;
+        }
+
+        painter.PaintRows(rows, (2, 6));
     }
 }

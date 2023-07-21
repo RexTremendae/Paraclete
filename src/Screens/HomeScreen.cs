@@ -9,7 +9,6 @@ using Paraclete.Painting;
 public class HomeScreen : IScreen
 {
     private const int _1stColumnWidth = 59;
-    private ColumnBasedLayout _layout = new (new ColumnBasedLayout.ColumnDefinition[] { new (width: _1stColumnWidth, 9) });
 
     private Stopwatch _stopWatch;
     private ScreenInvalidator _screenInvalidator;
@@ -76,7 +75,7 @@ public class HomeScreen : IScreen
 
     public MenuBase Menu { get; }
 
-    public ILayout Layout => _layout;
+    public ILayout Layout { get; } = new ColumnBasedLayout(new ColumnBasedLayout.ColumnDefinition[] { new (width: _1stColumnWidth, 9) });
 
     public void PaintContent(Painter painter, int windowWidth, int windowHeight)
     {

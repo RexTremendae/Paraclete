@@ -4,5 +4,7 @@ using Paraclete.Painting;
 
 public interface ILayout
 {
-    void Paint(Painter painter, int windowWidth, int windowHeight);
+    Pane[] Panes { get; }
+    void Recalculate(int windowWidth, int windowHeight);
+    void Paint(Painter painter);
 }

@@ -7,29 +7,62 @@ using Paraclete.Painting;
 public class ColumnBasedLayout : ILayout
 {
     private ColumnDefinition[] _columns;
+    private int _windowHeight;
+    private int _windowWidth;
 
     public ColumnBasedLayout(params ColumnDefinition[] columns)
     {
         _columns = columns;
+        Panes = Array.Empty<Pane>();
     }
 
-    public void Paint(Painter painter, int windowWidth, int windowHeight)
-    {
-        var frameRows = new AnsiString[windowHeight];
-        frameRows[0] = GenerateStaticRow(leftBorder: '╔', rightBorder: '╗', colBorder: '╤', padding: '═', windowWidth);
+    public Pane[] Panes { get; private set; }
 
-        for (int y = 1; y < windowHeight - 4; y++)
+    public void Paint(Painter painter)
+    {
+        var frameRows = new AnsiString[_windowHeight];
+        frameRows[0] = GenerateStaticRow(leftBorder: '╔', rightBorder: '╗', colBorder: '╤', padding: '═');
+
+        for (int y = 1; y < _windowHeight - 4; y++)
         {
-            frameRows[y] = GenerateDynamicRow(y, windowWidth);
+            frameRows[y] = GenerateDynamicRow(y, _windowWidth);
         }
 
         // Bottom menu
-        frameRows[windowHeight - 4] = GenerateStaticRow(leftBorder: '╟', rightBorder: '╢', colBorder: '┴', padding: '─', windowWidth);
-        frameRows[windowHeight - 3] = GenerateStaticRow(leftBorder: '║', rightBorder: '║', colBorder: ' ', padding: ' ', windowWidth);
-        frameRows[windowHeight - 2] = GenerateStaticRow(leftBorder: '║', rightBorder: '║', colBorder: ' ', padding: ' ', windowWidth);
-        frameRows[windowHeight - 1] = GenerateStaticRow(leftBorder: '╚', rightBorder: '╝', colBorder: '═', padding: '═', windowWidth);
+        frameRows[_windowHeight - 4] = GenerateStaticRow(leftBorder: '╟', rightBorder: '╢', colBorder: '┴', padding: '─');
+        frameRows[_windowHeight - 3] = GenerateStaticRow(leftBorder: '║', rightBorder: '║', colBorder: ' ', padding: ' ');
+        frameRows[_windowHeight - 2] = GenerateStaticRow(leftBorder: '║', rightBorder: '║', colBorder: ' ', padding: ' ');
+        frameRows[_windowHeight - 1] = GenerateStaticRow(leftBorder: '╚', rightBorder: '╝', colBorder: '═', padding: '═');
 
         painter.PaintRows(frameRows);
+    }
+
+    public void Recalculate(int windowWidth, int windowHeight)
+    {
+        _windowHeight = windowHeight;
+        _windowWidth = windowWidth;
+
+        var panes = new List<Pane>();
+
+        var xPos = 1;
+
+        for (var x = 0; x < _columns.Length; x++)
+        {
+            var yPos = 1;
+            var definition = _columns[x];
+            for (int y = 0; y < definition.CellHeights.Length; y++)
+            {
+                var height = definition.CellHeights[y];
+                panes.Add(new ((xPos, yPos), (definition.Width, height), true));
+                yPos += height + 1;
+            }
+
+            panes.Add(new ((xPos, yPos), (definition.Width, windowHeight - yPos - 4), true));
+            xPos += definition.Width + 1;
+        }
+
+        panes.Add(new ((xPos, 1), (windowWidth - xPos - 1, windowHeight - 5), true));
+        Panes = panes.ToArray();
     }
 
     private string GenerateDynamicRow(int rowIndex, int windowWidth)
@@ -109,7 +142,7 @@ public class ColumnBasedLayout : ILayout
         return false;
     }
 
-    private string GenerateStaticRow(char leftBorder, char rightBorder, char colBorder, char padding, int windowWidth)
+    private string GenerateStaticRow(char leftBorder, char rightBorder, char colBorder, char padding)
     {
         var rowBuilder = new StringBuilder();
         rowBuilder.Append(leftBorder);
@@ -122,7 +155,7 @@ public class ColumnBasedLayout : ILayout
             totalWidth += col.Width + 1;
         }
 
-        rowBuilder.Append(string.Empty.PadRight(int.Max(windowWidth - totalWidth - 1, 0), padding));
+        rowBuilder.Append(string.Empty.PadRight(int.Max(_windowWidth - totalWidth - 1, 0), padding));
         rowBuilder.Append(rightBorder);
 
         return rowBuilder.ToString();

@@ -33,6 +33,6 @@ public class FontWriter
             }
         }
 
-        painter.PaintRows(textRows.Select(_ => _.Build()).ToArray(), cursorPos);
+        painter.PaintRows(textRows.Select(_ => _.Build()), cursorPos);
     }
 }

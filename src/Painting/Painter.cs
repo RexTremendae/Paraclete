@@ -35,7 +35,8 @@ public class Painter
 
             _windowHeight = WindowHeight;
             _windowWidth = WindowWidth;
-            _screenSelector.SelectedScreen.Layout.Paint(this, _windowWidth, _windowHeight);
+            _screenSelector.SelectedScreen.Layout.Recalculate(_windowWidth, _windowHeight);
+            _screenSelector.SelectedScreen.Layout.Paint(this);
             _screenInvalidator.Reset();
         }
 
@@ -55,7 +56,7 @@ public class Painter
         PaintRows(new[] { row }, position);
     }
 
-    public void PaintRows(AnsiString[] rows, (int x, int y)? position = null, (int x, int y)? boundary = null)
+    public void PaintRows(IEnumerable<AnsiString> rows, (int x, int y)? position = null, (int x, int y)? boundary = null)
     {
         var pos = position ?? (0, 0);
         var bound = boundary ?? (_windowWidth, _windowHeight);
@@ -80,11 +81,13 @@ public class Painter
             bound = (bound.x, bound.y + _windowHeight);
         }
 
+        var rowArray = rows.ToArray();
+
         try
         {
-            for (int y = 0; y < rows.Length; y++)
+            for (int y = 0; y < rowArray.Length; y++)
             {
-                WriteBounded(AnsiSequences.Reset + rows[y], (pos.x, pos.y + y), bound);
+                WriteBounded(AnsiSequences.Reset + rowArray[y], (pos.x, pos.y + y), bound);
             }
         }
         catch (Exception ex)

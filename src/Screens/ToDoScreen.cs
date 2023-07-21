@@ -34,7 +34,7 @@ public class ToDoScreen : IScreen
     public ConsoleKey Shortcut => ConsoleKey.F2;
 
     public MenuBase Menu { get; }
-    public ILayout Layout => new SinglePanelLayout();
+    public ILayout Layout { get; } = new SinglePaneLayout();
 
     public void OnAfterSwitch()
     {

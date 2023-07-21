@@ -30,7 +30,7 @@ public class ShortcutsScreen : IScreen
     public ConsoleKey Shortcut => ConsoleKey.F3;
 
     public MenuBase Menu { get; }
-    public ILayout Layout => new SinglePanelLayout();
+    public ILayout Layout { get; } = new SinglePaneLayout();
 
     public void PaintContent(Painter painter, int windowWidth, int windowHeight)
     {
@@ -51,7 +51,7 @@ public class ShortcutsScreen : IScreen
             rows.Add(row);
         }
 
-        painter.PaintRows(rows.ToArray(), (2, 2));
+        painter.PaintRows(rows, (2, 2));
 
         _currentTimeWriter.Write(DateTime.Now, (Console.WindowWidth - 7, 1), painter);
     }

@@ -110,6 +110,6 @@ public class TimeWriter
             }
         }
 
-        painter.PaintRows(rows.Select(_ => _.Build()).ToArray(), cursorPos);
+        painter.PaintRows(rows.Select(_ => _.Build()), cursorPos);
     }
 }
