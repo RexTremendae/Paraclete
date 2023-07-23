@@ -1,4 +1,4 @@
-namespace Paraclete.Screens;
+namespace Paraclete.Screens.Showroom;
 
 public class ExhibitionSelector
 {
@@ -24,7 +24,7 @@ public class ExhibitionSelector
             SelectedExhibitionIndex = 0;
         }
 
-        _screenInvalidator.Invalidate();
+        _screenInvalidator.InvalidateAll();
     }
 
     public void SelectPrevious()
@@ -36,6 +36,6 @@ public class ExhibitionSelector
             SelectedExhibitionIndex = _exhibitions.Count - 1;
         }
 
-        _screenInvalidator.Invalidate();
+        _screenInvalidator.InvalidateAll();
     }
 }

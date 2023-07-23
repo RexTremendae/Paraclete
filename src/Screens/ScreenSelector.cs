@@ -26,7 +26,8 @@ public class ScreenSelector
 
         _selectedScreen = screen;
         _selectedScreen.OnAfterSwitch();
-        _screenInvalidator.Invalidate();
+
+        _screenInvalidator.InvalidateAll();
     }
 
     public void SwitchTo<T>()

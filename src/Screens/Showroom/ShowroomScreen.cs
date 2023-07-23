@@ -1,4 +1,4 @@
-namespace Paraclete.Screens;
+namespace Paraclete.Screens.Showroom;
 
 using Paraclete.Ansi;
 using Paraclete.Layouts;
@@ -8,20 +8,12 @@ using Paraclete.Painting;
 
 public class ShowroomScreen : IScreen
 {
-    private readonly TimeWriter _currentTimeWriter;
     private readonly ExhibitionSelector _exhibitionSelector;
 
     public ShowroomScreen(ShowroomMenu showroomMenu, ExhibitionSelector exhibitionSelector)
     {
         Menu = showroomMenu;
         _exhibitionSelector = exhibitionSelector;
-        _currentTimeWriter = new TimeWriter(new ()
-        {
-            FontSize = Font.Size.XS,
-            Color = AnsiSequences.ForegroundColors.White,
-            ShowSeconds = false,
-            ShowMilliseconds = false,
-        });
     }
 
     public string Name => "Showroom";
@@ -30,22 +22,24 @@ public class ShowroomScreen : IScreen
     public MenuBase Menu { get; }
     public ILayout Layout => _exhibitionSelector.SelectedExhibition.Layout;
 
-    public void PaintContent(Painter painter, int windowWidth, int windowHeight)
+    public Action GetPaintPaneAction(Painter painter, int paneIndex) =>
+    () =>
     {
         var exhibition = _exhibitionSelector.SelectedExhibition;
-        exhibition.Paint(painter, (2, 5));
+        exhibition.Paint(painter, (2, 5), paneIndex);
         var exhibitionName = GetExhibitionNameString(exhibition);
 
-        painter.PaintRows(
-            new[]
-            {
-                AnsiSequences.ForegroundColors.Blue + exhibitionName,
-                string.Empty.PadLeft(exhibitionName.Length, '-'),
-            },
-            (2, 2));
-
-        _currentTimeWriter.Write(DateTime.Now, (-7, 1), painter);
-    }
+        if (paneIndex == 0)
+        {
+            painter.PaintRows(
+                new[]
+                {
+                    AnsiSequences.ForegroundColors.Blue + exhibitionName,
+                    string.Empty.PadLeft(exhibitionName.Length, '-'),
+                },
+                (2, 2));
+        }
+    };
 
     private string GetExhibitionNameString(IExhibition exhibition)
     {

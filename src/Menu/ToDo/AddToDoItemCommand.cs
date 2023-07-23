@@ -6,11 +6,13 @@ public class AddToDoItemCommand : ICommand, IInputCommand<string>
 {
     private readonly ToDoList _toDoList;
     private readonly DataInputter _dataInputter;
+    private readonly ScreenInvalidator _screenInvalidator;
 
-    public AddToDoItemCommand(DataInputter dataInputter, ToDoList toDoList)
+    public AddToDoItemCommand(DataInputter dataInputter, ToDoList toDoList, ScreenInvalidator screenInvalidator)
     {
         _toDoList = toDoList;
         _dataInputter = dataInputter;
+        _screenInvalidator = screenInvalidator;
     }
 
     public ConsoleKey Shortcut => ConsoleKey.A;
@@ -24,5 +26,6 @@ public class AddToDoItemCommand : ICommand, IInputCommand<string>
     public async Task CompleteInput(string data)
     {
         await _toDoList.AddItem(new (data));
+        _screenInvalidator.InvalidatePane(0);
     }
 }

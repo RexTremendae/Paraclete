@@ -20,7 +20,7 @@ public class ClearHistoryCommand : ICommand
     public Task Execute()
     {
         _calculatorHistory.Clear();
-        _screenInvalidator.Invalidate();
+        _screenInvalidator.InvalidateAll();
         return Task.CompletedTask;
     }
 }

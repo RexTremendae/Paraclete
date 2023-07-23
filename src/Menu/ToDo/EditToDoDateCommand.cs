@@ -38,6 +38,6 @@ public class EditToDoDateCommand : IInputCommand<DateOnly>
 
         _toDoList.SelectedToDoItem.ExpirationDate = data;
         await _toDoList.Update();
-        _screenInvalidator.Invalidate();
+        _screenInvalidator.InvalidateAll();
     }
 }

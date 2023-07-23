@@ -11,7 +11,6 @@ using Paraclete.Painting;
 
 public class CalculatorScreen : IScreen
 {
-    private readonly TimeWriter _currentTimeWriter;
     private readonly CalculatorHistory _calculatorHistory;
 
     private ScreenInvalidator _screenInvalidator;
@@ -20,14 +19,6 @@ public class CalculatorScreen : IScreen
     {
         _screenInvalidator = screenInvalidator;
         _calculatorHistory = calculatorHistory;
-
-        _currentTimeWriter = new TimeWriter(new ()
-        {
-            FontSize = Font.Size.XS,
-            Color = AnsiSequences.ForegroundColors.White,
-            ShowSeconds = false,
-            ShowMilliseconds = false,
-        });
 
         Menu = calculatorMenu;
     }
@@ -38,14 +29,22 @@ public class CalculatorScreen : IScreen
     public MenuBase Menu { get; }
     public ILayout Layout { get; } = new ColumnBasedLayout(new ColumnBasedLayout.ColumnDefinition[] { new (100) });
 
-    public void PaintContent(Painter painter, int windowWidth, int windowHeight)
+    public Action GetPaintPaneAction(Painter painter, int paneIndex) =>
+        paneIndex switch
+        {
+            0 => () => PaintExpressions(painter, Layout.Panes[paneIndex]),
+            1 => () => PaintRadixConversion(painter, Layout.Panes[paneIndex]),
+            _ => () => { }
+        };
+
+    private void PaintExpressions(Painter painter, Pane pane)
     {
         var tokenFormat = AnsiSequences.BackgroundColors.DarkBlue + AnsiSequences.ForegroundColors.Blue;
 
-        var position = (x: 2, y: 2);
+        var position = (x: pane.Position.x + 1, y: pane.Position.y + 1);
         foreach (var entry in _calculatorHistory.Entries)
         {
-            var builder = new StringBuilder();
+            var builder = new AnsiStringBuilder();
 
             var isFirst = true;
             foreach (var (token, _) in entry.Tokens)
@@ -55,24 +54,29 @@ public class CalculatorScreen : IScreen
                     builder.Append(" ");
                 }
 
-                builder.Append(tokenFormat + token + AnsiSequences.Reset);
+                builder.Append(tokenFormat).Append(token).Append(AnsiSequences.Reset);
                 isFirst = false;
             }
 
-            var line =
-                builder.ToString() +
-                AnsiSequences.Reset +
-                AnsiSequences.ForegroundColors.Gray + " = " +
-                AnsiSequences.ForegroundColors.Blue + entry.Evaluate().ToString() +
-                AnsiSequences.Reset;
+            builder
+                .Append(AnsiSequences.Reset)
+                .Append(AnsiSequences.ForegroundColors.Gray)
+                .Append(" = ")
+                .Append(AnsiSequences.ForegroundColors.Blue)
+                .Append(entry.Evaluate().ToString());
 
-            painter.Paint(line, position);
+            painter.Paint(builder.Build(), position);
             position = (position.x, position.y + 1);
         }
+    }
 
+    private void PaintRadixConversion(Painter painter, Pane pane)
+    {
         if (_calculatorHistory.RadixConversion is BigInteger radix)
         {
-            var paddingWidth = windowWidth - 108;
+            var offset = (x: 1, y: 1);
+
+            var paddingWidth = pane.Size.x - offset.x - 4;
             var conversions = new[]
             {
                 ("Dec", radix.ToString().PadRight(paddingWidth)),
@@ -81,15 +85,13 @@ public class CalculatorScreen : IScreen
                 ("Oct", radix.ToOctalString().PadRight(paddingWidth)),
             };
 
-            position = (103, 2);
+            var position = (x: pane.Position.x + offset.x, y: pane.Position.y + offset.y);
             foreach (var (radixName, data) in conversions)
             {
                 painter.Paint(AnsiSequences.ForegroundColors.White + radixName, position);
-                painter.Paint(AnsiSequences.ForegroundColors.Blue + data, (position.x + 4, position.y));
+                painter.Paint(AnsiSequences.ForegroundColors.Blue + data, (position.x + radixName.Length + 1, position.y));
                 position = (position.x, position.y + 1);
             }
         }
-
-        _currentTimeWriter.Write(DateTime.Now, (-7, 1), painter);
     }
 }

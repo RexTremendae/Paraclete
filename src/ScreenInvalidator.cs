@@ -2,15 +2,22 @@ namespace Paraclete;
 
 public class ScreenInvalidator
 {
-    public bool IsValid { get; private set; } = true;
+    public bool IsAllInvalid { get; private set; } = true;
+    public HashSet<int> InvalidPaneIndices { get; } = new ();
 
-    public void Invalidate()
+    public void InvalidateAll()
     {
-        IsValid = false;
+        IsAllInvalid = true;
+    }
+
+    public void InvalidatePane(int index)
+    {
+        InvalidPaneIndices.Add(index);
     }
 
     public void Reset()
     {
-        IsValid = true;
+        IsAllInvalid = false;
+        InvalidPaneIndices.Clear();
     }
 }

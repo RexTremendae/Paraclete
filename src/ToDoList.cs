@@ -8,14 +8,12 @@ public class ToDoList : IInitializer
 
     private readonly List<ToDoItem> _toDoItems;
     private readonly List<ToDoItem> _doneItems;
-    private readonly ScreenInvalidator _screenInvalidator;
 
     private int _selectedToDoItemIndex;
     private List<ToDoItem> _selectedList = new ();
 
     public ToDoList(ScreenInvalidator screenInvalidator)
     {
-        _screenInvalidator = screenInvalidator;
         _toDoItems = new ();
         _doneItems = new ();
         _selectedList = _toDoItems;
@@ -148,7 +146,6 @@ public class ToDoList : IInitializer
         }
 
         await Update();
-        _screenInvalidator.Invalidate();
     }
 
     public void UpdateMaxItemLength()
@@ -188,17 +185,7 @@ public class ToDoList : IInitializer
         UpdateMaxItemLength();
     }
 
-    public async Task Update()
-    {
-        UpdateMaxItemLength();
-        await File.WriteAllLinesAsync(
-            _todoFilename,
-            _toDoItems.Select(_ => _.ToPersistString(false))
-            .Concat(_doneItems.Select(_ => _.ToPersistString(true)))
-        );
-    }
-
-    public void SortToDoItems()
+    public async Task SortToDoItems()
     {
         _toDoItems.Sort((first, second) => 0 switch
         {
@@ -208,6 +195,18 @@ public class ToDoList : IInitializer
             var x when first.ExpirationDate < second.ExpirationDate => -1,
             _ => 0
         });
+
+        await Update();
+    }
+
+    public async Task Update()
+    {
+        UpdateMaxItemLength();
+        await File.WriteAllLinesAsync(
+            _todoFilename,
+            _toDoItems.Select(_ => _.ToPersistString(false))
+            .Concat(_doneItems.Select(_ => _.ToPersistString(true)))
+        );
     }
 
     private void SwitchSelectedList()

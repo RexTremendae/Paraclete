@@ -3,10 +3,12 @@ namespace Paraclete.Menu.ToDo;
 public class PreviousItemCommand : ICommand
 {
     private readonly ToDoList _toDoList;
+    private readonly ScreenInvalidator _screenInvalidator;
 
-    public PreviousItemCommand(ToDoList toDoList)
+    public PreviousItemCommand(ToDoList toDoList, ScreenInvalidator screenInvalidator)
     {
         _toDoList = toDoList;
+        _screenInvalidator = screenInvalidator;
     }
 
     public ConsoleKey Shortcut => ConsoleKey.UpArrow;
@@ -15,5 +17,6 @@ public class PreviousItemCommand : ICommand
     public async Task Execute()
     {
         await _toDoList.SelectPreviousItem();
+        _screenInvalidator.InvalidatePane(0);
     }
 }

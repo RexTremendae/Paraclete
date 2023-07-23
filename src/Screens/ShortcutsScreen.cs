@@ -8,20 +8,11 @@ using Paraclete.Painting;
 
 public class ShortcutsScreen : IScreen
 {
-    private readonly TimeWriter _currentTimeWriter;
     private ScreenInvalidator _screenInvalidator;
 
     public ShortcutsScreen(ScreenInvalidator screenInvalidator, ShortcutsMenu shortcutsMenu)
     {
         _screenInvalidator = screenInvalidator;
-
-        _currentTimeWriter = new TimeWriter(new ()
-        {
-            FontSize = Font.Size.XS,
-            Color = AnsiSequences.ForegroundColors.White,
-            ShowSeconds = false,
-            ShowMilliseconds = false,
-        });
 
         Menu = shortcutsMenu;
     }
@@ -32,7 +23,8 @@ public class ShortcutsScreen : IScreen
     public MenuBase Menu { get; }
     public ILayout Layout { get; } = new SinglePaneLayout();
 
-    public void PaintContent(Painter painter, int windowWidth, int windowHeight)
+    public Action GetPaintPaneAction(Painter painter, int paneIndex) =>
+    () =>
     {
         var rows = new List<AnsiString>();
         foreach (var (key, command) in Menu.MenuItems)
@@ -52,7 +44,5 @@ public class ShortcutsScreen : IScreen
         }
 
         painter.PaintRows(rows, (2, 2));
-
-        _currentTimeWriter.Write(DateTime.Now, (Console.WindowWidth - 7, 1), painter);
-    }
+    };
 }

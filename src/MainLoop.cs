@@ -17,7 +17,8 @@ public class MainLoop
     private readonly IServiceProvider _services;
     private readonly DataInputter _dataInputter;
     private readonly ShortcutsMenu _shortcutsMenu;
-    private readonly int _repaintLoopInterval;
+    private readonly TimeSpan _repaintLoopInterval;
+    private readonly Dictionary<ConsoleKey, IScreen> _screens;
 
     private bool _quickMenuIsActive = false;
 
@@ -31,7 +32,7 @@ public class MainLoop
         _fpsCounter = services.GetRequiredService<FpsCounter>();
         _dataInputter = services.GetRequiredService<DataInputter>();
         _shortcutsMenu = services.GetRequiredService<ShortcutsMenu>();
-
+        _screens = new ();
         _repaintLoopInterval = services.GetRequiredService<Settings>().RepaintLoopInterval;
     }
 
@@ -42,12 +43,17 @@ public class MainLoop
 
         new Thread(async () => await RepaintLoop()).Start();
 
-        var screens = new Dictionary<ConsoleKey, IScreen>();
+        _screens.Clear();
         foreach (var screen in TypeUtility.EnumerateImplementatingInstancesOf<IScreen>(_services))
         {
-            screens.Add(screen.Shortcut, screen);
+            _screens.Add(screen.Shortcut, screen);
         }
 
+        await InputHandlingLoop();
+    }
+
+    private async Task InputHandlingLoop()
+    {
         ConsoleKeyInfo key;
 
         for (; ; )
@@ -73,7 +79,7 @@ public class MainLoop
             }
 
             var selectedScreen = IScreen.NoScreen;
-            if (!_dataInputter.IsActive && screens.TryGetValue(key.Key, out var selectedForSwitchScreen))
+            if (!_dataInputter.IsActive && _screens.TryGetValue(key.Key, out var selectedForSwitchScreen))
             {
                 selectedScreen = selectedForSwitchScreen;
                 anyKeyMatch = true;
@@ -121,7 +127,7 @@ public class MainLoop
                 if (screenSaverIsActive)
                 {
                     screenSaverIsActive = false;
-                    _screenInvalidator.Invalidate();
+                    _screenInvalidator.InvalidateAll();
                 }
 
                 _painter.PaintScreen(_quickMenuIsActive);

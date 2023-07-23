@@ -8,11 +8,13 @@ public class ConvertRadixCommand : IInputCommand<BigInteger>
 {
     private readonly DataInputter _dataInputter;
     private readonly CalculatorHistory _calculatorHistory;
+    private readonly ScreenInvalidator _screenInvalidator;
 
-    public ConvertRadixCommand(DataInputter dataInputter, CalculatorHistory calculatorHistory)
+    public ConvertRadixCommand(DataInputter dataInputter, CalculatorHistory calculatorHistory, ScreenInvalidator screenInvalidator)
     {
         _dataInputter = dataInputter;
         _calculatorHistory = calculatorHistory;
+        _screenInvalidator = screenInvalidator;
     }
 
     public ConsoleKey Shortcut => ConsoleKey.X;
@@ -27,6 +29,7 @@ public class ConvertRadixCommand : IInputCommand<BigInteger>
     public Task CompleteInput(BigInteger data)
     {
         _calculatorHistory.RadixConversion = data;
+        _screenInvalidator.InvalidatePane(1);
         return Task.CompletedTask;
     }
 }

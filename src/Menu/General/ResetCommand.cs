@@ -18,7 +18,7 @@ public class ResetCommand : ICommand
     public Task Execute()
     {
         _stopwatch.Reset();
-        _screenInvalidator.Invalidate();
+        _screenInvalidator.InvalidateAll();
 
         return Task.CompletedTask;
     }

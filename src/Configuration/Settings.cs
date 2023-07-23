@@ -5,7 +5,7 @@ using Paraclete.Painting;
 
 public partial class Settings
 {
-    public int RepaintLoopInterval => 30;
+    public TimeSpan RepaintLoopInterval => TimeSpan.FromMilliseconds(30);
     public bool EnableLogging => false;
 }
 

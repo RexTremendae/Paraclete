@@ -12,12 +12,14 @@ public interface IScreen
     ILayout Layout { get; }
     string Name { get; }
     ConsoleKey Shortcut { get; }
+    bool ShowCurrentTime => true;
+    int[] AutoRefreshingPaneIndices => Array.Empty<int>();
 
     public virtual void OnAfterSwitch()
     {
     }
 
-    void PaintContent(Painter painter, int windowWidth, int windowHeight);
+    public Action GetPaintPaneAction(Painter painter, int paneIndex);
 
     [ExcludeFromEnumeration]
     private class NoScreenImplementation : IScreen
@@ -26,9 +28,11 @@ public interface IScreen
         public ILayout Layout => throw new NotSupportedException();
         public string Name => throw new NotSupportedException();
         public ConsoleKey Shortcut => throw new NotSupportedException();
+        public bool ShowCurrentTime => throw new NotSupportedException();
 
-        public void PaintContent(Painter visualizer, int windowWidth, int windowHeight)
+        public Action GetPaintPaneAction(Painter painter, int paneIndex) =>
+        () =>
         {
-        }
+        };
     }
 }

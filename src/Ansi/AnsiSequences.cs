@@ -7,6 +7,9 @@ public static class AnsiSequences
     // Similar to Clear() but also clears the scrollable buffer, which Clear() doesn't.
     public static readonly AnsiString ClearScreen = new AnsiControlSequence($"{EscapeCharacter}c") + new AnsiControlSequence($"{EscapeCharacter}[3J");
 
+    public static readonly AnsiControlSequence HideCursor      = new ($"{EscapeCharacter}[?25l");
+    public static readonly AnsiControlSequence ShowCursor      = new ($"{EscapeCharacter}[?25h");
+
     public static readonly AnsiControlSequence Reset           = new ($"{EscapeCharacter}[m");
 
     public static readonly AnsiControlSequence Bold            = new ($"{EscapeCharacter}[1m");

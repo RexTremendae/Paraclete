@@ -13,7 +13,10 @@ public class Painter
     private readonly MenuPainter _menuPainter;
     private readonly DataInputter _dataInputter;
     private readonly DataInputPainter _dataInputPainter;
+    private readonly TimeWriter _currentTimeWriter;
 
+    private IScreen _selectedScreen;
+    private HashSet<int> _autoRefreshingPaneIndices;
     private int _windowHeight;
     private int _windowWidth;
 
@@ -24,23 +27,43 @@ public class Painter
         _menuPainter = menuPainter;
         _dataInputter = dataInputter;
         _dataInputPainter = dataInputPainter;
+        _selectedScreen = IScreen.NoScreen;
+        _autoRefreshingPaneIndices = new ();
+
+        _currentTimeWriter = new TimeWriter(new ()
+        {
+            FontSize = Font.Size.XS,
+            Color = AnsiSequences.ForegroundColors.White,
+            ShowSeconds = true,
+            ShowMilliseconds = false,
+        });
     }
 
     public void PaintScreen(bool shortcutsMenuActive)
     {
-        if (!_screenInvalidator.IsValid || _windowHeight != WindowHeight || _windowWidth != WindowWidth)
+        var invalidPaneIndices = _screenInvalidator.InvalidPaneIndices.AsEnumerable();
+
+        if (_selectedScreen != _screenSelector.SelectedScreen || _screenInvalidator.IsAllInvalid || _windowHeight != WindowHeight || _windowWidth != WindowWidth)
         {
             Write(AnsiSequences.ClearScreen);
-            CursorVisible = false;
+            Write(AnsiSequences.HideCursor);
+
+            _selectedScreen = _screenSelector.SelectedScreen;
+            var layout = _selectedScreen.Layout;
+            _autoRefreshingPaneIndices = _selectedScreen.AutoRefreshingPaneIndices.ToHashSet();
 
             _windowHeight = WindowHeight;
             _windowWidth = WindowWidth;
-            _screenSelector.SelectedScreen.Layout.Recalculate(_windowWidth, _windowHeight);
-            _screenSelector.SelectedScreen.Layout.Paint(this);
-            _screenInvalidator.Reset();
+            layout.Recalculate(_windowWidth, _windowHeight);
+            layout.Paint(this);
+            invalidPaneIndices = Enumerable.Range(0, layout.Panes.Length);
         }
 
-        _screenSelector.SelectedScreen.PaintContent(this, _windowWidth, _windowHeight);
+        foreach (var paneIdx in invalidPaneIndices.Union(_autoRefreshingPaneIndices))
+        {
+            _selectedScreen.GetPaintPaneAction(this, paneIdx)();
+        }
+
         if (_dataInputter.IsActive)
         {
             _dataInputPainter.PaintInput(this, _windowWidth, _windowHeight);
@@ -49,6 +72,13 @@ public class Painter
         {
             _menuPainter.PaintMenu(this, shortcutsMenuActive, _windowWidth);
         }
+
+        if (_selectedScreen.ShowCurrentTime)
+        {
+            _currentTimeWriter.Write(DateTime.Now, (-10, 1), this);
+        }
+
+        _screenInvalidator.Reset();
     }
 
     public void Paint(AnsiString row, (int x, int y)? position = null)

@@ -14,10 +14,9 @@ public class SortToDoItemCommand : ICommand
     public ConsoleKey Shortcut => ConsoleKey.S;
     public string Description => "[S]ort ToDo items";
 
-    public Task Execute()
+    public async Task Execute()
     {
-        _toDoList.SortToDoItems();
-        _screenInvalidator.Invalidate();
-        return Task.CompletedTask;
+        await _toDoList.SortToDoItems();
+        _screenInvalidator.InvalidatePane(0);
     }
 }

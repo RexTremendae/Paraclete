@@ -5,6 +5,7 @@ using Paraclete.IO;
 using Paraclete.Menu;
 using Paraclete.Painting;
 using Paraclete.Screens;
+using Paraclete.Screens.Showroom;
 
 public static class Configurator
 {

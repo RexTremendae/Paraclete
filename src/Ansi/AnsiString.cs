@@ -5,7 +5,7 @@ public partial class AnsiString
     private readonly string _fullString;
 
     public AnsiString(params string[] texts)
-        : this(texts.Select(_ => new AnsiStringTextPart(_)))
+        : this(texts.Select(_ => new AnsiStringTextPiece(_)))
     {
     }
 
@@ -14,23 +14,23 @@ public partial class AnsiString
     {
     }
 
-    public AnsiString(IEnumerable<IAnsiStringPart> parts)
+    public AnsiString(IEnumerable<IAnsiStringPiece> pieces)
     {
-        Parts = parts.ToArray();
-        _fullString = string.Concat(parts.Select(_ => _.ToString()));
-        Length = Parts.OfType<AnsiStringTextPart>().Select(_ => _.ToString().Length).Sum();
+        Pieces = pieces.ToArray();
+        _fullString = string.Concat(pieces.Select(_ => _.ToString()));
+        Length = Pieces.OfType<AnsiStringTextPiece>().Select(_ => _.ToString().Length).Sum();
     }
 
     public static AnsiString Empty => new (string.Empty);
 
-    public IAnsiStringPart[] Parts { get; }
+    public IAnsiStringPiece[] Pieces { get; }
     public int Length { get; }
 
     public static implicit operator AnsiString(string input) => new AnsiString(input);
 
     public static AnsiString operator +(AnsiString ansiString1, AnsiString ansiString2)
     {
-        return new AnsiString(ansiString1.Parts.Concat(ansiString2.Parts));
+        return new AnsiString(ansiString1.Pieces.Concat(ansiString2.Pieces));
     }
 
     public static AnsiString operator +(string text, AnsiString ansiString)
@@ -57,44 +57,44 @@ public partial class AnsiString
 
     public AnsiString PadRight(int totalWidth, char paddingChar = ' ')
     {
-        var parts = Parts.ToList();
+        var pieces = Pieces.ToList();
         var paddingWidth = int.Max(0, totalWidth - Length);
         if (paddingWidth > 0)
         {
-            parts.Add(new AnsiStringTextPart(string.Empty.PadRight(paddingWidth, paddingChar)));
+            pieces.Add(new AnsiStringTextPiece(string.Empty.PadRight(paddingWidth, paddingChar)));
         }
 
-        return new (parts);
+        return new (pieces);
     }
 
     public AnsiString Truncate(int maxLength)
     {
         var totalLength = 0;
-        var truncatedParts = new List<IAnsiStringPart>();
+        var truncatedPieces = new List<IAnsiStringPiece>();
 
-        foreach (var part in Parts)
+        foreach (var piece in Pieces)
         {
-            if (part is AnsiStringControlSequencePart ctrlPart)
+            if (piece is AnsiStringControlSequencePart ctrlPart)
             {
-                truncatedParts.Add(part);
+                truncatedPieces.Add(piece);
                 continue;
             }
 
-            var textPart = part.ToString() ?? string.Empty;
+            var textPart = piece.ToString() ?? string.Empty;
             var lengthLeft = maxLength - totalLength;
 
             if (textPart.Length >= lengthLeft)
             {
                 var tpart = textPart[..lengthLeft];
-                truncatedParts.Add(new AnsiStringTextPart(tpart));
+                truncatedPieces.Add(new AnsiStringTextPiece(tpart));
                 totalLength += tpart.Length;
                 break;
             }
 
-            truncatedParts.Add(part);
+            truncatedPieces.Add(piece);
             totalLength += textPart.Length;
         }
 
-        return new (truncatedParts);
+        return new (truncatedPieces);
     }
 }

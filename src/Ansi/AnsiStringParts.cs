@@ -1,22 +1,24 @@
 namespace Paraclete.Ansi;
 
-public interface IAnsiStringPart
+public interface IAnsiStringPiece
 {
+    public int Length { get; }
 }
 
-public class AnsiStringTextPart : IAnsiStringPart
+public class AnsiStringTextPiece : IAnsiStringPiece
 {
     private readonly string _text;
 
-    public AnsiStringTextPart(string text)
+    public AnsiStringTextPiece(string text)
     {
         _text = text;
     }
 
+    public int Length => _text.Length;
     public override string ToString() => _text;
 }
 
-public class AnsiStringControlSequencePart : IAnsiStringPart
+public class AnsiStringControlSequencePart : IAnsiStringPiece
 {
     private readonly AnsiControlSequence _sequence;
 
@@ -25,5 +27,6 @@ public class AnsiStringControlSequencePart : IAnsiStringPart
         _sequence = sequence;
     }
 
+    public int Length => 0;
     public override string ToString() => _sequence.ToString();
 }

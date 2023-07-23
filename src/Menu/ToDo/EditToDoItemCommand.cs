@@ -42,6 +42,6 @@ public class EditToDoItemCommand : IInputCommand<string>
 
         _toDoList.SelectedToDoItem.Description = data;
         await _toDoList.Update();
-        _screenInvalidator.Invalidate();
+        _screenInvalidator.InvalidatePane(0);
     }
 }

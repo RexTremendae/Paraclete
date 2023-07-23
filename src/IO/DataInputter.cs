@@ -71,7 +71,7 @@ public class DataInputter
         }
 
         IsActive = true;
-        _screenInvalidator.Invalidate();
+        _screenInvalidator.InvalidateAll();
 
         return Task.CompletedTask;
     }

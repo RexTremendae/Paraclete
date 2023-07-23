@@ -1,6 +1,6 @@
 namespace Paraclete.Menu.Showroom;
 
-using Paraclete.Screens;
+using Paraclete.Screens.Showroom;
 
 public class PreviousExhibitionCommand : ICommand
 {

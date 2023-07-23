@@ -72,34 +72,51 @@ public class HomeScreen : IScreen
 
     public string Name => "Home";
     public ConsoleKey Shortcut => ConsoleKey.F1;
+    public bool ShowCurrentTime => false;
+    public int[] AutoRefreshingPaneIndices => new[] { 0, 1 };
 
     public MenuBase Menu { get; }
 
-    public ILayout Layout { get; } = new ColumnBasedLayout(new ColumnBasedLayout.ColumnDefinition[] { new (width: _1stColumnWidth, 9) });
-
-    public void PaintContent(Painter painter, int windowWidth, int windowHeight)
+    public ILayout Layout { get; } = new ColumnBasedLayout(new ColumnBasedLayout.ColumnDefinition[]
     {
-        // Current time
-        var now = DateTime.Now;
-        _currentTimeWriter.Write(now, _currentTimePosition, painter);
+        new (width: _1stColumnWidth, 9),
+    });
 
-        // Stopwatch
-        if (_stopWatch.Start != default)
+    public Action GetPaintPaneAction(Painter painter, int paneIndex) =>
+        paneIndex switch
         {
-            var stopWatchTime = (_stopWatch.IsRunning ? DateTime.Now : _stopWatch.Stop)
-                - _stopWatch.Start;
-            _stopWatchWriter.Write(stopWatchTime, _stopWatchPosition, painter);
-        }
+            0 => () =>
+            {
+                // Current time
+                var now = DateTime.Now;
+                _currentTimeWriter.Write(now, _currentTimePosition, painter);
+            },
 
-        // Marked time
-        var mx = _markTimesPosition.x;
-        var my = _markTimesPosition.y;
-        foreach (var mark in _stopWatch.MarkedTimes)
-        {
-            _markTimeWriter.Write(mark, (mx, my++), painter);
-        }
+            1 => () =>
+            {
+                // Stopwatch
+                if (_stopWatch.Start != default)
+                {
+                    var stopWatchTime = (_stopWatch.IsRunning ? DateTime.Now : _stopWatch.Stop)
+                        - _stopWatch.Start;
+                    _stopWatchWriter.Write(stopWatchTime, _stopWatchPosition, painter);
+                }
 
-        // ToDos
-        _toDoListPainter.Paint((_1stColumnWidth + 4, 2));
-    }
+                // Marked time
+                var mx = _markTimesPosition.x;
+                var my = _markTimesPosition.y;
+                foreach (var mark in _stopWatch.MarkedTimes)
+                {
+                    _markTimeWriter.Write(mark, (mx, my++), painter);
+                }
+            },
+
+            2 => () =>
+            {
+                // ToDos
+                _toDoListPainter.Paint((_1stColumnWidth + 4, 2));
+            },
+
+            _ => () => { }
+        };
 }

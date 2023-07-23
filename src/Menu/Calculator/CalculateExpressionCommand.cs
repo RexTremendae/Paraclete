@@ -7,11 +7,13 @@ public class CalculateExpressionCommand : IInputCommand<Expression>
 {
     private readonly DataInputter _dataInputter;
     private readonly CalculatorHistory _calculatorHistory;
+    private readonly ScreenInvalidator _screenInvalidator;
 
-    public CalculateExpressionCommand(DataInputter dataInputter, CalculatorHistory calculatorHistory)
+    public CalculateExpressionCommand(DataInputter dataInputter, CalculatorHistory calculatorHistory, ScreenInvalidator screenInvalidator)
     {
         _dataInputter = dataInputter;
         _calculatorHistory = calculatorHistory;
+        _screenInvalidator = screenInvalidator;
     }
 
     public ConsoleKey Shortcut => ConsoleKey.E;
@@ -26,6 +28,7 @@ public class CalculateExpressionCommand : IInputCommand<Expression>
     public Task CompleteInput(Expression data)
     {
         _calculatorHistory.AddEntry(data);
+        _screenInvalidator.InvalidatePane(0);
         return Task.CompletedTask;
     }
 }
