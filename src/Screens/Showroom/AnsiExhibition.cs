@@ -1,6 +1,5 @@
 namespace Paraclete.Screens.Showroom;
 
-using System.Text;
 using Paraclete.Ansi;
 using Paraclete.Layouts;
 using Paraclete.Painting;
@@ -35,13 +34,13 @@ public class AnsiExhibition : IExhibition
 
     private void Paint(AnsiString text, int left, int top, Painter painter)
     {
-        var ansiExposedTextBuilder = new StringBuilder();
+        var ansiExposedTextBuilder = new AnsiStringBuilder();
 
         foreach (var part in text.Pieces)
         {
             var textToAppend = part switch
             {
-                var x when x is AnsiStringTextPiece => part.ToString(),
+                var x when x is AnsiStringTextPiece => new AnsiString(part.ToString() ?? string.Empty),
                 var x when x is AnsiStringControlSequencePart seqPart => FormatForDisplay(seqPart),
                 _ => throw new InvalidOperationException()
             };
@@ -49,7 +48,9 @@ public class AnsiExhibition : IExhibition
             ansiExposedTextBuilder.Append(textToAppend);
         }
 
-        painter.Paint(ansiExposedTextBuilder.ToString() + " " + ForegroundColors.Cyan + $"[{text.Length} printable characters]", (left, top));
+        ansiExposedTextBuilder.Append(" ").Append(ForegroundColors.Cyan).Append($"[{text.Length} printable characters]");
+
+        painter.Paint(ansiExposedTextBuilder.Build(), (left, top));
         painter.Paint(text + AnsiSequences.Reset + " ", (left, top + 1));
 
         var charactersCount =
@@ -58,16 +59,15 @@ public class AnsiExhibition : IExhibition
             AnsiSequences.Reset;
     }
 
-    private string FormatForDisplay(AnsiStringControlSequencePart part)
+    private AnsiString FormatForDisplay(AnsiStringControlSequencePart part)
     {
-        var escapeStr =
+        return
             ForegroundColors.Gray +
             BackgroundColors.DarkGray +
             "\\u001b" +
             ForegroundColors.Black +
-            BackgroundColors.Gray;
-
-        var partStr = part.ToString() ?? string.Empty;
-        return partStr.Replace(EscapeChr.ToString(), escapeStr.ToString()) + AnsiSequences.Reset.ToString();
+            BackgroundColors.Gray +
+            (part.ToString() ?? string.Empty).Replace(EscapeChr.ToString(), string.Empty) +
+            AnsiSequences.Reset;
     }
 }
