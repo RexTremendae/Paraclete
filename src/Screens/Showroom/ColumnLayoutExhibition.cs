@@ -6,21 +6,16 @@ using Paraclete.Painting;
 
 public class ColumnLayoutExhibition : IExhibition
 {
-    private static readonly int[][] PaneHeights = new int[][]
+    private static readonly (int width, int[] heights)[] PaneSizes = new (int, int[])[]
     {
-        new int[] { },
-        new int[] { 5, 8, 12 },
-        new int[] { 18 },
-        new int[] { 15, 15 },
+        (50, new int[] { }),
+        (16, new int[] { 5, 8, 12 }),
+        (20, new int[] { 18 }),
+        (25, new int[] { 15, 15 }),
     };
 
-    public ILayout Layout { get; } = new ColumnBasedLayout(new ColumnBasedLayout.ColumnDefinition[]
-    {
-        new (40, PaneHeights[0]),
-        new (16, PaneHeights[1]),
-        new (20, PaneHeights[2]),
-        new (25, PaneHeights[3]),
-    });
+    public ILayout Layout { get; } = new ColumnBasedLayout(
+        PaneSizes.Select(_ => new ColumnBasedLayout.ColumnDefinition(_.width, _.heights)));
 
     public void Paint(Painter painter, (int x, int y) position, int paneIndex)
     {
@@ -30,7 +25,7 @@ public class ColumnLayoutExhibition : IExhibition
         var backgroundColor = AnsiSequences.BackgroundColor(0x22, 0x33, 0x44);
         var edgeForegroundColor = AnsiSequences.ForegroundColors.Gray;
 
-        var contentWidth = pane.Size.x - 2;
+        var contentWidth = int.Max(0, pane.Size.x - 2);
 
         for (int y = 0; y < pane.Size.y; y++)
         {
@@ -38,8 +33,8 @@ public class ColumnLayoutExhibition : IExhibition
 
             if (y == 0)
             {
-                var paddingWidthLeft = (contentWidth - 6) / 2;
-                var paddingWidthRight = (int)Math.Ceiling((contentWidth - 6) / 2d);
+                var paddingWidthLeft = int.Max(0, (contentWidth - 6) / 2);
+                var paddingWidthRight = int.Max(0, (int)Math.Ceiling((contentWidth - 6) / 2d));
 
                 contentBuilder
                     .Append(edgeForegroundColor)
@@ -76,7 +71,10 @@ public class ColumnLayoutExhibition : IExhibition
                         .Append(": ")
                         .Append($"({listedPane.Position.x.ToString().PadLeft(3)}, {listedPane.Position.y.ToString().PadLeft(3)})")
                         .Append("  ")
-                        .Append($"({listedPane.Size.x.ToString().PadLeft(3)} x {listedPane.Size.y.ToString().PadLeft(3)})")
+                        .Append($"({listedPane.Size.x.ToString().PadLeft(3)} x {listedPane.Size.y.ToString().PadLeft(3)}) ")
+                        .Append($"visible: ")
+                        .Append(listedPane.IsVisible ? AnsiSequences.ForegroundColors.Green + "✓" : AnsiSequences.ForegroundColors.Red + "✘")
+                        .Append(backgroundColor)
                         .Append(string.Empty.PadRight(contentWidth - contentBuilder.Length))
                     ;
 

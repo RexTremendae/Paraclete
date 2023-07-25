@@ -10,6 +10,11 @@ public class ColumnBasedLayout : ILayout
     private int _windowHeight;
     private int _windowWidth;
 
+    public ColumnBasedLayout(IEnumerable<ColumnDefinition> columns)
+        : this(columns.ToArray())
+    {
+    }
+
     public ColumnBasedLayout(params ColumnDefinition[] columns)
     {
         _columns = columns;
@@ -42,26 +47,62 @@ public class ColumnBasedLayout : ILayout
         _windowHeight = windowHeight;
         _windowWidth = windowWidth;
 
-        var panes = new List<Pane>();
+        var drawableWindowHeight = windowHeight - 4;
+        var drawableWindowWidth = windowWidth - 1;
 
+        var panes = new List<Pane>();
         var xPos = 1;
+        var paneHeight = 0;
+        var paneWidth = 0;
 
         for (var x = 0; x < _columns.Length; x++)
         {
             var yPos = 1;
             var definition = _columns[x];
+            paneWidth = int.Max(0, int.Min(definition.Width, drawableWindowWidth - xPos));
+
             for (int y = 0; y < definition.CellHeights.Length; y++)
             {
-                var height = definition.CellHeights[y];
-                panes.Add(new ((xPos, yPos), (definition.Width, height), true));
-                yPos += height + 1;
+                paneHeight = int.Max(0, int.Min(definition.CellHeights[y], drawableWindowHeight - yPos));
+
+                if (paneHeight > 0 && paneWidth > 0)
+                {
+                    panes.Add(new ((xPos, yPos), (paneWidth, paneHeight), true));
+                }
+                else
+                {
+                    panes.Add(new ((xPos, yPos), (0, 0), false));
+                }
+
+                yPos += paneHeight + 1;
             }
 
-            panes.Add(new ((xPos, yPos), (definition.Width, windowHeight - yPos - 4), true));
+            paneHeight = int.Max(0, drawableWindowHeight - yPos);
+
+            if (paneHeight > 0 && paneWidth > 0)
+            {
+                panes.Add(new ((xPos, yPos), (paneWidth, paneHeight), true));
+            }
+            else
+            {
+                panes.Add(new ((xPos, yPos), (0, 0), false));
+            }
+
             xPos += definition.Width + 1;
         }
 
-        panes.Add(new ((xPos, 1), (windowWidth - xPos - 1, windowHeight - 5), true));
+        paneWidth = int.Max(0, drawableWindowWidth - xPos);
+        paneHeight = int.Max(0, drawableWindowHeight - 1);
+
+        if (paneWidth > 0 && paneHeight > 0)
+        {
+            panes.Add(new ((xPos, 1), (paneWidth, paneHeight), true));
+        }
+        else
+        {
+            panes.Add(new ((xPos, 1), (0, 0), false));
+        }
+
         Panes = panes.ToArray();
     }
 
