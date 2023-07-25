@@ -43,7 +43,7 @@ public class Painter
     {
         var invalidPaneIndices = _screenInvalidator.InvalidPaneIndices.AsEnumerable();
 
-        if (_selectedScreen != _screenSelector.SelectedScreen || _screenInvalidator.IsAllInvalid || _windowHeight != WindowHeight || _windowWidth != WindowWidth)
+        if (_selectedScreen != _screenSelector.SelectedScreen || _screenInvalidator.AreAllInvalid || _windowHeight != WindowHeight || _windowWidth != WindowWidth)
         {
             Write(AnsiSequences.ClearScreen);
             Write(AnsiSequences.HideCursor);
@@ -77,8 +77,6 @@ public class Painter
         {
             _currentTimeWriter.Write(DateTime.Now, (-10, 1), this);
         }
-
-        _screenInvalidator.Reset();
     }
 
     public void Paint(AnsiString row, (int x, int y)? position = null)

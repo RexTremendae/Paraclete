@@ -4,7 +4,7 @@ public partial class MainLoop
 {
     private async Task RepaintLoop()
     {
-        var screenSaverIsActive = false;
+        var screenSaverWasActive = false;
 
         for (; ; )
         {
@@ -18,17 +18,20 @@ public partial class MainLoop
             if (_screenSaver.IsActive)
             {
                 _screenSaver.PaintScreen();
-                screenSaverIsActive = true;
+                screenSaverWasActive = true;
             }
             else
             {
-                if (screenSaverIsActive)
+                using var x = _screenInvalidator.BeginPaint();
                 {
-                    screenSaverIsActive = false;
-                    _screenInvalidator.InvalidateAll();
-                }
+                    if (screenSaverWasActive)
+                    {
+                        screenSaverWasActive = false;
+                        _screenInvalidator.InvalidateAll();
+                    }
 
-                _painter.PaintScreen(_quickMenuIsActive);
+                    _painter.PaintScreen(_quickMenuIsActive);
+                }
             }
 
             await Task.Delay(_repaintLoopInterval);
