@@ -28,6 +28,7 @@ public static class Configurator
             .AddScoped<ScreenSelector>()
             .AddScoped<Settings>()
             .AddScoped<Stopwatch>()
+            .AddScoped<Terminator>()
             .AddScoped<ToDoList>()
             .AddScoped<ToDoListPainter>()
 
