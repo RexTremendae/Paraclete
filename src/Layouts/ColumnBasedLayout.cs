@@ -156,6 +156,13 @@ public class ColumnBasedLayout : ILayout
         rowBuilder.Append(colIsDivider ? '┤' : '│');
         totalWidth++;
 
+        var truncateWidth = _windowWidth - 1;
+        if (rowBuilder.Length > truncateWidth)
+        {
+            rowBuilder.Remove(truncateWidth, rowBuilder.Length - truncateWidth);
+            totalWidth = truncateWidth;
+        }
+
         rowBuilder.Append(string.Empty.PadRight(int.Max(windowWidth - totalWidth - 1, 0)));
         rowBuilder.Append("║");
 
@@ -194,6 +201,12 @@ public class ColumnBasedLayout : ILayout
             rowBuilder.Append(string.Empty.PadRight(col.Width, padding));
             rowBuilder.Append(colBorder);
             totalWidth += col.Width + 1;
+        }
+
+        var truncateWidth = _windowWidth - 1;
+        if (rowBuilder.Length > truncateWidth)
+        {
+            rowBuilder.Remove(truncateWidth, rowBuilder.Length - truncateWidth);
         }
 
         rowBuilder.Append(string.Empty.PadRight(int.Max(_windowWidth - totalWidth - 1, 0), padding));

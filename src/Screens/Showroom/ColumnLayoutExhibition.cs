@@ -97,10 +97,15 @@ public class ColumnLayoutExhibition : IExhibition
                 .Append(edgeForegroundColor)
                 .Append((y == 0 || y == pane.Size.y - 1) ? "●" : "|")
                 .Append(contentBuilder)
-                .Append(backgroundColor)
-                .Append(edgeForegroundColor)
-                .Append((y == 0 || y == pane.Size.y - 1) ? "●" : "|")
             ;
+
+            if (data.Length < pane.Size.x)
+            {
+                data
+                    .Append(backgroundColor)
+                    .Append(edgeForegroundColor)
+                    .Append((y == 0 || y == pane.Size.y - 1) ? "●" : "|");
+            }
 
             rows.Add(data.Build());
         }
