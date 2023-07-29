@@ -114,7 +114,7 @@ public class HomeScreen : IScreen
             2 => () =>
             {
                 // ToDos
-                _toDoListPainter.Paint((_1stColumnWidth + 4, 2));
+                _toDoListPainter.Paint(Layout.Panes[2], (1, 1));
             },
 
             _ => () => { }

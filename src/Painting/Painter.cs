@@ -2,6 +2,7 @@ namespace Paraclete.Painting;
 
 using Paraclete.Ansi;
 using Paraclete.IO;
+using Paraclete.Layouts;
 using Paraclete.Screens;
 
 using static System.Console;
@@ -82,6 +83,14 @@ public class Painter
     public void Paint(AnsiString row, (int x, int y)? position = null)
     {
         PaintRows(new[] { row }, position);
+    }
+
+    public void PaintRows(IEnumerable<AnsiString> rows, Pane pane, (int x, int y)? position = null)
+    {
+        var pos = ((position?.x ?? 0) + pane.Position.x, (position?.y ?? 0) + pane.Position.y);
+        var boundary = (pane.Position.x + pane.Size.x, pane.Position.y + pane.Size.y);
+
+        PaintRows(rows, pos, boundary);
     }
 
     public void PaintRows(IEnumerable<AnsiString> rows, (int x, int y)? position = null, (int x, int y)? boundary = null)

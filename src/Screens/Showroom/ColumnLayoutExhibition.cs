@@ -110,6 +110,6 @@ public class ColumnLayoutExhibition : IExhibition
             rows.Add(data.Build());
         }
 
-        painter.PaintRows(rows, pane.Position);
+        painter.PaintRows(rows, pane);
     }
 }

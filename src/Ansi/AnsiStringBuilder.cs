@@ -39,4 +39,9 @@ public class AnsiStringBuilder
     {
         return new AnsiString(_pieces);
     }
+
+    public void Clear()
+    {
+        _pieces.Clear();
+    }
 }

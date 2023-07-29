@@ -1,6 +1,7 @@
 namespace Paraclete.Painting;
 
 using Paraclete.Ansi;
+using Paraclete.Layouts;
 
 public class ToDoListPainter
 {
@@ -20,14 +21,20 @@ public class ToDoListPainter
         );
     }
 
-    public void Paint((int x, int y) position, bool paintSelectionMaker = false)
+    public void Paint(Pane pane, (int x, int y) position, bool paintSelectionMaker = false)
     {
         var toDoItemPadding = _toDoList.MaxItemLength + 3;
 
         var rows = new List<AnsiString>();
+        var builder = new AnsiStringBuilder();
 
-        rows.Add(_formatConfig.header + "ToDo:" + AnsiSequences.Reset + string.Empty.PadRight(toDoItemPadding));
+        builder
+            .Append(_formatConfig.header)
+            .Append("ToDo:")
+            .Append(AnsiSequences.Reset)
+            .Append(string.Empty.PadRight(toDoItemPadding));
 
+        rows.Add(builder.Build());
         rows.AddRange(_toDoList.ToDoItems.Select(_ =>
             ResolveMarker(_, paintSelectionMaker) +
             _formatConfig.toDo +
@@ -36,7 +43,14 @@ public class ToDoListPainter
         ));
 
         rows.Add(string.Empty.PadRight(toDoItemPadding));
-        rows.Add($"{_formatConfig.header}Done:{AnsiSequences.Reset}{string.Empty.PadRight(toDoItemPadding)}");
+
+        builder.Clear();
+        builder
+            .Append(_formatConfig.header)
+            .Append("Done:")
+            .Append(AnsiSequences.Reset)
+            .Append(string.Empty.PadRight(toDoItemPadding));
+        rows.Add(builder.Build());
 
         rows.AddRange(_toDoList.DoneItems.Select(_ =>
             ResolveMarker(_, paintSelectionMaker) +
@@ -45,7 +59,9 @@ public class ToDoListPainter
             AnsiSequences.Reset
         ));
 
-        _painter.PaintRows(rows, position);
+        rows.Add(string.Empty.PadRight(toDoItemPadding));
+
+        _painter.PaintRows(rows, pane, position);
     }
 
     public string ResolveMarker(ToDoItem toDoItem, bool paintSelectionMaker)

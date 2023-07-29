@@ -35,6 +35,6 @@ public class ToDoScreen : IScreen
     public Action GetPaintPaneAction(Painter painter, int paneIndex) =>
     () =>
     {
-        _toDoListPainter.Paint((2, 1), true);
+        _toDoListPainter.Paint(Layout.Panes[0], (2, 1), true);
     };
 }
