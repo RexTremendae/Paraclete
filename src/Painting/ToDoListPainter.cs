@@ -28,35 +28,41 @@ public class ToDoListPainter
         var rows = new List<AnsiString>();
         var builder = new AnsiStringBuilder();
 
-        builder
+        rows.Add(builder
+            .Clear()
             .Append(_formatConfig.header)
             .Append("ToDo:")
             .Append(AnsiSequences.Reset)
-            .Append(string.Empty.PadRight(toDoItemPadding));
+            .Append(string.Empty.PadRight(toDoItemPadding))
+            .Build()
+        );
 
-        rows.Add(builder.Build());
-        rows.AddRange(_toDoList.ToDoItems.Select(_ =>
-            ResolveMarker(_, paintSelectionMaker) +
-            _formatConfig.toDo +
-            _.ToDisplayString(false).PadRight(_toDoList.MaxItemLength) +
-            AnsiSequences.Reset
+        rows.AddRange(_toDoList.ToDoItems.Select(_ => builder
+            .Clear()
+            .Append(ResolveMarker(_, paintSelectionMaker))
+            .Append(_formatConfig.toDo)
+            .Append(_.ToDisplayString(false).PadRight(_toDoList.MaxItemLength))
+            .Append(AnsiSequences.Reset)
+            .Build()
         ));
 
         rows.Add(string.Empty.PadRight(toDoItemPadding));
 
-        builder.Clear();
-        builder
+        rows.Add(builder
+            .Clear()
             .Append(_formatConfig.header)
             .Append("Done:")
             .Append(AnsiSequences.Reset)
-            .Append(string.Empty.PadRight(toDoItemPadding));
-        rows.Add(builder.Build());
+            .Append(string.Empty.PadRight(toDoItemPadding))
+            .Build());
 
-        rows.AddRange(_toDoList.DoneItems.Select(_ =>
-            ResolveMarker(_, paintSelectionMaker) +
-            _formatConfig.done +
-            _.ToDisplayString(true).PadRight(_toDoList.MaxItemLength) +
-            AnsiSequences.Reset
+        rows.AddRange(_toDoList.DoneItems.Select(_ => builder
+            .Clear()
+            .Append(ResolveMarker(_, paintSelectionMaker))
+            .Append(_formatConfig.done)
+            .Append(_.ToDisplayString(true).PadRight(_toDoList.MaxItemLength))
+            .Append(AnsiSequences.Reset)
+            .Build()
         ));
 
         rows.Add(string.Empty.PadRight(toDoItemPadding));
@@ -64,7 +70,7 @@ public class ToDoListPainter
         _painter.PaintRows(rows, pane, position);
     }
 
-    public string ResolveMarker(ToDoItem toDoItem, bool paintSelectionMaker)
+    public AnsiString ResolveMarker(ToDoItem toDoItem, bool paintSelectionMaker)
     {
         // ToDo list without selection marker
         if (!paintSelectionMaker)
@@ -81,11 +87,11 @@ public class ToDoListPainter
         // Selected item in move item mode
         if (_toDoList.MoveItemMode)
         {
-            return $"{_formatConfig.marker}⮝⮟ ";
+            return _formatConfig.marker + "⮝⮟ ";
         }
 
         // Selected item in normal mode
-        return $"{_formatConfig.marker}=> ";
+        return _formatConfig.marker + "=> ";
     }
 }
 

@@ -35,13 +35,14 @@ public class AnsiStringBuilder
         return this;
     }
 
+    public AnsiStringBuilder Clear()
+    {
+        _pieces.Clear();
+        return this;
+    }
+
     public AnsiString Build()
     {
         return new AnsiString(_pieces);
-    }
-
-    public void Clear()
-    {
-        _pieces.Clear();
     }
 }
