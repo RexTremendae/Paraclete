@@ -5,8 +5,6 @@ using Paraclete.IO;
 using Paraclete.Layouts;
 using Paraclete.Screens;
 
-using static System.Console;
-
 public class Painter
 {
     private readonly ScreenInvalidator _screenInvalidator;
@@ -44,7 +42,11 @@ public class Painter
     {
         var invalidPaneIndices = _screenInvalidator.InvalidPaneIndices.AsEnumerable();
 
-        if (_selectedScreen != _screenSelector.SelectedScreen || _screenInvalidator.AreAllInvalid || _windowHeight != WindowHeight || _windowWidth != WindowWidth)
+        if (
+            _selectedScreen != _screenSelector.SelectedScreen ||
+            _screenInvalidator.AreAllInvalid ||
+            _windowHeight != Console.WindowHeight ||
+            _windowWidth != Console.WindowWidth)
         {
             Write(AnsiSequences.ClearScreen);
             Write(AnsiSequences.HideCursor);
@@ -53,8 +55,8 @@ public class Painter
             var layout = _selectedScreen.Layout;
             _autoRefreshingPaneIndices = _selectedScreen.AutoRefreshingPaneIndices.ToHashSet();
 
-            _windowHeight = WindowHeight;
-            _windowWidth = WindowWidth;
+            _windowHeight = Console.WindowHeight;
+            _windowWidth = Console.WindowWidth;
             layout.Recalculate(_windowWidth, _windowHeight);
             layout.Paint(this);
             invalidPaneIndices = Enumerable.Range(0, layout.Panes.Length);
@@ -65,9 +67,10 @@ public class Painter
             _selectedScreen.GetPaintPaneAction(this, paneIdx)();
         }
 
+        var cursorPos = (x: 0, y: 0);
         if (_dataInputter.IsActive)
         {
-            _dataInputPainter.PaintInput(this, _windowWidth, _windowHeight);
+            cursorPos = _dataInputPainter.PaintInput(this, _windowWidth, _windowHeight);
         }
         else
         {
@@ -77,6 +80,17 @@ public class Painter
         if (_selectedScreen.ShowCurrentTime)
         {
             _currentTimeWriter.Write(DateTime.Now, (-10, 1), this);
+        }
+
+        if (_dataInputter.IsActive)
+        {
+            Write(AnsiSequences.ShowCursor);
+            var x = int.Min(cursorPos.x, Console.WindowWidth - 1);
+            SetCursorPosition(x, cursorPos.y);
+        }
+        else
+        {
+            Write(AnsiSequences.HideCursor);
         }
     }
 
@@ -133,6 +147,21 @@ public class Painter
         }
     }
 
+    private void SetCursorPosition(int x, int y)
+    {
+        if (x >= Console.WindowWidth || y >= Console.WindowHeight)
+        {
+            return;
+        }
+
+        Console.SetCursorPosition(x, y);
+    }
+
+    private void Write(object data)
+    {
+        Console.Write(data);
+    }
+
     private void WriteBounded(AnsiString ansiString, (int x, int y) pos, (int x, int y) bound)
     {
         if (pos.y >= bound.y)
@@ -140,15 +169,12 @@ public class Painter
             return;
         }
 
-        CursorTop = pos.y;
-
         if (pos.x >= bound.x)
         {
             return;
         }
 
-        CursorLeft = pos.x;
-
+        SetCursorPosition(pos.x, pos.y);
         Write(ansiString.Truncate(bound.x - pos.x));
     }
 }

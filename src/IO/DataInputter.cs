@@ -42,6 +42,7 @@ public class DataInputter
         IInputDefinition? inputDefinition = null)
     {
         _input.Clear();
+
         ErrorMessage = string.Empty;
         CurrentInput = string.Empty;
         _selectedInputter = inputDefinition ?? IInputDefinition.NoInputter;
@@ -71,8 +72,6 @@ public class DataInputter
         }
 
         IsActive = true;
-        _screenInvalidator.InvalidateAll();
-
         return Task.CompletedTask;
     }
 
