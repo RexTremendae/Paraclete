@@ -30,9 +30,9 @@ public class HomeScreen : IScreen
         _screenInvalidator = screenInvalidator;
         _toDoListPainter = toDoListPainter;
 
-        _currentTimePosition = (x: 6, y:  2);
-        _stopWatchPosition   = (x: 3, y: 12);
-        _markTimesPosition   = (x: 3, y: 18);
+        _currentTimePosition = (x: 5, y: 1);
+        _stopWatchPosition   = (x: 2, y: 1);
+        _markTimesPosition   = (x: 2, y: 7);
 
         var currentTimeSettings = new TimeWriterSettings() with {
             FontSize = Font.Size.L,
@@ -89,7 +89,7 @@ public class HomeScreen : IScreen
             {
                 // Current time
                 var now = DateTime.Now;
-                _currentTimeWriter.Write(now, _currentTimePosition, painter);
+                _currentTimeWriter.Write(now, _currentTimePosition, painter, Layout.Panes[0]);
             },
 
             1 => () =>
@@ -99,7 +99,7 @@ public class HomeScreen : IScreen
                 {
                     var stopWatchTime = (_stopWatch.IsRunning ? DateTime.Now : _stopWatch.Stop)
                         - _stopWatch.Start;
-                    _stopWatchWriter.Write(stopWatchTime, _stopWatchPosition, painter);
+                    _stopWatchWriter.Write(stopWatchTime, _stopWatchPosition, painter, Layout.Panes[1]);
                 }
 
                 // Marked time
@@ -107,7 +107,7 @@ public class HomeScreen : IScreen
                 var my = _markTimesPosition.y;
                 foreach (var mark in _stopWatch.MarkedTimes)
                 {
-                    _markTimeWriter.Write(mark, (mx, my++), painter);
+                    _markTimeWriter.Write(mark, (mx, my++), painter, Layout.Panes[1]);
                 }
             },
 

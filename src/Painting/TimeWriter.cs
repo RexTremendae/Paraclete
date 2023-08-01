@@ -1,6 +1,7 @@
 namespace Paraclete.Painting;
 
 using Paraclete.Ansi;
+using Paraclete.Layouts;
 
 public class TimeWriter
 {
@@ -12,17 +13,17 @@ public class TimeWriter
         _settings = settings;
     }
 
-    public void Write(TimeSpan timestamp, (int x, int y) cursorPos, Painter painter)
+    public void Write(TimeSpan timestamp, (int x, int y) cursorPos, Painter painter, Pane? pane = null)
     {
-        Write(timestamp.Hours, timestamp.Minutes, timestamp.Seconds, timestamp.Milliseconds, cursorPos, painter);
+        Write(timestamp.Hours, timestamp.Minutes, timestamp.Seconds, timestamp.Milliseconds, cursorPos, painter, pane);
     }
 
-    public void Write(DateTime timestamp, (int x, int y) cursorPos, Painter painter)
+    public void Write(DateTime timestamp, (int x, int y) cursorPos, Painter painter, Pane? pane = null)
     {
-        Write(timestamp.Hour, timestamp.Minute, timestamp.Second, timestamp.Millisecond, cursorPos, painter);
+        Write(timestamp.Hour, timestamp.Minute, timestamp.Second, timestamp.Millisecond, cursorPos, painter, pane);
     }
 
-    private void Write(int hour, int minute, int second, int millisecond, (int x, int y) cursorPos, Painter painter)
+    private void Write(int hour, int minute, int second, int millisecond, (int x, int y) cursorPos, Painter painter, Pane? pane)
     {
         var newCache = (hour, minute, second, millisecond, cursorPos);
         if (newCache == _cache)
@@ -71,10 +72,10 @@ public class TimeWriter
                 : Font.OfSize(_settings.MillisecondsFontSize));
         }
 
-        Write(parts, partColors, partFonts, cursorPos, painter);
+        Write(parts, partColors, partFonts, cursorPos, painter, pane);
     }
 
-    private void Write(List<string> textParts, List<AnsiControlSequence> colors, List<Font> fonts, (int x, int y) cursorPos, Painter painter)
+    private void Write(List<string> textParts, List<AnsiControlSequence> colors, List<Font> fonts, (int x, int y) cursorPos, Painter painter, Pane? pane)
     {
         var textHeight = fonts.Max(_ => _.CharacterHeight);
         var rows = Enumerable.Range(0, textHeight)
@@ -110,6 +111,15 @@ public class TimeWriter
             }
         }
 
-        painter.PaintRows(rows.Select(_ => _.Build()), cursorPos);
+        var content = rows.Select(_ => _.Build());
+
+        if (pane != null)
+        {
+            painter.PaintRows(content, pane, cursorPos);
+        }
+        else
+        {
+            painter.PaintRows(content, cursorPos);
+        }
     }
 }
