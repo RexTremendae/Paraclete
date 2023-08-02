@@ -23,7 +23,7 @@ public class ToDoListPainter
 
     public void Paint(Pane pane, (int x, int y) position, bool paintSelectionMaker = false)
     {
-        var toDoItemPadding = _toDoList.MaxItemLength + 3;
+        var toDoItemPadding = pane.Size.x - position.x;
 
         var rows = new List<AnsiString>();
         var builder = new AnsiStringBuilder();
@@ -32,18 +32,17 @@ public class ToDoListPainter
             .Clear()
             .Append(_formatConfig.header)
             .Append("ToDo:")
-            .Append(AnsiSequences.Reset)
-            .Append(string.Empty.PadRight(toDoItemPadding))
             .Build()
+            .PadRight(toDoItemPadding)
         );
 
         rows.AddRange(_toDoList.ToDoItems.Select(_ => builder
             .Clear()
             .Append(ResolveMarker(_, paintSelectionMaker))
             .Append(_formatConfig.toDo)
-            .Append(_.ToDisplayString(false).PadRight(_toDoList.MaxItemLength))
-            .Append(AnsiSequences.Reset)
+            .Append(_.ToDisplayString(false))
             .Build()
+            .PadRight(pane.Size.x - position.x)
         ));
 
         rows.Add(string.Empty.PadRight(toDoItemPadding));
@@ -52,22 +51,21 @@ public class ToDoListPainter
             .Clear()
             .Append(_formatConfig.header)
             .Append("Done:")
-            .Append(AnsiSequences.Reset)
-            .Append(string.Empty.PadRight(toDoItemPadding))
-            .Build());
+            .Build()
+            .PadRight(toDoItemPadding));
 
         rows.AddRange(_toDoList.DoneItems.Select(_ => builder
             .Clear()
             .Append(ResolveMarker(_, paintSelectionMaker))
             .Append(_formatConfig.done)
-            .Append(_.ToDisplayString(true).PadRight(_toDoList.MaxItemLength))
-            .Append(AnsiSequences.Reset)
+            .Append(_.ToDisplayString(true))
             .Build()
+            .PadRight(pane.Size.x - position.x)
         ));
 
         rows.Add(string.Empty.PadRight(toDoItemPadding));
 
-        _painter.PaintRows(rows, pane, position);
+        _painter.PaintRows(rows, pane, position, showEllipsis: true);
     }
 
     public AnsiString ResolveMarker(ToDoItem toDoItem, bool paintSelectionMaker)

@@ -99,15 +99,15 @@ public class Painter
         PaintRows(new[] { row }, position);
     }
 
-    public void PaintRows(IEnumerable<AnsiString> rows, Pane pane, (int x, int y)? position = null)
+    public void PaintRows(IEnumerable<AnsiString> rows, Pane pane, (int x, int y)? position = null, bool showEllipsis = false)
     {
         var pos = ((position?.x ?? 0) + pane.Position.x, (position?.y ?? 0) + pane.Position.y);
         var boundary = (pane.Position.x + pane.Size.x, pane.Position.y + pane.Size.y);
 
-        PaintRows(rows, pos, boundary);
+        PaintRows(rows, pos, boundary, showEllipsis);
     }
 
-    public void PaintRows(IEnumerable<AnsiString> rows, (int x, int y)? position = null, (int x, int y)? boundary = null)
+    public void PaintRows(IEnumerable<AnsiString> rows, (int x, int y)? position = null, (int x, int y)? boundary = null, bool showEllipsis = false)
     {
         var pos = position ?? (0, 0);
         var bound = boundary ?? (_windowWidth, _windowHeight);
@@ -138,7 +138,7 @@ public class Painter
         {
             for (int y = 0; y < rowArray.Length; y++)
             {
-                WriteBounded(AnsiSequences.Reset + rowArray[y], (pos.x, pos.y + y), bound);
+                WriteBounded(AnsiSequences.Reset + rowArray[y], (pos.x, pos.y + y), bound, showEllipsis);
             }
         }
         catch (Exception ex)
@@ -162,7 +162,7 @@ public class Painter
         Console.Write(data);
     }
 
-    private void WriteBounded(AnsiString ansiString, (int x, int y) pos, (int x, int y) bound)
+    private void WriteBounded(AnsiString ansiString, (int x, int y) pos, (int x, int y) bound, bool showEllipsis = false)
     {
         if (pos.y >= bound.y)
         {
@@ -175,6 +175,18 @@ public class Painter
         }
 
         SetCursorPosition(pos.x, pos.y);
-        Write(ansiString.Truncate(bound.x - pos.x));
+
+        var truncatedWidth = bound.x - pos.x;
+
+        if (showEllipsis)
+        {
+            Write(ansiString.Length > truncatedWidth
+                ? ansiString.Truncate(truncatedWidth - 3) + AnsiSequences.Reset + AnsiSequences.Bold + AnsiSequences.ForegroundColors.DarkYellow + "(…)"
+                : ansiString);
+        }
+        else
+        {
+            Write(ansiString.Truncate(truncatedWidth));
+        }
     }
 }
