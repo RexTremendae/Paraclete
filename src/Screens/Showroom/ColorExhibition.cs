@@ -12,7 +12,7 @@ public class ColorExhibition : IExhibition
 
     public void Paint(Painter painter, (int x, int y) position, int paneIndex)
     {
-        var initialPosition = position;
+        var (initialX, _) = position;
 
         var columnWidth = 16;
         var colorNumber = 0;
@@ -43,7 +43,7 @@ public class ColorExhibition : IExhibition
 
             painter.Paint(colorName, position);
             position = (colorNumber % 8 == 7)
-                ? (initialPosition.x, position.y + 1)
+                ? (initialX, position.y + 1)
                 : (position.x + columnWidth, position.y);
 
             colorNumber++;

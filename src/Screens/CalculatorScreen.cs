@@ -69,9 +69,10 @@ public class CalculatorScreen : IScreen
     {
         if (_calculatorHistory.RadixConversion is BigInteger radix)
         {
-            var offset = (x: 1, y: 1);
+            var offsetX = 1;
+            var offsetY = 1;
 
-            var paddingWidth = pane.Size.x - offset.x - 4;
+            var paddingWidth = pane.Size.x - offsetX - 4;
             var conversions = new[]
             {
                 ("Dec", radix.ToDecimalString(useGrouping: true, padGroups: false).PadRight(paddingWidth)),
@@ -80,7 +81,7 @@ public class CalculatorScreen : IScreen
                 ("Oct", radix.ToOctalString(useGrouping: true, padGroups: true).PadRight(paddingWidth)),
             };
 
-            var position = (x: pane.Position.x + offset.x, y: pane.Position.y + offset.y);
+            var position = (x: pane.Position.x + offsetX, y: pane.Position.y + offsetY);
             foreach (var (radixName, data) in conversions)
             {
                 painter.Paint(AnsiSequences.ForegroundColors.White + radixName, position);

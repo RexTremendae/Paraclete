@@ -20,7 +20,6 @@ dotnet_diagnostic.IDE0022.severity = none # Use block body for method
 dotnet_diagnostic.IDE0023.severity = none # Use block body for conversion operator
 dotnet_diagnostic.IDE0026.severity = none # Use expression body for indexer
 dotnet_diagnostic.IDE0032.severity = none # Use auto property
-dotnet_diagnostic.IDE0042.severity = none # Variable declaration can be deconstructed
 dotnet_diagnostic.IDE0047.severity = none # Parentheses can be removed
 dotnet_diagnostic.IDE0058.severity = none # Expression value is never used
 dotnet_diagnostic.IDE0059.severity = none # Unnecessary assignment of a value
