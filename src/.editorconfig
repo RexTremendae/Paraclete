@@ -5,6 +5,9 @@ root = true
 # Default severity for analyzer diagnostics with category 'Style' (escalated to build warnings)
 dotnet_analyzer_diagnostic.category-Style.severity = error
 
+# enable IDE0161: Convert to file-scoped namespace
+csharp_style_namespace_declarations = file_scoped
+
 # Disabled
 dotnet_diagnostic.IDE0055.severity = none # Just says 'Fix formatting' without further details - very annoying!
 dotnet_diagnostic.IDE0065.severity = none # Using directives must be placed outside of a namespace declaration
@@ -27,6 +30,5 @@ dotnet_diagnostic.IDE0071.severity = none # Interpolation can be simplified
 dotnet_diagnostic.IDE0072.severity = none # Populate switch
 dotnet_diagnostic.IDE0078.severity = none # Use pattern matching
 dotnet_diagnostic.IDE0090.severity = none # 'new' expression can be simplified
-dotnet_diagnostic.IDE0160.severity = none # Convert to block scoped namespace
 dotnet_diagnostic.IDE0200.severity = none # Lambda expression can be removed
 dotnet_diagnostic.IDE1006.severity = none # Naming rule violation: These words must begin with upper case characters
