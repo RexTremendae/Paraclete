@@ -6,6 +6,7 @@ using Paraclete.Menu;
 using Paraclete.Painting;
 using Paraclete.Screens;
 using Paraclete.Screens.Showroom;
+using Paraclete.Screens.Unicode;
 
 public static class Configurator
 {
@@ -31,6 +32,7 @@ public static class Configurator
             .AddScoped<Terminator>()
             .AddScoped<ToDoList>()
             .AddScoped<ToDoListPainter>()
+            .AddScoped<UnicodeControl>()
 
             .AddImplementationsOf<ICommand>()
             .AddImplementationsOf<IExhibition>()

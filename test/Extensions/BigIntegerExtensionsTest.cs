@@ -5,12 +5,6 @@ using Paraclete.Extensions;
 
 public class BigIntegerExtensionsTest
 {
-    [Fact]
-    public void Test()
-    {
-        true.Should().BeTrue();
-    }
-
     [Theory]
     [InlineData(  0,  "0")]
     [InlineData(  1,  "1")]

@@ -18,17 +18,11 @@ public class RadixInputDefinition : IInputDefinition
 
         if (inputData.Length == 0)
         {
+            errorMessage = "No input";
             return false;
         }
 
-        if (ValidPrefixes.Contains(inputData[0], StringComparison.OrdinalIgnoreCase))
-        {
-            inputData = $"0{char.ToLower(inputData[0])}{inputData[1..]}";
-        }
-        else if (inputData.All(_ => IInputDefinition.NumericAlphabet.Contains(inputData[0])))
-        {
-            inputData = $"0d{inputData}";
-        }
+        inputData = EnsurePrefix(inputData);
 
         if (inputData[0] != '0' || !ValidPrefixes.Contains(inputData[1], StringComparison.OrdinalIgnoreCase))
         {
@@ -51,5 +45,24 @@ public class RadixInputDefinition : IInputDefinition
 
         result = bigIntResult;
         return success;
+    }
+
+    private string EnsurePrefix(string inputData)
+    {
+        if (inputData.Length < 2)
+        {
+            return $"0d{inputData}";
+        }
+
+        return inputData switch
+        {
+            var p when ValidPrefixes.Contains(inputData[0], StringComparison.OrdinalIgnoreCase)
+                => $"0{char.ToLower(inputData[0])}{inputData[1..]}",
+            var p when inputData[0] == '0' && ValidPrefixes.Contains(inputData[1], StringComparison.OrdinalIgnoreCase)
+                => inputData,
+            var p when inputData.All(_ => IInputDefinition.NumericAlphabet.Contains(inputData[0]))
+                => $"0d{inputData}",
+            _ => inputData
+        };
     }
 }
