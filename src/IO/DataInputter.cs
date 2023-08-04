@@ -61,14 +61,12 @@ public class DataInputter
         _command = inputCommand;
         if (_selectedInputter == IInputDefinition.NoInputter)
         {
-            if (_availableInputters.TryGetValue(typeof(T), out var inputter))
-            {
-                _selectedInputter = inputter;
-            }
-            else
+            if (!_availableInputters.TryGetValue(typeof(T), out var inputter))
             {
                 throw new NotSupportedException($"Input of type {typeof(T)} is not supported.");
             }
+
+            _selectedInputter = inputter;
         }
 
         IsActive = true;
