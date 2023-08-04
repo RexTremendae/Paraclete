@@ -38,6 +38,8 @@ public static class ExpressionTreeBuilder
                         break;
                     }
 
+                    case TokenType.Invalid:
+                    case TokenType.None:
                     default:
                         rootToken = ITokenNode.Empty;
                         return false;
