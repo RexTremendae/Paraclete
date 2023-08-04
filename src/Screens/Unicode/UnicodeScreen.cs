@@ -6,7 +6,6 @@ using Paraclete.Layouts;
 using Paraclete.Menu;
 using Paraclete.Menu.Unicode;
 using Paraclete.Painting;
-using Paraclete.Screens.Unicode;
 
 public class UnicodeScreen : IScreen
 {

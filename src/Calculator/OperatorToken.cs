@@ -1,7 +1,5 @@
 namespace Paraclete.Calculator;
 
-using System.Text;
-
 public class OperatorTokenNode : TokenNodeBase
 {
     private readonly string _operator;

@@ -1,7 +1,6 @@
 namespace Paraclete.Screens;
 
 using System.Numerics;
-using System.Text;
 using Paraclete.Ansi;
 using Paraclete.Calculator;
 using Paraclete.Layouts;

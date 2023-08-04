@@ -13,6 +13,16 @@
     <CodeAnalysisRuleSet>StyleCop.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
+  <!-- This section is needed to enforce error on unnecessary using directives -->
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- CS1591: Missing XML comment for publicly visible type or member -->
+    <!-- SA1600: Elements should be documented -->
+    <!-- SA1601: Partial elements should be documented -->
+    <!-- SA1602: Enumeration items should be documented -->
+    <NoWarn>$(NoWarn);1591;SA1600;SA1601;SA1602</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />

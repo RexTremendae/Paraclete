@@ -1,7 +1,5 @@
 namespace Paraclete.Calculator;
 
-using System.Text;
-
 public interface ITokenNode
 {
     public static readonly ITokenNode Empty = new EmptyTokenNodeImplementation();

@@ -1,7 +1,5 @@
 namespace Paraclete.Calculator;
 
-using System.Text;
-
 public class NumericTokenNode : TokenNodeBase
 {
     private readonly double _number;
