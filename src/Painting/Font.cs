@@ -41,13 +41,6 @@ public class Font
         }
     }
 
-    private Font(int characterWidth, int characterHeight)
-    {
-        CharacterHeight = characterHeight;
-        CharacterWidth = characterWidth;
-        _font = new ();
-    }
-
     public enum Size
     {
         Undefined = 0,

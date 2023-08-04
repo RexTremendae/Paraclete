@@ -11,7 +11,6 @@ public class HomeScreen : IScreen
     private const int _1stColumnWidth = 59;
 
     private readonly Stopwatch _stopWatch;
-    private readonly ScreenInvalidator _screenInvalidator;
     private readonly ToDoListPainter _toDoListPainter;
 
     private readonly TimeWriter _currentTimeWriter;
@@ -22,12 +21,11 @@ public class HomeScreen : IScreen
     private (int x, int y) _stopWatchPosition;
     private (int x, int y) _markTimesPosition;
 
-    public HomeScreen(Stopwatch stopWatch, MainMenu mainMenu, ScreenInvalidator screenInvalidator, ToDoListPainter toDoListPainter)
+    public HomeScreen(Stopwatch stopWatch, MainMenu mainMenu, ToDoListPainter toDoListPainter)
     {
         Menu = mainMenu;
 
         _stopWatch = stopWatch;
-        _screenInvalidator = screenInvalidator;
         _toDoListPainter = toDoListPainter;
 
         _currentTimePosition = (x: 5, y: 1);

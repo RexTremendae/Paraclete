@@ -7,16 +7,12 @@ using Paraclete.Painting;
 
 public class ToDoScreen : IScreen
 {
-    private readonly ScreenInvalidator _screenInvalidator;
-    private readonly Painter _painter;
     private readonly ToDoListPainter _toDoListPainter;
     private readonly ToDoList _toDoList;
 
-    public ToDoScreen(ToDoMenu toDoMenu, ScreenInvalidator screenInvalidator, Painter painter, ToDoList toDoList, ToDoListPainter toDoListPainter)
+    public ToDoScreen(ToDoMenu toDoMenu, ToDoList toDoList, ToDoListPainter toDoListPainter)
     {
         Menu = toDoMenu;
-        _screenInvalidator = screenInvalidator;
-        _painter = painter;
         _toDoListPainter = toDoListPainter;
         _toDoList = toDoList;
     }
