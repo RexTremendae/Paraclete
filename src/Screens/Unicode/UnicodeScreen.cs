@@ -1,4 +1,4 @@
-namespace Paraclete.Screens;
+namespace Paraclete.Screens.Unicode;
 
 using System.Numerics;
 using Paraclete.Ansi;
