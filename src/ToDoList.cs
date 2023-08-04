@@ -140,9 +140,9 @@ public class ToDoList : IInitializer
         }
 
         _selectedList.RemoveAt(_selectedToDoItemIndex);
-        if (_selectedToDoItemIndex >= _toDoItems.Count)
+        if (_selectedToDoItemIndex >= _selectedList.Count)
         {
-            _selectedToDoItemIndex = Math.Max(_toDoItems.Count - 1, 0);
+            _selectedToDoItemIndex = Math.Max(_selectedList.Count - 1, 0);
         }
 
         await Update();
