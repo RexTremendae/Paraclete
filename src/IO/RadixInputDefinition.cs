@@ -49,20 +49,17 @@ public class RadixInputDefinition : IInputDefinition
 
     private string EnsurePrefix(string inputData)
     {
-        if (inputData.Length < 2)
-        {
-            return $"0d{inputData}";
-        }
-
-        return inputData switch
-        {
-            var p when ValidPrefixes.Contains(inputData[0], StringComparison.OrdinalIgnoreCase)
-                => $"0{char.ToLower(inputData[0])}{inputData[1..]}",
-            var p when inputData[0] == '0' && ValidPrefixes.Contains(inputData[1], StringComparison.OrdinalIgnoreCase)
-                => inputData,
-            var p when inputData.All(_ => IInputDefinition.NumericAlphabet.Contains(inputData[0]))
-                => $"0d{inputData}",
-            _ => inputData
-        };
+        return inputData.Length < 2
+            ? $"0d{inputData}"
+            : inputData switch
+            {
+                var p when ValidPrefixes.Contains(inputData[0], StringComparison.OrdinalIgnoreCase)
+                    => $"0{char.ToLower(inputData[0])}{inputData[1..]}",
+                var p when inputData[0] == '0' && ValidPrefixes.Contains(inputData[1], StringComparison.OrdinalIgnoreCase)
+                    => inputData,
+                var p when inputData.All(_ => IInputDefinition.NumericAlphabet.Contains(inputData[0]))
+                    => $"0d{inputData}",
+                _ => inputData
+            };
     }
 }
