@@ -26,7 +26,7 @@ public partial class AnsiString
     public IAnsiStringPiece[] Pieces { get; }
     public int Length { get; }
 
-    public static implicit operator AnsiString(string input) => new AnsiString(input);
+    public static implicit operator AnsiString(string input) => new (input);
 
     public static AnsiString operator +(AnsiString ansiString1, AnsiString ansiString2)
     {

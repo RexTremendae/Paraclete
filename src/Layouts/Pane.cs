@@ -2,7 +2,7 @@ namespace Paraclete.Layouts;
 
 public class Pane
 {
-    public static readonly Pane Empty = new Pane((0, 0), (0, 0), false);
+    public static readonly Pane Empty = new ((0, 0), (0, 0), false);
 
     public Pane((int x, int y) position, (int x, int y) size, bool isVisible)
     {
