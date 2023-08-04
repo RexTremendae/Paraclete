@@ -79,10 +79,10 @@ public class CalculatorScreen : IScreen
             var paddingWidth = pane.Size.x - offset.x - 4;
             var conversions = new[]
             {
-                ("Dec", radix.ToString().PadRight(paddingWidth)),
-                ("Bin", radix.ToBinaryString().PadRight(paddingWidth)),
-                ("Hex", radix.ToHexadecimalString().PadRight(paddingWidth)),
-                ("Oct", radix.ToOctalString().PadRight(paddingWidth)),
+                ("Dec", radix.ToDecimalString(useGrouping: true, padGroups: false).PadRight(paddingWidth)),
+                ("Bin", radix.ToBinaryString(useGrouping: true, padGroups: true).PadRight(paddingWidth)),
+                ("Hex", radix.ToHexadecimalString(useGrouping: true, padGroups: true).PadRight(paddingWidth)),
+                ("Oct", radix.ToOctalString(useGrouping: true, padGroups: true).PadRight(paddingWidth)),
             };
 
             var position = (x: pane.Position.x + offset.x, y: pane.Position.y + offset.y);
