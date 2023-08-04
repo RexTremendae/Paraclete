@@ -18,7 +18,7 @@ public abstract class StartProcessCommandBase
             startinfo.ArgumentList.Add(a);
         }
 
-        var p = Process.Start(startinfo);
+        Process.Start(startinfo);
 
         return Task.CompletedTask;
     }

@@ -77,8 +77,6 @@ public class ColumnLayoutExhibition : IExhibition
                         .Append(backgroundColor)
                         .Append(string.Empty.PadRight(contentWidth - contentBuilder.Length))
                     ;
-
-                    paneIdx++;
                 }
                 else
                 {

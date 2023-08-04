@@ -189,10 +189,10 @@ public class ToDoList : IInitializer
     {
         _toDoItems.Sort((first, second) => 0 switch
         {
-            var x when first.ExpirationDate == default && second.ExpirationDate != default => 1,
-            var x when first.ExpirationDate != default && second.ExpirationDate == default => -1,
-            var x when first.ExpirationDate > second.ExpirationDate => 1,
-            var x when first.ExpirationDate < second.ExpirationDate => -1,
+            var _ when first.ExpirationDate == default && second.ExpirationDate != default => 1,
+            var _ when first.ExpirationDate != default && second.ExpirationDate == default => -1,
+            var _ when first.ExpirationDate > second.ExpirationDate => 1,
+            var _ when first.ExpirationDate < second.ExpirationDate => -1,
             _ => 0
         });
 
@@ -237,9 +237,9 @@ public class ToDoItem
             ? AnsiSequences.ForegroundColors.Gray
             : now switch
             {
-                var x when ExpirationDate == default => AnsiSequences.ForegroundColors.Yellow,
-                var x when ExpirationDate < now      => AnsiSequences.ForegroundColors.Red,
-                var x when ExpirationDate == now     => AnsiSequences.ForegroundColors.Orange,
+                var _ when ExpirationDate == default => AnsiSequences.ForegroundColors.Yellow,
+                var _ when ExpirationDate < now      => AnsiSequences.ForegroundColors.Red,
+                var _ when ExpirationDate == now     => AnsiSequences.ForegroundColors.Orange,
                 _                                    => AnsiSequences.ForegroundColors.Yellow
             };
 

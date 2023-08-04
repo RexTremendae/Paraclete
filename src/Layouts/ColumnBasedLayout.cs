@@ -53,8 +53,8 @@ public class ColumnBasedLayout : ILayout
 
         var panes = new List<Pane>();
         var xPos = 1;
-        var paneHeight = 0;
-        var paneWidth = 0;
+        int paneHeight;
+        int paneWidth;
 
         for (var x = 0; x < _columns.Length; x++)
         {
@@ -113,8 +113,8 @@ public class ColumnBasedLayout : ILayout
         var totalWidth = 0;
 
         var colIsDivider = false;
-        var lastColIsDivider = false;
         var isFirst = true;
+        bool lastColIsDivider;
 
         foreach (var col in _columns)
         {
@@ -141,10 +141,10 @@ public class ColumnBasedLayout : ILayout
 
             colDividerChar = 0 switch
             {
-                var x when isFirst => colIsDivider ? '╟' : '║',
-                var x when lastColIsDivider && colIsDivider  => '┼',
-                var x when !lastColIsDivider && colIsDivider => '├',
-                var x when lastColIsDivider && !colIsDivider => '┤',
+                var _ when isFirst => colIsDivider ? '╟' : '║',
+                var _ when lastColIsDivider && colIsDivider  => '┼',
+                var _ when !lastColIsDivider && colIsDivider => '├',
+                var _ when lastColIsDivider && !colIsDivider => '┤',
                 _                                            => '│'
             };
 

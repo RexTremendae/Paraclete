@@ -52,11 +52,6 @@ public class AnsiExhibition : IExhibition
 
         painter.Paint(ansiExposedTextBuilder.Build(), (left, top));
         painter.Paint(text + AnsiSequences.Reset + " ", (left, top + 1));
-
-        var charactersCount =
-            ForegroundColors.Cyan +
-            $"[{text.Length} printable characters]" +
-            AnsiSequences.Reset;
     }
 
     private AnsiString FormatForDisplay(AnsiStringControlSequencePart part)
