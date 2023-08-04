@@ -5,7 +5,7 @@ public class NextItemCommand : ICommand
     private readonly ToDoList _toDoList;
     private readonly ScreenInvalidator _screenInvalidator;
 
-    public NextItemCommand(ToDoList toDoList, ScreenInvalidator screenInvalidator, ScreenInvalidator screenInvalidator1)
+    public NextItemCommand(ToDoList toDoList, ScreenInvalidator screenInvalidator)
     {
         _toDoList = toDoList;
         _screenInvalidator = screenInvalidator;

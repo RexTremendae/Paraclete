@@ -23,7 +23,6 @@ dotnet_diagnostic.IDE0042.severity = none # Variable declaration can be deconstr
 dotnet_diagnostic.IDE0047.severity = none # Parentheses can be removed
 dotnet_diagnostic.IDE0058.severity = none # Expression value is never used
 dotnet_diagnostic.IDE0059.severity = none # Unnecessary assignment of a value
-dotnet_diagnostic.IDE0060.severity = none # Remove unused parameter if it is not part of a shipped public API
 dotnet_diagnostic.IDE0071.severity = none # Interpolation can be simplified
 dotnet_diagnostic.IDE0072.severity = none # Populate switch
 dotnet_diagnostic.IDE0078.severity = none # Use pattern matching

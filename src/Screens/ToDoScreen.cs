@@ -12,7 +12,7 @@ public class ToDoScreen : IScreen
     private readonly ToDoListPainter _toDoListPainter;
     private readonly ToDoList _toDoList;
 
-    public ToDoScreen(Stopwatch stopWatch, ToDoMenu toDoMenu, ScreenInvalidator screenInvalidator, Painter painter, ToDoList toDoList, ToDoListPainter toDoListPainter)
+    public ToDoScreen(ToDoMenu toDoMenu, ScreenInvalidator screenInvalidator, Painter painter, ToDoList toDoList, ToDoListPainter toDoListPainter)
     {
         Menu = toDoMenu;
         _screenInvalidator = screenInvalidator;

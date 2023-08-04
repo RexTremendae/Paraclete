@@ -12,7 +12,7 @@ public class ToDoList : IInitializer
     private int _selectedToDoItemIndex;
     private List<ToDoItem> _selectedList = new ();
 
-    public ToDoList(ScreenInvalidator screenInvalidator)
+    public ToDoList()
     {
         _toDoItems = new ();
         _doneItems = new ();
