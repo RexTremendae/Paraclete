@@ -4,7 +4,7 @@ using System.Text;
 
 public class Expression
 {
-    private static Expression _empty = new Expression();
+    private static readonly Expression _empty = new Expression();
 
     private Expression()
     {

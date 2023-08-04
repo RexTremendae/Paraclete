@@ -12,13 +12,9 @@ public class CalculatorScreen : IScreen
 {
     private readonly CalculatorHistory _calculatorHistory;
 
-    private ScreenInvalidator _screenInvalidator;
-
-    public CalculatorScreen(ScreenInvalidator screenInvalidator, CalculatorMenu calculatorMenu, CalculatorHistory calculatorHistory)
+    public CalculatorScreen(CalculatorMenu calculatorMenu, CalculatorHistory calculatorHistory)
     {
-        _screenInvalidator = screenInvalidator;
         _calculatorHistory = calculatorHistory;
-
         Menu = calculatorMenu;
     }
 

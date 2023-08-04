@@ -5,9 +5,9 @@ using Paraclete.Layouts;
 
 public class ToDoListPainter
 {
-    private Painter _painter;
-    private ToDoList _toDoList;
-    private ToDoFormatConfiguration _formatConfig;
+    private readonly Painter _painter;
+    private readonly ToDoList _toDoList;
+    private readonly ToDoFormatConfiguration _formatConfig;
 
     public ToDoListPainter(Painter painter, ToDoList toDoList)
     {

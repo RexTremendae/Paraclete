@@ -8,7 +8,7 @@ using Paraclete.Painting;
 
 public class ShortcutsScreen : IScreen
 {
-    private ScreenInvalidator _screenInvalidator;
+    private readonly ScreenInvalidator _screenInvalidator;
 
     public ShortcutsScreen(ScreenInvalidator screenInvalidator, ShortcutsMenu shortcutsMenu)
     {

@@ -14,13 +14,7 @@ public class ScreenSaver
 
     private readonly Painter _painter;
 
-    private TimeWriterSettings _currentTimeSettings;
-
-    private (int x, int y) _currentTimePosition;
-    private DateTime _lastChange;
-    private DateTime _inactivationTime;
-
-    private (AnsiControlSequence color, AnsiControlSequence secondColor)[] _timeColors = new[]
+    private readonly (AnsiControlSequence color, AnsiControlSequence secondColor)[] _timeColors = new[]
     {
         (AnsiSequences.ForegroundColors.White,   AnsiSequences.ForegroundColors.Gray),
         (AnsiSequences.ForegroundColors.Yellow,  AnsiSequences.ForegroundColors.DarkYellow),
@@ -30,6 +24,12 @@ public class ScreenSaver
         (AnsiSequences.ForegroundColors.Magenta, AnsiSequences.ForegroundColors.DarkMagenta),
         (AnsiSequences.ForegroundColors.Red,     AnsiSequences.ForegroundColors.DarkRed),
     };
+
+    private TimeWriterSettings _currentTimeSettings;
+
+    private (int x, int y) _currentTimePosition;
+    private DateTime _lastChange;
+    private DateTime _inactivationTime;
 
     public ScreenSaver(Painter painter, Settings settings)
     {

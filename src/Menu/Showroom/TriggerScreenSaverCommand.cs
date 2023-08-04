@@ -4,7 +4,7 @@ using Paraclete.Screens;
 
 public class TriggerScreenSaverCommand : ICommand
 {
-    private ScreenSaver _screenSaver;
+    private readonly ScreenSaver _screenSaver;
 
     public TriggerScreenSaverCommand(ScreenSaver screenSaver)
     {

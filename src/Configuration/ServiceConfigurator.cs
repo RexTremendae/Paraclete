@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 public class ServiceConfigurator
 {
     private readonly IServiceCollection _services;
-    private List<Type> _initializers;
+    private readonly List<Type> _initializers;
 
     public ServiceConfigurator()
     {

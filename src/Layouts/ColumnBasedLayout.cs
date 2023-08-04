@@ -6,7 +6,8 @@ using Paraclete.Painting;
 
 public class ColumnBasedLayout : ILayout
 {
-    private ColumnDefinition[] _columns;
+    private readonly ColumnDefinition[] _columns;
+
     private int _windowHeight;
     private int _windowWidth;
 

@@ -8,10 +8,10 @@ using Paraclete.Menu;
 public class DataInputter
 {
     private readonly ScreenInvalidator _screenInvalidator;
+    private readonly StringBuilder _input = new ();
+    private readonly Dictionary<Type, IInputDefinition> _availableInputters = new ();
 
     private IInputCommand? _command;
-    private StringBuilder _input = new ();
-    private Dictionary<Type, IInputDefinition> _availableInputters = new ();
     private IInputDefinition _selectedInputter;
 
     public DataInputter(ScreenInvalidator screenInvalidator, IServiceProvider services)
