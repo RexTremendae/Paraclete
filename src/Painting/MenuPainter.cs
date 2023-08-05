@@ -91,7 +91,7 @@ public class MenuPainter
         {
             row
                 .Append(_bracketColor).Append(" · ")
-                .Append(_shortcutColor).Append($"{screen.Shortcut.ToString()} ");
+                .Append(_shortcutColor).Append($"{screen.Shortcut} ");
 
             var isSelected = selectedScreen.Name == screen.Name;
             appendFormat(screen.Name, isSelected && !shortcutsMenuActive);

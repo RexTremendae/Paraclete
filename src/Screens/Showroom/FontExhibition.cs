@@ -30,7 +30,7 @@ public class FontExhibition : IExhibition
             }
 
             var fontWriter = FontWriter.Create(size);
-            painter.Paint($"{ForegroundColors.White}{size.ToString()}:".PadRight(4), position);
+            painter.Paint($"{ForegroundColors.White}{size}:".PadRight(4), position);
             fontWriter.Write(text, colors[size], (position.x + 4, position.y), painter);
             position = (position.x, position.y + fontWriter.Font.CharacterHeight + 1);
         }
