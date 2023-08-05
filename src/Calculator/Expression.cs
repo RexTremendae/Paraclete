@@ -4,8 +4,6 @@ using System.Text;
 
 public class Expression
 {
-    private static readonly Expression _empty = new ();
-
     private Expression()
     {
         RootNode = ITokenNode.Empty;
@@ -26,7 +24,7 @@ public class Expression
         Numeric,
     }
 
-    public static Expression Empty => _empty;
+    public static Expression Empty { get; } = new ();
     public ITokenNode RootNode { get; }
     public IEnumerable<(string token, TokenType type)> Tokens { get; }
 

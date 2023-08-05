@@ -9,19 +9,17 @@ using Paraclete.Painting;
 
 public class UnicodeScreen : IScreen
 {
-    private readonly MenuBase _menu;
-    private readonly ILayout _layout;
     private readonly UnicodeControl _unicodeControl;
 
     public UnicodeScreen(UnicodeMenu menu, UnicodeControl unicodeControl)
     {
-        _menu = menu;
-        _layout = new SinglePaneLayout();
+        Menu = menu;
+        Layout = new SinglePaneLayout();
         _unicodeControl = unicodeControl;
     }
 
-    public MenuBase Menu => _menu;
-    public ILayout Layout => _layout;
+    public MenuBase Menu { get; }
+    public ILayout Layout { get; }
 
     public string Name => "Unicode";
 
