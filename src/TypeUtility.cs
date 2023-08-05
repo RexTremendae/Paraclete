@@ -14,7 +14,7 @@ public static class TypeUtility
     public static IEnumerable<T> EnumerateImplementatingInstancesOf<T>(IServiceProvider services)
     {
         return EnumerateImplementingTypesOf<T>()
-            .Select(_ => services.GetService(_))
+            .Select(services.GetService)
             .OfType<T>();
     }
 }

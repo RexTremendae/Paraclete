@@ -24,4 +24,3 @@ dotnet_diagnostic.IDE0047.severity = none # Parentheses can be removed
 dotnet_diagnostic.IDE0058.severity = none # Expression value is never used
 dotnet_diagnostic.IDE0072.severity = none # Populate switch
 dotnet_diagnostic.IDE0078.severity = none # Use pattern matching
-dotnet_diagnostic.IDE0200.severity = none # Lambda expression can be removed

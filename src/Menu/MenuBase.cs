@@ -9,7 +9,7 @@ public abstract class MenuBase
     public MenuBase(IServiceProvider services, Type[] commands)
     {
         _menuItems = new ();
-        foreach (var command in commands.Select(_ => services.GetRequiredService(_)).OfType<ICommand>())
+        foreach (var command in commands.Select(services.GetRequiredService).OfType<ICommand>())
         {
             _menuItems.Add(command.Shortcut, command);
         }
