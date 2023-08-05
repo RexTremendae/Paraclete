@@ -18,7 +18,6 @@ dotnet_diagnostic.IDE1006.severity = none # Naming rule violation: These words m
 dotnet_diagnostic.IDE0008.severity = none # Use explicit type instead of 'var'
 dotnet_diagnostic.IDE0022.severity = none # Use block body for method
 dotnet_diagnostic.IDE0023.severity = none # Use block body for conversion operator
-dotnet_diagnostic.IDE0026.severity = none # Use expression body for indexer
 dotnet_diagnostic.IDE0047.severity = none # Parentheses can be removed
 dotnet_diagnostic.IDE0058.severity = none # Expression value is never used
 dotnet_diagnostic.IDE0072.severity = none # Populate switch

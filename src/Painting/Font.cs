@@ -53,10 +53,7 @@ public class Font
     public int CharacterWidth { get; }
     public int CharacterHeight { get; }
 
-    public string[] this[char index]
-    {
-        get => _font[index];
-    }
+    public string[] this[char index] => _font[index];
 
     public static Font OfSize(Size size)
     {
