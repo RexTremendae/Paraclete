@@ -1,6 +1,7 @@
 namespace Paraclete.Configuration;
 
 using Paraclete.Calculator;
+using Paraclete.Chess;
 using Paraclete.IO;
 using Paraclete.Menu;
 using Paraclete.Painting;
@@ -16,6 +17,7 @@ public static class Configurator
 
         services
             .AddScoped<CalculatorHistory>()
+            .AddScoped<ChessBoard>()
             .AddScoped<DataInputPainter>()
             .AddScoped<DataInputter>()
             .AddScoped<ExhibitionSelector>()

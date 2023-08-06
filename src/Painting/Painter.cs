@@ -136,10 +136,10 @@ public class Painter
 
         try
         {
-            for (int y = 0; y < rowArray.Length; y++)
+            0.To(rowArray.Length).Foreach(y =>
             {
                 WriteBounded(AnsiSequences.Reset + rowArray[y], (pos.x, pos.y + y), bound, showEllipsis);
-            }
+            });
         }
         catch (Exception ex)
         {

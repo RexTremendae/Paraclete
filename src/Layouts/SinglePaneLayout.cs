@@ -19,10 +19,10 @@ public class SinglePaneLayout : ILayout
 
         frameRows[y++] = $"╔{doubleBarRow}╗";
 
-        for (; y < _pane.Size.y + 1;)
+        y.To(_pane.Size.y + 1).Foreach(_ =>
         {
             frameRows[y++] = $"║{emptyRow}║";
-        }
+        });
 
         frameRows[y++] = $"╟{singleBarRow}╢";
         frameRows[y++] = $"║{emptyRow}║";

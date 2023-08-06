@@ -27,7 +27,7 @@ public class ColumnLayoutExhibition : IExhibition
 
         var contentWidth = int.Max(0, pane.Size.x - 2);
 
-        for (int y = 0; y < pane.Size.y; y++)
+        0.To(pane.Size.y).Foreach(y =>
         {
             var contentBuilder = new AnsiStringBuilder();
 
@@ -106,7 +106,7 @@ public class ColumnLayoutExhibition : IExhibition
             }
 
             rows.Add(data.Build());
-        }
+        });
 
         painter.PaintRows(rows, pane);
     }

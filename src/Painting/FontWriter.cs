@@ -27,10 +27,10 @@ public class FontWriter
         foreach (var c in text)
         {
             var fontCharacter = Font[c];
-            for (var y = 0; y < Font.CharacterHeight; y++)
+            0.To(Font.CharacterHeight).Foreach(y =>
             {
                 textRows[y].Append(color).Append(fontCharacter[y]);
-            }
+            });
         }
 
         painter.PaintRows(textRows.Select(_ => _.Build()), cursorPos);

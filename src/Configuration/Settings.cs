@@ -2,6 +2,7 @@ namespace Paraclete.Configuration;
 
 using Paraclete.Ansi;
 using Paraclete.Painting;
+using Paraclete.Screens.Chess;
 
 public partial class Settings
 {
@@ -42,5 +43,37 @@ public partial class Settings
         public AnsiString InputLabel => AnsiSequences.ForegroundColors.White;
         public AnsiString InputData => AnsiSequences.ForegroundColors.Yellow;
         public AnsiString ErroneousInputData => AnsiSequences.ForegroundColors.Red;
+    }
+}
+
+public partial class Settings
+{
+    public ChessSettings Chess => new ();
+
+    public class ChessSettings
+    {
+        public ColorSettings Colors => new ()
+        {
+            BlackPlayer = AnsiSequences.ForegroundColors.DarkCyan,
+            WhitePlayer = AnsiSequences.ForegroundColors.Cyan,
+        };
+
+        public BorderStyleDefinition.Style BorderStyle { get; } = BorderStyleDefinition.Style.SingleRoundCorners;
+        public bool RotateBoard { get; } = false;
+
+        public class ColorSettings
+        {
+            public AnsiString BlackPlayer { get; set; } = AnsiSequences.Reset;
+            public AnsiString Board { get; set; } = AnsiSequences.ForegroundColors.White;
+            public AnsiString CheckIndicator { get; set; } = AnsiSequences.Reset;
+            public AnsiString DialogBorder { get; set; } = AnsiSequences.Reset;
+            public AnsiString Heading { get; set; } = AnsiSequences.Reset;
+            public AnsiString Messages { get; set; } = AnsiSequences.Reset;
+            public AnsiString PrimarySelection { get; set; } = AnsiSequences.Reset;
+            public AnsiString SecondarySelection { get; set; } = AnsiSequences.Reset;
+            public AnsiString ShadowPiece { get; set; } = AnsiSequences.Reset;
+            public AnsiString Text { get; set; } = AnsiSequences.Reset;
+            public AnsiString WhitePlayer { get; set; } = AnsiSequences.Reset;
+        }
     }
 }

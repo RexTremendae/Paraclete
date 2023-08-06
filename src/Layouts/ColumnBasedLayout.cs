@@ -29,10 +29,10 @@ public class ColumnBasedLayout : ILayout
         var frameRows = new AnsiString[_windowHeight];
         frameRows[0] = GenerateStaticRow(leftBorder: '╔', rightBorder: '╗', colBorder: '╤', padding: '═');
 
-        for (int y = 1; y < _windowHeight - 4; y++)
+        1.To(_windowHeight - 4).Foreach(y =>
         {
             frameRows[y] = GenerateDynamicRow(y, _windowWidth);
-        }
+        });
 
         // Bottom menu
         frameRows[_windowHeight - 4] = GenerateStaticRow(leftBorder: '╟', rightBorder: '╢', colBorder: '┴', padding: '─');
@@ -56,13 +56,13 @@ public class ColumnBasedLayout : ILayout
         int paneHeight;
         int paneWidth;
 
-        for (var x = 0; x < _columns.Length; x++)
+        0.To(_columns.Length).Foreach(x =>
         {
             var yPos = 1;
             var definition = _columns[x];
             paneWidth = int.Max(0, int.Min(definition.Width, drawableWindowWidth - xPos));
 
-            for (int y = 0; y < definition.CellHeights.Length; y++)
+            0.To(definition.CellHeights.Length).Foreach(y =>
             {
                 paneHeight = int.Max(0, int.Min(definition.CellHeights[y], drawableWindowHeight - yPos));
 
@@ -76,7 +76,7 @@ public class ColumnBasedLayout : ILayout
                 }
 
                 yPos += paneHeight + 1;
-            }
+            });
 
             paneHeight = int.Max(0, drawableWindowHeight - yPos);
 
@@ -90,7 +90,7 @@ public class ColumnBasedLayout : ILayout
             }
 
             xPos += definition.Width + 1;
-        }
+        });
 
         paneWidth = int.Max(0, drawableWindowWidth - xPos);
         paneHeight = int.Max(0, drawableWindowHeight - 1);

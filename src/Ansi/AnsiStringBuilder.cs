@@ -11,6 +11,11 @@ public class AnsiStringBuilder
 
     public int Length => _pieces.Sum(_ => _.Length);
 
+    public AnsiStringBuilder Append(char chr)
+    {
+        return Append(chr.ToString());
+    }
+
     public AnsiStringBuilder Append(string text)
     {
         _pieces.Add(new AnsiStringTextPiece(text));

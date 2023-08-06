@@ -48,17 +48,15 @@ public class ShowroomScreen : IScreen
 
         var start = 0;
 
-        for (int idx = 0; idx < camelCaseName.Length; idx++)
+        0.To(camelCaseName.Length).Foreach(idx =>
         {
             var chr = camelCaseName[idx];
-            if (!char.IsUpper(chr) || start == idx)
+            if (char.IsUpper(chr) && start != idx)
             {
-                continue;
+                words.Add(camelCaseName[start..idx]);
+                start = idx;
             }
-
-            words.Add(camelCaseName[start..idx]);
-            start = idx;
-        }
+        });
 
         words.Add(camelCaseName[start..].ToLower());
 

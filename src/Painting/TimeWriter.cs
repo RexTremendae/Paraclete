@@ -82,7 +82,7 @@ public class TimeWriter
             .Select(_ => new AnsiStringBuilder())
             .ToArray();
 
-        for (int idx = 0; idx < textParts.Count; idx++)
+        0.To(textParts.Count).Foreach(idx =>
         {
             var font = fonts[idx];
             var textPartRows = new string[textHeight];
@@ -92,7 +92,7 @@ public class TimeWriter
             {
                 var fontCharacter = font[c];
                 var yOffset = textHeight - font.CharacterHeight;
-                for (var y = 0; y < textHeight; y++)
+                0.To(textHeight).Foreach(y =>
                 {
                     if (y < yOffset)
                     {
@@ -102,14 +102,14 @@ public class TimeWriter
                     {
                         textPartRows[y] += fontCharacter[y - yOffset];
                     }
-                }
+                });
             }
 
-            for (var y = 0; y < textHeight; y++)
+            0.To(textHeight).Foreach(y =>
             {
                 rows[y].Append(colors[idx]).Append(textPartRows[y]);
-            }
-        }
+            });
+        });
 
         var content = rows.Select(_ => _.Build());
 

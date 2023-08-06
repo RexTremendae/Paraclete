@@ -33,9 +33,9 @@ public class UnicodeScreen : IScreen
             .Range(0, count)
             .Select(_ => new AnsiStringBuilder()));
 
-        for (var column = 0; column < _unicodeControl.ColumnStartValues.Length; column++)
+        0.To(_unicodeControl.ColumnStartValues.Length).Foreach(column =>
         {
-            for (int i = 0; i < count; i++)
+            0.To(count).Foreach(i =>
             {
                 var startMarker = (i == 0 && _unicodeControl.SelectedColumn == column) ? "[" : " ";
                 var endMarker = (i == 0 && _unicodeControl.SelectedColumn == column) ? "]" : " ";
@@ -52,8 +52,8 @@ public class UnicodeScreen : IScreen
                     $"{endMarker}" +
                     AnsiSequences.ForegroundColors.DarkGray +
                     $"│ ");
-            }
-        }
+            });
+        });
 
         painter.PaintRows(rows.Select(_ => _.Build()), Layout.Panes[0]);
     };
