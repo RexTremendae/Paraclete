@@ -13,9 +13,9 @@ public class HomeScreen : IScreen
     private readonly Stopwatch _stopWatch;
     private readonly ToDoListPainter _toDoListPainter;
 
-    private readonly TimeWriter _currentTimeWriter;
-    private readonly TimeWriter _stopWatchWriter;
-    private readonly TimeWriter _markTimeWriter;
+    private readonly TimeFormatter _currentTimeFormatter;
+    private readonly TimeFormatter _stopWatchFormatter;
+    private readonly TimeFormatter _markTimeFormatter;
 
     private (int x, int y) _currentTimePosition;
     private (int x, int y) _stopWatchPosition;
@@ -32,17 +32,18 @@ public class HomeScreen : IScreen
         _stopWatchPosition   = (x: 2, y: 1);
         _markTimesPosition   = (x: 2, y: 7);
 
-        var currentTimeSettings = new TimeWriterSettings() with {
+        var currentTimeSettings = new TimeFormatterSettings() with {
             FontSize = Font.Size.L,
             SecondsFontSize = Font.Size.M,
             Color = AnsiSequences.ForegroundColors.White,
             SecondsColor = AnsiSequences.ForegroundColors.Gray,
             ShowHours = true,
             ShowSeconds = true,
-            ShowMilliseconds = false
+            ShowMilliseconds = false,
+            ShowDate = true
         };
 
-        var stopWatchSettings = new TimeWriterSettings() with {
+        var stopWatchSettings = new TimeFormatterSettings() with {
             FontSize = Font.Size.M,
             MillisecondsFontSize = Font.Size.S,
             ShowHours = true,
@@ -53,7 +54,7 @@ public class HomeScreen : IScreen
             MillisecondsColor = AnsiSequences.ForegroundColors.DarkMagenta
         };
 
-        var markTimeSettings = new TimeWriterSettings() with {
+        var markTimeSettings = new TimeFormatterSettings() with {
             FontSize = Font.Size.XS,
             ShowHours = true,
             ShowSeconds = true,
@@ -63,9 +64,9 @@ public class HomeScreen : IScreen
             MillisecondsColor = AnsiSequences.ForegroundColors.DarkMagenta
         };
 
-        _currentTimeWriter = new TimeWriter(currentTimeSettings);
-        _stopWatchWriter = new TimeWriter(stopWatchSettings);
-        _markTimeWriter = new TimeWriter(markTimeSettings);
+        _currentTimeFormatter = new (currentTimeSettings);
+        _stopWatchFormatter = new (stopWatchSettings);
+        _markTimeFormatter = new (markTimeSettings);
     }
 
     public string Name => "Home";
@@ -80,14 +81,17 @@ public class HomeScreen : IScreen
         new (width: _1stColumnWidth, 9),
     });
 
-    public Action GetPaintPaneAction(Painter painter, int paneIndex) =>
-        paneIndex switch
+    public Action GetPaintPaneAction(Painter painter, int paneIndex) => () =>
+    {
+        var pane = Layout.Panes[paneIndex];
+
+        (paneIndex switch
         {
             0 => () =>
             {
                 // Current time
                 var now = DateTime.Now;
-                _currentTimeWriter.Write(now, _currentTimePosition, painter, Layout.Panes[0]);
+                painter.PaintRows(_currentTimeFormatter.Format(now), pane, _currentTimePosition);
             },
 
             1 => () =>
@@ -97,7 +101,7 @@ public class HomeScreen : IScreen
                 {
                     var stopWatchTime = (_stopWatch.IsRunning ? DateTime.Now : _stopWatch.Stop)
                         - _stopWatch.Start;
-                    _stopWatchWriter.Write(stopWatchTime, _stopWatchPosition, painter, Layout.Panes[1]);
+                    painter.PaintRows(_stopWatchFormatter.Format(stopWatchTime), pane, _stopWatchPosition);
                 }
 
                 // Marked time
@@ -105,7 +109,7 @@ public class HomeScreen : IScreen
                 var my = _markTimesPosition.y;
                 foreach (var mark in _stopWatch.MarkedTimes)
                 {
-                    _markTimeWriter.Write(mark, (mx, my++), painter, Layout.Panes[1]);
+                    painter.PaintRows(_markTimeFormatter.Format(mark), pane, (mx, my++));
                 }
             },
 
@@ -115,6 +119,7 @@ public class HomeScreen : IScreen
                 _toDoListPainter.Paint(Layout.Panes[2], (1, 1));
             },
 
-            _ => () => { }
-        };
+            _ => (Action)(() => { })
+        })();
+    };
 }

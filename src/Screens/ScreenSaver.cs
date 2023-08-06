@@ -9,9 +9,6 @@ public class ScreenSaver
     private readonly TimeSpan _changeInterval;
     private readonly TimeSpan _activationInterval;
 
-    private readonly int _currentTimeWidth;
-    private readonly int _currentTimeHeight;
-
     private readonly Painter _painter;
 
     private readonly (AnsiControlSequence color, AnsiControlSequence secondColor)[] _timeColors = new[]
@@ -25,7 +22,9 @@ public class ScreenSaver
         (AnsiSequences.ForegroundColors.Red,     AnsiSequences.ForegroundColors.DarkRed),
     };
 
-    private TimeWriterSettings _currentTimeSettings;
+    private readonly int _timeWidth;
+    private readonly int _timeHeight;
+    private TimeFormatterSettings _currentTimeSettings;
 
     private (int x, int y) _currentTimePosition;
     private DateTime _lastChange;
@@ -37,21 +36,22 @@ public class ScreenSaver
         _changeInterval = settings.ScreenSaver.ContentChangeInterval;
         _activationInterval = settings.ScreenSaver.ActivationInterval;
 
-        _currentTimeSettings = new TimeWriterSettings() with {
+        _currentTimeSettings = new TimeFormatterSettings() with
+        {
             FontSize = settings.ScreenSaver.FontSize,
             SecondsFontSize = settings.ScreenSaver.SecondsFontSize,
             Color = AnsiSequences.ForegroundColors.White,
+            DateColor = AnsiSequences.ForegroundColors.White,
             SecondsColor = AnsiSequences.ForegroundColors.DarkGray,
             ShowHours = true,
             ShowSeconds = true,
             ShowMilliseconds = false,
+            ShowDate = true
         };
 
-        var font = Font.OfSize(settings.ScreenSaver.FontSize);
-        var secondsFont = Font.OfSize(settings.ScreenSaver.SecondsFontSize);
-
-        _currentTimeHeight = int.Max(font.CharacterHeight, secondsFont.CharacterHeight);
-        _currentTimeWidth = (font.CharacterWidth * 5) + (secondsFont.CharacterWidth * 3);
+        var timeRows = new TimeFormatter(_currentTimeSettings).Format(DateTime.Now).ToArray();
+        _timeWidth = timeRows.Max(_ => _.Length);
+        _timeHeight = timeRows.Length;
     }
 
     public bool IsActive
@@ -76,16 +76,17 @@ public class ScreenSaver
     public void PaintScreen()
     {
         var now = DateTime.Now;
+
         if (now - _lastChange > _changeInterval ||
-            _currentTimePosition.x + _currentTimeWidth >= WindowWidth ||
-            _currentTimePosition.y + _currentTimeHeight >= WindowHeight)
+            _currentTimePosition.x + _timeWidth >= WindowWidth ||
+            _currentTimePosition.y + _timeHeight >= WindowHeight)
         {
             _lastChange = now;
             Write(AnsiSequences.ClearScreen);
             Write(AnsiSequences.HideCursor);
 
-            var x = Random.Shared.Next(WindowWidth - _currentTimeWidth);
-            var y = Random.Shared.Next(WindowHeight - _currentTimeHeight);
+            var x = Random.Shared.Next(WindowWidth - _timeWidth);
+            var y = Random.Shared.Next(WindowHeight - _timeHeight);
             _currentTimePosition = (x, y);
             var (color, secondColor) = _timeColors[Random.Shared.Next(_timeColors.Length)];
             _currentTimeSettings = _currentTimeSettings with
@@ -95,7 +96,7 @@ public class ScreenSaver
             };
         }
 
-        WriteTime(now);
+        _painter.PaintRows(new TimeFormatter(_currentTimeSettings).Format(DateTime.Now), _currentTimePosition);
     }
 
     public void Activate()
@@ -107,11 +108,5 @@ public class ScreenSaver
     public void Inactivate()
     {
         _inactivationTime = DateTime.Now;
-    }
-
-    private void WriteTime(DateTime now)
-    {
-        var timeWriter = new TimeWriter(_currentTimeSettings);
-        timeWriter.Write(now, _currentTimePosition, _painter);
     }
 }

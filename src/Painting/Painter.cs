@@ -12,7 +12,7 @@ public class Painter
     private readonly MenuPainter _menuPainter;
     private readonly DataInputter _dataInputter;
     private readonly DataInputPainter _dataInputPainter;
-    private readonly TimeWriter _currentTimeWriter;
+    private readonly TimeFormatter _currentTimeFormatter;
 
     private IScreen _selectedScreen;
     private HashSet<int> _autoRefreshingPaneIndices;
@@ -29,7 +29,7 @@ public class Painter
         _selectedScreen = IScreen.NoScreen;
         _autoRefreshingPaneIndices = new ();
 
-        _currentTimeWriter = new TimeWriter(new ()
+        _currentTimeFormatter = new (new ()
         {
             FontSize = Font.Size.XS,
             Color = AnsiSequences.ForegroundColors.White,
@@ -79,7 +79,7 @@ public class Painter
 
         if (_selectedScreen.ShowCurrentTime)
         {
-            _currentTimeWriter.Write(DateTime.Now, (-10, 1), this);
+            PaintRows(_currentTimeFormatter.Format(DateTime.Now), (-10, 1));
         }
 
         if (_dataInputter.IsActive)
