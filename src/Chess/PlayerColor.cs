@@ -1,4 +1,4 @@
-namespace Paraclete.Screens.Chess;
+namespace Paraclete.Chess;
 
 public enum PlayerColor
 {

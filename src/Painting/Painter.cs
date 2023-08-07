@@ -99,6 +99,11 @@ public class Painter
         PaintRows(new[] { row }, position);
     }
 
+    public void Paint(AnsiString row, Pane pane, (int x, int y)? position = null)
+    {
+        PaintRows(new[] { row }, pane, position);
+    }
+
     public void PaintRows(IEnumerable<AnsiString> rows, Pane pane, (int x, int y)? position = null, bool showEllipsis = false)
     {
         var pos = ((position?.x ?? 0) + pane.Position.x, (position?.y ?? 0) + pane.Position.y);

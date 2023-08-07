@@ -1,7 +1,8 @@
 namespace Paraclete.Chess;
 
+using System.Threading.Tasks;
 using Paraclete.Chess.PieceDefinitions;
-using Paraclete.Screens.Chess;
+using Paraclete.Chess.Scenarios;
 
 public readonly record struct ChessBoardPiece
 (
@@ -10,15 +11,15 @@ public readonly record struct ChessBoardPiece
     bool hasMoved
 );
 
-public class ChessBoard
+public class ChessBoard : IInitializer
 {
-    private readonly GameState _gameState;
-
     private readonly Dictionary<PlayerColor, List<ChessBoardPiece>> _capturedPieces = new ()
     {
         { PlayerColor.White, new () },
         { PlayerColor.Black, new () },
     };
+
+    private GameState _gameState;
 
     public ChessBoard()
     {
@@ -43,6 +44,45 @@ public class ChessBoard
     public ChessBoardPiece[] GetCapturedPieces(PlayerColor color)
     {
         return _capturedPieces[color].ToArray();
+    }
+
+    public Task Initialize()
+    {
+        InitializeScenario<NewGame>();
+        return Task.CompletedTask;
+    }
+
+    public void InitializeScenario<T>()
+        where T : IScenario
+    {
+        InitializeScenario(Activator.CreateInstance<T>());
+    }
+
+    public void InitializeScenario(IScenario scenario)
+    {
+        var pieces = new List<((int, int), ChessBoardPiece)>();
+        foreach (var (position, piece) in scenario.GetPieces())
+        {
+            pieces.Add((position, piece));
+/*
+            if (piece.definition.PieceType == PieceType.King)
+            {
+                _kingTracker[piece.color] = position;
+            }
+*/
+        }
+
+        foreach (var color in new[] { PlayerColor.Black, PlayerColor.White })
+        {
+            _capturedPieces[color].Clear();
+            foreach (var piece in scenario.CapturedPieces[color])
+            {
+                _capturedPieces[color].Add(piece);
+            }
+        }
+
+        UpdateGameState(pieces);
+        CurrentPlayer = scenario.CurrentPlayer;
     }
 
     public void PromotePiece((int x, int y) position, PieceDefinition promoteToPiece)
@@ -176,8 +216,8 @@ public class ChessBoard
         {
         }
 
-/*
         _gameState = new GameState(pieces);
+/*
 
         _possibleMovesTracker.Recalculate(_gameState);
         var possibleMovesToKing = _possibleMovesTracker.GetPossibleMovesTo(_kingTracker[CurrentPlayer]);
@@ -187,9 +227,9 @@ public class ChessBoard
     }
 
 /*
-    private int ToIndex((int x, int y) pos)
-    {
-        return (pos.y * 8) + pos.x;
-    }
+        private int ToIndex((int x, int y) pos)
+        {
+            return (pos.y * 8) + pos.x;
+        }
 */
 }

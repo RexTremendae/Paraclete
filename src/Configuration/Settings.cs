@@ -54,8 +54,8 @@ public partial class Settings
     {
         public ColorSettings Colors => new ()
         {
-            BlackPlayer = AnsiSequences.ForegroundColors.DarkCyan,
-            WhitePlayer = AnsiSequences.ForegroundColors.Cyan,
+            BlackPlayer = AnsiSequences.ForegroundColors.Magenta,
+            WhitePlayer = AnsiSequences.ForegroundColors.White,
         };
 
         public BorderStyleDefinition.Style BorderStyle { get; } = BorderStyleDefinition.Style.SingleRoundCorners;
@@ -64,7 +64,7 @@ public partial class Settings
         public class ColorSettings
         {
             public AnsiString BlackPlayer { get; set; } = AnsiSequences.Reset;
-            public AnsiString Board { get; set; } = AnsiSequences.ForegroundColors.White;
+            public AnsiString Board { get; set; } = AnsiSequences.Reset;
             public AnsiString CheckIndicator { get; set; } = AnsiSequences.Reset;
             public AnsiString DialogBorder { get; set; } = AnsiSequences.Reset;
             public AnsiString Heading { get; set; } = AnsiSequences.Reset;

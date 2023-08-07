@@ -1,6 +1,6 @@
 namespace Paraclete.Menu.Chess;
 
-public class ChessMenu : MenuBase, IInitializer
+public class ChessMenu : MenuBase
 {
     public ChessMenu(IServiceProvider services)
         : base(services, new Type[]
@@ -10,10 +10,5 @@ public class ChessMenu : MenuBase, IInitializer
         */
     })
     {
-    }
-
-    public Task Initialize()
-    {
-        return Task.CompletedTask;
     }
 }

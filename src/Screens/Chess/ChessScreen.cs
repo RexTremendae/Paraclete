@@ -6,15 +6,18 @@ using Paraclete.Painting;
 using Paraclete.Menu;
 using Paraclete.Menu.Chess;
 using Paraclete.Ansi;
+using Paraclete.Chess;
 
 public class ChessScreen : IScreen
 {
     private readonly Settings.ChessSettings _settings;
+    private readonly ChessBoard _board;
 
-    public ChessScreen(IServiceProvider services, Settings settings)
+    public ChessScreen(IServiceProvider services, Settings settings, ChessBoard board)
     {
         Menu = services.GetRequiredService<ChessMenu>();
         _settings = settings.Chess;
+        _board = board;
     }
 
     public MenuBase Menu { get; }
@@ -31,13 +34,13 @@ public class ChessScreen : IScreen
 
         if (paneIndex == 1)
         {
+            var boardPosition = (2, 1);
             var boardRows = GetBoardRows();
-            painter.PaintRows(boardRows, pane, (2, 1));
+            PaintBoard(painter, pane, boardPosition);
+            PaintPieces(painter, pane, boardPosition);
         }
 
 /*
-        PaintPieces();
-
         var currentPlayerY = _margin.y + _boardHeight + 1;
         var currentPlayerColor = GetPlayerColor(_board.CurrentPlayer);
 
@@ -94,8 +97,7 @@ public class ChessScreen : IScreen
 */
     };
 
-/*
-    private void PaintPieces()
+    private void PaintPieces(Painter painter, Pane pane, (int x, int y) boardPosition)
     {
         var black = _settings.Colors.BlackPlayer;
         var white = _settings.Colors.WhitePlayer;
@@ -112,14 +114,40 @@ public class ChessScreen : IScreen
 
                 var p = piece.Value;
 
-                buffer.Paint(
-                    CalculatePaintPosition((x, y)),
-                    p.Definition.Representation,
-                    p.Color == PlayerColor.White ? white : black);
+                var ansiPiece =
+                    (p.color == PlayerColor.White ? white : black) +
+                    p.definition.Representation.ToString() +
+                    AnsiSequences.Reset;
+
+                painter.Paint(
+                    ansiPiece,
+                    pane,
+                    CalculatePaintPosition((x, y), boardPosition));
             }
         }
     }
-*/
+
+    private void PaintBoard(Painter painter, Pane pane, (int, int) boardPosition)
+    {
+        painter.PaintRows(GetBoardRows(), pane, boardPosition);
+    }
+
+    private (int x, int y) Transform((int x, int y) position)
+    {
+        var x = position.x;
+        var y = position.y;
+
+        return _settings.RotateBoard
+            ? (7 - x, 7 - y)
+            : (x, y);
+    }
+
+    private (int x, int y) CalculatePaintPosition((int x, int y) position, (int x, int y) boardOffset)
+    {
+        var x = (position.x * 4) + boardOffset.x + 4;
+        var y = ((7 - position.y) * 2) + boardOffset.y + 2;
+        return (x, y);
+    }
 
     private IEnumerable<AnsiString> GetBoardRows()
     {
