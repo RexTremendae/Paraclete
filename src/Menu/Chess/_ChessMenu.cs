@@ -5,9 +5,10 @@ public class ChessMenu : MenuBase
     public ChessMenu(IServiceProvider services)
         : base(services, new Type[]
     {
-        /*
-        typeof(XxxCommand),
-        */
+        typeof(MoveMarkerUpCommand),
+        typeof(MoveMarkerDownCommand),
+        typeof(MoveMarkerLeftCommand),
+        typeof(MoveMarkerRightCommand),
     })
     {
     }

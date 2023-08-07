@@ -6,6 +6,7 @@ using Paraclete.IO;
 using Paraclete.Menu;
 using Paraclete.Painting;
 using Paraclete.Screens;
+using Paraclete.Screens.Chess;
 using Paraclete.Screens.Showroom;
 using Paraclete.Screens.Unicode;
 
@@ -26,6 +27,7 @@ public static class Configurator
             .AddScoped<MainLoop>()
             .AddScoped<MenuPainter>()
             .AddScoped<Painter>()
+            .AddScoped<PieceSelectionService>()
             .AddScoped<ScreenInvalidator>()
             .AddScoped<ScreenSaver>()
             .AddScoped<ScreenSelector>()

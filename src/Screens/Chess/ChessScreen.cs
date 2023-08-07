@@ -12,12 +12,14 @@ public class ChessScreen : IScreen
 {
     private readonly Settings.ChessSettings _settings;
     private readonly ChessBoard _board;
+    private readonly PieceSelectionService _pieceSelectionService;
 
-    public ChessScreen(IServiceProvider services, Settings settings, ChessBoard board)
+    public ChessScreen(IServiceProvider services, Settings settings, ChessBoard board, PieceSelectionService pieceSelectionService)
     {
         Menu = services.GetRequiredService<ChessMenu>();
         _settings = settings.Chess;
         _board = board;
+        _pieceSelectionService = pieceSelectionService;
     }
 
     public MenuBase Menu { get; }
@@ -38,6 +40,7 @@ public class ChessScreen : IScreen
             var boardRows = GetBoardRows();
             PaintBoard(painter, pane, boardPosition);
             PaintPieces(painter, pane, boardPosition);
+            PaintSelectionMarker(painter, pane, boardPosition);
         }
 
 /*
@@ -96,6 +99,35 @@ public class ChessScreen : IScreen
         }
 */
     };
+
+    private void PaintSelectionMarker(Painter painter, Pane pane, (int x, int y) boardPosition)
+    {
+        var markerPosition = _pieceSelectionService.MarkerPosition;
+
+        var (markerX, markerY) = CalculatePaintPosition(Transform(markerPosition), boardPosition);
+
+        painter.Paint(_settings.Colors.PrimarySelection + "[", pane, (markerX - 1, markerY));
+        painter.Paint(_settings.Colors.PrimarySelection + "]", pane, (markerX + 1, markerY));
+
+/*
+        var from = CalculatePaintPosition(Transform(_selectionService.FromMarkerPosition));
+        var to = CalculatePaintPosition(Transform(_selectionService.ToMarkerPosition));
+
+        if (_stateMachine.CurrentState == MenuState.MovePiece)
+        {
+            buffer.Paint((from.x-1, from.y), "[", _settings.Colors.SecondarySelection);
+            buffer.Paint((from.x+1, from.y), "]", _settings.Colors.SecondarySelection);
+
+            buffer.Paint((to.x-1, to.y), "[", _settings.Colors.PrimarySelection);
+            buffer.Paint((to.x+1, to.y), "]", _settings.Colors.PrimarySelection);
+        }
+        else
+        {
+            buffer.Paint((from.x-1, from.y), "[", _settings.Colors.PrimarySelection);
+            buffer.Paint((from.x+1, from.y), "]", _settings.Colors.PrimarySelection);
+        }
+*/
+    }
 
     private void PaintPieces(Painter painter, Pane pane, (int x, int y) boardPosition)
     {
