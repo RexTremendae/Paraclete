@@ -2,6 +2,7 @@ namespace Paraclete.Configuration;
 
 using Paraclete.Calculator;
 using Paraclete.Chess;
+using Paraclete.Chess.Scenarios;
 using Paraclete.IO;
 using Paraclete.Menu;
 using Paraclete.Painting;
@@ -28,6 +29,7 @@ public static class Configurator
             .AddScoped<MenuPainter>()
             .AddScoped<Painter>()
             .AddScoped<PieceSelectionService>()
+            .AddScoped<ScenarioSelector>()
             .AddScoped<ScreenInvalidator>()
             .AddScoped<ScreenSaver>()
             .AddScoped<ScreenSelector>()
@@ -41,6 +43,7 @@ public static class Configurator
             .AddImplementationsOf<ICommand>()
             .AddImplementationsOf<IExhibition>()
             .AddImplementationsOf<IInputDefinition>()
+            .AddImplementationsOf<IScenario>()
             .AddImplementationsOf<IScreen>()
             .AddImplementationsOf<MenuBase>()
         ;

@@ -46,7 +46,7 @@ public class ChessBoard : IInitializer
         return _capturedPieces[color].ToArray();
     }
 
-    public Task Initialize()
+    public Task Initialize(IServiceProvider services)
     {
         InitializeScenario<NewGame>();
         return Task.CompletedTask;

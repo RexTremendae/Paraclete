@@ -161,7 +161,7 @@ public class ToDoList : IInitializer
         MaxItemLength = int.Max(maxToDoLength, maxDoneLength);
     }
 
-    public async Task Initialize()
+    public async Task Initialize(IServiceProvider services)
     {
         if (!File.Exists(_todoFilename))
         {

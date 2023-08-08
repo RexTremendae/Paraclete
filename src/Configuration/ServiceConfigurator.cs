@@ -41,11 +41,11 @@ public class ServiceConfigurator
         return _services.BuildServiceProvider();
     }
 
-    public async Task InvokeInitializers(IServiceProvider serviceProvider)
+    public async Task InvokeInitializers(IServiceProvider services)
     {
         foreach (var initializerType in _initializers)
         {
-            await (serviceProvider.GetRequiredService(initializerType) as IInitializer)!.Initialize();
+            await (services.GetRequiredService(initializerType) as IInitializer)!.Initialize(services);
         }
     }
 

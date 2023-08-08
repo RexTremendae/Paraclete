@@ -1,5 +1,6 @@
 namespace Paraclete.Menu.Shortcuts;
 
+[ExcludeFromEnumeration]
 public class CustomShortcutCommand : StartProcessCommandBase, IShortcut
 {
     private readonly string _command;

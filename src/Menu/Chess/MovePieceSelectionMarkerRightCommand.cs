@@ -2,11 +2,11 @@ namespace Paraclete.Menu.Chess;
 
 using Paraclete.Screens.Chess;
 
-public class MoveMarkerRightCommand : ICommand
+public class MovePieceSelectionMarkerRightCommand : ICommand
 {
     private readonly PieceSelectionService _selectionService;
 
-    public MoveMarkerRightCommand(PieceSelectionService selectionService)
+    public MovePieceSelectionMarkerRightCommand(PieceSelectionService selectionService)
     {
         _selectionService = selectionService;
     }

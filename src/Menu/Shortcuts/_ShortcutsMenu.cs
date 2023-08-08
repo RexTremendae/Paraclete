@@ -18,7 +18,7 @@ public class ShortcutsMenu : MenuBase, IInitializer
     {
     }
 
-    public async Task Initialize()
+    public async Task Initialize(IServiceProvider services)
     {
         if (!File.Exists(_shortcutsFilename))
         {

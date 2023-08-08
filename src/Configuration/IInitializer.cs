@@ -2,5 +2,5 @@ namespace Paraclete.Configuration;
 
 public interface IInitializer
 {
-    Task Initialize();
+    Task Initialize(IServiceProvider services);
 }
