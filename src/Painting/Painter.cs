@@ -79,7 +79,30 @@ public class Painter
 
         if (_selectedScreen.ShowCurrentTime)
         {
-            PaintRows(_currentTimeFormatter.Format(DateTime.Now), (-10, 1));
+            var timeString = " " + _currentTimeFormatter.Format(DateTime.Now).First() + " ";
+
+            PaintRows(
+                new[]
+                {
+                    $"╤{string.Empty.PadRight(timeString.Length, '═')}╗",
+                    "│" + timeString + AnsiSequences.Reset + "║",
+                    $"╰{string.Empty.PadRight(timeString.Length, '─')}╢",
+                },
+                (-timeString.Length - 2, 0));
+        }
+
+        if (_selectedScreen.ShowTitle)
+        {
+            var titleString = $"  {_selectedScreen.Name}  ";
+
+            PaintRows(
+                new[]
+                {
+                    $"╤{string.Empty.PadRight(titleString.Length, '═')}╤",
+                    "│" + AnsiSequences.ForegroundColors.Black + AnsiSequences.BackgroundColors.Blue + titleString + AnsiSequences.Reset + "│",
+                    $"╰{string.Empty.PadRight(titleString.Length, '─')}╯",
+                },
+                (((_windowWidth - titleString.Length) / 2) - 1, 0));
         }
 
         if (_dataInputter.IsActive)

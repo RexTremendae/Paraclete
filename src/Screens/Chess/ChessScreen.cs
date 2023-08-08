@@ -36,7 +36,7 @@ public class ChessScreen : IScreen
 
         if (paneIndex == 1)
         {
-            var boardPosition = (2, 1);
+            var boardPosition = (2, 2);
             var boardRows = GetBoardRows();
             PaintBoard(painter, pane, boardPosition);
             PaintPieces(painter, pane, boardPosition);

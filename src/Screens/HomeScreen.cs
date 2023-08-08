@@ -72,6 +72,7 @@ public class HomeScreen : IScreen
     public string Name => "Home";
     public ConsoleKey Shortcut => ConsoleKey.F1;
     public bool ShowCurrentTime => false;
+    public bool ShowTitle => false;
     public int[] AutoRefreshingPaneIndices => new[] { 0, 1 };
 
     public MenuBase Menu { get; }

@@ -36,7 +36,7 @@ public class CalculatorScreen : IScreen
     {
         var tokenFormat = AnsiSequences.BackgroundColors.DarkBlue + AnsiSequences.ForegroundColors.Blue;
 
-        var position = (x: pane.Position.x + 1, y: pane.Position.y + 1);
+        var position = (x: 1, y: 2);
         foreach (var entry in _calculatorHistory.Entries)
         {
             var builder = new AnsiStringBuilder();
@@ -60,7 +60,7 @@ public class CalculatorScreen : IScreen
                 .Append(AnsiSequences.ForegroundColors.Blue)
                 .Append(entry.Evaluate().ToString());
 
-            painter.Paint(builder.Build(), position);
+            painter.Paint(builder.Build(), pane, position);
             position = (position.x, position.y + 1);
         }
     }
@@ -70,9 +70,9 @@ public class CalculatorScreen : IScreen
         if (_calculatorHistory.RadixConversion is BigInteger radix)
         {
             var offsetX = 1;
-            var offsetY = 1;
+            var offsetY = 2;
 
-            var paddingWidth = pane.Size.x - offsetX - 4;
+            var paddingWidth = int.Max(0, pane.Size.x - offsetX - 4);
             var conversions = new[]
             {
                 ("Dec", radix.ToDecimalString(useGrouping: true, padGroups: false).PadRight(paddingWidth)),
@@ -81,11 +81,11 @@ public class CalculatorScreen : IScreen
                 ("Oct", radix.ToOctalString(useGrouping: true, padGroups: true).PadRight(paddingWidth)),
             };
 
-            var position = (x: pane.Position.x + offsetX, y: pane.Position.y + offsetY);
+            var position = (x: offsetX, y: offsetY);
             foreach (var (radixName, data) in conversions)
             {
-                painter.Paint(AnsiSequences.ForegroundColors.White + radixName, position);
-                painter.Paint(AnsiSequences.ForegroundColors.Blue + data, (position.x + radixName.Length + 1, position.y));
+                painter.Paint(AnsiSequences.ForegroundColors.White + radixName, pane, position);
+                painter.Paint(AnsiSequences.ForegroundColors.Blue + data, pane, (position.x + radixName.Length + 1, position.y));
                 position = (position.x, position.y + 1);
             }
         }

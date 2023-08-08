@@ -13,6 +13,7 @@ public interface IScreen
     string Name { get; }
     ConsoleKey Shortcut { get; }
     bool ShowCurrentTime => true;
+    bool ShowTitle => true;
     int[] AutoRefreshingPaneIndices => Array.Empty<int>();
 
     public virtual void OnAfterSwitch()
