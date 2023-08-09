@@ -58,38 +58,10 @@ public class ColumnBasedLayout : ILayout
 
         0.To(_columns.Length).Foreach(x =>
         {
-            var yPos = 1;
-            var definition = _columns[x];
-            paneWidth = int.Max(0, int.Min(definition.Width, drawableWindowWidth - xPos));
-
-            0.To(definition.CellHeights.Length).Foreach(y =>
-            {
-                paneHeight = int.Max(0, int.Min(definition.CellHeights[y], drawableWindowHeight - yPos));
-
-                if (paneHeight > 0 && paneWidth > 0)
-                {
-                    panes.Add(new ((xPos, yPos), (paneWidth, paneHeight), true));
-                }
-                else
-                {
-                    panes.Add(new ((xPos, yPos), (0, 0), false));
-                }
-
-                yPos += paneHeight + 1;
-            });
-
-            paneHeight = int.Max(0, drawableWindowHeight - yPos);
-
-            if (paneHeight > 0 && paneWidth > 0)
-            {
-                panes.Add(new ((xPos, yPos), (paneWidth, paneHeight), true));
-            }
-            else
-            {
-                panes.Add(new ((xPos, yPos), (0, 0), false));
-            }
-
-            xPos += definition.Width + 1;
+            var column = _columns[x];
+            paneWidth = int.Max(0, int.Min(column.Width, drawableWindowWidth - xPos));
+            panes.AddRange(GenerateColumnPanes(column, xPos: xPos, paneWidth: paneWidth, drawableWindowHeight: drawableWindowHeight));
+            xPos += column.Width + 1;
         });
 
         paneWidth = int.Max(0, drawableWindowWidth - xPos);
@@ -105,6 +77,42 @@ public class ColumnBasedLayout : ILayout
         }
 
         Panes = panes.ToArray();
+    }
+
+    private IEnumerable<Pane> GenerateColumnPanes(ColumnDefinition column, int xPos, int paneWidth, int drawableWindowHeight)
+    {
+        var yPos = 1;
+        var paneHeight = 0;
+
+        var panes = new List<Pane>();
+        0.To(column.CellHeights.Length).Foreach(y =>
+        {
+            paneHeight = int.Max(0, int.Min(column.CellHeights[y], drawableWindowHeight - yPos));
+
+            if (paneHeight > 0 && paneWidth > 0)
+            {
+                panes.Add(new ((xPos, yPos), (paneWidth, paneHeight), true));
+            }
+            else
+            {
+                panes.Add(new ((xPos, yPos), (0, 0), false));
+            }
+
+            yPos += paneHeight + 1;
+        });
+
+        paneHeight = int.Max(0, drawableWindowHeight - yPos);
+
+        if (paneHeight > 0 && paneWidth > 0)
+        {
+            panes.Add(new ((xPos, yPos), (paneWidth, paneHeight), true));
+        }
+        else
+        {
+            panes.Add(new ((xPos, yPos), (0, 0), false));
+        }
+
+        return panes;
     }
 
     private string GenerateDynamicRow(int rowIndex, int windowWidth)
