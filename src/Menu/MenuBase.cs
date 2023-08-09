@@ -4,11 +4,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 public abstract class MenuBase
 {
-    private readonly Dictionary<ConsoleKey, ICommand> _menuItems;
+    private readonly Dictionary<ConsoleKey, ICommand> _menuItems = new ();
 
-    public MenuBase(IServiceProvider services, Type[] commands)
+    protected MenuBase(IServiceProvider services, Type[] commands)
     {
-        _menuItems = new ();
         foreach (var command in commands.Select(services.GetRequiredService).OfType<ICommand>())
         {
             _menuItems.Add(command.Shortcut, command);
@@ -17,7 +16,7 @@ public abstract class MenuBase
 
     public IReadOnlyDictionary<ConsoleKey, ICommand> MenuItems => _menuItems;
 
-    public void AddCommand(ConsoleKey key, ICommand command)
+    protected void AddCommand(ConsoleKey key, ICommand command)
     {
         _menuItems.Add(key, command);
     }

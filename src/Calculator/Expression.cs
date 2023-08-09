@@ -58,7 +58,7 @@ public class Expression
             var nextTokenType = ch switch
             {
                 var x when x >= '0' && x <= '9' => TokenType.Numeric,
-                var x when "+-*/%^".Contains(ch) => TokenType.Operator,
+                var _ when "+-*/%^".Contains(ch) => TokenType.Operator,
                 _ => TokenType.Invalid
             };
 

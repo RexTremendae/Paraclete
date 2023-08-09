@@ -23,7 +23,7 @@ public interface IScreen
     public Action GetPaintPaneAction(Painter painter, int paneIndex);
 
     [ExcludeFromEnumeration]
-    private class NoScreenImplementation : IScreen
+    private sealed class NoScreenImplementation : IScreen
     {
         public MenuBase Menu => throw new NotSupportedException();
         public ILayout Layout => throw new NotSupportedException();

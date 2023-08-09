@@ -53,11 +53,11 @@ public class RadixInputDefinition : IInputDefinition
             ? $"0d{inputData}"
             : inputData switch
             {
-                var p when ValidPrefixes.Contains(inputData[0], StringComparison.OrdinalIgnoreCase)
+                var _ when ValidPrefixes.Contains(inputData[0], StringComparison.OrdinalIgnoreCase)
                     => $"0{char.ToLower(inputData[0])}{inputData[1..]}",
-                var p when inputData[0] == '0' && ValidPrefixes.Contains(inputData[1], StringComparison.OrdinalIgnoreCase)
+                var _ when inputData[0] == '0' && ValidPrefixes.Contains(inputData[1], StringComparison.OrdinalIgnoreCase)
                     => inputData,
-                var p when inputData.All(_ => IInputDefinition.NumericAlphabet.Contains(inputData[0]))
+                var _ when inputData.All(_ => IInputDefinition.NumericAlphabet.Contains(inputData[0]))
                     => $"0d{inputData}",
                 _ => inputData
             };

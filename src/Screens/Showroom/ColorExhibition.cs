@@ -12,7 +12,6 @@ public class ColorExhibition : IExhibition
 
     public void Paint(Painter painter, (int x, int y) position, int paneIndex)
     {
-        var (initialX, _) = position;
         var columnWidth = 16;
         var colorIdx = 0;
 
@@ -21,7 +20,7 @@ public class ColorExhibition : IExhibition
         foreach (var color in Enum.GetValues<ConsoleColor>())
         {
             var fgColor = GetForegroundColorString(color);
-            var bgColor = AnsiSequences.ForegroundColors.Black + GetBackgroundColorString(color);
+            var bgColor = ForegroundColors.Black + GetBackgroundColorString(color);
 
             var rowIdx = colorIdx < 8 ? 1 : 0;
             rows[rowIdx].Append(fgColor.PadRight(columnWidth));

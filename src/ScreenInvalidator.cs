@@ -63,7 +63,7 @@ public partial class ScreenInvalidator
 
 public partial class ScreenInvalidator
 {
-    private class PaintScope : IDisposable
+    private sealed class PaintScope : IDisposable
     {
         private readonly ScreenInvalidator _invalidator;
 

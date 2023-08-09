@@ -22,15 +22,15 @@ public class NewGame : IScenario
         yield return ((x++, y), new (new Rook(),   PlayerColor.White, false));
 
         y++;
-        for (x = 0; x < 8; )
+        for (x = 0; x < 8; x++)
         {
-            yield return ((x++, y), new (new Pawn(), PlayerColor.White, false));
+            yield return ((x, y), new (new Pawn(), PlayerColor.White, false));
         }
 
         y = 6;
-        for (x = 0; x < 8; )
+        for (x = 0; x < 8; x++)
         {
-            yield return ((x++, y), new (new Pawn(), PlayerColor.Black, false));
+            yield return ((x, y), new (new Pawn(), PlayerColor.Black, false));
         }
 
         x = 0;

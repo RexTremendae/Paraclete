@@ -10,7 +10,7 @@ public class ToDoList : IInitializer
     private readonly List<ToDoItem> _doneItems;
 
     private int _selectedToDoItemIndex;
-    private List<ToDoItem> _selectedList = new ();
+    private List<ToDoItem> _selectedList;
 
     public ToDoList()
     {

@@ -52,7 +52,6 @@ public class ChessScreen : IScreen, IInitializer
         if (paneIndex == 1)
         {
             var boardPosition = (2, 2);
-            var boardRows = GetBoardRows();
             PaintBoard(painter, pane, boardPosition);
             PaintPieces(painter, pane, boardPosition);
             PaintSelectionMarker(painter, pane, boardPosition);

@@ -7,16 +7,14 @@ using Paraclete.Menu;
 
 public class DataInputter
 {
-    private readonly ScreenInvalidator _screenInvalidator;
     private readonly StringBuilder _input = new ();
     private readonly Dictionary<Type, IInputDefinition> _availableInputters = new ();
 
     private IInputCommand? _command;
     private IInputDefinition _selectedInputter;
 
-    public DataInputter(ScreenInvalidator screenInvalidator, IServiceProvider services)
+    public DataInputter(IServiceProvider services)
     {
-        _screenInvalidator = screenInvalidator;
         _selectedInputter = IInputDefinition.NoInputter;
 
         foreach (var dataInputter in TypeUtility.EnumerateImplementatingInstancesOf<IInputDefinition>(services))
@@ -32,7 +30,7 @@ public class DataInputter
 
     public Task StartInput<T>(IInputCommand<T> inputCommand, AnsiString? label, T valueToEdit)
     {
-        return StartInput<T>(inputCommand, label, new NullableGeneric<T>(valueToEdit));
+        return StartInput(inputCommand, label, new NullableGeneric<T>(valueToEdit));
     }
 
     public Task StartInput<T>(

@@ -109,7 +109,7 @@ public class GameState
         return true;
     }
 
-    private int ToIndex((int x, int y) pos)
+    private static int ToIndex((int x, int y) pos)
     {
         return (pos.y * 8) + pos.x;
     }

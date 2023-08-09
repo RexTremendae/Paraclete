@@ -48,12 +48,9 @@ public partial class MainLoop
                 continue;
             }
 
-            if (screenSaverWasActive)
+            if (screenSaverWasActive && !selectedCommand.IsScreenSaverResistant)
             {
-                if (!selectedCommand.IsScreenSaverResistant)
-                {
-                    continue;
-                }
+                continue;
             }
 
             if (selectedCommand != ICommand.NoCommand)

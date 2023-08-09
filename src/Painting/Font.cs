@@ -5,7 +5,7 @@ using System.Collections.Concurrent;
 public class Font
 {
     private static readonly ConcurrentDictionary<Size, Font> _fontsBySize = new ();
-    private readonly Dictionary<char, string[]> _font = new ();
+    private readonly Dictionary<char, string[]> _font;
 
     public Font(Size size, params (char key, string[] data)[] font)
     {

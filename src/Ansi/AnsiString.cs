@@ -74,7 +74,7 @@ public partial class AnsiString
 
         foreach (var piece in Pieces)
         {
-            if (piece is AnsiStringControlSequencePart ctrlPart)
+            if (piece is AnsiStringControlSequencePart)
             {
                 truncatedPieces.Add(piece);
                 continue;
@@ -87,7 +87,6 @@ public partial class AnsiString
             {
                 var tpart = textPart[..lengthLeft];
                 truncatedPieces.Add(new AnsiStringTextPiece(tpart));
-                totalLength += tpart.Length;
                 break;
             }
 

@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 public abstract class StartProcessCommandBase
 {
-    protected Task Execute(string filename, params string[] args)
+    protected static Task Execute(string filename, params string[] args)
     {
         var startinfo = new ProcessStartInfo
         {

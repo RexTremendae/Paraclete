@@ -2,7 +2,7 @@ namespace Paraclete.Menu;
 
 public interface ICommand
 {
-    public static ICommand NoCommand = new NoCommandImplementation();
+    public static readonly ICommand NoCommand = new NoCommandImplementation();
 
     ConsoleKey Shortcut { get; }
     virtual bool IsScreenSaverResistant => false;
@@ -11,7 +11,7 @@ public interface ICommand
     Task Execute();
 
     [ExcludeFromEnumeration]
-    private class NoCommandImplementation : ICommand
+    private sealed class NoCommandImplementation : ICommand
     {
         public ConsoleKey Shortcut => ConsoleKey.NoName;
 

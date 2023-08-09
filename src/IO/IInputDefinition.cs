@@ -2,7 +2,7 @@ namespace Paraclete.IO;
 
 public interface IInputDefinition
 {
-    public static string NumericAlphabet = "0123456789";
+    public const string NumericAlphabet = "0123456789";
     public static readonly IInputDefinition NoInputter = new NoInputDefinitionImplementation();
 
     Type DataType { get; }
@@ -13,7 +13,7 @@ public interface IInputDefinition
     bool TryCompleteInput(string inputData, out object result, out string errorMessage);
 
     [ExcludeFromEnumeration]
-    private class NoInputDefinitionImplementation : IInputDefinition
+    private sealed class NoInputDefinitionImplementation : IInputDefinition
     {
         public Type DataType => throw new NotSupportedException();
         public string Alphabet => throw new NotSupportedException();

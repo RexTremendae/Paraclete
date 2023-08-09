@@ -22,7 +22,7 @@ public class CalculatorScreen : IScreen
     public ConsoleKey Shortcut => ConsoleKey.F4;
 
     public MenuBase Menu { get; }
-    public ILayout Layout { get; } = new ColumnBasedLayout(new ColumnBasedLayout.ColumnDefinition[] { new (100) });
+    public ILayout Layout { get; } = new ColumnBasedLayout(new ColumnBasedLayout.ColumnDefinition(100));
 
     public Action GetPaintPaneAction(Painter painter, int paneIndex) =>
         paneIndex switch

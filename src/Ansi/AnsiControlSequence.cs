@@ -23,7 +23,7 @@ public class AnsiControlSequence
 
     public static AnsiString operator +(AnsiControlSequence sequence1, AnsiControlSequence sequence2)
     {
-        return new AnsiString(new[] { sequence1, sequence2 });
+        return new AnsiString(sequence1, sequence2);
     }
 
     public static AnsiString operator +(string text, AnsiControlSequence sequence)

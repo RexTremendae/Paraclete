@@ -13,7 +13,7 @@ public class Stopwatch
     public void Reset()
     {
         Start = IsRunning
-            ? DateTime.Now
+            ? DateTime.UtcNow
             : default;
         Stop = default;
         _markedTimes.Clear();
@@ -21,7 +21,7 @@ public class Stopwatch
 
     public void Mark()
     {
-        var mark = (IsRunning ? DateTime.Now : Stop) - Start;
+        var mark = (IsRunning ? DateTime.UtcNow : Stop) - Start;
         if (_markedTimes.FirstOrDefault() != mark)
         {
             _markedTimes.Insert(0, mark);
@@ -33,18 +33,18 @@ public class Stopwatch
         if (IsRunning)
         {
             IsRunning = false;
-            Stop = DateTime.Now;
+            Stop = DateTime.UtcNow;
         }
         else
         {
             IsRunning = true;
             if (Start == default)
             {
-                Start = DateTime.Now;
+                Start = DateTime.UtcNow;
             }
             else
             {
-                Start += (DateTime.Now - Stop);
+                Start += (DateTime.UtcNow - Stop);
             }
         }
     }

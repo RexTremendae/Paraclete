@@ -7,7 +7,7 @@ public static class Keyboard
     // These are all the possible values in the VK enumeration. It covers most of the special buttons on a keyboard.
     // See http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winui/winui/WindowsUserInterface/UserInput/VirtualKeyCodes.asp
     // for full documentation.
-    public enum VirtKey : int
+    public enum VirtKey
     {
         NUMPAD7 = 0x67,
         NUMPAD8 = 0x68,

@@ -7,7 +7,7 @@ public static class BorderStyleDefinition
     public const string BottomEdgeRow = nameof(BottomEdgeRow);
     public const string VerticalEdgeRow = nameof(VerticalEdgeRow);
 
-    public static readonly Dictionary<(Style, string), string> BorderStrings = new ()
+    public static readonly IReadOnlyDictionary<(Style, string), string> BorderStrings = new Dictionary<(Style, string), string>
     {
         // Double border: ╔═╗
         { (Style.Double, TopEdgeRow),                  "╔═╤╗" },
