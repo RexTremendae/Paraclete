@@ -100,9 +100,7 @@ public class HomeScreen : IScreen
                 // Stopwatch
                 if (_stopWatch.Start != default)
                 {
-                    var stopWatchTime = (_stopWatch.IsRunning ? DateTime.Now : _stopWatch.Stop)
-                        - _stopWatch.Start;
-                    painter.PaintRows(_stopWatchFormatter.Format(stopWatchTime), pane, _stopWatchPosition);
+                    painter.PaintRows(_stopWatchFormatter.Format(_stopWatch.CurrentDuration), pane, _stopWatchPosition);
                 }
 
                 // Marked time
