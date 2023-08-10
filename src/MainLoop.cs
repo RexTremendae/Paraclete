@@ -2,6 +2,7 @@ namespace Paraclete;
 
 using Microsoft.Extensions.DependencyInjection;
 using Paraclete.IO;
+using Paraclete.Menu;
 using Paraclete.Menu.Shortcuts;
 using Paraclete.Painting;
 using Paraclete.Screens;
@@ -17,7 +18,7 @@ public partial class MainLoop
     private readonly DataInputter _dataInputter;
     private readonly ShortcutsMenu _shortcutsMenu;
     private readonly TimeSpan _repaintLoopInterval;
-    private readonly Dictionary<ConsoleKey, IScreen> _screens;
+    private readonly Dictionary<ConsoleKey, SwitchScreenCommand> _switchScreenCommands;
     private readonly Terminator _terminator;
 
     private bool _quickMenuIsActive = false;
@@ -36,19 +37,14 @@ public partial class MainLoop
         _shortcutsMenu = services.GetRequiredService<ShortcutsMenu>();
         _repaintLoopInterval = services.GetRequiredService<Settings>().RepaintLoopInterval;
         _terminator = services.GetRequiredService<Terminator>();
-        _screens = new ();
+        _switchScreenCommands = new ();
     }
 
     public async Task Run()
     {
         _screenSaver.Inactivate();
         _screenSelector.SwitchTo<HomeScreen>();
-        _screens.Clear();
-
-        foreach (var screen in TypeUtility.EnumerateImplementatingInstancesOf<IScreen>(_services))
-        {
-            _screens.Add(screen.Shortcut, screen);
-        }
+        InitializeSwitchScreenCommands();
 
         new Thread(async () => await RepaintLoop()).Start();
         new Thread(async () => await InputHandlingLoop()).Start();

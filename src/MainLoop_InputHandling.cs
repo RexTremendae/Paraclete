@@ -5,6 +5,16 @@ using Screens;
 
 public partial class MainLoop
 {
+    private void InitializeSwitchScreenCommands()
+    {
+        _switchScreenCommands.Clear();
+
+        foreach (var screen in TypeUtility.EnumerateImplementatingInstancesOf<IScreen>(_services))
+        {
+            _switchScreenCommands.Add(screen.Shortcut, new (screen.Shortcut, screen, _screenSelector));
+        }
+    }
+
     private async Task InputHandlingLoop()
     {
         ConsoleKeyInfo key;
@@ -21,32 +31,7 @@ public partial class MainLoop
             var screenSaverWasActive = _screenSaver.IsActive;
             _screenSaver.Inactivate();
 
-            var currentMenu = _screenSelector.SelectedScreen.Menu;
-
-            var anyKeyMatch = false;
-
-            var selectedCommand = ICommand.NoCommand;
-            if (_dataInputter.IsActive)
-            {
-                await _dataInputter.Input(key);
-            }
-            else if ((_quickMenuIsActive ? _shortcutsMenu : currentMenu).MenuItems.TryGetValue(key.Key, out var selectedMenuCommand))
-            {
-                selectedCommand = selectedMenuCommand;
-                anyKeyMatch = true;
-            }
-
-            var selectedScreen = IScreen.NoScreen;
-            if (!_dataInputter.IsActive && _screens.TryGetValue(key.Key, out var selectedForSwitchScreen))
-            {
-                selectedScreen = selectedForSwitchScreen;
-                anyKeyMatch = true;
-            }
-
-            if (!anyKeyMatch)
-            {
-                continue;
-            }
+            var selectedCommand = await HandleInput(key);
 
             if (screenSaverWasActive && !selectedCommand.IsScreenSaverResistant)
             {
@@ -57,12 +42,28 @@ public partial class MainLoop
             {
                 await selectedCommand.Execute();
             }
-            else if (selectedScreen != IScreen.NoScreen)
-            {
-                _screenSelector.SwitchTo(selectedScreen);
-            }
         }
 
         _inputHandlingLoopIsActive = false;
+    }
+
+    private async Task<ICommand> HandleInput(ConsoleKeyInfo key)
+    {
+        var currentMenu = _screenSelector.SelectedScreen.Menu;
+
+        if (_dataInputter.IsActive)
+        {
+            await _dataInputter.Input(key);
+            return ICommand.NoCommand;
+        }
+
+        var menuItems = (_quickMenuIsActive ? _shortcutsMenu : currentMenu).MenuItems;
+        var menuCommand = menuItems.TryGetValue(key.Key, out var selectedMenuCommand)
+            ? selectedMenuCommand
+            : ICommand.NoCommand;
+
+        return _switchScreenCommands.TryGetValue(key.Key, out var selectedSwitchCommand)
+            ? selectedSwitchCommand
+            : menuCommand;
     }
 }

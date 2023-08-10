@@ -128,26 +128,7 @@ public class ColumnBasedLayout : ILayout
         {
             lastColIsDivider = colIsDivider;
             colIsDivider = IsDivider(rowIndex, col);
-
-            var colDividerChar = '│';
-            if (isFirst)
-            {
-                colDividerChar = colIsDivider ? '╟' : '║';
-            }
-            else if (colIsDivider && lastColIsDivider)
-            {
-                colDividerChar = '┼';
-            }
-            else if (colIsDivider && !lastColIsDivider)
-            {
-                colDividerChar = '├';
-            }
-            else if (!colIsDivider && lastColIsDivider)
-            {
-                colDividerChar = '┤';
-            }
-
-            colDividerChar = 0 switch
+            var colDividerChar = 0 switch
             {
                 var _ when isFirst => colIsDivider ? '╟' : '║',
                 var _ when lastColIsDivider && colIsDivider  => '┼',
