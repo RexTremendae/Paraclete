@@ -26,7 +26,7 @@ public class ShowroomScreen : IScreen
     () =>
     {
         var exhibition = _exhibitionSelector.SelectedExhibition;
-        exhibition.Paint(painter, (2, 5), paneIndex);
+        exhibition.Paint(painter, (1, 4), paneIndex);
         var exhibitionName = GetExhibitionNameString(exhibition);
 
         if (paneIndex == 0)

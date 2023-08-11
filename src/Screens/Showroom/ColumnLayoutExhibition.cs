@@ -6,6 +6,9 @@ using Paraclete.Painting;
 
 public class ColumnLayoutExhibition : IExhibition
 {
+    private static readonly AnsiControlSequence _backgroundColor = AnsiSequences.BackgroundColor(0x22, 0x33, 0x44);
+    private static readonly AnsiControlSequence _foregroundColor = AnsiSequences.ForegroundColors.Gray;
+
     private static readonly (int width, int[] heights)[] PaneSizes = new (int, int[])[]
     {
         (50, new int[] { }),
@@ -22,92 +25,102 @@ public class ColumnLayoutExhibition : IExhibition
         var rows = new List<AnsiString>();
         var pane = Layout.Panes[paneIndex];
 
-        var backgroundColor = AnsiSequences.BackgroundColor(0x22, 0x33, 0x44);
-        var edgeForegroundColor = AnsiSequences.ForegroundColors.Gray;
+        var contentWidth = (pane.Size.x - 2).ZeroFloor();
 
-        var contentWidth = int.Max(0, pane.Size.x - 2);
-
-        0.To(pane.Size.y).Foreach(y =>
+        AddTopRow(rows, paneIndex.ToString("00"), pane.Size.x);
+        var end = int.Max(1, pane.Size.y - 1);
+        1.To(end).Foreach(y =>
         {
-            var contentBuilder = new AnsiStringBuilder();
+            AddMiddleRow(rows, paneIndex: paneIndex, paneWidth: pane.Size.x, rowIndex: y);
+        });
 
-            if (y == 0)
+        AddBottomRow(rows, pane.Size.x);
+
+        painter.PaintRows(rows, pane);
+    }
+
+    private void AddTopRow(List<AnsiString> rows, string title, int paneWidth)
+    {
+        var ansiTitle = " # " + AnsiSequences.ForegroundColors.Blue + title + _foregroundColor + " # ";
+        var paddingWidthLeft = (((paneWidth - ansiTitle.Length) / 2) - 1).ZeroFloor();
+        var paddingWidthRight = (paneWidth - ansiTitle.Length - paddingWidthLeft).ZeroFloor();
+
+        Log.Information("'{0}' - left: {1} - right: {2}", ansiTitle.ToString(), paddingWidthLeft, paddingWidthRight);
+        Log.Information("L: {0} R: {1}", string.Empty.PadRight(paddingWidthLeft, '-'), string.Empty.PadRight(paddingWidthRight, '-'));
+
+        rows.Add(new AnsiStringBuilder()
+            .Append(_foregroundColor)
+            .Append(_backgroundColor)
+            .Append("●")
+            .Append(string.Empty.PadRight(paddingWidthLeft, '-'))
+            .Append(ansiTitle)
+            .Append(string.Empty.PadRight(paddingWidthRight, '-'))
+            .Build()
+            .Truncate(paneWidth - 1) +
+            _foregroundColor +
+            "●");
+    }
+
+    private void AddMiddleRow(List<AnsiString> rows, int paneIndex, int paneWidth, int rowIndex)
+    {
+        var contentWidth = (paneWidth - 2).ZeroFloor();
+        var contentBuilder = new AnsiStringBuilder()
+            .Append(_foregroundColor)
+            .Append(_backgroundColor)
+            .Append("|");
+
+        if (paneIndex == 0)
+        {
+            var paneIdx = rowIndex - 4;
+
+            if (paneIdx >= 0 && paneIdx < Layout.Panes.Length)
             {
-                var paddingWidthLeft = int.Max(0, (contentWidth - 6) / 2);
-                var paddingWidthRight = int.Max(0, (int)Math.Ceiling((contentWidth - 6) / 2d));
+                var listedPane = Layout.Panes[paneIdx];
+                var visibilityMarker = listedPane.IsVisible
+                    ? AnsiSequences.ForegroundColors.Green + "✓"
+                    : AnsiSequences.ForegroundColors.Red + "✘";
 
                 contentBuilder
-                    .Append(edgeForegroundColor)
-                    .Append(string.Empty.PadRight(paddingWidthLeft, '-'))
-                    .Append(" #")
-                    .Append(AnsiSequences.ForegroundColors.Blue)
-                    .Append(paneIndex.ToString("00"))
-                    .Append(edgeForegroundColor)
-                    .Append("# ")
-                    .Append(string.Empty.PadRight(paddingWidthRight, '-'))
+                    .Append("  pane ")
+                    .Append(AnsiSequences.BackgroundColors.Gray)
+                    .Append(AnsiSequences.ForegroundColors.Black)
+                    .Append(paneIdx.ToString("00"))
+                    .Append(AnsiSequences.Reset)
+                    .Append(_foregroundColor)
+                    .Append(_backgroundColor)
+                    .Append(": ")
+                    .Append($"({listedPane.Position.x,3}, {listedPane.Position.y,3})")
+                    .Append("  ")
+                    .Append($"({listedPane.Size.x,3} x {listedPane.Size.y,3}) ")
+                    .Append($"visible: ")
+                    .Append(visibilityMarker)
+                    .Append(string.Empty.PadRight(contentWidth - contentBuilder.Length + 1))
                 ;
-            }
-            else if (y == pane.Size.y - 1)
-            {
-                contentBuilder
-                    .Append(edgeForegroundColor)
-                    .Append(string.Empty.PadRight(contentWidth, '-'))
-                ;
-            }
-            else if (paneIndex == 0)
-            {
-                var paneIdx = y - 4;
-
-                if (paneIdx >= 0 && paneIdx < Layout.Panes.Length)
-                {
-                    var listedPane = Layout.Panes[paneIdx];
-                    contentBuilder
-                        .Append("  pane ")
-                        .Append(AnsiSequences.BackgroundColors.Gray)
-                        .Append(AnsiSequences.ForegroundColors.Black)
-                        .Append(paneIdx.ToString("00"))
-                        .Append(AnsiSequences.Reset)
-                        .Append(backgroundColor)
-                        .Append(": ")
-                        .Append($"({listedPane.Position.x,3}, {listedPane.Position.y,3})")
-                        .Append("  ")
-                        .Append($"({listedPane.Size.x,3} x {listedPane.Size.y,3}) ")
-                        .Append($"visible: ")
-                        .Append(listedPane.IsVisible ? AnsiSequences.ForegroundColors.Green + "✓" : AnsiSequences.ForegroundColors.Red + "✘")
-                        .Append(backgroundColor)
-                        .Append(string.Empty.PadRight(contentWidth - contentBuilder.Length))
-                    ;
-                }
-                else
-                {
-                    contentBuilder.Append(string.Empty.PadRight(contentWidth));
-                }
             }
             else
             {
                 contentBuilder.Append(string.Empty.PadRight(contentWidth));
             }
+        }
+        else
+        {
+            contentBuilder.Append(string.Empty.PadRight(contentWidth));
+        }
 
-            var data = new AnsiStringBuilder();
+        rows.Add(contentBuilder
+            .Append(_foregroundColor)
+            .Append("|")
+            .Build());
+    }
 
-            data
-                .Append(backgroundColor)
-                .Append(edgeForegroundColor)
-                .Append((y == 0 || y == pane.Size.y - 1) ? "●" : "|")
-                .Append(contentBuilder)
-            ;
-
-            if (data.Length < pane.Size.x)
-            {
-                data
-                    .Append(backgroundColor)
-                    .Append(edgeForegroundColor)
-                    .Append((y == 0 || y == pane.Size.y - 1) ? "●" : "|");
-            }
-
-            rows.Add(data.Build());
-        });
-
-        painter.PaintRows(rows, pane);
+    private void AddBottomRow(List<AnsiString> rows, int paneWidth)
+    {
+        rows.Add(new AnsiStringBuilder()
+            .Append(_foregroundColor)
+            .Append(_backgroundColor)
+            .Append("●")
+            .Append(string.Empty.PadRight((paneWidth - 2).ZeroFloor(), '-'))
+            .Append("●")
+            .Build());
     }
 }

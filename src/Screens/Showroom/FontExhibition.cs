@@ -13,6 +13,7 @@ public class FontExhibition : IExhibition
     public void Paint(Painter painter, (int x, int y) position, int paneIndex)
     {
         var text = "0123456789:.";
+        var pane = Layout.Panes[paneIndex];
 
         var colors = new Dictionary<Font.Size, AnsiControlSequence>
         {
@@ -29,10 +30,10 @@ public class FontExhibition : IExhibition
                 continue;
             }
 
-            var fontWriter = FontWriter.Create(size);
-            painter.Paint($"{ForegroundColors.White}{size}:".PadRight(4), position);
-            fontWriter.Write(text, colors[size], (position.x + 4, position.y), painter);
-            position = (position.x, position.y + fontWriter.Font.CharacterHeight + 1);
+            painter.Paint($"{ForegroundColors.White}{size}:".PadRight(4), pane, position);
+            var fontRows = FontFormatter.Create(size).Format(text, colors[size]).ToArray();
+            painter.PaintRows(fontRows, pane, (position.x + 4, position.y));
+            position = (position.x, position.y + fontRows.Length + 1);
         }
     }
 }

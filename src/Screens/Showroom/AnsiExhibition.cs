@@ -27,12 +27,12 @@ public class AnsiExhibition : IExhibition
             esc("[38;2;255;255;255m") + "[" + esc("[38;2;0;200;0m") + "S" + esc("[38;2;100;100;100m") + "tart" + esc("[38;2;255;255;255m") + "]",
         })
         {
-            Paint(text, position.x, position.y, painter);
+            Paint(text, position.x, position.y, painter, Layout.Panes[paneIndex]);
             position.y += 3;
         }
     }
 
-    private void Paint(AnsiString text, int left, int top, Painter painter)
+    private void Paint(AnsiString text, int left, int top, Painter painter, Pane pane)
     {
         var ansiExposedTextBuilder = new AnsiStringBuilder();
 
@@ -50,8 +50,8 @@ public class AnsiExhibition : IExhibition
 
         ansiExposedTextBuilder.Append(" ").Append(ForegroundColors.Cyan).Append($"[{text.Length} printable characters]");
 
-        painter.Paint(ansiExposedTextBuilder.Build(), (left, top));
-        painter.Paint(text + AnsiSequences.Reset + " ", (left, top + 1));
+        painter.Paint(ansiExposedTextBuilder.Build(), pane, (left, top));
+        painter.Paint(text + AnsiSequences.Reset + " ", pane, (left, top + 1));
     }
 
     private AnsiString FormatForDisplay(AnsiStringControlSequencePart part)

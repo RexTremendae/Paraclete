@@ -164,7 +164,8 @@ public class ChessBoard : IInitializer
 
             index =
                 (index < 0) ? 63 :
-                (index > 63) ? 0 : index;
+                (index > 63) ? 0 :
+                index;
 
             var next = (index % 8, index / 8);
 

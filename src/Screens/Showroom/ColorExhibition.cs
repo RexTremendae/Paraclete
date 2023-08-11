@@ -31,7 +31,7 @@ public class ColorExhibition : IExhibition
             colorIdx++;
         }
 
-        painter.PaintRows(rows.Select(_ => _.Build()), Layout.Panes[0], (1, 3));
+        painter.PaintRows(rows.Select(_ => _.Build()), Layout.Panes[0], position);
     }
 
     private AnsiString GetForegroundColorString(ConsoleColor color)

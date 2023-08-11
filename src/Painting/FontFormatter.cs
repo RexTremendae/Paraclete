@@ -2,22 +2,22 @@ namespace Paraclete.Painting;
 
 using Paraclete.Ansi;
 
-public class FontWriter
+public class FontFormatter
 {
-    private FontWriter(Font font)
+    private FontFormatter(Font font)
     {
         Font = font;
     }
 
     public Font Font { get; }
 
-    public static FontWriter Create(Font.Size fontSize)
+    public static FontFormatter Create(Font.Size fontSize)
     {
         var font = Font.OfSize(fontSize);
-        return new FontWriter(font);
+        return new FontFormatter(font);
     }
 
-    public void Write(string text, AnsiControlSequence color, (int x, int y) cursorPos, Painter painter)
+    public IEnumerable<AnsiString> Format(string text, AnsiControlSequence color)
     {
         var textRows = Enumerable
             .Range(0, Font.CharacterHeight)
@@ -33,6 +33,6 @@ public class FontWriter
             });
         }
 
-        painter.PaintRows(textRows.Select(_ => _.Build()), cursorPos);
+        return textRows.Select(_ => _.Build());
     }
 }

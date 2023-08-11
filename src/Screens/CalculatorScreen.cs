@@ -72,7 +72,7 @@ public class CalculatorScreen : IScreen
             var offsetX = 1;
             var offsetY = 2;
 
-            var paddingWidth = int.Max(0, pane.Size.x - offsetX - 4);
+            var paddingWidth = (pane.Size.x - offsetX - 4).ZeroFloor();
             var conversions = new[]
             {
                 ("Dec", radix.ToDecimalString(useGrouping: true, padGroups: false).PadRight(paddingWidth)),

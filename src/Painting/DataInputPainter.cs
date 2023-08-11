@@ -24,7 +24,7 @@ public class DataInputPainter
         var errorText = (_settings.Colors.ErroneousInputData + _dataInputter.ErrorMessage).PadRight(errorTextLength);
         var description = " " + _settings.Colors.InputLabel + _dataInputter.Label + " " + errorText;
 
-        var cursorText = string.Empty.PadRight(int.Max(0, windowWidth - _dataInputter.CurrentInput.Length - 3));
+        var cursorText = string.Empty.PadRight((windowWidth - _dataInputter.CurrentInput.Length - 3).ZeroFloor());
         var input = " " + dataInputColor + _dataInputter.CurrentInput + _settings.Colors.InputLabel + cursorText;
 
         var rows = new AnsiString[]

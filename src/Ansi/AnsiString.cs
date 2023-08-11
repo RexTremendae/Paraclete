@@ -58,7 +58,7 @@ public partial class AnsiString
     public AnsiString PadRight(int totalWidth, char paddingChar = ' ')
     {
         var pieces = Pieces.ToList();
-        var paddingWidth = int.Max(0, totalWidth - Length);
+        var paddingWidth = (totalWidth - Length).ZeroFloor();
         if (paddingWidth > 0)
         {
             pieces.Add(new AnsiStringTextPiece(string.Empty.PadRight(paddingWidth, paddingChar)));
@@ -81,7 +81,7 @@ public partial class AnsiString
             }
 
             var textPart = piece.ToString() ?? string.Empty;
-            var lengthLeft = maxLength - totalLength;
+            var lengthLeft = (maxLength - totalLength).ZeroFloor();
 
             if (textPart.Length >= lengthLeft)
             {

@@ -8,4 +8,9 @@ public static class IntExtensions
             ? Enumerable.Range(start, end - start + (endIsInclusive ? 1 : 0))
             : throw new ArgumentException(message: $"End ({end}) cannot be smaller than ({start})", paramName: nameof(end));
     }
+
+    public static int ZeroFloor(this int value)
+    {
+        return int.Max(0, value);
+    }
 }
