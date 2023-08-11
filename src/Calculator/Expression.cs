@@ -1,8 +1,6 @@
 namespace Paraclete.Calculator;
 
-using System.Text;
-
-public class Expression
+public partial class Expression
 {
     private Expression()
     {
@@ -31,81 +29,14 @@ public class Expression
     public static bool TryCreate(string inputData, out Expression expression)
     {
         expression = Empty;
-        var currentTokenType = TokenType.None;
-        var currentToken = new StringBuilder();
-        var tokens = new List<(string token, TokenType type)>();
 
-        var addToken = (StringBuilder tokenBuilder, TokenType type) =>
-        {
-            if (type == TokenType.Invalid || type == TokenType.None)
-            {
-                throw new InvalidOperationException($"Cannot add token of type {type}.");
-            }
-
-            tokens.Add((tokenBuilder.ToString().Trim(), type));
-        };
-
-        foreach (var ch in inputData)
-        {
-            if (ch == ' ')
-            {
-                addToken(currentToken, currentTokenType);
-                currentToken.Clear();
-                currentTokenType = TokenType.None;
-                continue;
-            }
-
-            var nextTokenType = ch switch
-            {
-                var x when x >= '0' && x <= '9' => TokenType.Numeric,
-                var _ when "+-*/%^".Contains(ch) => TokenType.Operator,
-                _ => TokenType.Invalid
-            };
-
-            if (currentTokenType == TokenType.Operator && nextTokenType == TokenType.Operator)
-            {
-                if (ch == '+' || ch == '-')
-                {
-                    addToken(currentToken, currentTokenType);
-                    currentToken.Clear();
-                    currentTokenType = TokenType.Numeric;
-                    currentToken.Append(ch);
-                    continue;
-                }
-
-                return false;
-            }
-
-            if (nextTokenType == TokenType.Invalid)
-            {
-                return false;
-            }
-
-            if (currentTokenType == TokenType.None || currentTokenType == nextTokenType)
-            {
-                currentTokenType = nextTokenType;
-            }
-            else
-            {
-                addToken(currentToken, currentTokenType);
-                currentToken.Clear();
-                currentTokenType = nextTokenType;
-            }
-
-            currentToken.Append(ch);
-        }
-
-        if (currentToken.Length > 0)
-        {
-            addToken(currentToken, currentTokenType);
-        }
-
-        if (!ExpressionTreeBuilder.TryBuildTree(tokens, out var rootTokenNode))
+        var (root, tokens) = new Factory().CreateTokens(inputData);
+        if (!tokens.Any())
         {
             return false;
         }
 
-        expression = new Expression(rootTokenNode, tokens);
+        expression = new Expression(root, tokens);
         return true;
     }
 
