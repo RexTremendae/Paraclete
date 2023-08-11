@@ -4,6 +4,8 @@ using Paraclete.Ansi;
 using Paraclete.Painting;
 using Paraclete.Screens.Chess;
 
+#pragma warning disable CA1822 // Member does not access instance data and can be marked as static
+
 public partial class Settings
 {
     public TimeSpan RepaintLoopInterval => TimeSpan.FromMilliseconds(30);
@@ -78,3 +80,5 @@ public partial class Settings
         }
     }
 }
+
+#pragma warning restore CA1822 // Member does not access instance data and can be marked as static
