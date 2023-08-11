@@ -158,7 +158,7 @@ public class ChessBoard : IInitializer
     {
         var index = (position.y * 8) + position.x;
 
-        for (; ; )
+        while (true)
         {
             index += direction;
 
@@ -191,7 +191,7 @@ public class ChessBoard : IInitializer
             return position;
         }
 
-        for (; ; )
+        while (true)
         {
             index += direction;
 

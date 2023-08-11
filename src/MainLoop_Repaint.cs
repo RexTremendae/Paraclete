@@ -6,7 +6,7 @@ public partial class MainLoop
     {
         var screenSaverWasActive = false;
 
-        for (; ; )
+        while (true)
         {
             if (_terminator.TerminationRequested)
             {

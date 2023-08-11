@@ -190,7 +190,7 @@ public class Painter
         Console.Write(data);
     }
 
-    private void WriteBounded(AnsiString ansiString, (int x, int y) pos, (int x, int y) bound, bool showEllipsis = false)
+    private static void WriteBounded(AnsiString ansiString, (int x, int y) pos, (int x, int y) bound, bool showEllipsis = false)
     {
         if (pos.y >= bound.y)
         {

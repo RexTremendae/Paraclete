@@ -32,19 +32,7 @@ public class AnsiExhibition : IExhibition
         }
     }
 
-    private static AnsiString FormatForDisplay(AnsiStringControlSequencePart part)
-    {
-        return
-            ForegroundColors.Gray +
-            BackgroundColors.DarkGray +
-            "\\u001b" +
-            ForegroundColors.Black +
-            BackgroundColors.Gray +
-            (part.ToString() ?? string.Empty).Replace(EscapeChr.ToString(), string.Empty) +
-            AnsiSequences.Reset;
-    }
-
-    private void Paint(AnsiString text, int left, int top, Painter painter, Pane pane)
+    private static void Paint(AnsiString text, int left, int top, Painter painter, Pane pane)
     {
         var ansiExposedTextBuilder = new AnsiStringBuilder();
 
@@ -64,5 +52,17 @@ public class AnsiExhibition : IExhibition
 
         painter.Paint(ansiExposedTextBuilder.Build(), pane, (left, top));
         painter.Paint(text + AnsiSequences.Reset + " ", pane, (left, top + 1));
+    }
+
+    private static AnsiString FormatForDisplay(AnsiStringControlSequencePart part)
+    {
+        return
+            ForegroundColors.Gray +
+            BackgroundColors.DarkGray +
+            "\\u001b" +
+            ForegroundColors.Black +
+            BackgroundColors.Gray +
+            (part.ToString() ?? string.Empty).Replace(EscapeChr.ToString(), string.Empty) +
+            AnsiSequences.Reset;
     }
 }

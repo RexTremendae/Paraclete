@@ -4,7 +4,7 @@ using System.Text;
 
 public partial class Expression
 {
-    private class Factory
+    private sealed class Factory
     {
         private readonly List<(string token, TokenType type)> _tokens = new ();
         private readonly StringBuilder _currentToken = new ();

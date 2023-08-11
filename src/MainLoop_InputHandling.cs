@@ -19,7 +19,7 @@ public partial class MainLoop
     {
         ConsoleKeyInfo key;
 
-        for (; ; )
+        while (true)
         {
             if (_terminator.TerminationRequested)
             {
