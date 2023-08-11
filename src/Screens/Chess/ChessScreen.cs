@@ -16,6 +16,7 @@ public class ChessScreen : IScreen, IInitializer
     private readonly ChessBoard _board;
     private readonly PieceSelectionService _pieceSelectionService;
     private readonly ScenarioSelector _scenarioSelector;
+    private readonly PossibleMovesTracker _possibleMovesTracker;
 
     private ChessMenu _chessMenu;
     private SelectScenarioMenu _selectScenarioMenu;
@@ -24,12 +25,14 @@ public class ChessScreen : IScreen, IInitializer
         Settings settings,
         ChessBoard board,
         PieceSelectionService pieceSelectionService,
+        PossibleMovesTracker possibleMovesTracker,
         ScenarioSelector scenarioSelector)
     {
         _settings = settings.Chess;
         _board = board;
         _pieceSelectionService = pieceSelectionService;
         _scenarioSelector = scenarioSelector;
+        _possibleMovesTracker = possibleMovesTracker;
 
         // These are handled in Initialize(), but the compiler does not understand that.
         _chessMenu = default!;
@@ -54,6 +57,7 @@ public class ChessScreen : IScreen, IInitializer
             var boardPosition = (2, 2);
             PaintBoard(painter, pane, boardPosition);
             PaintPieces(painter, pane, boardPosition);
+            PaintShadowPieces(painter, pane, boardPosition);
             PaintSelectionMarker(painter, pane, boardPosition);
         }
         else if (paneIndex == 0 && Menu == _selectScenarioMenu)
@@ -75,62 +79,6 @@ public class ChessScreen : IScreen, IInitializer
 
             painter.PaintRows(rows, pane, (1, 1));
         }
-
-/*
-        var currentPlayerY = _margin.y + _boardHeight + 1;
-        var currentPlayerColor = GetPlayerColor(_board.CurrentPlayer);
-
-        buffer.Paint((_margin.x, currentPlayerY), "Current player: ", _settings.Colors.Text);
-        buffer.Paint((_margin.x, currentPlayerY + 1), _board.CurrentPlayer, currentPlayerColor);
-
-        buffer.Paint(
-            (_margin.x + _boardWidth - 8, _margin.y + _boardHeight + 2),
-            _board.IsCheck ? "CHECK!" : "      ",
-            _settings.Colors.CheckIndicator);
-
-        var messageLimit = 6;
-        var messages = _messenger.GetMessages(messageLimit).ToArray();
-
-        if (messages.Any())
-        {
-            var maxWidth = 60;
-            var messageTop = _margin.y + _boardHeight + 4;
-            buffer.Paint(
-                (_margin.x, messageTop),
-                @$"
-                    ╭{"".PadLeft(maxWidth+2, '─')}╮
-                    │{"".PadLeft(maxWidth+2)}│
-                    ├{"".PadLeft(maxWidth+2, '─')}┤
-                ",
-                _settings.Colors.DialogBorder,
-                StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-
-            buffer.Paint((_margin.x + 2, messageTop + 1), "Messages", _settings.Colors.Heading);
-            messageTop += 3;
-
-            foreach (var i in 0.To(messageLimit))
-            {
-                buffer.Paint(
-                    (_margin.x, messageTop + i),
-                    $"│{"".PadLeft(maxWidth+2)}│",
-                    _settings.Colors.DialogBorder
-                );
-            }
-            buffer.Paint(
-                (_margin.x, messageTop + messageLimit),
-                $"╰{"".PadLeft(maxWidth+2, '─')}╯",
-                _settings.Colors.DialogBorder
-            );
-
-            foreach (var msg in messages)
-            {
-                buffer.Paint(
-                    (_margin.x+2, messageTop++),
-                    msg.Length > maxWidth ? msg[..maxWidth] : msg,
-                    _settings.Colors.Messages);
-            }
-        }
-*/
     };
 
     public Task Initialize(IServiceProvider services)
@@ -201,6 +149,23 @@ public class ChessScreen : IScreen, IInitializer
                     pane,
                     CalculatePaintPosition((x, y), boardPosition));
             }
+        }
+    }
+
+    private void PaintShadowPieces(Painter painter, Pane pane, (int x, int y) boardPosition)
+    {
+        var from = _pieceSelectionService.MarkerPosition;
+        var piece = _board.GetPiece(from);
+
+        if (piece?.color != _board.CurrentPlayer)
+        {
+            return;
+        }
+
+        foreach (var move in _possibleMovesTracker.GetPossibleMovesFrom(from))
+        {
+            var pieceRepresentation = _board.GetPiece(move.from)!.Value.definition.Representation;
+            painter.Paint(_settings.Colors.ShadowPiece.ToString() + pieceRepresentation, pane, CalculatePaintPosition(Transform(move.to), boardPosition));
         }
     }
 
@@ -312,15 +277,4 @@ public class ChessScreen : IScreen, IInitializer
         yield return btmRowBuilder.Build();
         yield return alphaRowBuilder.Build();
     }
-
-/*
-    private AnsiString GetPlayerColor(PlayerColor color)
-    {
-        return color switch {
-            PlayerColor.White => _settings.Colors.WhitePlayer,
-            PlayerColor.Black => _settings.Colors.BlackPlayer,
-            _ => throw new InvalidDataException($"{color}")
-        };
-    }
-*/
 }

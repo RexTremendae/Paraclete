@@ -59,6 +59,7 @@ public partial class Settings
             BlackPlayer = AnsiSequences.ForegroundColors.Magenta,
             WhitePlayer = AnsiSequences.ForegroundColors.White,
             PrimarySelection = AnsiSequences.ForegroundColors.Cyan,
+            ShadowPiece = AnsiSequences.ForegroundColors.DarkCyan,
         };
 
         public BorderStyleDefinition.Style BorderStyle { get; } = BorderStyleDefinition.Style.SingleRoundCorners;

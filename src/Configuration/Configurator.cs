@@ -19,7 +19,6 @@ public static class Configurator
 
         services
             .AddScoped<CalculatorHistory>()
-            .AddScoped<ChessBoard>()
             .AddScoped<DataInputPainter>()
             .AddScoped<DataInputter>()
             .AddScoped<ExhibitionSelector>()
@@ -28,8 +27,6 @@ public static class Configurator
             .AddScoped<MainLoop>()
             .AddScoped<MenuPainter>()
             .AddScoped<Painter>()
-            .AddScoped<PieceSelectionService>()
-            .AddScoped<ScenarioSelector>()
             .AddScoped<ScreenInvalidator>()
             .AddScoped<ScreenSaver>()
             .AddScoped<ScreenSelector>()
@@ -39,6 +36,7 @@ public static class Configurator
             .AddScoped<ToDoList>()
             .AddScoped<ToDoListPainter>()
             .AddScoped<UnicodeControl>()
+            .AddChessModule()
 
             .AddImplementationsOf<ICommand>()
             .AddImplementationsOf<IExhibition>()
@@ -52,6 +50,20 @@ public static class Configurator
         await services.InvokeInitializers(serviceProvider);
 
         return serviceProvider;
+    }
+
+    public static ServiceConfigurator AddChessModule(this ServiceConfigurator services)
+    {
+        services
+            .AddScoped<ChessBoard>()
+            .AddScoped<MoveHistory>()
+            .AddScoped<PieceSelectionService>()
+            .AddScoped<PossibleMovesTracker>()
+            .AddScoped<ScenarioSelector>()
+            .AddScoped<SpecialMovesCalculator>()
+        ;
+
+        return services;
     }
 
     public static void ConfigureLogging()

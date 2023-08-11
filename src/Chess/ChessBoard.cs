@@ -19,11 +19,16 @@ public class ChessBoard : IInitializer
         { PlayerColor.Black, new () },
     };
 
+    private readonly Dictionary<PlayerColor, (int x, int y)> _kingTracker = new ();
+    private readonly PossibleMovesTracker _possibleMovesTracker;
+    private readonly MoveHistory _moveHistory;
     private GameState _gameState;
 
-    public ChessBoard()
+    public ChessBoard(PossibleMovesTracker possibleMovesTracker, MoveHistory moveHistory)
     {
         _gameState = new (Enumerable.Empty<((int x, int y), ChessBoardPiece)>());
+        _possibleMovesTracker = possibleMovesTracker;
+        _moveHistory = moveHistory;
     }
 
     public PlayerColor CurrentPlayer { get; private set; }
@@ -64,12 +69,11 @@ public class ChessBoard : IInitializer
         foreach (var (position, piece) in scenario.GetPieces())
         {
             pieces.Add((position, piece));
-/*
+
             if (piece.definition.PieceType == PieceType.King)
             {
                 _kingTracker[piece.color] = position;
             }
-*/
         }
 
         foreach (var color in new[] { PlayerColor.Black, PlayerColor.White })
@@ -127,26 +131,24 @@ public class ChessBoard : IInitializer
 
         piecesClone[endPosition] = piece with { hasMoved = true };
         piecesClone.Remove(startPosition);
-/*
+
         _moveHistory.Add(new Move(
             player: CurrentPlayer,
-            pieceType: piece.Definition.PieceType,
+            pieceType: piece.definition.PieceType,
             from: startPosition,
             to: endPosition,
             capturedPiece: capturedPiece));
-*/
+
         if (piece.definition.PieceType == PieceType.Pawn && (endPosition.y == 0 || endPosition.y == 7))
         {
             UpdateGameState(piecesClone.Select(_ => (_.Key, _.Value)));
             return true;
         }
 
-/*
-        if (piece.Definition.PieceType == PieceType.King)
+        if (piece.definition.PieceType == PieceType.King)
         {
             _kingTracker[CurrentPlayer] = endPosition;
         }
-*/
 
         CurrentPlayer = CurrentPlayer.Swap();
         UpdateGameState(piecesClone.Select(_ => (_.Key, _.Value)));
@@ -176,61 +178,13 @@ public class ChessBoard : IInitializer
         }
     }
 
-/*
-    public (int x, int y) FindNextPossibleMoveToPosition((int x, int y) position, (int x, int y) piecePosition, int direction)
-    {
-        var index = (position.y * 8) + position.x;
-
-        var moves = _possibleMovesTracker
-            .GetPossibleMovesFrom(piecePosition)
-            .Select(_ => _.to)
-            .ToHashSet();
-
-        if (!moves.Any())
-        {
-            return position;
-        }
-
-        while (true)
-        {
-            index += direction;
-
-            index =
-                (index < 0) ? 63 :
-                (index > 63) ? 0 : index;
-
-            var next = (index % 8, index / 8);
-
-            if (moves.Contains(next))
-            {
-                return next;
-            }
-        }
-    }
-
-*/
-
     private void UpdateGameState(IEnumerable<((int x, int y) position, ChessBoardPiece piece)> pieces)
     {
-        // TODO: Avoid unused parameter until everything is properly implemented:
-        if (pieces.First().position.x == 1)
-        {
-        }
-
         _gameState = new GameState(pieces);
-/*
 
         _possibleMovesTracker.Recalculate(_gameState);
         var possibleMovesToKing = _possibleMovesTracker.GetPossibleMovesTo(_kingTracker[CurrentPlayer]);
         var otherPlayer = CurrentPlayer.Swap();
-        IsCheck = possibleMovesToKing.Any(_ => _gameState.Pieces[_.from].Color == otherPlayer);
-*/
+        IsCheck = possibleMovesToKing.Any(_ => _gameState.Pieces[_.from].color == otherPlayer);
     }
-
-/*
-        private int ToIndex((int x, int y) pos)
-        {
-            return (pos.y * 8) + pos.x;
-        }
-*/
 }
