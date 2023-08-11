@@ -25,13 +25,13 @@ public class Font
                 throw new InvalidOperationException($"Character '{key}' of font size '{size}' has an inconsistent height.");
             }
 
-            foreach (var row in data)
+            foreach (var rowLength in data.Select(_ => _.Length))
             {
                 if (CharacterWidth == 0)
                 {
-                    CharacterWidth = row.Length;
+                    CharacterWidth = rowLength;
                 }
-                else if (row.Length != CharacterWidth)
+                else if (rowLength != CharacterWidth)
                 {
                     throw new InvalidOperationException($"Character '{key}' of font size '{size}' has an inconsistent width.");
                 }

@@ -77,10 +77,7 @@ public class HomeScreen : IScreen
 
     public MenuBase Menu { get; }
 
-    public ILayout Layout { get; } = new ColumnBasedLayout(new ColumnBasedLayout.ColumnDefinition[]
-    {
-        new (width: _1stColumnWidth, 9),
-    });
+    public ILayout Layout { get; } = new ColumnBasedLayout(new ColumnBasedLayout.ColumnDefinition(width: _1stColumnWidth, 9));
 
     public Action GetPaintPaneAction(Painter painter, int paneIndex) => () =>
     {

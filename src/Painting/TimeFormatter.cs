@@ -39,6 +39,26 @@ public class TimeFormatter
             GetMothName(timestamp.Month));
     }
 
+    private static string GetMothName(int month)
+    {
+        return month switch
+        {
+             1 => "January",
+             2 => "February",
+             3 => "March",
+             4 => "April",
+             5 => "May",
+             6 => "June",
+             7 => "July",
+             8 => "August",
+             9 => "September",
+            10 => "October",
+            11 => "November",
+            12 => "December",
+            _ => throw new InvalidDataException($"Invalid month: {month}")
+        };
+    }
+
     private IEnumerable<AnsiString> Format(int hour, int minute, int second, int millisecond, string dayName, int day, string monthName)
     {
         var newCacheKey = (hour, minute, second, millisecond);
@@ -138,25 +158,5 @@ public class TimeFormatter
     private AnsiString GetFormattedDate(string dayName, int day, string monthName)
     {
         return _settings.DateColor + $"{dayName} {day} {monthName}";
-    }
-
-    private string GetMothName(int month)
-    {
-        return month switch
-        {
-             1 => "January",
-             2 => "February",
-             3 => "March",
-             4 => "April",
-             5 => "May",
-             6 => "June",
-             7 => "July",
-             8 => "August",
-             9 => "September",
-            10 => "October",
-            11 => "November",
-            12 => "December",
-            _ => throw new InvalidDataException($"Invalid month: {month}")
-        };
     }
 }

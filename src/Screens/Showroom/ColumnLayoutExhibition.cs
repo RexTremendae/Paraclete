@@ -11,7 +11,7 @@ public class ColumnLayoutExhibition : IExhibition
 
     private static readonly (int width, int[] heights)[] PaneSizes = new (int, int[])[]
     {
-        (50, new int[] { }),
+        (50, Array.Empty<int>()),
         (16, new int[] { 5, 8, 12 }),
         (20, new int[] { 18 }),
         (25, new int[] { 15, 15 }),
@@ -25,8 +25,6 @@ public class ColumnLayoutExhibition : IExhibition
         var rows = new List<AnsiString>();
         var pane = Layout.Panes[paneIndex];
 
-        var contentWidth = (pane.Size.x - 2).ZeroFloor();
-
         AddTopRow(rows, paneIndex.ToString("00"), pane.Size.x);
         var end = int.Max(1, pane.Size.y - 1);
         1.To(end).Foreach(y =>
@@ -39,7 +37,7 @@ public class ColumnLayoutExhibition : IExhibition
         painter.PaintRows(rows, pane);
     }
 
-    private void AddTopRow(List<AnsiString> rows, string title, int paneWidth)
+    private static void AddTopRow(List<AnsiString> rows, string title, int paneWidth)
     {
         var ansiTitle = " # " + AnsiSequences.ForegroundColors.Blue + title + _foregroundColor + " # ";
         var paddingWidthLeft = (((paneWidth - ansiTitle.Length) / 2) - 1).ZeroFloor();
@@ -59,6 +57,17 @@ public class ColumnLayoutExhibition : IExhibition
             .Truncate(paneWidth - 1) +
             _foregroundColor +
             "●");
+    }
+
+    private static void AddBottomRow(List<AnsiString> rows, int paneWidth)
+    {
+        rows.Add(new AnsiStringBuilder()
+            .Append(_foregroundColor)
+            .Append(_backgroundColor)
+            .Append("●")
+            .Append(string.Empty.PadRight((paneWidth - 2).ZeroFloor(), '-'))
+            .Append("●")
+            .Build());
     }
 
     private void AddMiddleRow(List<AnsiString> rows, int paneIndex, int paneWidth, int rowIndex)
@@ -110,17 +119,6 @@ public class ColumnLayoutExhibition : IExhibition
         rows.Add(contentBuilder
             .Append(_foregroundColor)
             .Append("|")
-            .Build());
-    }
-
-    private void AddBottomRow(List<AnsiString> rows, int paneWidth)
-    {
-        rows.Add(new AnsiStringBuilder()
-            .Append(_foregroundColor)
-            .Append(_backgroundColor)
-            .Append("●")
-            .Append(string.Empty.PadRight((paneWidth - 2).ZeroFloor(), '-'))
-            .Append("●")
             .Build());
     }
 }

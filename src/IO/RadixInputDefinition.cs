@@ -47,7 +47,7 @@ public class RadixInputDefinition : IInputDefinition
         return success;
     }
 
-    private string EnsurePrefix(string inputData)
+    private static string EnsurePrefix(string inputData)
     {
         return inputData.Length < 2
             ? $"0d{inputData}"

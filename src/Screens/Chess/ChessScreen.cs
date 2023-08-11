@@ -39,7 +39,7 @@ public class ChessScreen : IScreen, IInitializer
 
     public MenuBase Menu { get; private set; }
 
-    public ILayout Layout { get; } = new ColumnBasedLayout(new ColumnBasedLayout.ColumnDefinition[] { new (30) });
+    public ILayout Layout { get; } = new ColumnBasedLayout(new ColumnBasedLayout.ColumnDefinition(30));
 
     public string Name => "Chess";
 
@@ -157,6 +157,13 @@ public class ChessScreen : IScreen, IInitializer
         Menu = _chessMenu;
     }
 
+    private static (int x, int y) CalculatePaintPosition((int x, int y) position, (int x, int y) boardOffset)
+    {
+        var x = (position.x * 4) + boardOffset.x + 4;
+        var y = ((7 - position.y) * 2) + boardOffset.y + 2;
+        return (x, y);
+    }
+
     private void PaintSelectionMarker(Painter painter, Pane pane, (int x, int y) boardPosition)
     {
         var markerPosition = _pieceSelectionService.MarkerPosition;
@@ -210,13 +217,6 @@ public class ChessScreen : IScreen, IInitializer
         return _settings.RotateBoard
             ? (7 - x, 7 - y)
             : (x, y);
-    }
-
-    private (int x, int y) CalculatePaintPosition((int x, int y) position, (int x, int y) boardOffset)
-    {
-        var x = (position.x * 4) + boardOffset.x + 4;
-        var y = ((7 - position.y) * 2) + boardOffset.y + 2;
-        return (x, y);
     }
 
     private IEnumerable<AnsiString> GetBoardRows()

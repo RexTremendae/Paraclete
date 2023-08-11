@@ -4,7 +4,10 @@ using System.Text.RegularExpressions;
 
 public class AnsiControlSequence
 {
-    private static readonly Regex _validationRegex = new ($@"^{AnsiSequences.EscapeCharacter}\[\??(\d+(;\d+)*)?[a-zA-Z]$", RegexOptions.Compiled);
+    private static readonly Regex _validationRegex = new (
+        $@"^{AnsiSequences.EscapeCharacter}\[\??(\d+(;\d+)*)?[a-zA-Z]$",
+        RegexOptions.Compiled,
+        TimeSpan.FromMilliseconds(500));
 
     private readonly string _sequence;
 

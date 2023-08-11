@@ -79,7 +79,7 @@ public class ColumnBasedLayout : ILayout
         Panes = panes.ToArray();
     }
 
-    private IEnumerable<Pane> GenerateColumnPanes(ColumnDefinition column, int xPos, int paneWidth, int drawableWindowHeight)
+    private static IEnumerable<Pane> GenerateColumnPanes(ColumnDefinition column, int xPos, int paneWidth, int drawableWindowHeight)
     {
         var yPos = 1;
         var paneHeight = 0;
@@ -113,6 +113,27 @@ public class ColumnBasedLayout : ILayout
         }
 
         return panes;
+    }
+
+    private static bool IsDivider(int rowIndex, ColumnDefinition col)
+    {
+        var totalHeight = 1;
+        foreach (var height in col.CellHeights)
+        {
+            totalHeight += height;
+            if (rowIndex < totalHeight)
+            {
+                return false;
+            }
+            else if (rowIndex == totalHeight)
+            {
+                return true;
+            }
+
+            totalHeight++;
+        }
+
+        return false;
     }
 
     private string GenerateDynamicRow(int rowIndex, int windowWidth)
@@ -154,30 +175,9 @@ public class ColumnBasedLayout : ILayout
         }
 
         rowBuilder.Append(string.Empty.PadRight(int.Max(windowWidth - totalWidth - 1, 0)));
-        rowBuilder.Append("║");
+        rowBuilder.Append('║');
 
         return rowBuilder.ToString();
-    }
-
-    private bool IsDivider(int rowIndex, ColumnDefinition col)
-    {
-        var totalHeight = 1;
-        foreach (var height in col.CellHeights)
-        {
-            totalHeight += height;
-            if (rowIndex < totalHeight)
-            {
-                return false;
-            }
-            else if (rowIndex == totalHeight)
-            {
-                return true;
-            }
-
-            totalHeight++;
-        }
-
-        return false;
     }
 
     private string GenerateStaticRow(char leftBorder, char rightBorder, char colBorder, char padding)
@@ -186,11 +186,11 @@ public class ColumnBasedLayout : ILayout
         rowBuilder.Append(leftBorder);
         var totalWidth = 1;
 
-        foreach (var col in _columns)
+        foreach (var colWidth in _columns.Select(_ => _.Width))
         {
-            rowBuilder.Append(string.Empty.PadRight(col.Width, padding));
+            rowBuilder.Append(string.Empty.PadRight(colWidth, padding));
             rowBuilder.Append(colBorder);
-            totalWidth += col.Width + 1;
+            totalWidth += colWidth + 1;
         }
 
         var truncateWidth = _windowWidth - 1;

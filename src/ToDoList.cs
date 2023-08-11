@@ -1,5 +1,6 @@
 namespace Paraclete;
 
+using System.Globalization;
 using Paraclete.Ansi;
 
 public class ToDoList : IInitializer
@@ -179,7 +180,7 @@ public class ToDoList : IInitializer
 
             (done ? _doneItems : _toDoItems).Add(new (
                 description: line[13..],
-                expirationDate: DateOnly.Parse(line[2..12])));
+                expirationDate: DateOnly.Parse(line[2..12], CultureInfo.InvariantCulture)));
         }
 
         UpdateMaxItemLength();

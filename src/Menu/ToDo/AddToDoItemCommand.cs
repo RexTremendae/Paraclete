@@ -2,7 +2,7 @@ namespace Paraclete.Menu.ToDo;
 
 using Paraclete.IO;
 
-public class AddToDoItemCommand : ICommand, IInputCommand<string>
+public class AddToDoItemCommand : IInputCommand<string>
 {
     private readonly ToDoList _toDoList;
     private readonly DataInputter _dataInputter;

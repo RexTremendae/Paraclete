@@ -2,7 +2,7 @@ namespace Paraclete.PInvoke;
 
 using System.Runtime.InteropServices;
 
-public static class Keyboard
+public static partial class Keyboard
 {
     // These are all the possible values in the VK enumeration. It covers most of the special buttons on a keyboard.
     // See http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winui/winui/WindowsUserInterface/UserInput/VirtualKeyCodes.asp
@@ -95,11 +95,11 @@ public static class Keyboard
         Z = 0x5A,
     }
 
+    public static short GetAsyncKeyState(VirtKey nVirtKey) => GetAsyncKeyState((int)nVirtKey);
+
     // The GetAsyncKeyState takes a virtual key code as the nVirtKey parameter. It then checks on the state of
     // this key (down/up). The return code is either zero for up or any non-zero value for pressed,
     // thus it's easiest to convert the result to a boolean and use that result.
-    [DllImport("user32.dll")]
-    public static extern short GetAsyncKeyState(int nVirtKey);
-
-    public static short GetAsyncKeyState(VirtKey nVirtKey) => GetAsyncKeyState((int)nVirtKey);
+    [LibraryImport("user32.dll")]
+    private static partial short GetAsyncKeyState(int nVirtKey);
 }

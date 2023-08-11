@@ -1,5 +1,7 @@
 namespace Paraclete.IO;
 
+using System.Globalization;
+
 public class DateOnlyInputDefinition : IInputDefinition
 {
     public Type DataType => typeof(DateOnly);
@@ -15,7 +17,7 @@ public class DateOnlyInputDefinition : IInputDefinition
             return true;
         }
 
-        if (DateOnly.TryParse(inputData, out var dateOnlyResult))
+        if (DateOnly.TryParse(inputData, CultureInfo.InvariantCulture, out var dateOnlyResult))
         {
             errorMessage = string.Empty;
             result = dateOnlyResult;

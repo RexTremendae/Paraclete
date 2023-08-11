@@ -175,7 +175,7 @@ public class Painter
         }
     }
 
-    private void SetCursorPosition(int x, int y)
+    private static void SetCursorPosition(int x, int y)
     {
         if (x >= Console.WindowWidth || y >= Console.WindowHeight)
         {
@@ -185,7 +185,7 @@ public class Painter
         Console.SetCursorPosition(x, y);
     }
 
-    private void Write(object data)
+    private static void Write(object data)
     {
         Console.Write(data);
     }

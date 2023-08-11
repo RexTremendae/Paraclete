@@ -34,7 +34,7 @@ public class ColorExhibition : IExhibition
         painter.PaintRows(rows.Select(_ => _.Build()), Layout.Panes[0], position);
     }
 
-    private AnsiString GetForegroundColorString(ConsoleColor color)
+    private static AnsiString GetForegroundColorString(ConsoleColor color)
     {
         return color switch {
             ConsoleColor.Black       => ForegroundColors.Black + BackgroundColors.Gray,
@@ -59,7 +59,7 @@ public class ColorExhibition : IExhibition
         + color.ToString() + AnsiSequences.Reset;
     }
 
-    private AnsiString GetBackgroundColorString(ConsoleColor color)
+    private static AnsiString GetBackgroundColorString(ConsoleColor color)
     {
         return color switch {
             ConsoleColor.Black       => BackgroundColors.Black + ForegroundColors.Gray,
