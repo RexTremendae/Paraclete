@@ -1,10 +1,10 @@
 namespace Paraclete.Configuration;
 
-using Paraclete.Calculator;
-using Paraclete.Chess;
-using Paraclete.Chess.Scenarios;
 using Paraclete.IO;
 using Paraclete.Menu;
+using Paraclete.Modules.Calculator;
+using Paraclete.Modules.Chess;
+using Paraclete.Modules.Chess.Scenarios;
 using Paraclete.Painting;
 using Paraclete.Screens;
 using Paraclete.Screens.Chess;

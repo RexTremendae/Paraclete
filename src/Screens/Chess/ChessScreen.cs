@@ -1,14 +1,14 @@
 namespace Paraclete.Screens.Chess;
 
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Paraclete.Layouts;
 using Paraclete.Painting;
 using Paraclete.Menu;
 using Paraclete.Menu.Chess;
 using Paraclete.Ansi;
-using Paraclete.Chess;
-using System.Threading.Tasks;
-using Paraclete.Chess.Scenarios;
+using Paraclete.Modules.Chess;
+using Paraclete.Modules.Chess.Scenarios;
 
 public class ChessScreen : IScreen, IInitializer
 {

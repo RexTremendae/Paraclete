@@ -2,10 +2,10 @@ namespace Paraclete.Screens;
 
 using System.Numerics;
 using Paraclete.Ansi;
-using Paraclete.Calculator;
 using Paraclete.Layouts;
 using Paraclete.Menu;
 using Paraclete.Menu.Calculator;
+using Paraclete.Modules.Calculator;
 using Paraclete.Painting;
 
 public class CalculatorScreen : IScreen

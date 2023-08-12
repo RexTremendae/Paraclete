@@ -1,8 +1,8 @@
 namespace Paraclete.Menu.Calculator;
 
 using System.Numerics;
-using Paraclete.Calculator;
 using Paraclete.IO;
+using Paraclete.Modules.Calculator;
 
 public class ConvertRadixCommand : IInputCommand<BigInteger>
 {

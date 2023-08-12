@@ -1,6 +1,6 @@
 namespace Paraclete.Screens.Chess;
 
-using Paraclete.Chess.Scenarios;
+using Paraclete.Modules.Chess.Scenarios;
 
 public class ScenarioSelector
 {

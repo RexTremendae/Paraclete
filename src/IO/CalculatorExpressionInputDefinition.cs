@@ -1,6 +1,6 @@
 namespace Paraclete.IO;
 
-using Paraclete.Calculator;
+using Paraclete.Modules.Calculator;
 
 public class CalculatorExpressionInputDefinition : IInputDefinition
 {
