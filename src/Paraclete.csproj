@@ -11,7 +11,7 @@
 
   <PropertyGroup>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <CodeAnalysisRuleSet>StyleCop.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>Paraclete.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <!-- This section is needed to enforce error on unnecessary using directives -->
@@ -25,6 +25,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Menees.Analyzers" Version="3.0.11">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />

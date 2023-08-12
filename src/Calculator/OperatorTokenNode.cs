@@ -47,7 +47,7 @@ public class OperatorTokenNode : TokenNodeBase
             "/" => left / right,
             "%" => left % right,
             "^" => double.Pow(left, right),
-            _ => throw new NotImplementedException($"Operator {_operator} is not implemented.")
+            _ => throw new NotSupportedException($"Operator {_operator} is not supported.")
         };
     }
 

@@ -9,7 +9,7 @@ public class ToDoMenu : MenuBase
         typeof(EditToDoItemCommand),
         typeof(EditToDoDateCommand),
         typeof(DeleteSelectedToDoItemCommand),
-        typeof(SortToDoItemCommand),
+        typeof(SortToDoItemsCommand),
         typeof(ToggleItemDoneCommand),
         typeof(ToggleItemMoveModeCommand),
         typeof(PreviousItemCommand),

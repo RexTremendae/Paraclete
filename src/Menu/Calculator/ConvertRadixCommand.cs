@@ -22,7 +22,11 @@ public class ConvertRadixCommand : IInputCommand<BigInteger>
 
     public Task Execute()
     {
-        _dataInputter.StartInput(this, $"Enter number to convert (prefix with {RadixInputDefinition.ValidPrefixesDescription}):", inputDefinition: new RadixInputDefinition());
+        _dataInputter.StartInput(
+            this,
+            $"Enter number to convert (prefix with {RadixInputDefinition.ValidPrefixesDescription}):",
+            inputDefinition: new RadixInputDefinition());
+
         return Task.CompletedTask;
     }
 

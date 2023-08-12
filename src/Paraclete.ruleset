@@ -41,4 +41,7 @@
     <Rule Id="DOC203" Action="None" />
     <Rule Id="DOC204" Action="None" />
   </Rules>
+  <Rules AnalyzerId="Menees.Analyzers" RuleNamespace="Menees.Analyzers">
+    <Rule Id="MEN016" Action="None" /> <!-- MEN016: Use object-oriented methods instead of top-level statements. -->
+  </Rules>
 </RuleSet>

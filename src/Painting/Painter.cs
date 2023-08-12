@@ -19,7 +19,12 @@ public class Painter
     private int _windowHeight;
     private int _windowWidth;
 
-    public Painter(ScreenSelector screenSelector, ScreenInvalidator screenInvalidator, MenuPainter menuPainter, DataInputter dataInputter, DataInputPainter dataInputPainter)
+    public Painter(
+        ScreenSelector screenSelector,
+        ScreenInvalidator screenInvalidator,
+        MenuPainter menuPainter,
+        DataInputter dataInputter,
+        DataInputPainter dataInputPainter)
     {
         _screenInvalidator = screenInvalidator;
         _screenSelector = screenSelector;

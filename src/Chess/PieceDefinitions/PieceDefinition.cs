@@ -19,7 +19,11 @@ public abstract class PieceDefinition
 
     protected abstract IEnumerable<(int x, int y)> GetPossibleMovesForPiece(ChessBoardPiece piece, (int x, int y) position, GameState gameState);
 
-    private static IEnumerable<(int x, int y)> ValidateAndSort(ChessBoardPiece piece, (int x, int y) position, GameState gameState, IEnumerable<(int x, int y)> possibleMoves)
+    private static IEnumerable<(int x, int y)> ValidateAndSort(
+        ChessBoardPiece piece,
+        (int x, int y) position,
+        GameState gameState,
+        IEnumerable<(int x, int y)> possibleMoves)
     {
         var moves = possibleMoves.ToHashSet();
         foreach (var (dirX, dirY) in new (int x, int y)[] { (0, 1), (0, -1), (1, 0), (-1, 0), (-1, -1), (1, -1), (-1, 1), (1, 1) } )

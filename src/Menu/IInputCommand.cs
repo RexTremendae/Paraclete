@@ -12,13 +12,13 @@ public interface IInputCommand : ICommand
     [ExcludeFromEnumeration]
     private sealed class NoInputCommandImplementation : IInputCommand
     {
-        public ConsoleKey Shortcut => throw new NotImplementedException();
+        public ConsoleKey Shortcut => throw new NotSupportedException();
 
-        public string Description => throw new NotImplementedException();
+        public string Description => throw new NotSupportedException();
 
         public Task Execute()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }

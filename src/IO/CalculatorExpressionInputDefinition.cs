@@ -2,7 +2,7 @@ namespace Paraclete.IO;
 
 using Paraclete.Calculator;
 
-public class CalculatorInputDefinition : IInputDefinition
+public class CalculatorExpressionInputDefinition : IInputDefinition
 {
     public Type DataType => typeof(Expression);
     public string Alphabet => IInputDefinition.NumericAlphabet + "()+-*/%^ ";

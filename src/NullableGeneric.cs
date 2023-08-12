@@ -8,7 +8,9 @@ public class NullableGeneric<T>
     {
         if (value == null)
         {
-            throw new InvalidOperationException("NullableGeneric wrapper cannot contain a null value. When needed, just set the whole NullableGeneric object to null.");
+            throw new InvalidOperationException(
+                "NullableGeneric wrapper cannot contain a null value. " +
+                "When needed, just set the whole NullableGeneric object to null.");
         }
 
         Value = value;

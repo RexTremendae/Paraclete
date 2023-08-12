@@ -1,11 +1,11 @@
 namespace Paraclete.Menu.ToDo;
 
-public class SortToDoItemCommand : ICommand
+public class SortToDoItemsCommand : ICommand
 {
     private readonly ToDoList _toDoList;
     private readonly ScreenInvalidator _screenInvalidator;
 
-    public SortToDoItemCommand(ToDoList toDoList, ScreenInvalidator screenInvalidator)
+    public SortToDoItemsCommand(ToDoList toDoList, ScreenInvalidator screenInvalidator)
     {
         _toDoList = toDoList;
         _screenInvalidator = screenInvalidator;
