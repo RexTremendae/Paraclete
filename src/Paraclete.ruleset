@@ -42,6 +42,7 @@
     <Rule Id="DOC204" Action="None" />
   </Rules>
   <Rules AnalyzerId="Menees.Analyzers" RuleNamespace="Menees.Analyzers">
+    <Rule Id="MEN010" Action="None" /> <!-- MEN010: Numeric literal should be replaced with a named constant. -->
     <Rule Id="MEN016" Action="None" /> <!-- MEN016: Use object-oriented methods instead of top-level statements. -->
   </Rules>
 </RuleSet>
