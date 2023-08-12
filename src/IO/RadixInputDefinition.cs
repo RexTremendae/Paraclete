@@ -11,14 +11,11 @@ public class RadixInputDefinition : IInputDefinition
     public Type DataType => typeof(string);
     public string Alphabet => "xXoOabcdefABCDEF" + IInputDefinition.NumericAlphabet;
 
-    public bool TryCompleteInput(string inputData, out object result, out string errorMessage)
+    public bool TryCompleteInput(string inputData, out OutResult<object> result)
     {
-        result = new BigInteger();
-        errorMessage = string.Empty;
-
         if (inputData.Length == 0)
         {
-            errorMessage = "No input";
+            result = OutResult<object>.CreateFailed("No input");
             return false;
         }
 
@@ -26,24 +23,27 @@ public class RadixInputDefinition : IInputDefinition
 
         if (inputData[0] != '0' || !ValidPrefixes.Contains(inputData[1], StringComparison.OrdinalIgnoreCase))
         {
-            errorMessage = $"Invalid radix (valid prefixes: {ValidPrefixesDescription})";
+            result = OutResult<object>.CreateFailed($"Invalid radix (valid prefixes: {ValidPrefixesDescription})");
             return false;
         }
 
         var type = char.ToLower(inputData[1]);
         inputData = inputData[2..];
-        var bigIntResult = new BigInteger();
+        var bigIntResult = OutResult<BigInteger>.CreateFailed($"Invalid prefix: '{type}'");
 
         var success = type switch
         {
-            'd' => inputData.TryParseDecimal(out bigIntResult, out errorMessage),
-            'b' => inputData.TryParseBinary(out bigIntResult, out errorMessage),
-            'x' => inputData.TryParseHexadecimal(out bigIntResult, out errorMessage),
-            'o' => inputData.TryParseOctal(out bigIntResult, out errorMessage),
+            'd' => inputData.TryParseDecimal(out bigIntResult),
+            'b' => inputData.TryParseBinary(out bigIntResult),
+            'x' => inputData.TryParseHexadecimal(out bigIntResult),
+            'o' => inputData.TryParseOctal(out bigIntResult),
             _ => false,
         };
 
-        result = bigIntResult;
+        result = success
+            ? OutResult<object>.CreateSuccessful(bigIntResult.Result.GetNonNullValue())
+            : OutResult<object>.CreateFailed(bigIntResult.ErrorMessage);
+
         return success;
     }
 

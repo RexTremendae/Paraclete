@@ -1,5 +1,6 @@
 namespace Paraclete.Extensions;
 
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 
 public static class StringExtensions
@@ -18,35 +19,39 @@ public static class StringExtensions
             : (text.EndsWith(ending) ? text[..^ending.Length] : text);
     }
 
-    public static bool TryParseBinary(this string input, out BigInteger result, out string errorMessage)
+    public static bool TryParseBinary(this string input, out OutResult<BigInteger> result)
     {
-        return TryParse(input, "binary", "01", out result, out errorMessage);
+        return TryParse(input, "binary", "01", out result);
     }
 
-    public static bool TryParseDecimal(this string input, out BigInteger result, out string errorMessage)
+    public static bool TryParseDecimal(this string input, out OutResult<BigInteger> result)
     {
-        return TryParse(input, "decimal", "0123456789", out result, out errorMessage);
+        return TryParse(input, "decimal", "0123456789", out result);
     }
 
-    public static bool TryParseHexadecimal(this string input, out BigInteger result, out string errorMessage)
+    public static bool TryParseHexadecimal(this string input, out OutResult<BigInteger> result)
     {
-        return TryParse(input, "hexadecimal", "0123456789abcdef", out result, out errorMessage);
+        return TryParse(input, "hexadecimal", "0123456789abcdef", out result);
     }
 
-    public static bool TryParseOctal(this string input, out BigInteger result, out string errorMessage)
+    public static bool TryParseOctal(this string input, out OutResult<BigInteger> result)
     {
-        return TryParse(input, "octal", "01234567", out result, out errorMessage);
+        return TryParse(input, "octal", "01234567", out result);
     }
 
-    private static bool TryParse(this string input, string baseName, string alphabet, out BigInteger result, out string errorMessage)
+    [return: NotNull]
+    public static string ToString(this string? value)
+    {
+        return value ?? string.Empty;
+    }
+
+    private static bool TryParse(this string input, string baseName, string alphabet, out OutResult<BigInteger> result)
     {
         input = input.ToLower();
-        result = 0;
-        errorMessage = string.Empty;
 
         if (input.Length == 0)
         {
-            errorMessage = "Invalid input.";
+            result = OutResult<BigInteger>.CreateFailed("Invalid input.");
             return false;
         }
 
@@ -58,7 +63,7 @@ public static class StringExtensions
             var data = alphabet.IndexOf(input[idx]);
             if (data < 0)
             {
-                errorMessage = $"Invalid {baseName} input: '{input[idx]}'";
+                result = OutResult<BigInteger>.CreateFailed($"Invalid {baseName} input: '{input[idx]}'");
                 return false;
             }
 
@@ -66,7 +71,7 @@ public static class StringExtensions
             multiplier *= alphabet.Length;
         }
 
-        result = value;
+        result = OutResult<BigInteger>.CreateSuccessful(value);
         return true;
     }
 }

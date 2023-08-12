@@ -1,21 +1,24 @@
 namespace Paraclete;
 
-using System.Diagnostics.CodeAnalysis;
-
 public class NullableGeneric<T>
 {
-    public NullableGeneric(T value)
+    private NullableGeneric(bool hasValue, T value)
     {
-        if (value == null)
-        {
-            throw new InvalidOperationException(
-                "NullableGeneric wrapper cannot contain a null value. " +
-                "When needed, just set the whole NullableGeneric object to null.");
-        }
-
         Value = value;
+        HasValue = hasValue;
     }
 
-    [NotNull]
+    public bool HasValue { get; }
+
     public T Value { get; }
+
+    public static NullableGeneric<T> Create(T value)
+    {
+        return new NullableGeneric<T>(hasValue: true, value);
+    }
+
+    public static NullableGeneric<T> CreateNullValue()
+    {
+        return new NullableGeneric<T>(hasValue: false, default!);
+    }
 }

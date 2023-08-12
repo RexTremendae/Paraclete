@@ -1,6 +1,7 @@
 namespace Paraclete;
 
 using Microsoft.Extensions.DependencyInjection;
+using Paraclete.Ansi;
 using Paraclete.IO;
 using Paraclete.Menu;
 using Paraclete.Menu.Shortcuts;
@@ -56,5 +57,43 @@ public partial class MainLoop
         {
             await Task.Delay(100);
         }
+
+        Console.WriteLine(AnsiSequences.ClearScreen);
+
+        PrintExceptionInfo();
+        SayBye();
+    }
+
+    private static void SayBye()
+    {
+        Console.WriteLine(AnsiSequences.ShowCursor);
+        Console.WriteLine(
+            AnsiSequences.ForegroundColors.White + " -- " +
+            AnsiSequences.ForegroundColors.Cyan + "Good bye! 👋" +
+            AnsiSequences.ForegroundColors.White + " -- " +
+            AnsiSequences.Reset);
+        Console.WriteLine();
+        Console.WriteLine();
+    }
+
+    private void PrintExceptionInfo()
+    {
+        new[] { ("Input handling loop", _inputHandlingException), ("Repaint loop", _repaintLoopException) }
+        .Foreach<(string loopId, Exception? exception)>(_ =>
+        {
+            if (_.exception != null)
+            {
+                Console.WriteLine($"Unhandled exception occurred in " + AnsiSequences.ForegroundColors.Cyan + _.loopId + AnsiSequences.Reset + ": ");
+                var title = _.exception.GetType().Name;
+                var bar = AnsiSequences.ForegroundColors.White + string.Empty.PadLeft(title.Length + 2, '-') + AnsiSequences.Reset;
+                Console.WriteLine(bar);
+                Console.WriteLine(AnsiSequences.ForegroundColors.Red + $" {title}" + AnsiSequences.Reset);
+                Console.WriteLine(bar);
+                Console.WriteLine(_.exception.Message);
+                Console.WriteLine();
+                Console.WriteLine(AnsiSequences.ForegroundColors.Gray + (_.exception.StackTrace?.ToString() ?? string.Empty));
+                Console.WriteLine();
+            }
+        });
     }
 }

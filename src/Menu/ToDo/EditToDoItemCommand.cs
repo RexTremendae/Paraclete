@@ -27,8 +27,8 @@ public class EditToDoItemCommand : IInputCommand<string>
 
         var selectedTodoItem = _toDoList.SelectedToDoItem.Description;
         var value = string.IsNullOrEmpty(selectedTodoItem)
-            ? null
-            : new NullableGeneric<string>(selectedTodoItem);
+            ? NullableGeneric<string>.CreateNullValue()
+            : NullableGeneric<string>.Create(selectedTodoItem);
 
         await _dataInputter.StartInput(this, "Enter ToDo item description:", value);
     }

@@ -1,6 +1,7 @@
 namespace ParacleteTest.IO;
 
 using System.Numerics;
+using Paraclete.Extensions;
 using Paraclete.IO;
 
 public class RadixInputDefinitionTest
@@ -43,13 +44,14 @@ public class RadixInputDefinitionTest
             var definition = new RadixInputDefinition();
 
             // Act
-            var success = definition.TryCompleteInput(input, out var actualObjectResult, out var errorMessage);
-            var actualResult = (BigInteger)actualObjectResult;
+            var success = definition.TryCompleteInput(input, out var actualResultObject);
+            var actualNullableResult = actualResultObject.Result;
 
             // Assert
-            errorMessage.Should().BeNullOrEmpty();
+            actualResultObject.ErrorMessage.Should().BeNullOrEmpty();
             success.Should().BeTrue();
-            actualResult.Should().Be(expectedResult);
+            actualNullableResult.HasNonNullValue().Should().BeTrue();
+            ((BigInteger)actualNullableResult.GetNonNullValue()).Should().Be(expectedResult);
         }
 
         [Theory]
@@ -71,10 +73,10 @@ public class RadixInputDefinitionTest
             var definition = new RadixInputDefinition();
 
             // Act
-            var success = definition.TryCompleteInput(input, out var _, out var errorMessage);
+            var success = definition.TryCompleteInput(input, out var result);
 
             // Assert
-            errorMessage.Should().NotBeNullOrEmpty();
+            result.ErrorMessage.Should().NotBeNullOrEmpty();
             success.Should().BeFalse();
         }
     }

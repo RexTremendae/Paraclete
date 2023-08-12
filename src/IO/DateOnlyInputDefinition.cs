@@ -7,24 +7,21 @@ public class DateOnlyInputDefinition : IInputDefinition
     public Type DataType => typeof(DateOnly);
     public string Alphabet => IInputDefinition.NumericAlphabet + "-";
 
-    public bool TryCompleteInput(string inputData, out object result, out string errorMessage)
+    public bool TryCompleteInput(string inputData, out OutResult<object> result)
     {
-        result = default(DateOnly);
-
         if (string.IsNullOrEmpty(inputData))
         {
-            errorMessage = "Date cannot be empty";
+            result = OutResult<object>.CreateSuccessful(default(DateOnly));
             return true;
         }
 
         if (DateOnly.TryParse(inputData, CultureInfo.InvariantCulture, out var dateOnlyResult))
         {
-            errorMessage = string.Empty;
-            result = dateOnlyResult;
+            result = OutResult<object>.CreateSuccessful(dateOnlyResult);
             return true;
         }
 
-        errorMessage = "Invalid date";
+        result = OutResult<object>.CreateFailed("Date cannot be empty");
         return false;
     }
 }

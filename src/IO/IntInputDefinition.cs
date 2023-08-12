@@ -5,17 +5,15 @@ public class IntInputDefinition : IInputDefinition
     public Type DataType => typeof(int);
     public string Alphabet => IInputDefinition.NumericAlphabet;
 
-    public bool TryCompleteInput(string inputData, out object result, out string errorMessage)
+    public bool TryCompleteInput(string inputData, out OutResult<object> result)
     {
-        result = default(int);
         if (int.TryParse(inputData, out var intResult))
         {
-            errorMessage = "Invalid integer";
-            result = intResult;
+            result = OutResult<object>.CreateSuccessful(intResult);
             return true;
         }
 
-        errorMessage = string.Empty;
+        result = OutResult<object>.CreateFailed("Invalid integer");
         return false;
     }
 }

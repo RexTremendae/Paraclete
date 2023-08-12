@@ -5,6 +5,8 @@ using Screens;
 
 public partial class MainLoop
 {
+    private Exception? _inputHandlingException;
+
     private void InitializeSwitchScreenCommands()
     {
         _switchScreenCommands.Clear();
@@ -26,21 +28,29 @@ public partial class MainLoop
                 break;
             }
 
-            key = Console.ReadKey(true);
-
-            var screenSaverWasActive = _screenSaver.IsActive;
-            _screenSaver.Inactivate();
-
-            var selectedCommand = await HandleInput(key);
-
-            if (screenSaverWasActive && !selectedCommand.IsScreenSaverResistant)
+            try
             {
-                continue;
+                key = Console.ReadKey(true);
+
+                var screenSaverWasActive = _screenSaver.IsActive;
+                _screenSaver.Inactivate();
+
+                var selectedCommand = await HandleInput(key);
+
+                if (screenSaverWasActive && !selectedCommand.IsScreenSaverResistant)
+                {
+                    continue;
+                }
+
+                if (selectedCommand != ICommand.NoCommand)
+                {
+                    await selectedCommand.Execute();
+                }
             }
-
-            if (selectedCommand != ICommand.NoCommand)
+            catch (Exception ex)
             {
-                await selectedCommand.Execute();
+                _inputHandlingException = ex;
+                _terminator.RequestTermination();
             }
         }
 

@@ -30,7 +30,7 @@ public class DataInputter
 
     public Task StartInput<T>(IInputCommand<T> inputCommand, AnsiString? label, T valueToEdit)
     {
-        return StartInput(inputCommand, label, new NullableGeneric<T>(valueToEdit));
+        return StartInput(inputCommand, label, NullableGeneric<T>.Create(valueToEdit));
     }
 
     public Task StartInput<T>(
@@ -45,9 +45,9 @@ public class DataInputter
         CurrentInput = string.Empty;
         _selectedInputter = inputDefinition ?? IInputDefinition.NoInputter;
 
-        if (valueToEdit != null)
+        if (valueToEdit.HasNonNullValue())
         {
-            _input.Append(valueToEdit?.Value.ToString());
+            _input.Append(valueToEdit.GetNonNullValue().ToString());
             CurrentInput = _input.ToString();
         }
 
@@ -89,9 +89,9 @@ public class DataInputter
                 return;
             }
 
-            if (!_selectedInputter.TryCompleteInput(_input.ToString(), out var result, out var errorMessage))
+            if (!_selectedInputter.TryCompleteInput(_input.ToString(), out var result))
             {
-                ErrorMessage = errorMessage;
+                ErrorMessage = result.ErrorMessage;
                 return;
             }
 
@@ -140,7 +140,7 @@ public class DataInputter
         }
     }
 
-    private async Task CompleteInput(object data)
+    private async Task CompleteInput(OutResult<object> data)
     {
         const BindingFlags publicInstanceFlags = BindingFlags.Instance | BindingFlags.Public;
         var methodInfo = _command
@@ -148,6 +148,6 @@ public class DataInputter
             ?.GetMethod(nameof(IInputCommand<int>.CompleteInput), publicInstanceFlags)
             ?? throw new InvalidOperationException("Could not find the CompleteInput method.");
 
-        await (Task)(methodInfo!.Invoke(_command, new object[] { data }))!;
+        await (Task)(methodInfo!.Invoke(_command, new object[] { data.Result.GetNonNullValue() }))!;
     }
 }

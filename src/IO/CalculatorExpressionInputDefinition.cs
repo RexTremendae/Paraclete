@@ -7,16 +7,15 @@ public class CalculatorExpressionInputDefinition : IInputDefinition
     public Type DataType => typeof(Expression);
     public string Alphabet => IInputDefinition.NumericAlphabet + "()+-*/%^ ";
 
-    public bool TryCompleteInput(string inputData, out object result, out string errorMessage)
+    public bool TryCompleteInput(string inputData, out OutResult<object> result)
     {
-        errorMessage = string.Empty;
-        result = Expression.Empty;
-        if (!Expression.TryCreate(inputData, out var expression))
+        if (Expression.TryCreate(inputData, out var expression))
         {
-            return false;
+            result = OutResult<object>.CreateSuccessful(expression);
+            return true;
         }
 
-        result = expression;
-        return true;
+        result = OutResult<object>.CreateFailed("Invalid expression");
+        return false;
     }
 }
