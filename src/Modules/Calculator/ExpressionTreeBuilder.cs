@@ -27,19 +27,19 @@ public static class ExpressionTreeBuilder
                 switch (type)
                 {
                     case TokenType.Numeric:
+                    case TokenType.ParenthesisStart:
                         rootOperatorNode.SetRightOperand(newNode);
                         break;
 
                     case TokenType.Operator:
-                    {
                         var newOperatorNode = (OperatorTokenNode)newNode;
                         newOperatorNode.SetLeftOperand(root);
                         root = newOperatorNode;
                         break;
-                    }
 
                     case TokenType.Invalid:
                     case TokenType.None:
+                    case TokenType.ParenthesisEnd:
                     default:
                         rootToken = ITokenNode.Empty;
                         return false;
@@ -62,6 +62,8 @@ public static class ExpressionTreeBuilder
         {
             TokenType.Operator => new OperatorTokenNode(token),
             TokenType.Numeric => new NumericTokenNode(token),
+            TokenType.ParenthesisStart => new ParenthesisTokenNode(),
+            TokenType.ParenthesisEnd => new ParenthesisTokenNode(),
             _ => throw new InvalidOperationException($"Cannot create token from type {type}.")
         };
     }

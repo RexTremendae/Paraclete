@@ -8,6 +8,7 @@ public partial class Expression
     {
         private readonly List<(string token, TokenType type)> _tokens = new ();
         private readonly StringBuilder _currentToken = new ();
+        private readonly StringBuilder _log = new ();
         private TokenType _currentTokenType = TokenType.None;
 
         private static IEnumerable<(string token, TokenType type)> NoTokens { get; } =
@@ -28,25 +29,45 @@ public partial class Expression
 
             CompleteCurrentToken();
 
+            return (ITokenNode.Empty, _tokens);
+/*
             return ExpressionTreeBuilder.TryBuildTree(_tokens, out var rootTokenNode)
                 ? (rootTokenNode, _tokens)
                 : (ITokenNode.Empty, NoTokens);
+*/
+        }
+
+        private static TokenType GetTokenType(char chr)
+        {
+            return chr switch
+            {
+                _ when chr >= '0' && chr <= '9' => TokenType.Numeric,
+                _ when "+-*/%^".Contains(chr) => TokenType.Operator,
+                _ when chr == '(' => TokenType.ParenthesisStart,
+                _ when chr == ')' => TokenType.ParenthesisEnd,
+                _ => TokenType.Invalid
+            };
         }
 
         private bool HandleCharacter(char chr)
         {
+            _log.AppendLine($"Handling '{chr}'");
             if (chr == ' ')
             {
                 CompleteCurrentToken();
                 return true;
             }
 
-            var nextTokenType = chr switch
+            var nextTokenType = GetTokenType(chr);
+
+            if (nextTokenType == TokenType.ParenthesisStart || nextTokenType == TokenType.ParenthesisEnd)
             {
-                var x when x >= '0' && x <= '9' => TokenType.Numeric,
-                var _ when "+-*/%^".Contains(chr) => TokenType.Operator,
-                _ => TokenType.Invalid
-            };
+                CompleteCurrentToken();
+                _currentTokenType = nextTokenType;
+                _currentToken.Append(chr);
+                CompleteCurrentToken();
+                return true;
+            }
 
             if (_currentTokenType == TokenType.Operator && nextTokenType == TokenType.Operator)
             {
@@ -82,12 +103,13 @@ public partial class Expression
 
         private void CompleteCurrentToken()
         {
-            if (_currentToken.Length == 0)
+            _log.AppendLine($"Completing current token: [{_currentTokenType}] {_currentToken.ToString()}");
+            if (_currentToken.Length == 0 || _currentTokenType == TokenType.None)
             {
                 return;
             }
 
-            if (_currentTokenType == TokenType.Invalid || _currentTokenType == TokenType.None)
+            if (_currentTokenType == TokenType.Invalid)
             {
                 throw new InvalidOperationException($"Cannot add token of type {_currentTokenType}.");
             }

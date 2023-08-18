@@ -20,6 +20,8 @@ public partial class Expression
         None = 0,
         Operator,
         Numeric,
+        ParenthesisStart,
+        ParenthesisEnd,
     }
 
     public static Expression Empty { get; } = new ();
