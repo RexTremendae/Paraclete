@@ -135,7 +135,7 @@ public class ScreenSaver
         yield return frameColor +  "╭" + string.Empty.PadLeft(width, '─') + "╮";
         foreach (var row in timeRows)
         {
-            yield return "│" + row.PadRight(width) + frameColor + "│";
+            yield return frameColor + "│" + row.PadRight(width) + frameColor + "│";
         }
 
         yield return frameColor +  "╰" + string.Empty.PadLeft(width, '─') + "╯";
