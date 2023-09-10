@@ -23,7 +23,7 @@ public class ToDoListPainter
 
     public void Paint(Pane pane, (int x, int y) position, bool paintSelectionMaker = false)
     {
-        var toDoItemPadding = pane.Size.x - position.x;
+        var toDoItemPadding = (pane.Size.x - position.x).ZeroFloor();
 
         var rows = new List<AnsiString>();
         var builder = new AnsiStringBuilder();

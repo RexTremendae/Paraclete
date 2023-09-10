@@ -18,7 +18,7 @@ public class ToDoScreen : IScreen
     }
 
     public string Name => "ToDo";
-    public ConsoleKey Shortcut => ConsoleKey.F2;
+    public ConsoleKey Shortcut => ConsoleKey.F3;
 
     public MenuBase Menu { get; }
     public ILayout Layout { get; } = new SinglePaneLayout();

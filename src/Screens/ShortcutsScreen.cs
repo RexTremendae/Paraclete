@@ -14,7 +14,7 @@ public class ShortcutsScreen : IScreen
     }
 
     public string Name => "Shortcuts";
-    public ConsoleKey Shortcut => ConsoleKey.F3;
+    public ConsoleKey Shortcut => ConsoleKey.F6;
 
     public MenuBase Menu { get; }
     public ILayout Layout { get; } = new SinglePaneLayout();
