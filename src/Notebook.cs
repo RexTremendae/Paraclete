@@ -8,19 +8,18 @@ public class Notebook : IInitializer
 
     private readonly List<string> _sections;
 
-    private int _selectedSectionIndex;
     private Dictionary<string, string[]> _notes;
 
     public Notebook()
     {
         _notes = new ();
         _sections = new ();
-        _selectedSectionIndex = 0;
     }
 
     public IEnumerable<string> Sections => _notes.Keys;
-    public string SelectedSection => _selectedSectionIndex < _sections.Count
-        ? _sections[_selectedSectionIndex]
+    public int SelectedSectionIndex { get; private set; }
+    public string SelectedSection => SelectedSectionIndex < _sections.Count
+        ? _sections[SelectedSectionIndex]
         : string.Empty;
 
     public IEnumerable<string> GetSections()
@@ -28,9 +27,9 @@ public class Notebook : IInitializer
         return _notes.Keys;
     }
 
-    public IEnumerable<string> GetNotes()
+    public IEnumerable<string> GetNotes(string? section = null)
     {
-        return _notes.TryGetValue(SelectedSection, out var notes)
+        return _notes.TryGetValue(section ?? SelectedSection, out var notes)
             ? notes
             : Array.Empty<string>();
     }
@@ -53,24 +52,24 @@ public class Notebook : IInitializer
         _notes = data;
         _sections.Clear();
         _sections.AddRange(_notes.Keys);
-        _selectedSectionIndex = 0;
+        SelectedSectionIndex = 0;
     }
 
     public void SelectNextSection()
     {
-        _selectedSectionIndex++;
-        if (_selectedSectionIndex >= _sections.Count)
+        SelectedSectionIndex++;
+        if (SelectedSectionIndex >= _sections.Count)
         {
-            _selectedSectionIndex = 0;
+            SelectedSectionIndex = 0;
         }
     }
 
     public void SelectPreviousSection()
     {
-        _selectedSectionIndex--;
-        if (_selectedSectionIndex < 0)
+        SelectedSectionIndex--;
+        if (SelectedSectionIndex < 0)
         {
-            _selectedSectionIndex = _sections.Count - 1;
+            SelectedSectionIndex = _sections.Count - 1;
         }
     }
 }

@@ -54,22 +54,39 @@ public class NotebookPainter
         var rows = new List<AnsiString>();
         var builder = new AnsiStringBuilder();
 
-        rows.Add(builder
-            .Clear()
-            .Append(_formatConfig.header)
-            .Append(_notebook.SelectedSection)
-            .Build()
-            .PadRight(itemPadding)
-        );
+        var sections = _notebook.Sections.ToArray();
 
-        rows.AddRange(_notebook.GetNotes().Select(_ => builder
-            .Clear()
-            .Append(ResolveMarker(_))
-            .Append(_formatConfig.notes)
-            .Append(_)
-            .Build()
-            .PadRight(pane.Size.x - position.x)
-        ));
+        foreach (var sectionIndex in
+            _notebook.SelectedSectionIndex.To(sections.Length)
+            .Concat(0.To(_notebook.SelectedSectionIndex)))
+        {
+            var currentSection = sections[sectionIndex];
+
+            rows.Add(builder
+                .Clear()
+                .Append(_formatConfig.header)
+                .Append(currentSection)
+                .Build()
+                .PadRight(itemPadding)
+            );
+
+            rows.AddRange(_notebook.GetNotes(currentSection).Select(_ => builder
+                .Clear()
+                .Append(ResolveMarker(_))
+                .Append(_formatConfig.notes)
+                .Append(_)
+                .Build()
+                .PadRight(pane.Size.x - position.x)
+            ));
+
+            rows.Add(string.Empty);
+
+            if (sectionIndex == sections.Length - 1)
+            {
+                rows.Add(AnsiSequences.ForegroundColors.Gray + string.Empty.PadLeft(pane.Size.x - 2, '-'));
+                rows.Add(string.Empty);
+            }
+        }
 
         _painter.PaintRows(rows, pane, position, showEllipsis: true);
     }
