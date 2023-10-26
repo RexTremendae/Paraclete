@@ -58,7 +58,10 @@ public partial class MainLoop
             await Task.Delay(100);
         }
 
-        Console.WriteLine(AnsiSequences.ClearScreen);
+        Console.Write(AnsiSequences.ClearScreen);
+        Console.Write(AnsiSequences.EraseScrollbackBuffer);
+        Console.Write(AnsiSequences.ShowCursor);
+        Console.SetCursorPosition(0, 0);
 
         PrintExceptionInfo();
         SayBye();
@@ -66,7 +69,7 @@ public partial class MainLoop
 
     private static void SayBye()
     {
-        Console.WriteLine(AnsiSequences.ShowCursor);
+        Console.WriteLine();
         Console.WriteLine(
             AnsiSequences.ForegroundColors.White + " -- " +
             AnsiSequences.ForegroundColors.Cyan + "Good bye! 👋" +

@@ -54,6 +54,7 @@ public class Painter
             _windowWidth != Console.WindowWidth)
         {
             Write(AnsiSequences.ClearScreen);
+            Write(AnsiSequences.EraseScrollbackBuffer);
             Write(AnsiSequences.HideCursor);
 
             _selectedScreen = _screenSelector.SelectedScreen;

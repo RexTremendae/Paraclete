@@ -4,8 +4,8 @@ public static class AnsiSequences
 {
     public const char EscapeCharacter = '\u001b';
 
-    // Similar to Clear() but also clears the scrollable buffer, which Clear() doesn't.
-    public static readonly AnsiString ClearScreen = new AnsiControlSequence($"{EscapeCharacter}c") + new AnsiControlSequence($"{EscapeCharacter}[3J");
+    public static readonly AnsiString ClearScreen              = new ($"{EscapeCharacter}[2J");
+    public static readonly AnsiString EraseScrollbackBuffer    = new ($"{EscapeCharacter}[3J");
 
     public static readonly AnsiControlSequence HideCursor      = new ($"{EscapeCharacter}[?25l");
     public static readonly AnsiControlSequence ShowCursor      = new ($"{EscapeCharacter}[?25h");
