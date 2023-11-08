@@ -92,6 +92,7 @@ public class ScreenSaver
             };
 
             Write(AnsiSequences.ClearScreen);
+            Write(AnsiSequences.EraseScrollbackBuffer);
             Write(AnsiSequences.HideCursor);
 
             _lastChange = now;
