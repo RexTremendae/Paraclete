@@ -1,13 +1,8 @@
 namespace Paraclete.Modules.Calculator;
 
-public class NumericTokenNode : TokenNodeBase
+public class NumericTokenNode(string input) : TokenNodeBase
 {
-    private readonly double _number;
-
-    public NumericTokenNode(string input)
-    {
-        _number = double.Parse(input);
-    }
+    private readonly double _number = double.Parse(input);
 
     public override double Evaluate() => _number;
 

@@ -2,17 +2,11 @@ namespace Paraclete.Painting;
 
 using Paraclete.Ansi;
 
-public class TimeFormatter
+public class TimeFormatter(TimeFormatterSettings settings)
 {
-    private readonly TimeFormatterSettings _settings;
+    private readonly TimeFormatterSettings _settings = settings;
     private (int hour, int minute, int second, int millisecond) _cacheKey;
-    private IEnumerable<AnsiString> _cache;
-
-    public TimeFormatter(TimeFormatterSettings settings)
-    {
-        _settings = settings;
-        _cache = Enumerable.Empty<AnsiString>();
-    }
+    private IEnumerable<AnsiString> _cache = [];
 
     public IEnumerable<AnsiString> Format(TimeSpan timestamp)
     {

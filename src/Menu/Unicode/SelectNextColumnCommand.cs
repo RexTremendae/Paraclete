@@ -2,14 +2,10 @@ namespace Paraclete.Menu.Unicode;
 
 using Paraclete.Screens.Unicode;
 
-public class SelectNextColumnCommand : ICommand
+public class SelectNextColumnCommand(UnicodeControl unicodeControl)
+    : ICommand
 {
-    private readonly UnicodeControl _unicodeControl;
-
-    public SelectNextColumnCommand(UnicodeControl unicodeControl)
-    {
-        _unicodeControl = unicodeControl;
-    }
+    private readonly UnicodeControl _unicodeControl = unicodeControl;
 
     public ConsoleKey Shortcut => ConsoleKey.RightArrow;
 

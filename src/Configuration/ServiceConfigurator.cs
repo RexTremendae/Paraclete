@@ -4,14 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 public class ServiceConfigurator
 {
-    private readonly IServiceCollection _services;
-    private readonly List<Type> _initializers;
-
-    public ServiceConfigurator()
-    {
-        _services = new ServiceCollection();
-        _initializers = new ();
-    }
+    private readonly IServiceCollection _services = new ServiceCollection();
+    private readonly List<Type> _initializers = [];
 
     public ServiceConfigurator AddScoped<T>()
         where T : class

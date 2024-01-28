@@ -1,16 +1,10 @@
 namespace Paraclete;
 
-public class NullableGeneric<T>
+public class NullableGeneric<T>(bool hasValue, T value)
 {
-    private NullableGeneric(bool hasValue, T value)
-    {
-        Value = value;
-        HasValue = hasValue;
-    }
+    public bool HasValue { get; } = hasValue;
 
-    public bool HasValue { get; }
-
-    public T Value { get; }
+    public T Value { get; } = value;
 
     public static NullableGeneric<T> Create(T value)
     {

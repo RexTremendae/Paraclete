@@ -1,15 +1,9 @@
 namespace Paraclete.Screens.Showroom;
 
-public class ExhibitionSelector
+public class ExhibitionSelector(IServiceProvider services, ScreenInvalidator screenInvalidator)
 {
-    private readonly List<IExhibition> _exhibitions;
-    private readonly ScreenInvalidator _screenInvalidator;
-
-    public ExhibitionSelector(IServiceProvider services, ScreenInvalidator screenInvalidator)
-    {
-        _exhibitions = new (TypeUtility.EnumerateImplementatingInstancesOf<IExhibition>(services));
-        _screenInvalidator = screenInvalidator;
-    }
+    private readonly List<IExhibition> _exhibitions = new (TypeUtility.EnumerateImplementatingInstancesOf<IExhibition>(services));
+    private readonly ScreenInvalidator _screenInvalidator = screenInvalidator;
 
     public int ExhibitionCount => _exhibitions.Count;
     public int SelectedExhibitionIndex { get; private set; }

@@ -5,7 +5,7 @@ public partial class ScreenInvalidator
     private PaintScope? _scope;
 
     public bool AreAllInvalid { get; private set; }
-    public HashSet<int> InvalidPaneIndices { get; } = new ();
+    public HashSet<int> InvalidPaneIndices { get; } = [];
 
     public void InvalidateAll()
     {
@@ -63,17 +63,13 @@ public partial class ScreenInvalidator
 
 public partial class ScreenInvalidator
 {
-    private sealed class PaintScope : IDisposable
+    private sealed class PaintScope(ScreenInvalidator invalidator)
+    : IDisposable
     {
-        private readonly ScreenInvalidator _invalidator;
-
-        public PaintScope(ScreenInvalidator invalidator)
-        {
-            _invalidator = invalidator;
-        }
+        private readonly ScreenInvalidator _invalidator = invalidator;
 
         public bool AreAllInvalid { get; set; }
-        public HashSet<int> InvalidPaneIndices { get; } = new ();
+        public HashSet<int> InvalidPaneIndices { get; } = [];
 
         public PaintScope BeginPaint()
         {

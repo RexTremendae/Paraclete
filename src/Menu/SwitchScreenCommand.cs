@@ -2,21 +2,14 @@ namespace Paraclete.Menu;
 
 using Paraclete.Screens;
 
-public class SwitchScreenCommand : ICommand
+public class SwitchScreenCommand(ConsoleKey shortcut, IScreen screen, ScreenSelector screenSelector)
+    : ICommand
 {
-    private readonly ScreenSelector _screenSelector;
-    private readonly IScreen _screen;
+    private readonly ScreenSelector _screenSelector = screenSelector;
+    private readonly IScreen _screen = screen;
 
-    public SwitchScreenCommand(ConsoleKey shortcut, IScreen screen, ScreenSelector screenSelector)
-    {
-        _screenSelector = screenSelector;
-        _screen = screen;
-        Shortcut = shortcut;
-        Description = "Switch to " + screen.Name;
-    }
-
-    public ConsoleKey Shortcut { get; }
-    public string Description { get; }
+    public ConsoleKey Shortcut { get; } = shortcut;
+    public string Description { get; } = "Switch to " + screen.Name;
     public bool IsScreenSaverResistant => true;
 
     public Task Execute()

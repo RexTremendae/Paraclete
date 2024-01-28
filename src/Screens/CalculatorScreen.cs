@@ -8,20 +8,14 @@ using Paraclete.Menu.Calculator;
 using Paraclete.Modules.Calculator;
 using Paraclete.Painting;
 
-public class CalculatorScreen : IScreen
+public class CalculatorScreen(CalculatorMenu calculatorMenu, CalculatorHistory calculatorHistory) : IScreen
 {
-    private readonly CalculatorHistory _calculatorHistory;
-
-    public CalculatorScreen(CalculatorMenu calculatorMenu, CalculatorHistory calculatorHistory)
-    {
-        _calculatorHistory = calculatorHistory;
-        Menu = calculatorMenu;
-    }
+    private readonly CalculatorHistory _calculatorHistory = calculatorHistory;
 
     public string Name => "Calculator";
     public ConsoleKey Shortcut => ConsoleKey.F4;
 
-    public MenuBase Menu { get; }
+    public MenuBase Menu { get; } = calculatorMenu;
     public ILayout Layout { get; } = new ColumnBasedLayout(new ColumnBasedLayout.ColumnDefinition(100));
 
     public Action GetPaintPaneAction(Painter painter, int paneIndex) =>

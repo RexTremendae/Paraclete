@@ -2,14 +2,10 @@ namespace Paraclete.Menu;
 
 using Paraclete.Screens;
 
-public class GotoMainMenuCommand : ICommand
+public class GotoMainMenuCommand(ScreenSelector screenSelector)
+    : ICommand
 {
-    private readonly ScreenSelector _screenSelector;
-
-    public GotoMainMenuCommand(ScreenSelector screenSelector)
-    {
-        _screenSelector = screenSelector;
-    }
+    private readonly ScreenSelector _screenSelector = screenSelector;
 
     public ConsoleKey Shortcut => ConsoleKey.Escape;
 

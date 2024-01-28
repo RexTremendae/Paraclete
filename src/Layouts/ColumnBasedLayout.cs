@@ -4,9 +4,9 @@ using System.Text;
 using Paraclete.Ansi;
 using Paraclete.Painting;
 
-public class ColumnBasedLayout : ILayout
+public class ColumnBasedLayout(params ColumnBasedLayout.ColumnDefinition[] columns) : ILayout
 {
-    private readonly ColumnDefinition[] _columns;
+    private readonly ColumnDefinition[] _columns = columns;
 
     private int _windowHeight;
     private int _windowWidth;
@@ -16,13 +16,7 @@ public class ColumnBasedLayout : ILayout
     {
     }
 
-    public ColumnBasedLayout(params ColumnDefinition[] columns)
-    {
-        _columns = columns;
-        Panes = Array.Empty<Pane>();
-    }
-
-    public Pane[] Panes { get; private set; }
+    public Pane[] Panes { get; private set; } = [];
 
     public void Paint(Painter painter)
     {
@@ -76,7 +70,7 @@ public class ColumnBasedLayout : ILayout
             panes.Add(new ((xPos, 1), (0, 0), false));
         }
 
-        Panes = panes.ToArray();
+        Panes = [.. panes];
     }
 
     private static IEnumerable<Pane> GenerateColumnPanes(ColumnDefinition column, int xPos, int paneWidth, int drawableWindowHeight)
@@ -205,15 +199,9 @@ public class ColumnBasedLayout : ILayout
         return rowBuilder.ToString();
     }
 
-    public class ColumnDefinition
+    public class ColumnDefinition(int width, params int[] cellHeights)
     {
-        public ColumnDefinition(int width, params int[] cellHeights)
-        {
-            Width = width;
-            CellHeights = cellHeights;
-        }
-
-        public int Width { get; }
-        public int[] CellHeights { get; }
+        public int Width { get; } = width;
+        public int[] CellHeights { get; } = cellHeights;
     }
 }

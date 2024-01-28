@@ -1,13 +1,9 @@
 namespace Paraclete.Menu.General;
 
-public class StartStopCommand : ICommand
+public class StartStopCommand(Stopwatch stopwatch)
+    : ICommand
 {
-    private readonly Stopwatch _stopwatch;
-
-    public StartStopCommand(Stopwatch stopwatch)
-    {
-        _stopwatch = stopwatch;
-    }
+    private readonly Stopwatch _stopwatch = stopwatch;
 
     public ConsoleKey Shortcut => ConsoleKey.S;
     public string Description => "[S]tart/stop";

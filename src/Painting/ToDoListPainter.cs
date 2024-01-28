@@ -3,23 +3,16 @@ namespace Paraclete.Painting;
 using Paraclete.Ansi;
 using Paraclete.Layouts;
 
-public class ToDoListPainter
+public class ToDoListPainter(Painter painter, ToDoList toDoList)
 {
-    private readonly Painter _painter;
-    private readonly ToDoList _toDoList;
-    private readonly ToDoFormatConfiguration _formatConfig;
-
-    public ToDoListPainter(Painter painter, ToDoList toDoList)
-    {
-        _painter = painter;
-        _toDoList = toDoList;
-        _formatConfig = new (
-            header: AnsiSequences.ForegroundColors.White,
-            marker: AnsiSequences.ForegroundColors.Blue,
-            toDo: AnsiSequences.ForegroundColors.Yellow,
-            done: AnsiSequences.ForegroundColors.Gray + AnsiSequences.StrikeThrough
-        );
-    }
+    private readonly Painter _painter = painter;
+    private readonly ToDoList _toDoList = toDoList;
+    private readonly ToDoFormatConfiguration _formatConfig = new (
+        header: AnsiSequences.ForegroundColors.White,
+        marker: AnsiSequences.ForegroundColors.Blue,
+        toDo: AnsiSequences.ForegroundColors.Yellow,
+        done: AnsiSequences.ForegroundColors.Gray + AnsiSequences.StrikeThrough
+    );
 
     public void Paint(Pane pane, (int x, int y) position, bool paintSelectionMaker = false)
     {

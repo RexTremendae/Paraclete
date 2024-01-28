@@ -1,23 +1,15 @@
 namespace Paraclete.Menu.Shortcuts;
 
 [ExcludeFromEnumeration]
-public class CustomShortcutCommand : StartProcessCommandBase, IShortcut
+public class CustomShortcutCommand(ConsoleKey shortcut, string shortDescription, string longDescription, string command, params string[] arguments)
+    : StartProcessCommandBase, IShortcut
 {
-    private readonly string _command;
-    private readonly string[] _arguments;
+    private readonly string _command = command;
+    private readonly string[] _arguments = arguments;
 
-    public CustomShortcutCommand(ConsoleKey shortcut, string shortDescription, string longDescription, string command, params string[] arguments)
-    {
-        _command = command;
-        _arguments = arguments;
-        Shortcut = shortcut;
-        Description = shortDescription;
-        LongDescription = longDescription;
-    }
-
-    public ConsoleKey Shortcut { get; }
-    public string Description { get; }
-    public string LongDescription { get; }
+    public ConsoleKey Shortcut { get; } = shortcut;
+    public string Description { get; } = shortDescription;
+    public string LongDescription { get; } = longDescription;
 
     public async Task Execute() => await Execute(_command, _arguments);
 }

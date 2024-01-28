@@ -2,16 +2,11 @@ namespace Paraclete.Menu.Chess;
 
 using Paraclete.Screens.Chess;
 
-public class CancelSelectScenarioCommand : ICommand
+public class CancelSelectScenarioCommand(ChessScreen chessScreen, ScreenInvalidator screenInvalidator)
+    : ICommand
 {
-    private readonly ChessScreen _chessScreen;
-    private readonly ScreenInvalidator _screenInvalidator;
-
-    public CancelSelectScenarioCommand(ChessScreen chessScreen, ScreenInvalidator screenInvalidator)
-    {
-        _chessScreen = chessScreen;
-        _screenInvalidator = screenInvalidator;
-    }
+    private readonly ChessScreen _chessScreen = chessScreen;
+    private readonly ScreenInvalidator _screenInvalidator = screenInvalidator;
 
     public ConsoleKey Shortcut => ConsoleKey.Escape;
 

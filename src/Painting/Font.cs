@@ -9,7 +9,7 @@ public partial class Font
 
     public Font(Size size, params (char key, string[] data)[] font)
     {
-        _font = new ();
+        _font = [];
 
         CharacterWidth = 0;
         CharacterHeight = 0;

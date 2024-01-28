@@ -2,18 +2,12 @@ namespace Paraclete.Menu.ToDo;
 
 using Paraclete.IO;
 
-public class EditToDoDateCommand : IInputCommand<DateOnly>
+public class EditToDoDateCommand(ToDoList toDoList, DataInputter dataInputter, ScreenInvalidator screenInvalidator)
+    : IInputCommand<DateOnly>
 {
-    private readonly ToDoList _toDoList;
-    private readonly DataInputter _dataInputter;
-    private readonly ScreenInvalidator _screenInvalidator;
-
-    public EditToDoDateCommand(ToDoList toDoList, DataInputter dataInputter, ScreenInvalidator screenInvalidator)
-    {
-        _toDoList = toDoList;
-        _dataInputter = dataInputter;
-        _screenInvalidator = screenInvalidator;
-    }
+    private readonly ToDoList _toDoList = toDoList;
+    private readonly DataInputter _dataInputter = dataInputter;
+    private readonly ScreenInvalidator _screenInvalidator = screenInvalidator;
 
     public ConsoleKey Shortcut => ConsoleKey.T;
     public string Description => "Edit da[T]e";

@@ -2,14 +2,10 @@ namespace Paraclete.Menu.Showroom;
 
 using Paraclete.Screens.Showroom;
 
-public class NextExhibitionCommand : ICommand
+public class NextExhibitionCommand(ExhibitionSelector exhibitionSelector)
+    : ICommand
 {
-    private readonly ExhibitionSelector _exhibitionSelector;
-
-    public NextExhibitionCommand(ExhibitionSelector exhibitionSelector)
-    {
-        _exhibitionSelector = exhibitionSelector;
-    }
+    private readonly ExhibitionSelector _exhibitionSelector = exhibitionSelector;
 
     public ConsoleKey Shortcut => ConsoleKey.RightArrow;
     public string Description => "Next exhibition";

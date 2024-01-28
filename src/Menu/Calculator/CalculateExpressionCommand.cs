@@ -3,18 +3,12 @@ namespace Paraclete.Menu.Calculator;
 using Paraclete.Modules.Calculator;
 using Paraclete.IO;
 
-public class CalculateExpressionCommand : IInputCommand<Expression>
+public class CalculateExpressionCommand(DataInputter dataInputter, CalculatorHistory calculatorHistory, ScreenInvalidator screenInvalidator)
+    : IInputCommand<Expression>
 {
-    private readonly DataInputter _dataInputter;
-    private readonly CalculatorHistory _calculatorHistory;
-    private readonly ScreenInvalidator _screenInvalidator;
-
-    public CalculateExpressionCommand(DataInputter dataInputter, CalculatorHistory calculatorHistory, ScreenInvalidator screenInvalidator)
-    {
-        _dataInputter = dataInputter;
-        _calculatorHistory = calculatorHistory;
-        _screenInvalidator = screenInvalidator;
-    }
+    private readonly DataInputter _dataInputter = dataInputter;
+    private readonly CalculatorHistory _calculatorHistory = calculatorHistory;
+    private readonly ScreenInvalidator _screenInvalidator = screenInvalidator;
 
     public ConsoleKey Shortcut => ConsoleKey.E;
     public string Description => "Calculate [E]xpression";

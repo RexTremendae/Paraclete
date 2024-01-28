@@ -2,7 +2,7 @@ namespace Paraclete.Modules.Chess;
 
 public class MoveHistory
 {
-    private readonly List<(int, Move)> _moves = new ();
+    private readonly List<(int, Move)> _moves = [];
 
     public void Clear()
     {

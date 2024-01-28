@@ -5,22 +5,16 @@ using Paraclete.Menu;
 using Paraclete.Menu.ToDo;
 using Paraclete.Painting;
 
-public class ToDoScreen : IScreen
+public class ToDoScreen(ToDoMenu toDoMenu, ToDoList toDoList, ToDoListPainter toDoListPainter)
+    : IScreen
 {
-    private readonly ToDoListPainter _toDoListPainter;
-    private readonly ToDoList _toDoList;
-
-    public ToDoScreen(ToDoMenu toDoMenu, ToDoList toDoList, ToDoListPainter toDoListPainter)
-    {
-        Menu = toDoMenu;
-        _toDoListPainter = toDoListPainter;
-        _toDoList = toDoList;
-    }
+    private readonly ToDoListPainter _toDoListPainter = toDoListPainter;
+    private readonly ToDoList _toDoList = toDoList;
 
     public string Name => "ToDo";
     public ConsoleKey Shortcut => ConsoleKey.F3;
 
-    public MenuBase Menu { get; }
+    public MenuBase Menu { get; } = toDoMenu;
     public ILayout Layout { get; } = new SinglePaneLayout();
 
     public void OnAfterSwitch()

@@ -21,3 +21,5 @@ dotnet_diagnostic.IDE0065.severity = none # Using directives must be placed outs
 dotnet_diagnostic.IDE0072.severity = none # Populate switch - this rule requires all enum values to be explicit, only '_ =>' for default is not enough
 dotnet_diagnostic.IDE0078.severity = none # Use pattern matching - require logic to be written on the form 'if (x > 5 or y < 4)'
 dotnet_diagnostic.IDE1006.severity = none # Naming rule violation: These words must begin with upper case characters - conflicts with SA1313
+
+dotnet_diagnostic.SA1010.severity = none # Opening square brackets should not be preceded by a space.

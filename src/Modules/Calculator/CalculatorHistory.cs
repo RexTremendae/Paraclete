@@ -4,14 +4,14 @@ using System.Numerics;
 
 public class CalculatorHistory
 {
-    private List<Expression> _entries = new ();
+    private List<Expression> _entries = [];
 
     public IEnumerable<Expression> Entries => _entries;
     public BigInteger? RadixConversion { get; set; }
 
     public void Clear()
     {
-        _entries = new ();
+        _entries = [];
         RadixConversion = null;
     }
 

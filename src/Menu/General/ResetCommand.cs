@@ -1,15 +1,10 @@
 namespace Paraclete.Menu.General;
 
-public class ResetCommand : ICommand
+public class ResetCommand(Stopwatch stopwatch, ScreenInvalidator screenInvalidator)
+    : ICommand
 {
-    private readonly Paraclete.Stopwatch _stopwatch;
-    private readonly ScreenInvalidator _screenInvalidator;
-
-    public ResetCommand(Paraclete.Stopwatch stopwatch, ScreenInvalidator screenInvalidator)
-    {
-        _stopwatch = stopwatch;
-        _screenInvalidator = screenInvalidator;
-    }
+    private readonly Stopwatch _stopwatch = stopwatch;
+    private readonly ScreenInvalidator _screenInvalidator = screenInvalidator;
 
     public ConsoleKey Shortcut => ConsoleKey.R;
     public string Description => "[R]eset";

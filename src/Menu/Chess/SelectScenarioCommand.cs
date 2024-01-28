@@ -2,18 +2,12 @@ namespace Paraclete.Menu.Chess;
 
 using Paraclete.Screens.Chess;
 
-public class SelectScenarioCommand : ICommand
+public class SelectScenarioCommand(ChessScreen chessScreen, ScenarioSelector scenarioSelector, ScreenInvalidator screenInvalidator)
+    : ICommand
 {
-    private readonly ChessScreen _chessScreen;
-    private readonly ScenarioSelector _scenarioSelector;
-    private readonly ScreenInvalidator _screenInvalidator;
-
-    public SelectScenarioCommand(ChessScreen chessScreen, ScenarioSelector scenarioSelector, ScreenInvalidator screenInvalidator)
-    {
-        _chessScreen = chessScreen;
-        _scenarioSelector = scenarioSelector;
-        _screenInvalidator = screenInvalidator;
-    }
+    private readonly ChessScreen _chessScreen = chessScreen;
+    private readonly ScenarioSelector _scenarioSelector = scenarioSelector;
+    private readonly ScreenInvalidator _screenInvalidator = screenInvalidator;
 
     public ConsoleKey Shortcut => ConsoleKey.Enter;
 

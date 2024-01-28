@@ -6,15 +6,9 @@ public class Notebook : IInitializer
 {
     private const string _notesFilename = "notes.json";
 
-    private readonly List<string> _sections;
+    private readonly List<string> _sections = [];
 
-    private Dictionary<string, string[]> _notes;
-
-    public Notebook()
-    {
-        _notes = new ();
-        _sections = new ();
-    }
+    private Dictionary<string, string[]> _notes = [];
 
     public IEnumerable<string> Sections => _notes.Keys;
     public int SelectedSectionIndex { get; private set; }
@@ -31,7 +25,7 @@ public class Notebook : IInitializer
     {
         return _notes.TryGetValue(section ?? SelectedSection, out var notes)
             ? notes
-            : Array.Empty<string>();
+            : [];
     }
 
     public async Task Initialize(IServiceProvider services)

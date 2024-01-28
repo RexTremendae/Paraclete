@@ -4,18 +4,12 @@ using System.Numerics;
 using Paraclete.IO;
 using Paraclete.Modules.Calculator;
 
-public class ConvertRadixCommand : IInputCommand<BigInteger>
+public class ConvertRadixCommand(DataInputter dataInputter, CalculatorHistory calculatorHistory, ScreenInvalidator screenInvalidator)
+    : IInputCommand<BigInteger>
 {
-    private readonly DataInputter _dataInputter;
-    private readonly CalculatorHistory _calculatorHistory;
-    private readonly ScreenInvalidator _screenInvalidator;
-
-    public ConvertRadixCommand(DataInputter dataInputter, CalculatorHistory calculatorHistory, ScreenInvalidator screenInvalidator)
-    {
-        _dataInputter = dataInputter;
-        _calculatorHistory = calculatorHistory;
-        _screenInvalidator = screenInvalidator;
-    }
+    private readonly DataInputter _dataInputter = dataInputter;
+    private readonly CalculatorHistory _calculatorHistory = calculatorHistory;
+    private readonly ScreenInvalidator _screenInvalidator = screenInvalidator;
 
     public ConsoleKey Shortcut => ConsoleKey.X;
     public string Description => "Convert radi[X]";

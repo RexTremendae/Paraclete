@@ -1,9 +1,7 @@
 namespace Paraclete.Menu.ToDo;
 
-public class ToDoMenu : MenuBase
-{
-    public ToDoMenu(IServiceProvider services)
-        : base(services, new Type[]
+public class ToDoMenu(IServiceProvider services)
+    : MenuBase(services, new Type[]
     {
         typeof(AddToDoItemCommand),
         typeof(EditToDoItemCommand),
@@ -15,6 +13,5 @@ public class ToDoMenu : MenuBase
         typeof(PreviousItemCommand),
         typeof(NextItemCommand),
     })
-    {
-    }
+{
 }

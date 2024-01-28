@@ -1,9 +1,7 @@
 namespace Paraclete.Menu.Chess;
 
-public class ChessMenu : MenuBase
-{
-    public ChessMenu(IServiceProvider services)
-        : base(services, new Type[]
+public class ChessMenu(IServiceProvider services)
+    : MenuBase(services, new Type[]
     {
         typeof(MovePieceSelectionMarkerUpCommand),
         typeof(MovePieceSelectionMarkerDownCommand),
@@ -11,6 +9,5 @@ public class ChessMenu : MenuBase
         typeof(MovePieceSelectionMarkerRightCommand),
         typeof(ListScenariosCommand),
     })
-    {
-    }
+{
 }

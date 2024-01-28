@@ -1,13 +1,8 @@
 namespace Paraclete.Modules.Calculator;
 
-public class OperatorTokenNode : TokenNodeBase
+public class OperatorTokenNode(string input) : TokenNodeBase
 {
-    private readonly string _operator;
-
-    public OperatorTokenNode(string input)
-    {
-        _operator = input;
-    }
+    private readonly string _operator = input;
 
     public ITokenNode LeftOperand { get; private set; } = ITokenNode.Empty;
     public ITokenNode RightOperand { get; private set; } = ITokenNode.Empty;

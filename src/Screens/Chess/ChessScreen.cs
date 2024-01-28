@@ -10,37 +10,23 @@ using Paraclete.Ansi;
 using Paraclete.Modules.Chess;
 using Paraclete.Modules.Chess.Scenarios;
 
-public class ChessScreen : IScreen, IInitializer
-{
-    private readonly Settings.ChessSettings _settings;
-    private readonly ChessBoard _board;
-    private readonly PieceSelectionService _pieceSelectionService;
-    private readonly ScenarioSelector _scenarioSelector;
-    private readonly PossibleMovesTracker _possibleMovesTracker;
-
-    private ChessMenu _chessMenu;
-    private SelectScenarioMenu _selectScenarioMenu;
-
-    public ChessScreen(
+public class ChessScreen(
         Settings settings,
         ChessBoard board,
         PieceSelectionService pieceSelectionService,
         PossibleMovesTracker possibleMovesTracker,
-        ScenarioSelector scenarioSelector)
-    {
-        _settings = settings.Chess;
-        _board = board;
-        _pieceSelectionService = pieceSelectionService;
-        _scenarioSelector = scenarioSelector;
-        _possibleMovesTracker = possibleMovesTracker;
+        ScenarioSelector scenarioSelector) : IScreen, IInitializer
+{
+    private readonly Settings.ChessSettings _settings = settings.Chess;
+    private readonly ChessBoard _board = board;
+    private readonly PieceSelectionService _pieceSelectionService = pieceSelectionService;
+    private readonly ScenarioSelector _scenarioSelector = scenarioSelector;
+    private readonly PossibleMovesTracker _possibleMovesTracker = possibleMovesTracker;
 
-        // These are handled in Initialize(), but the compiler does not understand that.
-        _chessMenu = default!;
-        _selectScenarioMenu = default!;
-        Menu = default!;
-    }
+    private ChessMenu _chessMenu = default!;
+    private SelectScenarioMenu _selectScenarioMenu = default!;
 
-    public MenuBase Menu { get; private set; }
+    public MenuBase Menu { get; private set; } = default!;
 
     public ILayout Layout { get; } = new ColumnBasedLayout(new ColumnBasedLayout.ColumnDefinition(30));
 

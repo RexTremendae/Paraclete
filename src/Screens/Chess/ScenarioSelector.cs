@@ -2,18 +2,12 @@ namespace Paraclete.Screens.Chess;
 
 using Paraclete.Modules.Chess.Scenarios;
 
-public class ScenarioSelector
+public class ScenarioSelector(IServiceProvider services)
 {
-    private readonly IServiceProvider _services;
-    private readonly List<IScenario> _scenarios;
+    private readonly IServiceProvider _services = services;
+    private readonly List<IScenario> _scenarios = [];
 
     private int _selectedScenarioIndex;
-
-    public ScenarioSelector(IServiceProvider services)
-    {
-        _services = services;
-        _scenarios = new ();
-    }
 
     public IScenario SelectedScenario => _scenarios[_selectedScenarioIndex];
     public IEnumerable<IScenario> Scenarios => _scenarios;

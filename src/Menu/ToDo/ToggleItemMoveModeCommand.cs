@@ -1,15 +1,10 @@
 namespace Paraclete.Menu.ToDo;
 
-public class ToggleItemMoveModeCommand : ICommand
+public class ToggleItemMoveModeCommand(ToDoList toDoList, ScreenInvalidator screenInvalidator)
+    : ICommand
 {
-    private readonly ToDoList _toDoList;
-    private readonly ScreenInvalidator _screenInvalidator;
-
-    public ToggleItemMoveModeCommand(ToDoList toDoList, ScreenInvalidator screenInvalidator)
-    {
-        _toDoList = toDoList;
-        _screenInvalidator = screenInvalidator;
-    }
+    private readonly ToDoList _toDoList = toDoList;
+    private readonly ScreenInvalidator _screenInvalidator = screenInvalidator;
 
     public ConsoleKey Shortcut => ConsoleKey.M;
     public string Description => "Toggle [m]ove mode";

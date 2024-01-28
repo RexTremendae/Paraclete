@@ -8,38 +8,23 @@ using Paraclete.Menu.Shortcuts;
 using Paraclete.Painting;
 using Paraclete.Screens;
 
-public partial class MainLoop
+public partial class MainLoop(IServiceProvider services)
 {
-    private readonly Painter _painter;
-    private readonly ScreenSelector _screenSelector;
-    private readonly ScreenSaver _screenSaver;
-    private readonly ScreenInvalidator _screenInvalidator;
-    private readonly FpsCounter _fpsCounter;
-    private readonly IServiceProvider _services;
-    private readonly DataInputter _dataInputter;
-    private readonly ShortcutsMenu _shortcutsMenu;
-    private readonly TimeSpan _repaintLoopInterval;
-    private readonly Dictionary<ConsoleKey, SwitchScreenCommand> _switchScreenCommands;
-    private readonly Terminator _terminator;
+    private readonly IServiceProvider _services = services;
+    private readonly Painter _painter = services.GetRequiredService<Painter>();
+    private readonly ScreenSelector _screenSelector = services.GetRequiredService<ScreenSelector>();
+    private readonly ScreenSaver _screenSaver = services.GetRequiredService<ScreenSaver>();
+    private readonly ScreenInvalidator _screenInvalidator = services.GetRequiredService<ScreenInvalidator>();
+    private readonly FpsCounter _fpsCounter = services.GetRequiredService<FpsCounter>();
+    private readonly DataInputter _dataInputter = services.GetRequiredService<DataInputter>();
+    private readonly ShortcutsMenu _shortcutsMenu = services.GetRequiredService<ShortcutsMenu>();
+    private readonly TimeSpan _repaintLoopInterval = services.GetRequiredService<Settings>().RepaintLoopInterval;
+    private readonly Dictionary<ConsoleKey, SwitchScreenCommand> _switchScreenCommands = [];
+    private readonly Terminator _terminator = services.GetRequiredService<Terminator>();
 
     private bool _quickMenuIsActive = false;
     private bool _repaintLoopIsActive;
     private bool _inputHandlingLoopIsActive;
-
-    public MainLoop(IServiceProvider services)
-    {
-        _services = services;
-        _painter = services.GetRequiredService<Painter>();
-        _screenSaver = services.GetRequiredService<ScreenSaver>();
-        _screenSelector = services.GetRequiredService<ScreenSelector>();
-        _screenInvalidator = services.GetRequiredService<ScreenInvalidator>();
-        _fpsCounter = services.GetRequiredService<FpsCounter>();
-        _dataInputter = services.GetRequiredService<DataInputter>();
-        _shortcutsMenu = services.GetRequiredService<ShortcutsMenu>();
-        _repaintLoopInterval = services.GetRequiredService<Settings>().RepaintLoopInterval;
-        _terminator = services.GetRequiredService<Terminator>();
-        _switchScreenCommands = new ();
-    }
 
     public async Task Run()
     {

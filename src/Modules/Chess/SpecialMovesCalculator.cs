@@ -2,14 +2,9 @@ namespace Paraclete.Modules.Chess;
 
 using Paraclete.Modules.Chess.PieceDefinitions;
 
-public class SpecialMovesCalculator
+public class SpecialMovesCalculator(MoveHistory moveHistory)
 {
-    private readonly MoveHistory _moveHistory;
-
-    public SpecialMovesCalculator(MoveHistory moveHistory)
-    {
-        _moveHistory = moveHistory;
-    }
+    private readonly MoveHistory _moveHistory = moveHistory;
 
     public IEnumerable<Move> GetPossibleMoves(GameState gameState)
     {

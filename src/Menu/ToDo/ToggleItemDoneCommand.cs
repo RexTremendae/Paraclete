@@ -1,15 +1,10 @@
 namespace Paraclete.Menu.ToDo;
 
-public class ToggleItemDoneCommand : ICommand
+public class ToggleItemDoneCommand(ToDoList toDoList, ScreenInvalidator screenInvalidator)
+    : ICommand
 {
-    private readonly ToDoList _toDoList;
-    private readonly ScreenInvalidator _screenInvalidator;
-
-    public ToggleItemDoneCommand(ToDoList toDoList, ScreenInvalidator screenInvalidator)
-    {
-        _toDoList = toDoList;
-        _screenInvalidator = screenInvalidator;
-    }
+    private readonly ToDoList _toDoList = toDoList;
+    private readonly ScreenInvalidator _screenInvalidator = screenInvalidator;
 
     public ConsoleKey Shortcut => ConsoleKey.D;
     public string Description => "Toggle [d]one status";

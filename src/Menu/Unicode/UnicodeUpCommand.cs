@@ -2,14 +2,10 @@ namespace Paraclete.Menu.Unicode;
 
 using Paraclete.Screens.Unicode;
 
-public class UnicodeUpCommand : ICommand
+public class UnicodeUpCommand(UnicodeControl unicodeControl)
+    : ICommand
 {
-    private readonly UnicodeControl _unicodeControl;
-
-    public UnicodeUpCommand(UnicodeControl unicodeControl)
-    {
-        _unicodeControl = unicodeControl;
-    }
+    private readonly UnicodeControl _unicodeControl = unicodeControl;
 
     public ConsoleKey Shortcut => ConsoleKey.UpArrow;
     public string Description => "Scroll up";

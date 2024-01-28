@@ -6,17 +6,12 @@ using Paraclete.Menu;
 using Paraclete.Menu.Shortcuts;
 using Paraclete.Painting;
 
-public class ShortcutsScreen : IScreen
+public class ShortcutsScreen(ShortcutsMenu shortcutsMenu) : IScreen
 {
-    public ShortcutsScreen(ShortcutsMenu shortcutsMenu)
-    {
-        Menu = shortcutsMenu;
-    }
-
     public string Name => "Shortcuts";
     public ConsoleKey Shortcut => ConsoleKey.F6;
 
-    public MenuBase Menu { get; }
+    public MenuBase Menu { get; } = shortcutsMenu;
     public ILayout Layout { get; } = new SinglePaneLayout();
 
     public Action GetPaintPaneAction(Painter painter, int paneIndex) =>

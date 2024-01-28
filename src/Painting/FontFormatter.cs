@@ -2,14 +2,9 @@ namespace Paraclete.Painting;
 
 using Paraclete.Ansi;
 
-public class FontFormatter
+public class FontFormatter(Font font)
 {
-    private FontFormatter(Font font)
-    {
-        Font = font;
-    }
-
-    public Font Font { get; }
+    public Font Font { get; } = font;
 
     public static FontFormatter Create(Font.Size fontSize)
     {

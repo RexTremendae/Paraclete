@@ -1,15 +1,10 @@
 namespace Paraclete.Screens.Unicode;
 
-public class UnicodeControl
+public class UnicodeControl(ScreenInvalidator screenInvalidator)
 {
-    private readonly ScreenInvalidator _screenInvalidator;
+    private readonly ScreenInvalidator _screenInvalidator = screenInvalidator;
 
-    public UnicodeControl(ScreenInvalidator screenInvalidator)
-    {
-        _screenInvalidator = screenInvalidator;
-    }
-
-    public int[] ColumnStartValues { get; } = new[] { 0x00c5, 0x2500, 0x2713, 0x2654, 0x2190 };
+    public int[] ColumnStartValues { get; } = [0x00c5, 0x2500, 0x2713, 0x2654, 0x2190];
     public int SelectedColumn { get; private set; }
 
     public void SelectNext()

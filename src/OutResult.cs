@@ -1,16 +1,10 @@
 namespace Paraclete;
 
-public class OutResult<T>
+public class OutResult<T>(NullableGeneric<T> result, string errorMessage)
 {
-    private OutResult(NullableGeneric<T> result, string errorMessage)
-    {
-        Result = result;
-        ErrorMessage = errorMessage;
-    }
-
     public bool IsSuccess => Result.HasNonNullValue();
-    public NullableGeneric<T> Result { get; }
-    public string ErrorMessage { get; }
+    public NullableGeneric<T> Result { get; } = result;
+    public string ErrorMessage { get; } = errorMessage;
 
     public static OutResult<T> CreateSuccessful(T result)
     {

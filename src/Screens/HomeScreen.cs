@@ -6,33 +6,14 @@ using Paraclete.Menu;
 using Paraclete.Menu.General;
 using Paraclete.Painting;
 
-public class HomeScreen : IScreen
+public class HomeScreen(Stopwatch stopWatch, MainMenu mainMenu, ToDoListPainter toDoListPainter) : IScreen
 {
     private const int _1stColumnWidth = 59;
 
-    private readonly Stopwatch _stopWatch;
-    private readonly ToDoListPainter _toDoListPainter;
+    private readonly Stopwatch _stopWatch = stopWatch;
+    private readonly ToDoListPainter _toDoListPainter = toDoListPainter;
 
-    private readonly TimeFormatter _currentTimeFormatter;
-    private readonly TimeFormatter _stopWatchFormatter;
-    private readonly TimeFormatter _markTimeFormatter;
-
-    private (int x, int y) _currentTimePosition;
-    private (int x, int y) _stopWatchPosition;
-    private (int x, int y) _markTimesPosition;
-
-    public HomeScreen(Stopwatch stopWatch, MainMenu mainMenu, ToDoListPainter toDoListPainter)
-    {
-        Menu = mainMenu;
-
-        _stopWatch = stopWatch;
-        _toDoListPainter = toDoListPainter;
-
-        _currentTimePosition = (x: 5, y: 1);
-        _stopWatchPosition   = (x: 2, y: 1);
-        _markTimesPosition   = (x: 2, y: 7);
-
-        var currentTimeSettings = new TimeFormatterSettings() with {
+    private readonly TimeFormatter _currentTimeFormatter = new (new TimeFormatterSettings() with {
             FontSize = Font.Size.L,
             SecondsFontSize = Font.Size.M,
             Color = AnsiSequences.ForegroundColors.White,
@@ -41,9 +22,9 @@ public class HomeScreen : IScreen
             ShowSeconds = true,
             ShowMilliseconds = false,
             ShowDate = true
-        };
+        });
 
-        var stopWatchSettings = new TimeFormatterSettings() with {
+    private readonly TimeFormatter _stopWatchFormatter = new (new TimeFormatterSettings() with {
             FontSize = Font.Size.M,
             MillisecondsFontSize = Font.Size.S,
             ShowHours = true,
@@ -52,9 +33,9 @@ public class HomeScreen : IScreen
             Color = AnsiSequences.ForegroundColors.Magenta,
             SecondsColor = AnsiSequences.ForegroundColors.Magenta,
             MillisecondsColor = AnsiSequences.ForegroundColors.DarkMagenta
-        };
+        });
 
-        var markTimeSettings = new TimeFormatterSettings() with {
+    private readonly TimeFormatter _markTimeFormatter = new (new TimeFormatterSettings() with {
             FontSize = Font.Size.XS,
             ShowHours = true,
             ShowSeconds = true,
@@ -62,12 +43,11 @@ public class HomeScreen : IScreen
             Color = AnsiSequences.ForegroundColors.Magenta,
             SecondsColor = AnsiSequences.ForegroundColors.Magenta,
             MillisecondsColor = AnsiSequences.ForegroundColors.DarkMagenta
-        };
+        });
 
-        _currentTimeFormatter = new (currentTimeSettings);
-        _stopWatchFormatter = new (stopWatchSettings);
-        _markTimeFormatter = new (markTimeSettings);
-    }
+    private (int x, int y) _currentTimePosition = (x: 5, y: 1);
+    private (int x, int y) _stopWatchPosition   = (x: 2, y: 1);
+    private (int x, int y) _markTimesPosition   = (x: 2, y: 7);
 
     public string Name => "Home";
     public ConsoleKey Shortcut => ConsoleKey.F1;
@@ -75,7 +55,7 @@ public class HomeScreen : IScreen
     public bool ShowTitle => false;
     public int[] AutoRefreshingPaneIndices => new[] { 0, 1 };
 
-    public MenuBase Menu { get; }
+    public MenuBase Menu { get; } = mainMenu;
 
     public ILayout Layout { get; } = new ColumnBasedLayout(new ColumnBasedLayout.ColumnDefinition(width: _1stColumnWidth, 9));
 

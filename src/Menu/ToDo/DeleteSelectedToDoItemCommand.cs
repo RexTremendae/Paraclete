@@ -2,20 +2,13 @@ namespace Paraclete.Menu.ToDo;
 
 using Paraclete.IO;
 
-public class DeleteSelectedToDoItemCommand : IInputCommand<bool>
+public class DeleteSelectedToDoItemCommand(ToDoList toDoList, DataInputter dataInputter, Settings settings, ScreenInvalidator screenInvalidator)
+    : IInputCommand<bool>
 {
-    private readonly ToDoList _toDoList;
-    private readonly DataInputter _dataInputter;
-    private readonly Settings _settings;
-    private readonly ScreenInvalidator _screenInvalidator;
-
-    public DeleteSelectedToDoItemCommand(ToDoList toDoList, DataInputter dataInputter, Settings settings, ScreenInvalidator screenInvalidator)
-    {
-        _toDoList = toDoList;
-        _dataInputter = dataInputter;
-        _settings = settings;
-        _screenInvalidator = screenInvalidator;
-    }
+    private readonly ToDoList _toDoList = toDoList;
+    private readonly DataInputter _dataInputter = dataInputter;
+    private readonly Settings _settings = settings;
+    private readonly ScreenInvalidator _screenInvalidator = screenInvalidator;
 
     public ConsoleKey Shortcut => ConsoleKey.X;
     public string Description => "Delete selected item";

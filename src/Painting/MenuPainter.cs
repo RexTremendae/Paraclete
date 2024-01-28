@@ -5,22 +5,15 @@ using Paraclete.Menu;
 using Paraclete.Menu.Shortcuts;
 using Paraclete.Screens;
 
-public class MenuPainter
+public class MenuPainter(ScreenSelector screenSelector, IServiceProvider services, ShortcutsMenu shortcutsMenu)
 {
-    private readonly ScreenSelector _screenSelector;
-    private readonly IServiceProvider _services;
-    private readonly ShortcutsMenu _shortcutsMenu;
+    private readonly ScreenSelector _screenSelector = screenSelector;
+    private readonly IServiceProvider _services = services;
+    private readonly ShortcutsMenu _shortcutsMenu = shortcutsMenu;
 
     private readonly AnsiControlSequence _bracketColor = AnsiSequences.ForegroundColors.White;
     private readonly AnsiControlSequence _shortcutColor = AnsiSequences.ForegroundColors.Green;
     private readonly AnsiControlSequence _textColor = AnsiSequences.ForegroundColors.Gray;
-
-    public MenuPainter(ScreenSelector screenSelector, IServiceProvider services, ShortcutsMenu shortcutsMenu)
-    {
-        _screenSelector = screenSelector;
-        _services = services;
-        _shortcutsMenu = shortcutsMenu;
-    }
 
     public void PaintMenu(Painter painter, bool shortcutsMenuActive, int windowWidth)
     {

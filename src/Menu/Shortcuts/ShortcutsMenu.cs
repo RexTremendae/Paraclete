@@ -2,21 +2,17 @@ namespace Paraclete.Menu.Shortcuts;
 
 using System.Text.Json;
 
-public class ShortcutsMenu : MenuBase, IInitializer
-{
-    private const string _shortcutsFilename = "shortcuts.json";
-
-    public ShortcutsMenu(IServiceProvider services)
-        : base(services, new Type[]
+public class ShortcutsMenu(IServiceProvider services)
+    : MenuBase(services, new Type[]
     {
         typeof(ExitApplicationCommand),
         typeof(StartTaskManagerCommand),
         typeof(OutlookCommand),
         typeof(PowerShellCommand),
         typeof(HibernateCommand),
-    })
-    {
-    }
+    }), IInitializer
+{
+    private const string _shortcutsFilename = "shortcuts.json";
 
     public async Task Initialize(IServiceProvider services)
     {
@@ -28,7 +24,7 @@ public class ShortcutsMenu : MenuBase, IInitializer
         var json = await File.ReadAllTextAsync(_shortcutsFilename);
         var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         var shortcutList = JsonSerializer.Deserialize<CustomShortcutList>(json, options)?.Shortcuts
-            ?? Array.Empty<CustomShortcut>();
+            ?? [];
 
         foreach (var shortcut in shortcutList)
         {
@@ -45,7 +41,7 @@ public class ShortcutsMenu : MenuBase, IInitializer
 
     public class CustomShortcutList
     {
-        public CustomShortcut[] Shortcuts { get; set; } = Array.Empty<CustomShortcut>();
+        public CustomShortcut[] Shortcuts { get; set; } = [];
     }
 
     public class CustomShortcut
@@ -54,6 +50,6 @@ public class ShortcutsMenu : MenuBase, IInitializer
         public string ShortDescription { get; set; } = string.Empty;
         public string LongDescription { get; set; } = string.Empty;
         public string Command { get; set; } = string.Empty;
-        public string[] Arguments { get; set; } = Array.Empty<string>();
+        public string[] Arguments { get; set; } = [];
     }
 }

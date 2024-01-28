@@ -6,17 +6,12 @@ using Paraclete.Menu;
 using Paraclete.Menu.Notes;
 using Paraclete.Painting;
 
-public class NotesScreen : IScreen
+public class NotesScreen(NotesMenu menu, NotebookPainter notebookPainter)
+    : IScreen
 {
-    private readonly NotebookPainter _notebookPainter;
+    private readonly NotebookPainter _notebookPainter = notebookPainter;
 
-    public NotesScreen(NotesMenu menu, NotebookPainter notebookPainter)
-    {
-        Menu = menu;
-        _notebookPainter = notebookPainter;
-    }
-
-    public MenuBase Menu { get; }
+    public MenuBase Menu { get; } = menu;
     public ILayout Layout { get; } = new ColumnBasedLayout(new ColumnBasedLayout.ColumnDefinition(20));
     public string Name => "Notes";
     public ConsoleKey Shortcut => ConsoleKey.F2;

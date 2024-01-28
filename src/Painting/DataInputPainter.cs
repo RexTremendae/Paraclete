@@ -3,16 +3,10 @@ namespace Paraclete.Painting;
 using Paraclete.Ansi;
 using Paraclete.IO;
 
-public class DataInputPainter
+public class DataInputPainter(Settings settings, DataInputter dataInputter)
 {
-    private readonly DataInputter _dataInputter;
-    private readonly Settings _settings;
-
-    public DataInputPainter(Settings settings, DataInputter dataInputter)
-    {
-        _dataInputter = dataInputter;
-        _settings = settings;
-    }
+    private readonly DataInputter _dataInputter = dataInputter;
+    private readonly Settings _settings = settings;
 
     public (int cursorX, int cursorY) PaintInput(Painter painter, int windowWidth, int windowHeight)
     {

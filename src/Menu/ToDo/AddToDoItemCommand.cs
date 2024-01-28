@@ -2,18 +2,12 @@ namespace Paraclete.Menu.ToDo;
 
 using Paraclete.IO;
 
-public class AddToDoItemCommand : IInputCommand<string>
+public class AddToDoItemCommand(DataInputter dataInputter, ToDoList toDoList, ScreenInvalidator screenInvalidator)
+    : IInputCommand<string>
 {
-    private readonly ToDoList _toDoList;
-    private readonly DataInputter _dataInputter;
-    private readonly ScreenInvalidator _screenInvalidator;
-
-    public AddToDoItemCommand(DataInputter dataInputter, ToDoList toDoList, ScreenInvalidator screenInvalidator)
-    {
-        _toDoList = toDoList;
-        _dataInputter = dataInputter;
-        _screenInvalidator = screenInvalidator;
-    }
+    private readonly ToDoList _toDoList = toDoList;
+    private readonly DataInputter _dataInputter = dataInputter;
+    private readonly ScreenInvalidator _screenInvalidator = screenInvalidator;
 
     public ConsoleKey Shortcut => ConsoleKey.A;
     public string Description => "[A]dd item";

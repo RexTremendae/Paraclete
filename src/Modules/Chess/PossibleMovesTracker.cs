@@ -1,28 +1,23 @@
 namespace Paraclete.Modules.Chess;
 
-public class PossibleMovesTracker
+public class PossibleMovesTracker(SpecialMovesCalculator specialMovesCalculator)
 {
-    private readonly SpecialMovesCalculator _specialMovesCalculator;
-    private readonly Dictionary<(int x, int y), List<Move>> _possibleMovesFrom = new ();
-    private readonly Dictionary<(int x, int y), List<Move>> _possibleMovesTo = new ();
-
-    public PossibleMovesTracker(SpecialMovesCalculator specialMovesCalculator)
-    {
-        _specialMovesCalculator = specialMovesCalculator;
-    }
+    private readonly SpecialMovesCalculator _specialMovesCalculator = specialMovesCalculator;
+    private readonly Dictionary<(int x, int y), List<Move>> _possibleMovesFrom = [];
+    private readonly Dictionary<(int x, int y), List<Move>> _possibleMovesTo = [];
 
     public Move[] GetPossibleMovesFrom((int x, int y) position)
     {
         return _possibleMovesFrom.TryGetValue(position, out var moves)
-            ? moves.ToArray()
-            : Array.Empty<Move>();
+            ? [.. moves]
+            : [];
     }
 
     public Move[] GetPossibleMovesTo((int x, int y) position)
     {
         return _possibleMovesTo.TryGetValue(position, out var moves)
-            ? moves.ToArray()
-            : Array.Empty<Move>();
+            ? [.. moves]
+            : [];
     }
 
     public void Recalculate(GameState gameState)
@@ -49,7 +44,7 @@ public class PossibleMovesTracker
     {
         if (!possibleMoves.TryGetValue(key, out var moveList))
         {
-            moveList = new ();
+            moveList = [];
             possibleMoves.Add(key, moveList);
         }
 

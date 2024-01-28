@@ -3,22 +3,15 @@ namespace Paraclete.Painting;
 using Paraclete.Ansi;
 using Paraclete.Layouts;
 
-public class NotebookPainter
+public class NotebookPainter(Painter painter, Notebook notebook)
 {
-    private readonly Painter _painter;
-    private readonly Notebook _notebook;
-    private readonly NotebookFormatConfiguration _formatConfig;
-
-    public NotebookPainter(Painter painter, Notebook notebook)
-    {
-        _painter = painter;
-        _notebook = notebook;
-        _formatConfig = new (
-            header: AnsiSequences.ForegroundColors.White,
-            marker: AnsiSequences.ForegroundColors.Blue,
-            notes: AnsiSequences.ForegroundColors.Yellow
-        );
-    }
+    private readonly Painter _painter = painter;
+    private readonly Notebook _notebook = notebook;
+    private readonly NotebookFormatConfiguration _formatConfig = new (
+        header: AnsiSequences.ForegroundColors.White,
+        marker: AnsiSequences.ForegroundColors.Blue,
+        notes: AnsiSequences.ForegroundColors.Yellow
+    );
 
     public void PaintSectionList(Pane pane, (int x, int y) position)
     {

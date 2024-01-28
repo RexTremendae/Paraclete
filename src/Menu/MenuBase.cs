@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 public abstract class MenuBase
 {
-    private readonly Dictionary<ConsoleKey, ICommand> _menuItems = new ();
+    private readonly Dictionary<ConsoleKey, ICommand> _menuItems = [];
 
     protected MenuBase(IServiceProvider services, Type[] commands)
     {

@@ -1,13 +1,9 @@
 namespace Paraclete.Menu.General;
 
-public class MarkTimeCommand : ICommand
+public class MarkTimeCommand(Stopwatch stopwatch)
+    : ICommand
 {
-    private readonly Paraclete.Stopwatch _stopwatch;
-
-    public MarkTimeCommand(Paraclete.Stopwatch stopwatch)
-    {
-        _stopwatch = stopwatch;
-    }
+    private readonly Stopwatch _stopwatch = stopwatch;
 
     public ConsoleKey Shortcut => ConsoleKey.M;
     public string Description => "[M]ark";

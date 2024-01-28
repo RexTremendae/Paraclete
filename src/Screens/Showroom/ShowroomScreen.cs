@@ -6,20 +6,15 @@ using Paraclete.Menu;
 using Paraclete.Menu.Showroom;
 using Paraclete.Painting;
 
-public class ShowroomScreen : IScreen
+public class ShowroomScreen(ShowroomMenu showroomMenu, ExhibitionSelector exhibitionSelector)
+    : IScreen
 {
-    private readonly ExhibitionSelector _exhibitionSelector;
-
-    public ShowroomScreen(ShowroomMenu showroomMenu, ExhibitionSelector exhibitionSelector)
-    {
-        Menu = showroomMenu;
-        _exhibitionSelector = exhibitionSelector;
-    }
+    private readonly ExhibitionSelector _exhibitionSelector = exhibitionSelector;
 
     public string Name => "Showroom";
     public ConsoleKey Shortcut => ConsoleKey.F12;
 
-    public MenuBase Menu { get; }
+    public MenuBase Menu { get; } = showroomMenu;
     public ILayout Layout => _exhibitionSelector.SelectedExhibition.Layout;
 
     public Action GetPaintPaneAction(Painter painter, int paneIndex) =>

@@ -2,21 +2,15 @@ namespace Paraclete;
 
 using Paraclete.Ansi;
 
-public class FpsCounter
+public class FpsCounter(Settings settings)
 {
-    private readonly List<int> _fpsHistory = new ();
-    private readonly int _maxFpsHistory;
-    private readonly bool _isEnabled;
+    private readonly List<int> _fpsHistory = [];
+    private readonly int _maxFpsHistory = settings.FpsCounter.HistoryLength;
+    private readonly bool _isEnabled = settings.FpsCounter.IsEnabled;
 
     private int _frameCount;
     private DateTime _frameCountStart;
     private double _fpsAverage;
-
-    public FpsCounter(Settings settings)
-    {
-        _maxFpsHistory = settings.FpsCounter.HistoryLength;
-        _isEnabled = settings.FpsCounter.IsEnabled;
-    }
 
     public void Update()
     {

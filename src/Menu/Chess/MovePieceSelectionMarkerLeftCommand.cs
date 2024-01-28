@@ -2,14 +2,10 @@ namespace Paraclete.Menu.Chess;
 
 using Paraclete.Screens.Chess;
 
-public class MovePieceSelectionMarkerLeftCommand : ICommand
+public class MovePieceSelectionMarkerLeftCommand(PieceSelectionService selectionService)
+    : ICommand
 {
-    private readonly PieceSelectionService _selectionService;
-
-    public MovePieceSelectionMarkerLeftCommand(PieceSelectionService selectionService)
-    {
-        _selectionService = selectionService;
-    }
+    private readonly PieceSelectionService _selectionService = selectionService;
 
     public ConsoleKey Shortcut => ConsoleKey.LeftArrow;
     public string Description => "Move left";

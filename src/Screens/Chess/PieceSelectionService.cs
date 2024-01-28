@@ -1,15 +1,9 @@
 namespace Paraclete.Screens.Chess;
 
-public class PieceSelectionService
+public class PieceSelectionService(ScreenInvalidator screenInvalidator, Settings settings)
 {
-    private readonly ScreenInvalidator _screenInvalidator;
-    private readonly Settings.ChessSettings _settings;
-
-    public PieceSelectionService(ScreenInvalidator screenInvalidator, Settings settings)
-    {
-        _screenInvalidator = screenInvalidator;
-        _settings = settings.Chess;
-    }
+    private readonly ScreenInvalidator _screenInvalidator = screenInvalidator;
+    private readonly Settings.ChessSettings _settings = settings.Chess;
 
     public (int x, int y) MarkerPosition { get; private set; }
 

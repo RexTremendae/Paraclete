@@ -6,7 +6,7 @@ public partial class Expression
 {
     private sealed class Factory
     {
-        private readonly List<(string token, TokenType type)> _tokens = new ();
+        private readonly List<(string token, TokenType type)> _tokens = [];
         private readonly StringBuilder _currentToken = new ();
         private TokenType _currentTokenType = TokenType.None;
 

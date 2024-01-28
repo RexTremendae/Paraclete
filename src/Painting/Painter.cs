@@ -32,7 +32,7 @@ public class Painter
         _dataInputter = dataInputter;
         _dataInputPainter = dataInputPainter;
         _selectedScreen = IScreen.NoScreen;
-        _autoRefreshingPaneIndices = new ();
+        _autoRefreshingPaneIndices = [];
 
         _currentTimeFormatter = new (new ()
         {
@@ -59,7 +59,7 @@ public class Painter
 
             _selectedScreen = _screenSelector.SelectedScreen;
             var layout = _selectedScreen.Layout;
-            _autoRefreshingPaneIndices = _selectedScreen.AutoRefreshingPaneIndices.ToHashSet();
+            _autoRefreshingPaneIndices = [.. _selectedScreen.AutoRefreshingPaneIndices];
 
             _windowHeight = Console.WindowHeight;
             _windowWidth = Console.WindowWidth;

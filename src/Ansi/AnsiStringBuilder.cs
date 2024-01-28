@@ -2,12 +2,7 @@ namespace Paraclete.Ansi;
 
 public class AnsiStringBuilder
 {
-    private readonly List<IAnsiStringPiece> _pieces;
-
-    public AnsiStringBuilder()
-    {
-        _pieces = new ();
-    }
+    private readonly List<IAnsiStringPiece> _pieces = [];
 
     public int Length => _pieces.Sum(_ => _.Length);
 

@@ -2,18 +2,12 @@ namespace Paraclete.Menu.ToDo;
 
 using Paraclete.IO;
 
-public class EditToDoItemCommand : IInputCommand<string>
+public class EditToDoItemCommand(ToDoList toDoList, DataInputter dataInputter, ScreenInvalidator screenInvalidator)
+    : IInputCommand<string>
 {
-    private readonly ToDoList _toDoList;
-    private readonly DataInputter _dataInputter;
-    private readonly ScreenInvalidator _screenInvalidator;
-
-    public EditToDoItemCommand(ToDoList toDoList, DataInputter dataInputter, ScreenInvalidator screenInvalidator)
-    {
-        _toDoList = toDoList;
-        _dataInputter = dataInputter;
-        _screenInvalidator = screenInvalidator;
-    }
+    private readonly ToDoList _toDoList = toDoList;
+    private readonly DataInputter _dataInputter = dataInputter;
+    private readonly ScreenInvalidator _screenInvalidator = screenInvalidator;
 
     public ConsoleKey Shortcut => ConsoleKey.E;
     public string Description => "[E]dit item";

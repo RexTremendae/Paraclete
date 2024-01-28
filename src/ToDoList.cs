@@ -15,8 +15,8 @@ public class ToDoList : IInitializer
 
     public ToDoList()
     {
-        _toDoItems = new ();
-        _doneItems = new ();
+        _toDoItems = [];
+        _doneItems = [];
         _selectedList = _toDoItems;
         UpdateMaxItemLength();
     }
@@ -220,16 +220,10 @@ public class ToDoList : IInitializer
     }
 }
 
-public class ToDoItem
+public class ToDoItem(string description, DateOnly expirationDate = default)
 {
-    public ToDoItem(string description, DateOnly expirationDate = default)
-    {
-        Description = description;
-        ExpirationDate = expirationDate;
-    }
-
-    public string Description { get; set; }
-    public DateOnly ExpirationDate { get; set; }
+    public string Description { get; set; } = description;
+    public DateOnly ExpirationDate { get; set; } = expirationDate;
 
     public AnsiString ToDisplayString(bool done)
     {

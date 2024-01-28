@@ -1,15 +1,9 @@
 namespace Paraclete.Menu.ToDo;
 
-public class PreviousItemCommand : ICommand
+public class PreviousItemCommand(ToDoList toDoList, ScreenInvalidator screenInvalidator) : ICommand
 {
-    private readonly ToDoList _toDoList;
-    private readonly ScreenInvalidator _screenInvalidator;
-
-    public PreviousItemCommand(ToDoList toDoList, ScreenInvalidator screenInvalidator)
-    {
-        _toDoList = toDoList;
-        _screenInvalidator = screenInvalidator;
-    }
+    private readonly ToDoList _toDoList = toDoList;
+    private readonly ScreenInvalidator _screenInvalidator = screenInvalidator;
 
     public ConsoleKey Shortcut => ConsoleKey.UpArrow;
     public string Description => "Previous item";

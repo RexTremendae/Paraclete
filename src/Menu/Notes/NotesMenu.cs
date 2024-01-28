@@ -1,13 +1,10 @@
 namespace Paraclete.Menu.Notes;
 
-public class NotesMenu : MenuBase
-{
-    public NotesMenu(IServiceProvider services)
-        : base(services, new Type[]
+public class NotesMenu(IServiceProvider services)
+    : MenuBase(services, new Type[]
     {
         typeof(NextSectionCommand),
         typeof(PreviousSectionCommand),
     })
-    {
-    }
+{
 }

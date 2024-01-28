@@ -4,12 +4,12 @@ using Paraclete.Ansi;
 using Paraclete.Painting;
 using static System.Console;
 
-public class ScreenSaver
+public class ScreenSaver(Painter painter, Settings settings)
 {
-    private readonly TimeSpan _changeInterval;
-    private readonly TimeSpan _activationInterval;
+    private readonly TimeSpan _changeInterval = settings.ScreenSaver.ContentChangeInterval;
+    private readonly TimeSpan _activationInterval = settings.ScreenSaver.ActivationInterval;
 
-    private readonly Painter _painter;
+    private readonly Painter _painter = painter;
 
     private readonly (AnsiControlSequence color, AnsiControlSequence secondColor)[] _timeColors = new[]
     {
@@ -24,20 +24,7 @@ public class ScreenSaver
 
     private int _timeWidth;
     private int _timeHeight;
-    private TimeFormatterSettings _currentTimeSettings;
-
-    private (int x, int y) _currentTimePosition;
-    private DateTime _lastChange;
-    private DateTime _lastPaint;
-    private DateTime _inactivationTime;
-
-    public ScreenSaver(Painter painter, Settings settings)
-    {
-        _painter = painter;
-        _changeInterval = settings.ScreenSaver.ContentChangeInterval;
-        _activationInterval = settings.ScreenSaver.ActivationInterval;
-
-        _currentTimeSettings = new TimeFormatterSettings() with
+    private TimeFormatterSettings _currentTimeSettings = new TimeFormatterSettings() with
         {
             FontSize = settings.ScreenSaver.FontSize,
             SecondsFontSize = settings.ScreenSaver.SecondsFontSize,
@@ -49,7 +36,11 @@ public class ScreenSaver
             ShowMilliseconds = false,
             ShowDate = true
         };
-    }
+
+    private (int x, int y) _currentTimePosition;
+    private DateTime _lastChange;
+    private DateTime _lastPaint;
+    private DateTime _inactivationTime;
 
     public bool IsActive
     {

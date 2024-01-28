@@ -1,9 +1,7 @@
 namespace Paraclete.Menu.Unicode;
 
-public class UnicodeMenu : MenuBase
-{
-    public UnicodeMenu(IServiceProvider services)
-        : base(services, new Type[]
+public class UnicodeMenu(IServiceProvider services)
+    : MenuBase(services, new Type[]
     {
         typeof(UnicodeUpCommand),
         typeof(UnicodeDownCommand),
@@ -11,6 +9,5 @@ public class UnicodeMenu : MenuBase
         typeof(SelectPreviousColumnCommand),
         typeof(SetStartCodepointCommand),
     })
-    {
-    }
+{
 }

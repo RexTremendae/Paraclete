@@ -2,7 +2,7 @@ namespace Paraclete;
 
 public class Stopwatch
 {
-    private readonly List<TimeSpan> _markedTimes = new ();
+    private readonly List<TimeSpan> _markedTimes = [];
 
     public DateTime Start { get; private set; }
     public DateTime Stop { get; private set; }

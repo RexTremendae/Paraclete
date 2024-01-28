@@ -11,7 +11,7 @@ public readonly record struct ChessBoardPiece
     bool hasMoved
 );
 
-public class ChessBoard : IInitializer
+public class ChessBoard(PossibleMovesTracker possibleMovesTracker, MoveHistory moveHistory) : IInitializer
 {
     private readonly Dictionary<PlayerColor, List<ChessBoardPiece>> _capturedPieces = new ()
     {
@@ -19,17 +19,10 @@ public class ChessBoard : IInitializer
         { PlayerColor.Black, new () },
     };
 
-    private readonly Dictionary<PlayerColor, (int x, int y)> _kingTracker = new ();
-    private readonly PossibleMovesTracker _possibleMovesTracker;
-    private readonly MoveHistory _moveHistory;
-    private GameState _gameState;
-
-    public ChessBoard(PossibleMovesTracker possibleMovesTracker, MoveHistory moveHistory)
-    {
-        _gameState = new (Enumerable.Empty<((int x, int y), ChessBoardPiece)>());
-        _possibleMovesTracker = possibleMovesTracker;
-        _moveHistory = moveHistory;
-    }
+    private readonly Dictionary<PlayerColor, (int x, int y)> _kingTracker = [];
+    private readonly PossibleMovesTracker _possibleMovesTracker = possibleMovesTracker;
+    private readonly MoveHistory _moveHistory = moveHistory;
+    private GameState _gameState = new (Enumerable.Empty<((int x, int y), ChessBoardPiece)>());
 
     public PlayerColor CurrentPlayer { get; private set; }
     public bool IsCheck { get; private set; }
@@ -48,7 +41,7 @@ public class ChessBoard : IInitializer
 
     public ChessBoardPiece[] GetCapturedPieces(PlayerColor color)
     {
-        return _capturedPieces[color].ToArray();
+        return [.. _capturedPieces[color]];
     }
 
     public Task Initialize(IServiceProvider services)

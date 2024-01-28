@@ -4,16 +4,11 @@ using System.Numerics;
 using Paraclete.IO;
 using Paraclete.Screens.Unicode;
 
-public class SetStartCodepointCommand : IInputCommand<BigInteger>
+public class SetStartCodepointCommand(UnicodeControl unicodeControl, DataInputter dataInputter)
+    : IInputCommand<BigInteger>
 {
-    private readonly UnicodeControl _unicodeControl;
-    private readonly DataInputter _dataInputter;
-
-    public SetStartCodepointCommand(UnicodeControl unicodeControl, DataInputter dataInputter)
-    {
-        _unicodeControl = unicodeControl;
-        _dataInputter = dataInputter;
-    }
+    private readonly UnicodeControl _unicodeControl = unicodeControl;
+    private readonly DataInputter _dataInputter = dataInputter;
 
     public ConsoleKey Shortcut => ConsoleKey.C;
 
