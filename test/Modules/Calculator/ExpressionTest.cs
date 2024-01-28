@@ -22,8 +22,8 @@ public class ExpressionTest
             // Assert
             success.Should().BeTrue();
             tokenList.Count.Should().Be(1, because: "token list count mismatch");
-            token.token.Should().Be(input.ToString(), because: "token value mismatch");
-            token.type.Should().Be(TokenType.Numeric, because: "token type mismatch");
+            token.Token.Should().Be(input.ToString(), because: "token value mismatch");
+            token.Type.Should().Be(TokenType.Numeric, because: "token type mismatch");
         }
     }
 

@@ -7,7 +7,7 @@ using Paraclete.Menu;
 
 public class DataInputter
 {
-    private readonly StringBuilder _input = new ();
+    private readonly StringBuilder _input = new();
     private readonly Dictionary<Type, IInputDefinition> _availableInputters = [];
 
     private IInputCommand? _command;

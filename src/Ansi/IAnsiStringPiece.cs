@@ -1,5 +1,7 @@
 namespace Paraclete.Ansi;
 
+#pragma warning disable SA1402 // File may only contain a single type
+
 public interface IAnsiStringPiece
 {
     public int Length { get; }

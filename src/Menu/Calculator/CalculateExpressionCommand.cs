@@ -1,7 +1,7 @@
 namespace Paraclete.Menu.Calculator;
 
-using Paraclete.Modules.Calculator;
 using Paraclete.IO;
+using Paraclete.Modules.Calculator;
 
 public class CalculateExpressionCommand(DataInputter dataInputter, CalculatorHistory calculatorHistory, ScreenInvalidator screenInvalidator)
     : IInputCommand<Expression>

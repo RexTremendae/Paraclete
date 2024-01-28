@@ -5,11 +5,11 @@ using TokenType = Expression.TokenType;
 
 public static class ExpressionTreeBuilder
 {
-    public static bool TryBuildTree(List<(string token, TokenType type)> tokens, out ITokenNode rootToken)
+    public static bool TryBuildTree(List<(string Token, TokenType Type)> tokens, out ITokenNode rootToken)
     {
         var root = ITokenNode.Empty;
 
-        foreach (var (token, type) in tokens.Where(_ => _.type != TokenType.None))
+        foreach (var (token, type) in tokens.Where(_ => _.Type != TokenType.None))
         {
             var newNode = CreateNode(token, type);
 
@@ -62,7 +62,7 @@ public static class ExpressionTreeBuilder
         {
             TokenType.Operator => new OperatorTokenNode(token),
             TokenType.Numeric => new NumericTokenNode(token),
-            _ => throw new InvalidOperationException($"Cannot create token from type {type}.")
+            _ => throw new InvalidOperationException($"Cannot create token from type {type}."),
         };
     }
 }

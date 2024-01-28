@@ -7,7 +7,7 @@ public class Promotion : IScenario
     public string Name => "Promotion";
     public PlayerColor CurrentPlayer => PlayerColor.Black;
 
-    public Dictionary<PlayerColor, IEnumerable<ChessBoardPiece>> CapturedPieces => new ()
+    public Dictionary<PlayerColor, IEnumerable<ChessBoardPiece>> CapturedPieces => new()
     {
         {
             PlayerColor.Black,
@@ -54,9 +54,9 @@ public class Promotion : IScenario
     public IEnumerable<((int x, int y) position, ChessBoardPiece piece)> GetPieces() =>
     new ((int x, int y) position, ChessBoardPiece piece)[]
     {
-        ((4, 5), new (new King(), PlayerColor.White, true)),
-        ((3, 6), new (new Pawn(), PlayerColor.White, true)),
-        ((7, 4), new (new King(), PlayerColor.Black, true)),
-        ((5, 1), new (new Pawn(), PlayerColor.Black, true)),
+        ((4, 5), new(new King(), PlayerColor.White, true)),
+        ((3, 6), new(new Pawn(), PlayerColor.White, true)),
+        ((7, 4), new(new King(), PlayerColor.Black, true)),
+        ((5, 1), new(new Pawn(), PlayerColor.Black, true)),
     };
 }

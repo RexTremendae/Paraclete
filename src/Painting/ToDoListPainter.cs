@@ -7,7 +7,7 @@ public class ToDoListPainter(Painter painter, ToDoList toDoList)
 {
     private readonly Painter _painter = painter;
     private readonly ToDoList _toDoList = toDoList;
-    private readonly ToDoFormatConfiguration _formatConfig = new (
+    private readonly ToDoFormatConfiguration _formatConfig = new(
         header: AnsiSequences.ForegroundColors.White,
         marker: AnsiSequences.ForegroundColors.Blue,
         toDo: AnsiSequences.ForegroundColors.Yellow,

@@ -19,7 +19,7 @@ public class AddToDoItemCommand(DataInputter dataInputter, ToDoList toDoList, Sc
 
     public async Task CompleteInput(string data)
     {
-        await _toDoList.AddItem(new (data));
+        await _toDoList.AddItem(new(data));
         _screenInvalidator.InvalidatePane(0);
     }
 }

@@ -7,7 +7,7 @@ public partial class Expression
     private sealed class Factory
     {
         private readonly List<(string token, TokenType type)> _tokens = [];
-        private readonly StringBuilder _currentToken = new ();
+        private readonly StringBuilder _currentToken = new();
         private TokenType _currentTokenType = TokenType.None;
 
         private static IEnumerable<(string token, TokenType type)> NoTokens { get; } =
@@ -45,7 +45,7 @@ public partial class Expression
             {
                 var x when x >= '0' && x <= '9' => TokenType.Numeric,
                 var _ when "+-*/%^".Contains(chr) => TokenType.Operator,
-                _ => TokenType.Invalid
+                _ => TokenType.Invalid,
             };
 
             if (_currentTokenType == TokenType.Operator && nextTokenType == TokenType.Operator)

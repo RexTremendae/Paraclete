@@ -4,7 +4,7 @@ public interface IScenario
 {
     string Name { get; }
     PlayerColor CurrentPlayer { get; }
-    Dictionary<PlayerColor, IEnumerable<ChessBoardPiece>> CapturedPieces => new ()
+    Dictionary<PlayerColor, IEnumerable<ChessBoardPiece>> CapturedPieces => new()
     {
         { PlayerColor.Black, Enumerable.Empty<ChessBoardPiece>() },
         { PlayerColor.White, Enumerable.Empty<ChessBoardPiece>() },

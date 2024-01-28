@@ -21,12 +21,12 @@ public partial class AnsiString
         Length = Pieces.OfType<AnsiStringTextPiece>().Select(_ => _.ToString().Length).Sum();
     }
 
-    public static AnsiString Empty => new (string.Empty);
+    public static AnsiString Empty => new(string.Empty);
 
     public IAnsiStringPiece[] Pieces { get; }
     public int Length { get; }
 
-    public static implicit operator AnsiString(string input) => new (input);
+    public static implicit operator AnsiString(string input) => new(input);
 
     public static AnsiString operator +(AnsiString ansiString1, AnsiString ansiString2)
     {
@@ -64,7 +64,7 @@ public partial class AnsiString
             pieces.Add(new AnsiStringTextPiece(string.Empty.PadRight(paddingWidth, paddingChar)));
         }
 
-        return new (pieces);
+        return new(pieces);
     }
 
     public AnsiString Truncate(int maxLength)
@@ -94,6 +94,6 @@ public partial class AnsiString
             totalLength += textPart.Length;
         }
 
-        return new (truncatedPieces);
+        return new(truncatedPieces);
     }
 }

@@ -2,7 +2,7 @@ namespace Paraclete.Modules.Chess;
 
 public class MoveHistory
 {
-    private readonly List<(int, Move)> _moves = [];
+    private readonly List<(int Count, Move Move)> _moves = [];
 
     public void Clear()
     {
@@ -17,11 +17,11 @@ public class MoveHistory
     public Move? GetLastMove()
     {
         return _moves.Any()
-            ? _moves.Last().Item2
+            ? _moves.Last().Move
             : null;
     }
 
-    public IEnumerable<(int, Move)> GetLastMoves(int maxMoves)
+    public IEnumerable<(int Count, Move Move)> GetLastMoves(int maxMoves)
     {
         return _moves.Count <= maxMoves
             ? _moves

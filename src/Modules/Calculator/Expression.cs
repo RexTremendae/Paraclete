@@ -8,7 +8,7 @@ public partial class Expression
         Tokens = Enumerable.Empty<(string, TokenType)>();
     }
 
-    private Expression(ITokenNode rootNode, IEnumerable<(string, TokenType)> tokens)
+    private Expression(ITokenNode rootNode, IEnumerable<(string Token, TokenType Type)> tokens)
     {
         RootNode = rootNode;
         Tokens = tokens;
@@ -22,9 +22,9 @@ public partial class Expression
         Numeric,
     }
 
-    public static Expression Empty { get; } = new ();
+    public static Expression Empty { get; } = new();
     public ITokenNode RootNode { get; }
-    public IEnumerable<(string token, TokenType type)> Tokens { get; }
+    public IEnumerable<(string Token, TokenType Type)> Tokens { get; }
 
     public static bool TryCreate(string inputData, out Expression expression)
     {

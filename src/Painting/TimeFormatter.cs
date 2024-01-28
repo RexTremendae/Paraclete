@@ -49,7 +49,7 @@ public class TimeFormatter(TimeFormatterSettings settings)
             10 => "October",
             11 => "November",
             12 => "December",
-            _ => throw new InvalidDataException($"Invalid month: {month}")
+            _ => throw new InvalidDataException($"Invalid month: {month}"),
         };
     }
 

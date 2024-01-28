@@ -11,7 +11,7 @@ public class ScreenSaver(Painter painter, Settings settings)
 
     private readonly Painter _painter = painter;
 
-    private readonly (AnsiControlSequence color, AnsiControlSequence secondColor)[] _timeColors = new[]
+    private readonly (AnsiControlSequence Color, AnsiControlSequence SecondColor)[] _timeColors = new[]
     {
         (AnsiSequences.ForegroundColors.White,   AnsiSequences.ForegroundColors.Gray),
         (AnsiSequences.ForegroundColors.Yellow,  AnsiSequences.ForegroundColors.DarkYellow),
@@ -34,10 +34,10 @@ public class ScreenSaver(Painter painter, Settings settings)
             ShowHours = true,
             ShowSeconds = true,
             ShowMilliseconds = false,
-            ShowDate = true
+            ShowDate = true,
         };
 
-    private (int x, int y) _currentTimePosition;
+    private (int X, int Y) _currentTimePosition;
     private DateTime _lastChange;
     private DateTime _lastPaint;
     private DateTime _inactivationTime;
@@ -68,8 +68,8 @@ public class ScreenSaver(Painter painter, Settings settings)
         var repaint = now - _lastPaint > TimeSpan.FromSeconds(1);
 
         if (now - _lastChange > _changeInterval ||
-            _currentTimePosition.x + _timeWidth >= WindowWidth ||
-            _currentTimePosition.y + _timeHeight >= WindowHeight)
+            _currentTimePosition.X + _timeWidth >= WindowWidth ||
+            _currentTimePosition.Y + _timeHeight >= WindowHeight)
         {
             var x = Random.Shared.Next(WindowWidth - _timeWidth);
             var y = Random.Shared.Next(WindowHeight - _timeHeight);
@@ -79,7 +79,7 @@ public class ScreenSaver(Painter painter, Settings settings)
             _currentTimeSettings = _currentTimeSettings with
             {
                 Color = color,
-                SecondsColor = secondColor
+                SecondsColor = secondColor,
             };
 
             Write(AnsiSequences.ClearScreen);
@@ -122,7 +122,7 @@ public class ScreenSaver(Painter painter, Settings settings)
             .ToList();
         var width = timeRows.Max(_ => _.Length);
 
-        timeRows.Insert(0, new (string.Empty.PadRight(width)));
+        timeRows.Insert(0, new(string.Empty.PadRight(width)));
 
         yield return frameColor +  "╭" + string.Empty.PadLeft(width, '─') + "╮";
         foreach (var row in timeRows)

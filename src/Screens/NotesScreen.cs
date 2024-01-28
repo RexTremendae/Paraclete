@@ -24,13 +24,15 @@ public class NotesScreen(NotesMenu menu, NotebookPainter notebookPainter)
             {
                 _notebookPainter.PaintSectionList(Layout.Panes[paneIndex], (1, 1));
             },
+
             1 => () =>
             {
                 _notebookPainter.PaintNotes(Layout.Panes[paneIndex], (1, 1));
             },
+
             _ => () =>
             {
-            }
+            },
         };
     }
 }

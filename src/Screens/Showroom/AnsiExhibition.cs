@@ -42,7 +42,7 @@ public class AnsiExhibition : IExhibition
             {
                 var x when x is AnsiStringTextPiece => new AnsiString(part.ToString() ?? string.Empty),
                 var x when x is AnsiStringControlSequencePart seqPart => FormatForDisplay(seqPart),
-                _ => throw new InvalidOperationException()
+                _ => throw new InvalidOperationException(),
             };
 
             ansiExposedTextBuilder.Append(textToAppend);

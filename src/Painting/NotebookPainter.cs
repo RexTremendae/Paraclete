@@ -7,7 +7,7 @@ public class NotebookPainter(Painter painter, Notebook notebook)
 {
     private readonly Painter _painter = painter;
     private readonly Notebook _notebook = notebook;
-    private readonly NotebookFormatConfiguration _formatConfig = new (
+    private readonly NotebookFormatConfiguration _formatConfig = new(
         header: AnsiSequences.ForegroundColors.White,
         marker: AnsiSequences.ForegroundColors.Blue,
         notes: AnsiSequences.ForegroundColors.Yellow

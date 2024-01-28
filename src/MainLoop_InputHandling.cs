@@ -1,7 +1,7 @@
 namespace Paraclete;
 
-using Menu;
-using Screens;
+using Paraclete.Menu;
+using Paraclete.Screens;
 
 public partial class MainLoop
 {
@@ -13,7 +13,7 @@ public partial class MainLoop
 
         foreach (var screen in TypeUtility.EnumerateImplementatingInstancesOf<IScreen>(_services))
         {
-            _switchScreenCommands.Add(screen.Shortcut, new (screen.Shortcut, screen, _screenSelector));
+            _switchScreenCommands.Add(screen.Shortcut, new(screen.Shortcut, screen, _screenSelector));
         }
     }
 

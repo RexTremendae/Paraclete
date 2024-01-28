@@ -23,7 +23,7 @@ public class CalculatorScreen(CalculatorMenu calculatorMenu, CalculatorHistory c
         {
             0 => () => PaintExpressions(painter, Layout.Panes[paneIndex]),
             1 => () => PaintRadixConversion(painter, Layout.Panes[paneIndex]),
-            _ => () => { }
+            _ => () => { },
         };
 
     private void PaintExpressions(Painter painter, Pane pane)

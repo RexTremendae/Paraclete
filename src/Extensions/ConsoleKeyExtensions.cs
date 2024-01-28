@@ -11,7 +11,7 @@ public static class ConsoleKeyExtensions
             ConsoleKey.DownArrow => "⮟",
             ConsoleKey.LeftArrow => "⮜",
             ConsoleKey.RightArrow => "⮞",
-            _ => key.ToString()
+            _ => key.ToString(),
         };
     }
 }

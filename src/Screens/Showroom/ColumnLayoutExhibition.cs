@@ -9,7 +9,7 @@ public class ColumnLayoutExhibition : IExhibition
     private static readonly AnsiControlSequence _backgroundColor = AnsiSequences.BackgroundColor(0x22, 0x33, 0x44);
     private static readonly AnsiControlSequence _foregroundColor = AnsiSequences.ForegroundColors.Gray;
 
-    private static readonly (int width, int[] heights)[] PaneSizes = new (int, int[])[]
+    private static readonly (int Width, int[] Heights)[] PaneSizes = new (int, int[])[]
     {
         (50, Array.Empty<int>()),
         (16, new int[] { 5, 8, 12 }),
@@ -18,7 +18,7 @@ public class ColumnLayoutExhibition : IExhibition
     };
 
     public ILayout Layout { get; } = new ColumnBasedLayout(
-        PaneSizes.Select(_ => new ColumnBasedLayout.ColumnDefinition(_.width, _.heights)));
+        PaneSizes.Select(_ => new ColumnBasedLayout.ColumnDefinition(_.Width, _.Heights)));
 
     public void Paint(Painter painter, (int x, int y) position, int paneIndex)
     {

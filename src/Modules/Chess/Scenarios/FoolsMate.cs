@@ -13,13 +13,13 @@ public class FoolsMate : NewGame
 
         pieces.Remove((4, 6));
 
-        pieces[(4, 4)] = new (new Pawn(), PlayerColor.Black, true);
+        pieces[(4, 4)] = new(new Pawn(), PlayerColor.Black, true);
 
         pieces.Remove((5, 1));
         pieces.Remove((6, 1));
 
-        pieces[(5, 2)] = new (new Pawn(), PlayerColor.White, true);
-        pieces[(6, 3)] = new (new Pawn(), PlayerColor.White, true);
+        pieces[(5, 2)] = new(new Pawn(), PlayerColor.White, true);
+        pieces[(6, 3)] = new(new Pawn(), PlayerColor.White, true);
 
         return pieces.Select(_ => (_.Key, _.Value));
     }

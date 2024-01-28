@@ -13,7 +13,7 @@ public class HomeScreen(Stopwatch stopWatch, MainMenu mainMenu, ToDoListPainter 
     private readonly Stopwatch _stopWatch = stopWatch;
     private readonly ToDoListPainter _toDoListPainter = toDoListPainter;
 
-    private readonly TimeFormatter _currentTimeFormatter = new (new TimeFormatterSettings() with {
+    private readonly TimeFormatter _currentTimeFormatter = new(new TimeFormatterSettings() with {
             FontSize = Font.Size.L,
             SecondsFontSize = Font.Size.M,
             Color = AnsiSequences.ForegroundColors.White,
@@ -21,10 +21,10 @@ public class HomeScreen(Stopwatch stopWatch, MainMenu mainMenu, ToDoListPainter 
             ShowHours = true,
             ShowSeconds = true,
             ShowMilliseconds = false,
-            ShowDate = true
+            ShowDate = true,
         });
 
-    private readonly TimeFormatter _stopWatchFormatter = new (new TimeFormatterSettings() with {
+    private readonly TimeFormatter _stopWatchFormatter = new(new TimeFormatterSettings() with {
             FontSize = Font.Size.M,
             MillisecondsFontSize = Font.Size.S,
             ShowHours = true,
@@ -32,17 +32,17 @@ public class HomeScreen(Stopwatch stopWatch, MainMenu mainMenu, ToDoListPainter 
             ShowMilliseconds = true,
             Color = AnsiSequences.ForegroundColors.Magenta,
             SecondsColor = AnsiSequences.ForegroundColors.Magenta,
-            MillisecondsColor = AnsiSequences.ForegroundColors.DarkMagenta
+            MillisecondsColor = AnsiSequences.ForegroundColors.DarkMagenta,
         });
 
-    private readonly TimeFormatter _markTimeFormatter = new (new TimeFormatterSettings() with {
+    private readonly TimeFormatter _markTimeFormatter = new(new TimeFormatterSettings() with {
             FontSize = Font.Size.XS,
             ShowHours = true,
             ShowSeconds = true,
             ShowMilliseconds = true,
             Color = AnsiSequences.ForegroundColors.Magenta,
             SecondsColor = AnsiSequences.ForegroundColors.Magenta,
-            MillisecondsColor = AnsiSequences.ForegroundColors.DarkMagenta
+            MillisecondsColor = AnsiSequences.ForegroundColors.DarkMagenta,
         });
 
     private (int x, int y) _currentTimePosition = (x: 5, y: 1);
@@ -95,7 +95,7 @@ public class HomeScreen(Stopwatch stopWatch, MainMenu mainMenu, ToDoListPainter 
                 _toDoListPainter.Paint(Layout.Panes[2], (1, 1));
             },
 
-            _ => (Action)(() => { })
+            _ => (Action)(() => { }),
         })();
     };
 }

@@ -53,7 +53,7 @@ public class ColorExhibition : IExhibition
             ConsoleColor.Magenta     => ForegroundColors.Magenta,
             ConsoleColor.Yellow      => ForegroundColors.Yellow,
             ConsoleColor.White       => ForegroundColors.White,
-            _ => throw new NotSupportedException($"Color {color} is not defined.")
+            _ => throw new NotSupportedException($"Color {color} is not defined."),
         }
 
         + color.ToString() + AnsiSequences.Reset;
@@ -78,7 +78,7 @@ public class ColorExhibition : IExhibition
             ConsoleColor.Magenta     => BackgroundColors.Magenta,
             ConsoleColor.Yellow      => BackgroundColors.Yellow,
             ConsoleColor.White       => BackgroundColors.White,
-            _ => throw new NotSupportedException($"Color {color} is not defined.")
+            _ => throw new NotSupportedException($"Color {color} is not defined."),
         }
 
         + color.ToString() + AnsiSequences.Reset;

@@ -63,11 +63,11 @@ public class ColumnBasedLayout(params ColumnBasedLayout.ColumnDefinition[] colum
 
         if (paneWidth > 0 && paneHeight > 0)
         {
-            panes.Add(new ((xPos, 1), (paneWidth, paneHeight), true));
+            panes.Add(new((xPos, 1), (paneWidth, paneHeight), true));
         }
         else
         {
-            panes.Add(new ((xPos, 1), (0, 0), false));
+            panes.Add(new((xPos, 1), (0, 0), false));
         }
 
         Panes = [.. panes];
@@ -85,11 +85,11 @@ public class ColumnBasedLayout(params ColumnBasedLayout.ColumnDefinition[] colum
 
             if (paneHeight > 0 && paneWidth > 0)
             {
-                panes.Add(new ((xPos, yPos), (paneWidth, paneHeight), true));
+                panes.Add(new((xPos, yPos), (paneWidth, paneHeight), true));
             }
             else
             {
-                panes.Add(new ((xPos, yPos), (0, 0), false));
+                panes.Add(new((xPos, yPos), (0, 0), false));
             }
 
             yPos += paneHeight + 1;
@@ -99,11 +99,11 @@ public class ColumnBasedLayout(params ColumnBasedLayout.ColumnDefinition[] colum
 
         if (paneHeight > 0 && paneWidth > 0)
         {
-            panes.Add(new ((xPos, yPos), (paneWidth, paneHeight), true));
+            panes.Add(new((xPos, yPos), (paneWidth, paneHeight), true));
         }
         else
         {
-            panes.Add(new ((xPos, yPos), (0, 0), false));
+            panes.Add(new((xPos, yPos), (0, 0), false));
         }
 
         return panes;
@@ -149,7 +149,7 @@ public class ColumnBasedLayout(params ColumnBasedLayout.ColumnDefinition[] colum
                 var _ when lastColIsDivider && colIsDivider  => '┼',
                 var _ when !lastColIsDivider && colIsDivider => '├',
                 var _ when lastColIsDivider && !colIsDivider => '┤',
-                _                                            => '│'
+                _                                            => '│',
             };
 
             rowBuilder.Append(colDividerChar);

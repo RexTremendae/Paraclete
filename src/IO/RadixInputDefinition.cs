@@ -59,7 +59,7 @@ public class RadixInputDefinition : IInputDefinition
                     => inputData,
                 var _ when inputData.All(_ => IInputDefinition.NumericAlphabet.Contains(inputData[0]))
                     => $"0d{inputData}",
-                _ => inputData
+                _ => inputData,
             };
     }
 }

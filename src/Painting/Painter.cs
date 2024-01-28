@@ -34,7 +34,7 @@ public class Painter
         _selectedScreen = IScreen.NoScreen;
         _autoRefreshingPaneIndices = [];
 
-        _currentTimeFormatter = new (new ()
+        _currentTimeFormatter = new(new()
         {
             FontSize = Font.Size.XS,
             Color = AnsiSequences.ForegroundColors.White,

@@ -13,16 +13,16 @@ public readonly record struct ChessBoardPiece
 
 public class ChessBoard(PossibleMovesTracker possibleMovesTracker, MoveHistory moveHistory) : IInitializer
 {
-    private readonly Dictionary<PlayerColor, List<ChessBoardPiece>> _capturedPieces = new ()
+    private readonly Dictionary<PlayerColor, List<ChessBoardPiece>> _capturedPieces = new()
     {
-        { PlayerColor.White, new () },
-        { PlayerColor.Black, new () },
+        { PlayerColor.White, new() },
+        { PlayerColor.Black, new() },
     };
 
     private readonly Dictionary<PlayerColor, (int x, int y)> _kingTracker = [];
     private readonly PossibleMovesTracker _possibleMovesTracker = possibleMovesTracker;
     private readonly MoveHistory _moveHistory = moveHistory;
-    private GameState _gameState = new (Enumerable.Empty<((int x, int y), ChessBoardPiece)>());
+    private GameState _gameState = new(Enumerable.Empty<((int x, int y), ChessBoardPiece)>());
 
     public PlayerColor CurrentPlayer { get; private set; }
     public bool IsCheck { get; private set; }

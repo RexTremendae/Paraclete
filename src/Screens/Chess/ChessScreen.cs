@@ -2,13 +2,13 @@ namespace Paraclete.Screens.Chess;
 
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Paraclete.Ansi;
 using Paraclete.Layouts;
-using Paraclete.Painting;
 using Paraclete.Menu;
 using Paraclete.Menu.Chess;
-using Paraclete.Ansi;
 using Paraclete.Modules.Chess;
 using Paraclete.Modules.Chess.Scenarios;
+using Paraclete.Painting;
 
 public class ChessScreen(
         Settings settings,
@@ -91,14 +91,14 @@ public class ChessScreen(
         Menu = _chessMenu;
     }
 
-    private static (int x, int y) CalculatePaintPosition((int x, int y) position, (int x, int y) boardOffset)
+    private static (int X, int Y) CalculatePaintPosition((int X, int Y) position, (int X, int Y) boardOffset)
     {
-        var x = (position.x * 4) + boardOffset.x + 4;
-        var y = ((7 - position.y) * 2) + boardOffset.y + 2;
+        var x = (position.X * 4) + boardOffset.X + 4;
+        var y = ((7 - position.Y) * 2) + boardOffset.Y + 2;
         return (x, y);
     }
 
-    private void PaintSelectionMarker(Painter painter, Pane pane, (int x, int y) boardPosition)
+    private void PaintSelectionMarker(Painter painter, Pane pane, (int X, int Y) boardPosition)
     {
         var markerPosition = _pieceSelectionService.MarkerPosition;
 
@@ -108,7 +108,7 @@ public class ChessScreen(
         painter.Paint(_settings.Colors.PrimarySelection + "]", pane, (markerX + 1, markerY));
     }
 
-    private void PaintPieces(Painter painter, Pane pane, (int x, int y) boardPosition)
+    private void PaintPieces(Painter painter, Pane pane, (int X, int Y) boardPosition)
     {
         var black = _settings.Colors.BlackPlayer;
         var white = _settings.Colors.WhitePlayer;
@@ -138,7 +138,7 @@ public class ChessScreen(
         }
     }
 
-    private void PaintShadowPieces(Painter painter, Pane pane, (int x, int y) boardPosition)
+    private void PaintShadowPieces(Painter painter, Pane pane, (int X, int Y) boardPosition)
     {
         var from = _pieceSelectionService.MarkerPosition;
         var piece = _board.GetPiece(from);
@@ -155,15 +155,15 @@ public class ChessScreen(
         }
     }
 
-    private void PaintBoard(Painter painter, Pane pane, (int, int) boardPosition)
+    private void PaintBoard(Painter painter, Pane pane, (int X, int Y) boardPosition)
     {
         painter.PaintRows(GetBoardRows(), pane, boardPosition);
     }
 
-    private (int x, int y) Transform((int x, int y) position)
+    private (int X, int Y) Transform((int X, int Y) position)
     {
-        var x = position.x;
-        var y = position.y;
+        var x = position.X;
+        var y = position.Y;
 
         return _settings.RotateBoard
             ? (7 - x, 7 - y)

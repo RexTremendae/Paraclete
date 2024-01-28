@@ -42,7 +42,7 @@ public class OperatorTokenNode(string input) : TokenNodeBase
             "/" => left / right,
             "%" => left % right,
             "^" => double.Pow(left, right),
-            _ => throw new NotSupportedException($"Operator {_operator} is not supported.")
+            _ => throw new NotSupportedException($"Operator {_operator} is not supported."),
         };
     }
 

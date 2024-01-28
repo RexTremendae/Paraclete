@@ -14,7 +14,7 @@ public partial class Settings
 
 public partial class Settings
 {
-    public FpsCounterSettings FpsCounter => new ();
+    public FpsCounterSettings FpsCounter => new();
 
     public class FpsCounterSettings
     {
@@ -25,7 +25,7 @@ public partial class Settings
 
 public partial class Settings
 {
-    public ScreenSaverSettings ScreenSaver => new ();
+    public ScreenSaverSettings ScreenSaver => new();
 
     public class ScreenSaverSettings
     {
@@ -38,7 +38,7 @@ public partial class Settings
 
 public partial class Settings
 {
-    public ColorSettings Colors => new ();
+    public ColorSettings Colors => new();
 
     public class ColorSettings
     {
@@ -50,11 +50,11 @@ public partial class Settings
 
 public partial class Settings
 {
-    public ChessSettings Chess => new ();
+    public ChessSettings Chess => new();
 
     public class ChessSettings
     {
-        public ColorSettings Colors => new ()
+        public ColorSettings Colors => new()
         {
             BlackPlayer = AnsiSequences.ForegroundColors.Magenta,
             WhitePlayer = AnsiSequences.ForegroundColors.White,

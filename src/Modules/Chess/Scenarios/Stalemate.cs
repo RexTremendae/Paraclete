@@ -7,7 +7,7 @@ public class Stalemate : IScenario
     public string Name => "Stalemate";
     public PlayerColor CurrentPlayer => PlayerColor.White;
 
-    public Dictionary<PlayerColor, IEnumerable<ChessBoardPiece>> CapturedPieces => new ()
+    public Dictionary<PlayerColor, IEnumerable<ChessBoardPiece>> CapturedPieces => new()
     {
         {
             PlayerColor.Black,
@@ -55,8 +55,8 @@ public class Stalemate : IScenario
     public IEnumerable<((int x, int y) position, ChessBoardPiece piece)> GetPieces() =>
     new ((int x, int y) position, ChessBoardPiece piece)[]
     {
-        ((3, 4), new (new King(), PlayerColor.White, true)),
-        ((3, 7), new (new King(), PlayerColor.Black, true)),
-        ((3, 6), new (new Pawn(), PlayerColor.White, true)),
+        ((3, 4), new(new King(), PlayerColor.White, true)),
+        ((3, 7), new(new King(), PlayerColor.Black, true)),
+        ((3, 6), new(new Pawn(), PlayerColor.White, true)),
     };
 }

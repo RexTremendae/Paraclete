@@ -43,7 +43,7 @@ public class GameState
                 }
             }
 
-            _piecesLookup = new (dict);
+            _piecesLookup = new(dict);
             return _piecesLookup;
         }
     }

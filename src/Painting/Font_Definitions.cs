@@ -3,8 +3,8 @@ namespace Paraclete.Painting;
 public partial class Font
 {
 #pragma warning disable SA1500 // Braces for multi-line statements should not share line
-    private static readonly Font _fontDefinitionXS =
-        new (Size.XS,
+    private static readonly Font _fontDefinitionXS = new(
+            Size.XS,
             ('0', new[] { "0" }),
             ('1', new[] { "1" }),
             ('2', new[] { "2" }),
@@ -19,8 +19,8 @@ public partial class Font
             ('.', new[] { "." })
         );
 
-    private static readonly Font _fontDefinitionS =
-        new (Size.S,
+    private static readonly Font _fontDefinitionS = new(
+            Size.S,
             ('0', new[] { " ▄  ",
                           "█ █ ",
                           "▀▄▀ ", }),
@@ -70,8 +70,8 @@ public partial class Font
                           " ▄  ", })
         );
 
-    private static readonly Font _fontDefinitionM =
-        new (Size.M,
+    private static readonly Font _fontDefinitionM = new(
+            Size.M,
             ('0', new[] { " ██  ",
                           "█  █ ",
                           "█  █ ",
@@ -145,8 +145,8 @@ public partial class Font
                           "  █  ", })
         );
 
-    private static readonly Font _fontDefinitionL =
-        new (Size.L,
+    private static readonly Font _fontDefinitionL = new(
+            Size.L,
             ('0', new[] { " ████  ",
                           "██  ██ ",
                           "██  ██ ",

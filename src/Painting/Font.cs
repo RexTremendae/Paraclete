@@ -4,7 +4,7 @@ using System.Collections.Concurrent;
 
 public partial class Font
 {
-    private static readonly ConcurrentDictionary<Size, Font> _fontsBySize = new ();
+    private static readonly ConcurrentDictionary<Size, Font> _fontsBySize = new();
     private readonly Dictionary<char, string[]> _font;
 
     public Font(Size size, params (char key, string[] data)[] font)
@@ -73,6 +73,6 @@ public partial class Font
         Size.S  => _fontDefinitionS,
         Size.M  => _fontDefinitionM,
         Size.L  => _fontDefinitionL,
-        _ => throw new InvalidOperationException($"Undefined size: {size}")
+        _ => throw new InvalidOperationException($"Undefined size: {size}"),
     };
 }

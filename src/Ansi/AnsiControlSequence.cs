@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 public class AnsiControlSequence
 {
-    private static readonly Regex _validationRegex = new (
+    private static readonly Regex _validationRegex = new(
         $@"^{AnsiSequences.EscapeCharacter}\[\??(\d+(;\d+)*)?[a-zA-Z]$",
         RegexOptions.Compiled,
         TimeSpan.FromMilliseconds(500));
@@ -22,7 +22,7 @@ public class AnsiControlSequence
         _sequence = sequence;
     }
 
-    public static implicit operator AnsiString(AnsiControlSequence input) => new (input);
+    public static implicit operator AnsiString(AnsiControlSequence input) => new(input);
 
     public static AnsiString operator +(AnsiControlSequence sequence1, AnsiControlSequence sequence2)
     {
