@@ -1,9 +1,14 @@
 namespace Paraclete.Menu.Shortcuts;
 
-public class OutlookCommand : StartProcessCommandBase, IShortcut
+public class OutlookCommand
+    : IShortcut
 {
     public ConsoleKey Shortcut => ConsoleKey.O;
     public string Description => "[O]utlook";
     public string LongDescription => "Start Outlook with recycle switch";
-    public async Task Execute() => await Execute("outlook", "/recycle");
+
+    public Task Execute() => ProcessRunner.ExecuteAsync(
+        "outlook",
+        args: ["/recycle"],
+        launchExternal: true);
 }

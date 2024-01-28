@@ -17,7 +17,7 @@ public class UnicodeScreen(UnicodeMenu menu, UnicodeControl unicodeControl)
 
     public string Name => "Unicode";
 
-    public ConsoleKey Shortcut => ConsoleKey.F5;
+    public ConsoleKey Shortcut => ConsoleKey.F6;
 
     public Action GetPaintPaneAction(Painter painter, int paneIndex) =>
     () =>

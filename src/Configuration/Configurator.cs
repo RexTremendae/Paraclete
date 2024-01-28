@@ -5,6 +5,7 @@ using Paraclete.Menu;
 using Paraclete.Modules.Calculator;
 using Paraclete.Modules.Chess;
 using Paraclete.Modules.Chess.Scenarios;
+using Paraclete.Modules.GitNavigator;
 using Paraclete.Painting;
 using Paraclete.Screens;
 using Paraclete.Screens.Chess;
@@ -38,7 +39,9 @@ public static class Configurator
             .AddScoped<ToDoList>()
             .AddScoped<ToDoListPainter>()
             .AddScoped<UnicodeControl>()
+
             .AddChessModule()
+            .AddGitNavigatorModule()
 
             .AddImplementationsOf<ICommand>()
             .AddImplementationsOf<IExhibition>()
@@ -52,6 +55,17 @@ public static class Configurator
         await services.InvokeInitializers(serviceProvider);
 
         return serviceProvider;
+    }
+
+    public static ServiceConfigurator AddGitNavigatorModule(this ServiceConfigurator services)
+    {
+        services
+            .AddScoped<RepositorySelector>()
+            .AddScoped<GitRepositorySelectorPainter>()
+            .AddScoped<GitLogPainter>()
+        ;
+
+        return services;
     }
 
     public static ServiceConfigurator AddChessModule(this ServiceConfigurator services)

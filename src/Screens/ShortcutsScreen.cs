@@ -9,7 +9,7 @@ using Paraclete.Painting;
 public class ShortcutsScreen(ShortcutsMenu shortcutsMenu) : IScreen
 {
     public string Name => "Shortcuts";
-    public ConsoleKey Shortcut => ConsoleKey.F6;
+    public ConsoleKey Shortcut => ConsoleKey.F7;
 
     public MenuBase Menu { get; } = shortcutsMenu;
     public ILayout Layout { get; } = new SinglePaneLayout();
