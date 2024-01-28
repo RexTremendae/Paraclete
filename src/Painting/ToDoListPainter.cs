@@ -8,10 +8,10 @@ public class ToDoListPainter(Painter painter, ToDoList toDoList)
     private readonly Painter _painter = painter;
     private readonly ToDoList _toDoList = toDoList;
     private readonly ToDoFormatConfiguration _formatConfig = new(
-        header: AnsiSequences.ForegroundColors.White,
-        marker: AnsiSequences.ForegroundColors.Blue,
-        toDo: AnsiSequences.ForegroundColors.Yellow,
-        done: AnsiSequences.ForegroundColors.Gray + AnsiSequences.StrikeThrough
+        Header: AnsiSequences.ForegroundColors.White,
+        Marker: AnsiSequences.ForegroundColors.Blue,
+        ToDo: AnsiSequences.ForegroundColors.Yellow,
+        Done: AnsiSequences.ForegroundColors.Gray + AnsiSequences.StrikeThrough
     );
 
     public void Paint(Pane pane, (int x, int y) position, bool paintSelectionMaker = false)
@@ -23,7 +23,7 @@ public class ToDoListPainter(Painter painter, ToDoList toDoList)
 
         rows.Add(builder
             .Clear()
-            .Append(_formatConfig.header)
+            .Append(_formatConfig.Header)
             .Append("ToDo:")
             .Build()
             .PadRight(toDoItemPadding)
@@ -32,7 +32,7 @@ public class ToDoListPainter(Painter painter, ToDoList toDoList)
         rows.AddRange(_toDoList.ToDoItems.Select(_ => builder
             .Clear()
             .Append(ResolveMarker(_, paintSelectionMaker))
-            .Append(_formatConfig.toDo)
+            .Append(_formatConfig.ToDo)
             .Append(_.ToDisplayString(false))
             .Build()
             .PadRight(pane.Size.x - position.x)
@@ -42,7 +42,7 @@ public class ToDoListPainter(Painter painter, ToDoList toDoList)
 
         rows.Add(builder
             .Clear()
-            .Append(_formatConfig.header)
+            .Append(_formatConfig.Header)
             .Append("Done:")
             .Build()
             .PadRight(toDoItemPadding));
@@ -50,7 +50,7 @@ public class ToDoListPainter(Painter painter, ToDoList toDoList)
         rows.AddRange(_toDoList.DoneItems.Select(_ => builder
             .Clear()
             .Append(ResolveMarker(_, paintSelectionMaker))
-            .Append(_formatConfig.done)
+            .Append(_formatConfig.Done)
             .Append(_.ToDisplayString(true))
             .Build()
             .PadRight(pane.Size.x - position.x)
@@ -78,18 +78,18 @@ public class ToDoListPainter(Painter painter, ToDoList toDoList)
         // Selected item in move item mode
         if (_toDoList.MoveItemMode)
         {
-            return _formatConfig.marker + "⮝⮟ ";
+            return _formatConfig.Marker + "⮝⮟ ";
         }
 
         // Selected item in normal mode
-        return _formatConfig.marker + "=> ";
+        return _formatConfig.Marker + "=> ";
     }
 }
 
 public readonly record struct ToDoFormatConfiguration
 (
-    AnsiString header,
-    AnsiString marker,
-    AnsiString toDo,
-    AnsiString done
+    AnsiString Header,
+    AnsiString Marker,
+    AnsiString ToDo,
+    AnsiString Done
 );

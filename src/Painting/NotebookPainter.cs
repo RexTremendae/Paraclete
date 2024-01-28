@@ -8,9 +8,9 @@ public class NotebookPainter(Painter painter, Notebook notebook)
     private readonly Painter _painter = painter;
     private readonly Notebook _notebook = notebook;
     private readonly NotebookFormatConfiguration _formatConfig = new(
-        header: AnsiSequences.ForegroundColors.White,
-        marker: AnsiSequences.ForegroundColors.Blue,
-        notes: AnsiSequences.ForegroundColors.Yellow
+        Header: AnsiSequences.ForegroundColors.White,
+        Marker: AnsiSequences.ForegroundColors.Blue,
+        Notes: AnsiSequences.ForegroundColors.Yellow
     );
 
     public void PaintSectionList(Pane pane, (int x, int y) position)
@@ -22,7 +22,7 @@ public class NotebookPainter(Painter painter, Notebook notebook)
 
         rows.Add(builder
             .Clear()
-            .Append(_formatConfig.header)
+            .Append(_formatConfig.Header)
             .Append("Sections")
             .Build()
             .PadRight(itemPadding)
@@ -31,7 +31,7 @@ public class NotebookPainter(Painter painter, Notebook notebook)
         rows.AddRange(_notebook.GetSections().Select(_ => builder
             .Clear()
             .Append(ResolveMarker(_))
-            .Append(_formatConfig.notes)
+            .Append(_formatConfig.Notes)
             .Append(_)
             .Build()
             .PadRight(pane.Size.x - position.x)
@@ -57,7 +57,7 @@ public class NotebookPainter(Painter painter, Notebook notebook)
 
             rows.Add(builder
                 .Clear()
-                .Append(_formatConfig.header)
+                .Append(_formatConfig.Header)
                 .Append(currentSection)
                 .Build()
                 .PadRight(itemPadding)
@@ -66,7 +66,7 @@ public class NotebookPainter(Painter painter, Notebook notebook)
             rows.AddRange(_notebook.GetNotes(currentSection).Select(_ => builder
                 .Clear()
                 .Append(ResolveMarker(_))
-                .Append(_formatConfig.notes)
+                .Append(_formatConfig.Notes)
                 .Append(_)
                 .Build()
                 .PadRight(pane.Size.x - position.x)
@@ -87,14 +87,14 @@ public class NotebookPainter(Painter painter, Notebook notebook)
     public AnsiString ResolveMarker(string noteItem)
     {
         return noteItem == _notebook.SelectedSection
-            ? _formatConfig.marker + "=> "
+            ? _formatConfig.Marker + "=> "
             : " - ";
     }
 }
 
 public readonly record struct NotebookFormatConfiguration
 (
-    AnsiString header,
-    AnsiString marker,
-    AnsiString notes
+    AnsiString Header,
+    AnsiString Marker,
+    AnsiString Notes
 );

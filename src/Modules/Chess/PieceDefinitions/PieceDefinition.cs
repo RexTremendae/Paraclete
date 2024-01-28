@@ -5,7 +5,7 @@ public abstract class PieceDefinition
     public virtual PieceType PieceType => PieceType.Pawn;
     public virtual char Representation => ' ';
 
-    public IEnumerable<(int x, int y)> GetPossibleMoves((int x, int y) position, GameState gameState, bool validateAndSort = true)
+    public IEnumerable<(int X, int Y)> GetPossibleMoves((int X, int Y) position, GameState gameState, bool validateAndSort = true)
     {
         var sourcePiece = gameState.GetPiece(position)
             ?? throw new ArgumentException($"No piece at position {position}", nameof(position));
@@ -17,13 +17,13 @@ public abstract class PieceDefinition
             : possibleMoves;
     }
 
-    protected abstract IEnumerable<(int x, int y)> GetPossibleMovesForPiece(ChessBoardPiece piece, (int x, int y) position, GameState gameState);
+    protected abstract IEnumerable<(int X, int Y)> GetPossibleMovesForPiece(ChessBoardPiece piece, (int X, int Y) position, GameState gameState);
 
-    private static IEnumerable<(int x, int y)> ValidateAndSort(
+    private static IEnumerable<(int X, int Y)> ValidateAndSort(
         ChessBoardPiece piece,
-        (int x, int y) position,
+        (int X, int Y) position,
         GameState gameState,
-        IEnumerable<(int x, int y)> possibleMoves)
+        IEnumerable<(int X, int Y)> possibleMoves)
     {
         var moves = possibleMoves.ToHashSet();
         foreach (var (dirX, dirY) in new (int x, int y)[] { (0, 1), (0, -1), (1, 0), (-1, 0), (-1, -1), (1, -1), (-1, 1), (1, 1) } )
@@ -33,7 +33,7 @@ public abstract class PieceDefinition
 
             1.To(7, endIsInclusive: true).Foreach(_ =>
             {
-                curr = (curr.x + dirX, curr.y + dirY);
+                curr = (curr.X + dirX, curr.Y + dirY);
 
                 if (blocked)
                 {
@@ -45,7 +45,7 @@ public abstract class PieceDefinition
                     if (currPiece != default)
                     {
                         blocked = true;
-                        if (currPiece!.Value.color == piece.color)
+                        if (currPiece!.Value.Color == piece.Color)
                         {
                             moves.Remove(curr);
                         }
@@ -54,7 +54,7 @@ public abstract class PieceDefinition
             });
         }
 
-        foreach (var (x, y) in moves.OrderBy(_ => _.y).ThenBy(_ => _.x))
+        foreach (var (x, y) in moves.OrderBy(_ => _.Y).ThenBy(_ => _.X))
         {
             if (x < 0 || y < 0 || x >= 8 || y >= 8)
             {
@@ -62,7 +62,7 @@ public abstract class PieceDefinition
             }
 
             var destinationPiece = gameState.GetPiece((x, y));
-            if (destinationPiece?.color == piece.color)
+            if (destinationPiece?.Color == piece.Color)
             {
                 continue;
             }

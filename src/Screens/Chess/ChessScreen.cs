@@ -126,8 +126,8 @@ public class ChessScreen(
                 var p = piece.Value;
 
                 var ansiPiece =
-                    (p.color == PlayerColor.White ? white : black) +
-                    p.definition.Representation.ToString() +
+                    (p.Color == PlayerColor.White ? white : black) +
+                    p.Definition.Representation.ToString() +
                     AnsiSequences.Reset;
 
                 painter.Paint(
@@ -143,15 +143,18 @@ public class ChessScreen(
         var from = _pieceSelectionService.MarkerPosition;
         var piece = _board.GetPiece(from);
 
-        if (piece?.color != _board.CurrentPlayer)
+        if (piece?.Color != _board.CurrentPlayer)
         {
             return;
         }
 
         foreach (var move in _possibleMovesTracker.GetPossibleMovesFrom(from))
         {
-            var pieceRepresentation = _board.GetPiece(move.from)!.Value.definition.Representation;
-            painter.Paint(_settings.Colors.ShadowPiece.ToString() + pieceRepresentation, pane, CalculatePaintPosition(Transform(move.to), boardPosition));
+            var pieceRepresentation = _board.GetPiece(move.From)!.Value.Definition.Representation;
+            painter.Paint(
+                _settings.Colors.ShadowPiece.ToString() + pieceRepresentation,
+                pane,
+                CalculatePaintPosition(Transform(move.To), boardPosition));
         }
     }
 

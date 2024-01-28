@@ -6,9 +6,9 @@ using Paraclete.Modules.Chess.Scenarios;
 
 public readonly record struct ChessBoardPiece
 (
-    PieceDefinition definition,
-    PlayerColor color,
-    bool hasMoved
+    PieceDefinition Definition,
+    PlayerColor Color,
+    bool HasMoved
 );
 
 public class ChessBoard(PossibleMovesTracker possibleMovesTracker, MoveHistory moveHistory) : IInitializer
@@ -19,7 +19,7 @@ public class ChessBoard(PossibleMovesTracker possibleMovesTracker, MoveHistory m
         { PlayerColor.Black, new() },
     };
 
-    private readonly Dictionary<PlayerColor, (int x, int y)> _kingTracker = [];
+    private readonly Dictionary<PlayerColor, (int X, int Y)> _kingTracker = [];
     private readonly PossibleMovesTracker _possibleMovesTracker = possibleMovesTracker;
     private readonly MoveHistory _moveHistory = moveHistory;
     private GameState _gameState = new(Enumerable.Empty<((int x, int y), ChessBoardPiece)>());
@@ -63,9 +63,9 @@ public class ChessBoard(PossibleMovesTracker possibleMovesTracker, MoveHistory m
         {
             pieces.Add((position, piece));
 
-            if (piece.definition.PieceType == PieceType.King)
+            if (piece.Definition.PieceType == PieceType.King)
             {
-                _kingTracker[piece.color] = position;
+                _kingTracker[piece.Color] = position;
             }
         }
 
@@ -82,63 +82,63 @@ public class ChessBoard(PossibleMovesTracker possibleMovesTracker, MoveHistory m
         CurrentPlayer = scenario.CurrentPlayer;
     }
 
-    public void PromotePiece((int x, int y) position, PieceDefinition promoteToPiece)
+    public void PromotePiece((int X, int Y) position, PieceDefinition promoteToPiece)
     {
         var piecesClone = _gameState.PiecesClone;
         if (!piecesClone.TryGetValue(position, out var piece))
         {
-            throw new InvalidOperationException($"No piece found at position ({position.x}, {position.y})");
+            throw new InvalidOperationException($"No piece found at position ({position.X}, {position.Y})");
         }
 
-        var pieceType = piece.definition.PieceType;
+        var pieceType = piece.Definition.PieceType;
         if (pieceType != PieceType.Pawn)
         {
-            throw new InvalidOperationException($"Piece at position ({position.x}, {position.y}) is a {pieceType} which cannot be promoted.");
+            throw new InvalidOperationException($"Piece at position ({position.X}, {position.Y}) is a {pieceType} which cannot be promoted.");
         }
 
-        if (position.y != 0 && position.y != 7)
+        if (position.Y != 0 && position.Y != 7)
         {
-            throw new InvalidOperationException($"Pawn at position ({position.x}, {position.y}) has not reached the end of the board.");
+            throw new InvalidOperationException($"Pawn at position ({position.X}, {position.Y}) has not reached the end of the board.");
         }
 
-        piecesClone[position] = new ChessBoardPiece(definition: promoteToPiece, color: piece.color, hasMoved: false);
+        piecesClone[position] = new ChessBoardPiece(Definition: promoteToPiece, Color: piece.Color, HasMoved: false);
         CurrentPlayer = CurrentPlayer.Swap();
 
         UpdateGameState(piecesClone.Select(_ => (_.Key, _.Value)));
     }
 
-    public bool MovePiece((int x, int y) startPosition, (int x, int y) endPosition)
+    public bool MovePiece((int X, int Y) startPosition, (int X, int Y) endPosition)
     {
         var piecesClone = _gameState.PiecesClone;
         if (!piecesClone.TryGetValue(startPosition, out var piece))
         {
-            throw new InvalidOperationException($"No piece found at position ({startPosition.x}, {startPosition.y})");
+            throw new InvalidOperationException($"No piece found at position ({startPosition.X}, {startPosition.Y})");
         }
 
         ChessBoardPiece? capturedPiece = null;
         if (piecesClone.TryGetValue(endPosition, out var endPiece))
         {
             capturedPiece = endPiece;
-            _capturedPieces[endPiece.color].Add(endPiece);
+            _capturedPieces[endPiece.Color].Add(endPiece);
         }
 
-        piecesClone[endPosition] = piece with { hasMoved = true };
+        piecesClone[endPosition] = piece with { HasMoved = true };
         piecesClone.Remove(startPosition);
 
         _moveHistory.Add(new Move(
-            player: CurrentPlayer,
-            pieceType: piece.definition.PieceType,
-            from: startPosition,
-            to: endPosition,
-            capturedPiece: capturedPiece));
+            Player: CurrentPlayer,
+            PieceType: piece.Definition.PieceType,
+            From: startPosition,
+            To: endPosition,
+            CapturedPiece: capturedPiece));
 
-        if (piece.definition.PieceType == PieceType.Pawn && (endPosition.y == 0 || endPosition.y == 7))
+        if (piece.Definition.PieceType == PieceType.Pawn && (endPosition.Y == 0 || endPosition.Y == 7))
         {
             UpdateGameState(piecesClone.Select(_ => (_.Key, _.Value)));
             return true;
         }
 
-        if (piece.definition.PieceType == PieceType.King)
+        if (piece.Definition.PieceType == PieceType.King)
         {
             _kingTracker[CurrentPlayer] = endPosition;
         }
@@ -149,9 +149,9 @@ public class ChessBoard(PossibleMovesTracker possibleMovesTracker, MoveHistory m
         return false;
     }
 
-    public (int x, int y) FindNextPieceLocation((int x, int y) position, int direction, PlayerColor color)
+    public (int X, int Y) FindNextPieceLocation((int X, int Y) position, int direction, PlayerColor color)
     {
-        var index = (position.y * 8) + position.x;
+        var index = (position.Y * 8) + position.X;
 
         while (true)
         {
@@ -164,7 +164,7 @@ public class ChessBoard(PossibleMovesTracker possibleMovesTracker, MoveHistory m
 
             var next = (index % 8, index / 8);
 
-            if (_gameState.Pieces.TryGetValue(next, out var piece) && piece.color == color)
+            if (_gameState.Pieces.TryGetValue(next, out var piece) && piece.Color == color)
             {
                 return next;
             }
@@ -178,6 +178,6 @@ public class ChessBoard(PossibleMovesTracker possibleMovesTracker, MoveHistory m
         _possibleMovesTracker.Recalculate(_gameState);
         var possibleMovesToKing = _possibleMovesTracker.GetPossibleMovesTo(_kingTracker[CurrentPlayer]);
         var otherPlayer = CurrentPlayer.Swap();
-        IsCheck = possibleMovesToKing.Any(_ => _gameState.Pieces[_.from].color == otherPlayer);
+        IsCheck = possibleMovesToKing.Any(_ => _gameState.Pieces[_.From].Color == otherPlayer);
     }
 }

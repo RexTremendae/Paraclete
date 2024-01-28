@@ -23,6 +23,5 @@ dotnet_diagnostic.IDE0078.severity = none # Use pattern matching - require logic
 dotnet_diagnostic.IDE1006.severity = none # Naming rule violation: These words must begin with upper case characters - conflicts with SA1313
 
 dotnet_diagnostic.SA1201.severity = none  # A record struct should not follow a class
-dotnet_diagnostic.SA1300.severity = none  # Element 'definition' should begin with an uppercase letter
 dotnet_diagnostic.SA1316.severity = none  # Tuple element names should use correct casing
 dotnet_diagnostic.SA1649.severity = none  # File name should match first type name

@@ -3,8 +3,8 @@ namespace Paraclete.Modules.Chess;
 public class PossibleMovesTracker(SpecialMovesCalculator specialMovesCalculator)
 {
     private readonly SpecialMovesCalculator _specialMovesCalculator = specialMovesCalculator;
-    private readonly Dictionary<(int x, int y), List<Move>> _possibleMovesFrom = [];
-    private readonly Dictionary<(int x, int y), List<Move>> _possibleMovesTo = [];
+    private readonly Dictionary<(int X, int Y), List<Move>> _possibleMovesFrom = [];
+    private readonly Dictionary<(int X, int Y), List<Move>> _possibleMovesTo = [];
 
     public Move[] GetPossibleMovesFrom((int x, int y) position)
     {
@@ -27,9 +27,9 @@ public class PossibleMovesTracker(SpecialMovesCalculator specialMovesCalculator)
 
         foreach (var (from, piece) in gameState.Pieces)
         {
-            foreach (var to in piece.definition.GetPossibleMoves(from, gameState))
+            foreach (var to in piece.Definition.GetPossibleMoves(from, gameState))
             {
-                var move = new Move(player: piece.color, pieceType: piece.definition.PieceType, from: from, to: to, capturedPiece: gameState.GetPiece(to));
+                var move = new Move(Player: piece.Color, PieceType: piece.Definition.PieceType, From: from, To: to, CapturedPiece: gameState.GetPiece(to));
                 AddMove(move);
             }
         }
@@ -40,7 +40,7 @@ public class PossibleMovesTracker(SpecialMovesCalculator specialMovesCalculator)
         }
     }
 
-    private static void AddMoveTo(Dictionary<(int x, int y), List<Move>> possibleMoves, (int x, int y) key, Move move)
+    private static void AddMoveTo(Dictionary<(int x, int y), List<Move>> possibleMoves, (int X, int Y) key, Move move)
     {
         if (!possibleMoves.TryGetValue(key, out var moveList))
         {
@@ -53,7 +53,7 @@ public class PossibleMovesTracker(SpecialMovesCalculator specialMovesCalculator)
 
     private void AddMove(Move move)
     {
-        AddMoveTo(_possibleMovesFrom, move.from, move);
-        AddMoveTo(_possibleMovesTo, move.to, move);
+        AddMoveTo(_possibleMovesFrom, move.From, move);
+        AddMoveTo(_possibleMovesTo, move.To, move);
     }
 }

@@ -5,9 +5,9 @@ using System.Collections.ObjectModel;
 public class GameState
 {
     private readonly ChessBoardPiece?[] _pieces;
-    private ReadOnlyDictionary<(int x, int y), ChessBoardPiece>? _piecesLookup;
+    private ReadOnlyDictionary<(int X, int Y), ChessBoardPiece>? _piecesLookup;
 
-    public GameState(IEnumerable<((int x, int y) position, ChessBoardPiece piece)> pieces)
+    public GameState(IEnumerable<((int X, int Y) position, ChessBoardPiece piece)> pieces)
     {
         _pieces = new ChessBoardPiece?[64];
         foreach (var (position, piece) in pieces)
@@ -16,10 +16,10 @@ public class GameState
         }
     }
 
-    public Dictionary<(int x, int y), ChessBoardPiece> PiecesClone
+    public Dictionary<(int X, int Y), ChessBoardPiece> PiecesClone
         => Pieces.ToDictionary(key => key.Key, value => value.Value);
 
-    public IReadOnlyDictionary<(int x, int y), ChessBoardPiece> Pieces
+    public IReadOnlyDictionary<(int X, int Y), ChessBoardPiece> Pieces
     {
         get
         {
@@ -63,7 +63,7 @@ public class GameState
             var piece = _pieces[_];
             if (piece != null)
             {
-                hashCode.Add((_, piece.Value.definition.PieceType, piece.Value.color));
+                hashCode.Add((_, piece.Value.Definition.PieceType, piece.Value.Color));
             }
         });
 
@@ -95,12 +95,12 @@ public class GameState
             var p1 = p1n.Value;
             var p2 = p2n.Value;
 
-            if (p1.color != p2.color)
+            if (p1.Color != p2.Color)
             {
                 return false;
             }
 
-            if (p1.definition.PieceType != p2.definition.PieceType)
+            if (p1.Definition.PieceType != p2.Definition.PieceType)
             {
                 return false;
             }

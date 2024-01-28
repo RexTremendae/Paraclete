@@ -5,19 +5,19 @@ public class Pawn : PieceDefinition
     public override PieceType PieceType => PieceType.Pawn;
     public override char Representation => '*';
 
-    protected override IEnumerable<(int x, int y)> GetPossibleMovesForPiece(ChessBoardPiece piece, (int x, int y) position, GameState gameState)
+    protected override IEnumerable<(int X, int Y)> GetPossibleMovesForPiece(ChessBoardPiece piece, (int X, int Y) position, GameState gameState)
     {
-        var dir = (piece.color == PlayerColor.White) ? +1 : -1;
-        var x = position.x;
-        var y = position.y + dir;
+        var dir = (piece.Color == PlayerColor.White) ? +1 : -1;
+        var x = position.X;
+        var y = position.Y + dir;
 
-        var otherPlayer = piece.color.Swap();
-        if (gameState.GetPiece((x + 1, y))?.color == otherPlayer)
+        var otherPlayer = piece.Color.Swap();
+        if (gameState.GetPiece((x + 1, y))?.Color == otherPlayer)
         {
             yield return (x + 1, y);
         }
 
-        if (gameState.GetPiece((x - 1, y))?.color == otherPlayer)
+        if (gameState.GetPiece((x - 1, y))?.Color == otherPlayer)
         {
             yield return (x - 1, y);
         }
@@ -29,7 +29,7 @@ public class Pawn : PieceDefinition
 
         yield return (x, y);
 
-        if (!piece.hasMoved)
+        if (!piece.HasMoved)
         {
             y += dir;
             if (gameState.GetPiece((x, y)) != default)

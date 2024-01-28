@@ -22,25 +22,25 @@ public class SpecialMovesCalculator(MoveHistory moveHistory)
         }
 
         var lastMove = nullableLastMove.Value;
-        if (lastMove.pieceType != PieceType.Pawn ||
-            Math.Abs(lastMove.to.y - lastMove.from.y) != 2)
+        if (lastMove.PieceType != PieceType.Pawn ||
+            Math.Abs(lastMove.To.Y - lastMove.From.Y) != 2)
         {
             yield break;
         }
 
         foreach (var dx in new[] { 1, -1 })
         {
-            var x = lastMove.to.x + dx;
+            var x = lastMove.To.X + dx;
             if (x >= 0 && x < 8 &&
-                pieces.TryGetValue((x, lastMove.to.y), out var piece) &&
-                piece.definition.PieceType == PieceType.Pawn &&
-                piece.color != lastMove.player)
+                pieces.TryGetValue((x, lastMove.To.Y), out var piece) &&
+                piece.Definition.PieceType == PieceType.Pawn &&
+                piece.Color != lastMove.Player)
             {
                 yield return new Move(
-                    piece.color,
+                    piece.Color,
                     PieceType.Pawn,
-                    from: (x, lastMove.to.y),
-                    to: (lastMove.to.x, lastMove.to.y + (piece.color == PlayerColor.White ? +1 : -1)),
+                    From: (x, lastMove.To.Y),
+                    To: (lastMove.To.X, lastMove.To.Y + (piece.Color == PlayerColor.White ? +1 : -1)),
                     null);
             }
         }

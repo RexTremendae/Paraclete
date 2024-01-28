@@ -5,21 +5,21 @@ public class Rook : PieceDefinition
     public override PieceType PieceType => PieceType.Rook;
     public override char Representation => '□';
 
-    protected override IEnumerable<(int x, int y)> GetPossibleMovesForPiece(ChessBoardPiece piece, (int x, int y) position, GameState gameState)
+    protected override IEnumerable<(int X, int Y)> GetPossibleMovesForPiece(ChessBoardPiece piece, (int X, int Y) position, GameState gameState)
     {
         foreach (var x in 0.To(8))
         {
-            if (x != position.x)
+            if (x != position.X)
             {
-                yield return (x, position.y);
+                yield return (x, position.Y);
             }
         }
 
         foreach (var y in 0.To(8))
         {
-            if (y != position.y)
+            if (y != position.Y)
             {
-                yield return (position.x, y);
+                yield return (position.X, y);
             }
         }
     }
