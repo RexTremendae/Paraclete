@@ -63,6 +63,7 @@ public static class Configurator
             .AddScoped<RepositorySelector>()
             .AddScoped<GitRepositorySelectorPainter>()
             .AddScoped<GitLogPainter>()
+            .AddScoped<LogStore>()
         ;
 
         return services;
