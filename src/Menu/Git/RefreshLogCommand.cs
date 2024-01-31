@@ -2,9 +2,10 @@ namespace Paraclete.Menu.Git;
 
 using Paraclete.Modules.GitNavigator;
 
-public class RefreshLogCommand(LogStore logStore, ScreenInvalidator screenInvalidator)
+public class RefreshLogCommand(LogStore logStore, RepositorySelector repositorySelector, ScreenInvalidator screenInvalidator)
     : ICommand
 {
+    private readonly RepositorySelector _repositorySelector = repositorySelector;
     private readonly LogStore _logStore = logStore;
     private readonly ScreenInvalidator _screenInvalidator = screenInvalidator;
 
@@ -14,7 +15,7 @@ public class RefreshLogCommand(LogStore logStore, ScreenInvalidator screenInvali
 
     public async Task Execute()
     {
-        await _logStore.Refresh();
+        await _logStore.Refresh(_repositorySelector.SelectedRepository);
         _screenInvalidator.InvalidatePane(1);
     }
 }

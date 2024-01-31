@@ -2,13 +2,17 @@ namespace Paraclete.Modules.GitNavigator;
 
 using System.Text.Json;
 
-public class RepositorySelector : IInitializer
+public class RepositorySelector(LogStore logStore) : IInitializer
 {
     private const string _gitSettingsFilename = "git.json";
 
+    private readonly LogStore _logStore = logStore;
+
     private string[] _repositories = [];
 
-    public string SelectedRepository { get; private set; } = string.Empty;
+    private int _selectdRepositoryIndex;
+
+    public string SelectedRepository => _repositories[_selectdRepositoryIndex];
 
     public string[] GetRepositories()
     {
@@ -31,6 +35,20 @@ public class RepositorySelector : IInitializer
         }
 
         _repositories = data;
-        SelectedRepository = _repositories.First();
+        _selectdRepositoryIndex = 0;
+
+        await _logStore.Refresh(SelectedRepository);
+    }
+
+    public async Task SelectNext()
+    {
+        _selectdRepositoryIndex++;
+
+        if (_selectdRepositoryIndex >= _repositories.Length)
+        {
+            _selectdRepositoryIndex = 0;
+        }
+
+        await _logStore.Refresh(SelectedRepository);
     }
 }

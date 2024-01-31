@@ -2,18 +2,27 @@ namespace Paraclete.Modules.GitNavigator;
 
 using System.Text.RegularExpressions;
 
-public class LogStore(RepositorySelector repositorySelector)
+public class LogStore
 {
-    private readonly RepositorySelector _repositorySelector = repositorySelector;
     private readonly List<LogLine> _logLines = [];
 
     public IEnumerable<LogLine> LogLines => _logLines;
 
-    public async Task Refresh()
+    public async Task Pull(string repository)
+    {
+        await ProcessRunner.ExecuteAsync(
+            "git",
+            args: ["pull"],
+            workingDirectory: repository,
+            launchExternal: false);
+
+        await Refresh(repository);
+    }
+
+    public async Task Refresh(string repository)
     {
         _logLines.Clear();
 
-        var repository = _repositorySelector.SelectedRepository;
         if (string.IsNullOrEmpty(repository))
         {
             return;
