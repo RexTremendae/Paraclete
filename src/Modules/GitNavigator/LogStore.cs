@@ -68,19 +68,47 @@ public class LogStore
                     sha: string.Empty,
                     timestamp: default,
                     email: string.Empty,
-                    message: string.Empty));
+                    message: string.Empty,
+                    branches: []));
             }
             else
             {
+                var branchesString = parts[5].Length > 2
+                    ? parts[5][1..^1]
+                    : parts[5];
+
+                var branchList = new List<string>();
+
+                if (branchesString.StartsWith("HEAD -> "))
+                {
+                    branchList.Add(branchesString[..4]);
+                    branchesString = branchesString[8..];
+                }
+
+                if (!string.IsNullOrWhiteSpace(branchesString))
+                {
+                    var startIdx = 0;
+                    var splitIdx = 0;
+
+                    while (splitIdx >= 0)
+                    {
+                        splitIdx = branchesString.IndexOf(", ", startIdx);
+                        branchList.Add(splitIdx >= 0
+                            ? branchesString[startIdx..splitIdx]
+                            : branchesString[startIdx..]);
+
+                        startIdx = splitIdx + 2;
+                    }
+                }
+
                 _logLines.Add(new(
                     isGraphOnly: false,
                     graph: graph,
                     sha: parts[1],
                     timestamp: DateTime.Parse(parts[2]),
                     email: parts[3],
-                    message: parts[4]));
-
-                // branch = parts[5]
+                    message: parts[4],
+                    branches: [.. branchList]));
             }
         }
     }
