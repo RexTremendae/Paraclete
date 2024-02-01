@@ -133,12 +133,18 @@ public class Painter
         PaintRows(new[] { row }, pane, position);
     }
 
-    public void PaintRows(IEnumerable<AnsiString> rows, Pane pane, (int x, int y)? position = null, bool showEllipsis = false)
+    public void PaintRows(IEnumerable<AnsiString> rows, Pane pane, (int x, int y)? position = null, bool showEllipsis = false, bool padPaneWidth = false)
     {
-        var pos = ((position?.x ?? 0) + pane.Position.x, (position?.y ?? 0) + pane.Position.y);
+        var (relativeXPosition, relativeYPosition) = position ?? (0, 0);
+        var absolutePosistion = (relativeXPosition + pane.Position.x, relativeYPosition + pane.Position.y);
         var boundary = (pane.Position.x + pane.Size.x, pane.Position.y + pane.Size.y);
 
-        PaintRows(rows, pos, boundary, showEllipsis);
+        if (padPaneWidth)
+        {
+            rows = rows.Select(_ => _.PadRight(pane.Size.x - relativeXPosition));
+        }
+
+        PaintRows(rows, absolutePosistion, boundary, showEllipsis);
     }
 
     public void PaintRows(IEnumerable<AnsiString> rows, (int x, int y)? position = null, (int x, int y)? boundary = null, bool showEllipsis = false)

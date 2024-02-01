@@ -10,6 +10,6 @@ public class GitLogPainter(Painter painter, LogStore logStore)
 
     public void PaintLogLines(Pane pane, (int x, int y) position)
     {
-        _painter.PaintRows(_logStore.LogLines.Select(_ => _.ToAnsiString()), pane, position, showEllipsis: true);
+        _painter.PaintRows(_logStore.LogLines.Select(_ => _.ToAnsiString()), pane, position, padPaneWidth: true, showEllipsis: true);
     }
 }

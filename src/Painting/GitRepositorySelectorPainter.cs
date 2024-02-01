@@ -35,7 +35,6 @@ public class GitRepositorySelectorPainter(Painter painter, RepositorySelector re
             .Append(_formatConfig.Repositories)
             .Append(_)
             .Build()
-            .PadRight(pane.Size.x - position.x)
         ));
 
         _painter.PaintRows(rows, pane, position, showEllipsis: true);

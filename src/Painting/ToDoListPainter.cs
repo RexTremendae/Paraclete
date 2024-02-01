@@ -26,7 +26,6 @@ public class ToDoListPainter(Painter painter, ToDoList toDoList)
             .Append(_formatConfig.Header)
             .Append("ToDo:")
             .Build()
-            .PadRight(toDoItemPadding)
         );
 
         rows.AddRange(_toDoList.ToDoItems.Select(_ => builder
@@ -38,14 +37,14 @@ public class ToDoListPainter(Painter painter, ToDoList toDoList)
             .PadRight(pane.Size.x - position.x)
         ));
 
-        rows.Add(string.Empty.PadRight(toDoItemPadding));
+        rows.Add(string.Empty);
 
         rows.Add(builder
             .Clear()
             .Append(_formatConfig.Header)
             .Append("Done:")
             .Build()
-            .PadRight(toDoItemPadding));
+        );
 
         rows.AddRange(_toDoList.DoneItems.Select(_ => builder
             .Clear()
@@ -53,12 +52,11 @@ public class ToDoListPainter(Painter painter, ToDoList toDoList)
             .Append(_formatConfig.Done)
             .Append(_.ToDisplayString(true))
             .Build()
-            .PadRight(pane.Size.x - position.x)
         ));
 
-        rows.Add(string.Empty.PadRight(toDoItemPadding));
+        rows.Add(string.Empty);
 
-        _painter.PaintRows(rows, pane, position, showEllipsis: true);
+        _painter.PaintRows(rows, pane, position, showEllipsis: true, padPaneWidth: true);
     }
 
     public AnsiString ResolveMarker(ToDoItem toDoItem, bool paintSelectionMaker)

@@ -34,7 +34,6 @@ public class NotebookPainter(Painter painter, Notebook notebook)
             .Append(_formatConfig.Notes)
             .Append(_)
             .Build()
-            .PadRight(pane.Size.x - position.x)
         ));
 
         _painter.PaintRows(rows, pane, position, showEllipsis: true);
@@ -60,7 +59,6 @@ public class NotebookPainter(Painter painter, Notebook notebook)
                 .Append(_formatConfig.Header)
                 .Append(currentSection)
                 .Build()
-                .PadRight(itemPadding)
             );
 
             rows.AddRange(_notebook.GetNotes(currentSection).Select(_ => builder
@@ -69,7 +67,6 @@ public class NotebookPainter(Painter painter, Notebook notebook)
                 .Append(_formatConfig.Notes)
                 .Append(_)
                 .Build()
-                .PadRight(pane.Size.x - position.x)
             ));
 
             rows.Add(string.Empty);
@@ -81,7 +78,7 @@ public class NotebookPainter(Painter painter, Notebook notebook)
             }
         }
 
-        _painter.PaintRows(rows, pane, position, showEllipsis: true);
+        _painter.PaintRows(rows, pane, position, padPaneWidth: true, showEllipsis: true);
     }
 
     public AnsiString ResolveMarker(string noteItem)
