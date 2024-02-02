@@ -52,8 +52,8 @@ public class Stalemate : IScenario
         },
     };
 
-    public IEnumerable<((int x, int y) position, ChessBoardPiece piece)> GetPieces() =>
-    new ((int x, int y) position, ChessBoardPiece piece)[]
+    public IEnumerable<((int X, int Y) Position, ChessBoardPiece Piece)> GetPieces() =>
+    new ((int X, int Y) Position, ChessBoardPiece Piece)[]
     {
         ((3, 4), new(new King(), PlayerColor.White, true)),
         ((3, 7), new(new King(), PlayerColor.Black, true)),

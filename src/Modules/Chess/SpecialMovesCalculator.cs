@@ -13,7 +13,7 @@ public class SpecialMovesCalculator(MoveHistory moveHistory)
         return specialMoves;
     }
 
-    private IEnumerable<Move> GetEnPassantMoves(IReadOnlyDictionary<(int x, int y), ChessBoardPiece> pieces)
+    private IEnumerable<Move> GetEnPassantMoves(IReadOnlyDictionary<(int X, int Y), ChessBoardPiece> pieces)
     {
         var nullableLastMove = _moveHistory.GetLastMove();
         if (nullableLastMove == null)

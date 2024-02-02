@@ -14,9 +14,9 @@ public class GitRepositorySelectorPainter(Painter painter, RepositorySelector re
         Repositories: AnsiSequences.ForegroundColors.Yellow
     );
 
-    public void PaintRepositoryList(Pane pane, (int x, int y) position)
+    public void PaintRepositoryList(Pane pane, (int X, int Y) position)
     {
-        var itemPadding = (pane.Size.x - position.x).ZeroFloor();
+        var itemPadding = (pane.Size.X - position.X).ZeroFloor();
 
         var rows = new List<AnsiString>();
         var builder = new AnsiStringBuilder();

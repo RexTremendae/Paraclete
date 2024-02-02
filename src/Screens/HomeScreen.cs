@@ -45,9 +45,9 @@ public class HomeScreen(Stopwatch stopWatch, MainMenu mainMenu, ToDoListPainter 
             MillisecondsColor = AnsiSequences.ForegroundColors.DarkMagenta,
         });
 
-    private (int x, int y) _currentTimePosition = (x: 5, y: 1);
-    private (int x, int y) _stopWatchPosition   = (x: 2, y: 1);
-    private (int x, int y) _markTimesPosition   = (x: 2, y: 7);
+    private (int X, int Y) _currentTimePosition = (X: 5, Y: 1);
+    private (int X, int Y) _stopWatchPosition   = (X: 2, Y: 1);
+    private (int X, int Y) _markTimesPosition   = (X: 2, Y: 7);
 
     public string Name => "Home";
     public ConsoleKey Shortcut => ConsoleKey.F1;
@@ -81,8 +81,8 @@ public class HomeScreen(Stopwatch stopWatch, MainMenu mainMenu, ToDoListPainter 
                 }
 
                 // Marked time
-                var mx = _markTimesPosition.x;
-                var my = _markTimesPosition.y;
+                var mx = _markTimesPosition.X;
+                var my = _markTimesPosition.Y;
                 foreach (var mark in _stopWatch.MarkedTimes)
                 {
                     painter.PaintRows(_markTimeFormatter.Format(mark), pane, (mx, my++));

@@ -12,7 +12,7 @@ public class AnsiExhibition : IExhibition
 
     public ILayout Layout { get; } = new SinglePaneLayout();
 
-    public void Paint(Painter painter, (int x, int y) position, int paneIndex)
+    public void Paint(Painter painter, (int X, int Y) position, int paneIndex)
     {
         var esc = (string text) => new AnsiControlSequence(EscapeChr + text);
 
@@ -27,8 +27,8 @@ public class AnsiExhibition : IExhibition
             esc("[38;2;255;255;255m") + "[" + esc("[38;2;0;200;0m") + "S" + esc("[38;2;100;100;100m") + "tart" + esc("[38;2;255;255;255m") + "]",
         })
         {
-            Paint(text, position.x, position.y, painter, Layout.Panes[paneIndex]);
-            position.y += 3;
+            Paint(text, position.X, position.Y, painter, Layout.Panes[paneIndex]);
+            position.Y += 3;
         }
     }
 

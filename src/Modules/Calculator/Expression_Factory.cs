@@ -6,14 +6,14 @@ public partial class Expression
 {
     private sealed class Factory
     {
-        private readonly List<(string token, TokenType type)> _tokens = [];
+        private readonly List<(string Token, TokenType Type)> _tokens = [];
         private readonly StringBuilder _currentToken = new();
         private TokenType _currentTokenType = TokenType.None;
 
-        private static IEnumerable<(string token, TokenType type)> NoTokens { get; } =
-            Enumerable.Empty<(string token, TokenType type)>();
+        private static IEnumerable<(string Token, TokenType Type)> NoTokens { get; } =
+            Enumerable.Empty<(string Token, TokenType Type)>();
 
-        public (ITokenNode root, IEnumerable<(string token, TokenType type)> tokens) CreateTokens(string inputData)
+        public (ITokenNode Root, IEnumerable<(string Token, TokenType Type)> Tokens) CreateTokens(string inputData)
         {
             _currentTokenType = TokenType.None;
             _currentToken.Clear();

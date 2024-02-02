@@ -20,19 +20,19 @@ public class ColumnLayoutExhibition : IExhibition
     public ILayout Layout { get; } = new ColumnBasedLayout(
         PaneSizes.Select(_ => new ColumnBasedLayout.ColumnDefinition(_.Width, _.Heights)));
 
-    public void Paint(Painter painter, (int x, int y) position, int paneIndex)
+    public void Paint(Painter painter, (int X, int Y) position, int paneIndex)
     {
         var rows = new List<AnsiString>();
         var pane = Layout.Panes[paneIndex];
 
-        AddTopRow(rows, pane.PaneIndex.ToString("00"), pane.Size.x);
-        var end = int.Max(1, pane.Size.y - 1);
+        AddTopRow(rows, pane.PaneIndex.ToString("00"), pane.Size.X);
+        var end = int.Max(1, pane.Size.Y - 1);
         1.To(end).Foreach(y =>
         {
-            AddMiddleRow(rows, paneIndex: paneIndex, paneWidth: pane.Size.x, rowIndex: y);
+            AddMiddleRow(rows, paneIndex: paneIndex, paneWidth: pane.Size.X, rowIndex: y);
         });
 
-        AddBottomRow(rows, pane.Size.x);
+        AddBottomRow(rows, pane.Size.X);
 
         painter.PaintRows(rows, pane);
     }
@@ -98,9 +98,9 @@ public class ColumnLayoutExhibition : IExhibition
                     .Append(_foregroundColor)
                     .Append(_backgroundColor)
                     .Append(": ")
-                    .Append($"({listedPane.Position.x,3}, {listedPane.Position.y,3})")
+                    .Append($"({listedPane.Position.X,3}, {listedPane.Position.Y,3})")
                     .Append("  ")
-                    .Append($"({listedPane.Size.x,3} x {listedPane.Size.y,3}) ")
+                    .Append($"({listedPane.Size.X,3} x {listedPane.Size.Y,3}) ")
                     .Append($"visible: ")
                     .Append(visibilityMarker)
                     .Append(string.Empty.PadRight(contentWidth - contentBuilder.Length + 1))

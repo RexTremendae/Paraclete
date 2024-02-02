@@ -10,7 +10,7 @@ public class ColorExhibition : IExhibition
 {
     public ILayout Layout { get; } = new SinglePaneLayout();
 
-    public void Paint(Painter painter, (int x, int y) position, int paneIndex)
+    public void Paint(Painter painter, (int X, int Y) position, int paneIndex)
     {
         var columnWidth = 16;
         var colorIdx = 0;

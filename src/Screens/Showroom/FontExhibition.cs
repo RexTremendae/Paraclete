@@ -10,7 +10,7 @@ public class FontExhibition : IExhibition
 {
     public ILayout Layout { get; } = new SinglePaneLayout();
 
-    public void Paint(Painter painter, (int x, int y) position, int paneIndex)
+    public void Paint(Painter painter, (int X, int Y) position, int paneIndex)
     {
         var text = "0123456789:.";
         var pane = Layout.Panes[paneIndex];
@@ -32,8 +32,8 @@ public class FontExhibition : IExhibition
 
             painter.Paint($"{ForegroundColors.White}{size}:".PadRight(4), pane, position);
             var fontRows = FontFormatter.Create(size).Format(text, colors[size]).ToArray();
-            painter.PaintRows(fontRows, pane, (position.x + 4, position.y));
-            position = (position.x, position.y + fontRows.Length + 1);
+            painter.PaintRows(fontRows, pane, (position.X + 4, position.Y));
+            position = (position.X, position.Y + fontRows.Length + 1);
         }
     }
 }

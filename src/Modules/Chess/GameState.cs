@@ -7,7 +7,7 @@ public class GameState
     private readonly ChessBoardPiece?[] _pieces;
     private ReadOnlyDictionary<(int X, int Y), ChessBoardPiece>? _piecesLookup;
 
-    public GameState(IEnumerable<((int X, int Y) position, ChessBoardPiece piece)> pieces)
+    public GameState(IEnumerable<((int X, int Y) Position, ChessBoardPiece Piece)> pieces)
     {
         _pieces = new ChessBoardPiece?[64];
         foreach (var (position, piece) in pieces)
@@ -48,9 +48,9 @@ public class GameState
         }
     }
 
-    public ChessBoardPiece? GetPiece((int x, int y) pos)
+    public ChessBoardPiece? GetPiece((int X, int Y) pos)
     {
-        return (pos.x < 0 || pos.y < 0 || pos.x >= 8 || pos.y >= 8)
+        return (pos.X < 0 || pos.Y < 0 || pos.X >= 8 || pos.Y >= 8)
             ? null
             : _pieces[ToIndex(pos)];
     }
@@ -109,8 +109,8 @@ public class GameState
         return true;
     }
 
-    private static int ToIndex((int x, int y) pos)
+    private static int ToIndex((int X, int Y) pos)
     {
-        return (pos.y * 8) + pos.x;
+        return (pos.Y * 8) + pos.X;
     }
 }

@@ -6,14 +6,14 @@ public class PossibleMovesTracker(SpecialMovesCalculator specialMovesCalculator)
     private readonly Dictionary<(int X, int Y), List<Move>> _possibleMovesFrom = [];
     private readonly Dictionary<(int X, int Y), List<Move>> _possibleMovesTo = [];
 
-    public Move[] GetPossibleMovesFrom((int x, int y) position)
+    public Move[] GetPossibleMovesFrom((int X, int Y) position)
     {
         return _possibleMovesFrom.TryGetValue(position, out var moves)
             ? [.. moves]
             : [];
     }
 
-    public Move[] GetPossibleMovesTo((int x, int y) position)
+    public Move[] GetPossibleMovesTo((int X, int Y) position)
     {
         return _possibleMovesTo.TryGetValue(position, out var moves)
             ? [.. moves]
@@ -40,7 +40,7 @@ public class PossibleMovesTracker(SpecialMovesCalculator specialMovesCalculator)
         }
     }
 
-    private static void AddMoveTo(Dictionary<(int x, int y), List<Move>> possibleMoves, (int X, int Y) key, Move move)
+    private static void AddMoveTo(Dictionary<(int X, int Y), List<Move>> possibleMoves, (int X, int Y) key, Move move)
     {
         if (!possibleMoves.TryGetValue(key, out var moveList))
         {

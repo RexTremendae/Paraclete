@@ -9,13 +9,13 @@ public class GitLogPainter(Painter painter, LogStore logStore)
     private readonly Painter _painter = painter;
     private readonly LogStore _logStore = logStore;
 
-    public void PaintLogLines(Pane pane, (int x, int y) position)
+    public void PaintLogLines(Pane pane, (int X, int Y) position)
     {
         var rows =
-            0.To(position.y)
+            0.To(position.Y)
             .Select(_ => AnsiString.Empty)
             .Concat(_logStore.LogLines.Select(_ => _.ToAnsiString()));
 
-        _painter.PaintRows(rows, pane, (position.x, 0), padPaneWidth: true, showEllipsis: true);
+        _painter.PaintRows(rows, pane, (position.X, 0), padPaneWidth: true, showEllipsis: true);
     }
 }

@@ -22,7 +22,7 @@ public class UnicodeScreen(UnicodeMenu menu, UnicodeControl unicodeControl)
     public Action GetPaintPaneAction(Painter painter, int paneIndex) =>
     () =>
     {
-        var count = Layout.Panes[paneIndex].Size.y;
+        var count = Layout.Panes[paneIndex].Size.Y;
         var rows = new List<AnsiStringBuilder>(Enumerable
             .Range(0, count)
             .Select(_ => new AnsiStringBuilder()));

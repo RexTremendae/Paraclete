@@ -8,7 +8,7 @@ public class DataInputPainter(Settings settings, DataInputter dataInputter)
     private readonly DataInputter _dataInputter = dataInputter;
     private readonly Settings _settings = settings;
 
-    public (int cursorX, int cursorY) PaintInput(Painter painter, int windowWidth, int windowHeight)
+    public (int CursorX, int CursorY) PaintInput(Painter painter, int windowWidth, int windowHeight)
     {
         var dataInputColor = string.IsNullOrWhiteSpace(_dataInputter.ErrorMessage)
             ? _settings.Colors.InputData

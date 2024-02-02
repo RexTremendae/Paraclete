@@ -22,7 +22,7 @@ public class ChessBoard(PossibleMovesTracker possibleMovesTracker, MoveHistory m
     private readonly Dictionary<PlayerColor, (int X, int Y)> _kingTracker = [];
     private readonly PossibleMovesTracker _possibleMovesTracker = possibleMovesTracker;
     private readonly MoveHistory _moveHistory = moveHistory;
-    private GameState _gameState = new(Enumerable.Empty<((int x, int y), ChessBoardPiece)>());
+    private GameState _gameState = new(Enumerable.Empty<((int X, int Y), ChessBoardPiece)>());
 
     public PlayerColor CurrentPlayer { get; private set; }
     public bool IsCheck { get; private set; }
@@ -32,9 +32,9 @@ public class ChessBoard(PossibleMovesTracker possibleMovesTracker, MoveHistory m
         return GetPiece((x, y));
     }
 
-    public ChessBoardPiece? GetPiece((int x, int y) pos)
+    public ChessBoardPiece? GetPiece((int X, int Y) pos)
     {
-        return (pos.x < 0 || pos.y < 0 || pos.x >= 8 || pos.y >= 8)
+        return (pos.X < 0 || pos.Y < 0 || pos.X >= 8 || pos.Y >= 8)
             ? null
             : _gameState.GetPiece(pos);
     }
@@ -171,7 +171,7 @@ public class ChessBoard(PossibleMovesTracker possibleMovesTracker, MoveHistory m
         }
     }
 
-    private void UpdateGameState(IEnumerable<((int x, int y) position, ChessBoardPiece piece)> pieces)
+    private void UpdateGameState(IEnumerable<((int X, int Y) Position, ChessBoardPiece Piece)> pieces)
     {
         _gameState = new GameState(pieces);
 

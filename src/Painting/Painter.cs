@@ -63,7 +63,7 @@ public class Painter(
             _selectedScreen.GetPaintPaneAction(this, paneIdx)();
         }
 
-        var cursorPos = (x: 0, y: 0);
+        var cursorPos = (X: 0, Y: 0);
         if (_dataInputter.IsActive)
         {
             cursorPos = _dataInputPainter.PaintInput(this, _windowWidth, _windowHeight);
@@ -104,8 +104,8 @@ public class Painter(
         if (_dataInputter.IsActive)
         {
             Write(AnsiSequences.ShowCursor);
-            var x = int.Min(cursorPos.x, Console.WindowWidth - 1);
-            SetCursorPosition(x, cursorPos.y);
+            var x = int.Min(cursorPos.X, Console.WindowWidth - 1);
+            SetCursorPosition(x, cursorPos.Y);
         }
         else
         {
@@ -113,28 +113,28 @@ public class Painter(
         }
     }
 
-    public void Paint(AnsiString row, (int x, int y)? position = null)
+    public void Paint(AnsiString row, (int X, int Y)? position = null)
     {
         PaintRows(new[] { row }, position);
     }
 
-    public void Paint(AnsiString row, Pane pane, (int x, int y)? position = null)
+    public void Paint(AnsiString row, Pane pane, (int X, int Y)? position = null)
     {
         PaintRows(new[] { row }, pane, position);
     }
 
-    public void PaintRows(IEnumerable<AnsiString> rows, Pane pane, (int x, int y)? position = null, bool showEllipsis = false, bool padPaneWidth = false)
+    public void PaintRows(IEnumerable<AnsiString> rows, Pane pane, (int X, int Y)? position = null, bool showEllipsis = false, bool padPaneWidth = false)
     {
         var (relativeXPosition, relativeYPosition) = position ?? (0, 0);
-        var absolutePosistion = (relativeXPosition + pane.Position.x, relativeYPosition + pane.Position.y);
-        var boundary = (pane.Position.x + pane.Size.x, pane.Position.y + pane.Size.y);
+        var absolutePosistion = (relativeXPosition + pane.Position.X, relativeYPosition + pane.Position.Y);
+        var boundary = (pane.Position.X + pane.Size.X, pane.Position.Y + pane.Size.Y);
 
         var (isBusy, busyText) = _busyIndicator.IsPaneBusy(_selectedScreen.GetType(), pane.PaneIndex);
 
         if (isBusy)
         {
             absolutePosistion = pane.Position;
-            rows = 0.To(pane.Size.y)
+            rows = 0.To(pane.Size.Y)
                 .Select(y => y == 1
                     ? new AnsiString(" ") + busyText
                     : AnsiString.Empty);
@@ -143,35 +143,35 @@ public class Painter(
 
         if (padPaneWidth)
         {
-            rows = rows.Select(_ => _.PadRight(pane.Size.x - relativeXPosition));
+            rows = rows.Select(_ => _.PadRight(pane.Size.X - relativeXPosition));
         }
 
         PaintRows(rows, absolutePosistion, boundary, showEllipsis);
     }
 
-    public void PaintRows(IEnumerable<AnsiString> rows, (int x, int y)? position = null, (int x, int y)? boundary = null, bool showEllipsis = false)
+    public void PaintRows(IEnumerable<AnsiString> rows, (int X, int Y)? position = null, (int X, int Y)? boundary = null, bool showEllipsis = false)
     {
         var pos = position ?? (0, 0);
         var bound = boundary ?? (_windowWidth, _windowHeight);
 
-        if (pos.x < 0)
+        if (pos.X < 0)
         {
-            pos = (pos.x + _windowWidth, pos.y);
+            pos = (pos.X + _windowWidth, pos.Y);
         }
 
-        if (pos.y < 0)
+        if (pos.Y < 0)
         {
-            pos = (pos.x, pos.y + _windowHeight);
+            pos = (pos.X, pos.Y + _windowHeight);
         }
 
-        if (bound.x < 0)
+        if (bound.X < 0)
         {
-            bound = (bound.x + _windowWidth, bound.y);
+            bound = (bound.X + _windowWidth, bound.Y);
         }
 
-        if (bound.y < 0)
+        if (bound.Y < 0)
         {
-            bound = (bound.x, bound.y + _windowHeight);
+            bound = (bound.X, bound.Y + _windowHeight);
         }
 
         var rowArray = rows.ToArray();
@@ -180,7 +180,7 @@ public class Painter(
         {
             0.To(rowArray.Length).Foreach(y =>
             {
-                WriteBounded(AnsiSequences.Reset + rowArray[y], (pos.x, pos.y + y), bound, showEllipsis);
+                WriteBounded(AnsiSequences.Reset + rowArray[y], (pos.X, pos.Y + y), bound, showEllipsis);
             });
         }
         catch (Exception ex)
@@ -204,21 +204,21 @@ public class Painter(
         Console.Write(data);
     }
 
-    private static void WriteBounded(AnsiString ansiString, (int x, int y) pos, (int x, int y) bound, bool showEllipsis = false)
+    private static void WriteBounded(AnsiString ansiString, (int X, int Y) pos, (int X, int Y) bound, bool showEllipsis = false)
     {
-        if (pos.y >= bound.y)
+        if (pos.Y >= bound.Y)
         {
             return;
         }
 
-        if (pos.x >= bound.x)
+        if (pos.X >= bound.X)
         {
             return;
         }
 
-        SetCursorPosition(pos.x, pos.y);
+        SetCursorPosition(pos.X, pos.Y);
 
-        var truncatedWidth = bound.x - pos.x;
+        var truncatedWidth = bound.X - pos.X;
 
         if (showEllipsis)
         {

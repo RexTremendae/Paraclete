@@ -7,7 +7,7 @@ public class NewGame : IScenario
     public virtual string Name => "New Game";
     public virtual PlayerColor CurrentPlayer => PlayerColor.White;
 
-    public virtual IEnumerable<((int x, int y) position, ChessBoardPiece piece)> GetPieces()
+    public virtual IEnumerable<((int X, int Y) Position, ChessBoardPiece Piece)> GetPieces()
     {
         int x = 0;
         int y = 0;

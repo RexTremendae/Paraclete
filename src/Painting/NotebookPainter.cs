@@ -13,9 +13,9 @@ public class NotebookPainter(Painter painter, Notebook notebook)
         Notes: AnsiSequences.ForegroundColors.Yellow
     );
 
-    public void PaintSectionList(Pane pane, (int x, int y) position)
+    public void PaintSectionList(Pane pane, (int X, int Y) position)
     {
-        var itemPadding = (pane.Size.x - position.x).ZeroFloor();
+        var itemPadding = (pane.Size.X - position.X).ZeroFloor();
 
         var rows = new List<AnsiString>();
         var builder = new AnsiStringBuilder();
@@ -39,9 +39,9 @@ public class NotebookPainter(Painter painter, Notebook notebook)
         _painter.PaintRows(rows, pane, position, showEllipsis: true);
     }
 
-    public void PaintNotes(Pane pane, (int x, int y) position)
+    public void PaintNotes(Pane pane, (int X, int Y) position)
     {
-        var itemPadding = (pane.Size.x - position.x).ZeroFloor();
+        var itemPadding = (pane.Size.X - position.X).ZeroFloor();
 
         var rows = new List<AnsiString>();
         var builder = new AnsiStringBuilder();
@@ -73,7 +73,7 @@ public class NotebookPainter(Painter painter, Notebook notebook)
 
             if (sectionIndex == sections.Length - 1)
             {
-                rows.Add(AnsiSequences.ForegroundColors.Gray + string.Empty.PadLeft(pane.Size.x - 2, '-'));
+                rows.Add(AnsiSequences.ForegroundColors.Gray + string.Empty.PadLeft(pane.Size.X - 2, '-'));
                 rows.Add(string.Empty);
             }
         }

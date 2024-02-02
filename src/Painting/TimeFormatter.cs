@@ -5,7 +5,7 @@ using Paraclete.Ansi;
 public class TimeFormatter(TimeFormatterSettings settings)
 {
     private readonly TimeFormatterSettings _settings = settings;
-    private (int hour, int minute, int second, int millisecond) _cacheKey;
+    private (int Hour, int Minute, int Second, int Millisecond) _cacheKey;
     private IEnumerable<AnsiString> _cache = [];
 
     public IEnumerable<AnsiString> Format(TimeSpan timestamp)

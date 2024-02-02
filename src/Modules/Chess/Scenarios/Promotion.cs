@@ -51,8 +51,8 @@ public class Promotion : IScenario
         },
     };
 
-    public IEnumerable<((int x, int y) position, ChessBoardPiece piece)> GetPieces() =>
-    new ((int x, int y) position, ChessBoardPiece piece)[]
+    public IEnumerable<((int X, int Y) Position, ChessBoardPiece Piece)> GetPieces() =>
+    new ((int X, int Y) Position, ChessBoardPiece Piece)[]
     {
         ((4, 5), new(new King(), PlayerColor.White, true)),
         ((3, 6), new(new Pawn(), PlayerColor.White, true)),

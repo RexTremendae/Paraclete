@@ -10,5 +10,5 @@ public interface IScenario
         { PlayerColor.White, Enumerable.Empty<ChessBoardPiece>() },
     };
 
-    IEnumerable<((int x, int y) position, ChessBoardPiece piece)> GetPieces();
+    IEnumerable<((int X, int Y) Position, ChessBoardPiece Piece)> GetPieces();
 }

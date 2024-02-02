@@ -14,9 +14,9 @@ public class ToDoListPainter(Painter painter, ToDoList toDoList)
         Done: AnsiSequences.ForegroundColors.Gray + AnsiSequences.StrikeThrough
     );
 
-    public void Paint(Pane pane, (int x, int y) position, bool paintSelectionMaker = false)
+    public void Paint(Pane pane, (int X, int Y) position, bool paintSelectionMaker = false)
     {
-        var toDoItemPadding = (pane.Size.x - position.x).ZeroFloor();
+        var toDoItemPadding = (pane.Size.X - position.X).ZeroFloor();
 
         var rows = new List<AnsiString>();
         var builder = new AnsiStringBuilder();
@@ -34,7 +34,7 @@ public class ToDoListPainter(Painter painter, ToDoList toDoList)
             .Append(_formatConfig.ToDo)
             .Append(_.ToDisplayString(false))
             .Build()
-            .PadRight(pane.Size.x - position.x)
+            .PadRight(pane.Size.X - position.X)
         ));
 
         rows.Add(string.Empty);

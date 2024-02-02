@@ -26,7 +26,7 @@ public abstract class PieceDefinition
         IEnumerable<(int X, int Y)> possibleMoves)
     {
         var moves = possibleMoves.ToHashSet();
-        foreach (var (dirX, dirY) in new (int x, int y)[] { (0, 1), (0, -1), (1, 0), (-1, 0), (-1, -1), (1, -1), (-1, 1), (1, 1) } )
+        foreach (var (dirX, dirY) in new (int X, int Y)[] { (0, 1), (0, -1), (1, 0), (-1, 0), (-1, -1), (1, -1), (-1, 1), (1, 1) } )
         {
             var curr = position;
             var blocked = false;

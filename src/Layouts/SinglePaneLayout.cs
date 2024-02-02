@@ -10,16 +10,16 @@ public class SinglePaneLayout : ILayout
 
     public void Paint(Painter painter)
     {
-        var frameRows = new AnsiString[_pane.Size.y + 5];
+        var frameRows = new AnsiString[_pane.Size.Y + 5];
         var y = 0;
 
-        var emptyRow = string.Empty.PadLeft(_pane.Size.x);
-        var singleBarRow = string.Empty.PadLeft(_pane.Size.x, '─');
-        var doubleBarRow = string.Empty.PadLeft(_pane.Size.x, '═');
+        var emptyRow = string.Empty.PadLeft(_pane.Size.X);
+        var singleBarRow = string.Empty.PadLeft(_pane.Size.X, '─');
+        var doubleBarRow = string.Empty.PadLeft(_pane.Size.X, '═');
 
         frameRows[y++] = $"╔{doubleBarRow}╗";
 
-        y.To(_pane.Size.y + 1).Foreach(_ =>
+        y.To(_pane.Size.Y + 1).Foreach(_ =>
         {
             frameRows[y++] = $"║{emptyRow}║";
         });

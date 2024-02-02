@@ -28,23 +28,23 @@ public static class AnsiSequences
 
 #pragma warning disable SA1008 // Opening parenthesis should not be followed by a space
 
-    private static readonly (int r, int g, int b) BlackDefinition       = (   0,   0,   0 );
-    private static readonly (int r, int g, int b) BlueDefinition        = ( 100, 150, 255 );
-    private static readonly (int r, int g, int b) CyanDefinition        = (   0, 255, 255 );
-    private static readonly (int r, int g, int b) DarkBlueDefinition    = (   0,  50, 120 );
-    private static readonly (int r, int g, int b) DarkCyanDefinition    = (   0, 100, 100 );
-    private static readonly (int r, int g, int b) DarkGrayDefinition    = (  50,  50,  50 );
-    private static readonly (int r, int g, int b) DarkGreenDefinition   = (   0,  80,   0 );
-    private static readonly (int r, int g, int b) DarkMagentaDefinition = ( 100,   0, 100 );
-    private static readonly (int r, int g, int b) DarkRedDefinition     = ( 100,   0,   0 );
-    private static readonly (int r, int g, int b) DarkYellowDefinition  = (  80,  80,   0 );
-    private static readonly (int r, int g, int b) GrayDefinition        = ( 100, 100, 100 );
-    private static readonly (int r, int g, int b) GreenDefinition       = (   0, 200,   0 );
-    private static readonly (int r, int g, int b) MagentaDefinition     = ( 200,   0, 200 );
-    private static readonly (int r, int g, int b) OrangeDefinition      = ( 200, 100,  50 );
-    private static readonly (int r, int g, int b) RedDefinition         = ( 200,  50,  50 );
-    private static readonly (int r, int g, int b) YellowDefinition      = ( 200, 200,   0 );
-    private static readonly (int r, int g, int b) WhiteDefinition       = ( 255, 255, 255 );
+    private static readonly (int R, int G, int B) BlackDefinition       = (   0,   0,   0 );
+    private static readonly (int R, int G, int B) BlueDefinition        = ( 100, 150, 255 );
+    private static readonly (int R, int G, int B) CyanDefinition        = (   0, 255, 255 );
+    private static readonly (int R, int G, int B) DarkBlueDefinition    = (   0,  50, 120 );
+    private static readonly (int R, int G, int B) DarkCyanDefinition    = (   0, 100, 100 );
+    private static readonly (int R, int G, int B) DarkGrayDefinition    = (  50,  50,  50 );
+    private static readonly (int R, int G, int B) DarkGreenDefinition   = (   0,  80,   0 );
+    private static readonly (int R, int G, int B) DarkMagentaDefinition = ( 100,   0, 100 );
+    private static readonly (int R, int G, int B) DarkRedDefinition     = ( 100,   0,   0 );
+    private static readonly (int R, int G, int B) DarkYellowDefinition  = (  80,  80,   0 );
+    private static readonly (int R, int G, int B) GrayDefinition        = ( 100, 100, 100 );
+    private static readonly (int R, int G, int B) GreenDefinition       = (   0, 200,   0 );
+    private static readonly (int R, int G, int B) MagentaDefinition     = ( 200,   0, 200 );
+    private static readonly (int R, int G, int B) OrangeDefinition      = ( 200, 100,  50 );
+    private static readonly (int R, int G, int B) RedDefinition         = ( 200,  50,  50 );
+    private static readonly (int R, int G, int B) YellowDefinition      = ( 200, 200,   0 );
+    private static readonly (int R, int G, int B) WhiteDefinition       = ( 255, 255, 255 );
 
 #pragma warning restore SA1008 // Opening parenthesis should not be followed by a space
 
@@ -53,43 +53,43 @@ public static class AnsiSequences
 
     public static class ForegroundColors
     {
-        public static readonly AnsiControlSequence Black       = ForegroundColor(BlackDefinition.r,       BlackDefinition.g,       BlackDefinition.b      );
-        public static readonly AnsiControlSequence Blue        = ForegroundColor(BlueDefinition.r,        BlueDefinition.g,        BlueDefinition.b       );
-        public static readonly AnsiControlSequence Cyan        = ForegroundColor(CyanDefinition.r,        CyanDefinition.g,        CyanDefinition.b       );
-        public static readonly AnsiControlSequence DarkBlue    = ForegroundColor(DarkBlueDefinition.r,    DarkBlueDefinition.g,    DarkBlueDefinition.b   );
-        public static readonly AnsiControlSequence DarkCyan    = ForegroundColor(DarkCyanDefinition.r,    DarkCyanDefinition.g,    DarkCyanDefinition.b   );
-        public static readonly AnsiControlSequence DarkGray    = ForegroundColor(DarkGrayDefinition.r,    DarkGrayDefinition.g,    DarkGrayDefinition.b   );
-        public static readonly AnsiControlSequence DarkGreen   = ForegroundColor(DarkGreenDefinition.r,   DarkGreenDefinition.g,   DarkGreenDefinition.b  );
-        public static readonly AnsiControlSequence DarkMagenta = ForegroundColor(DarkMagentaDefinition.r, DarkMagentaDefinition.g, DarkMagentaDefinition.b);
-        public static readonly AnsiControlSequence DarkRed     = ForegroundColor(DarkRedDefinition.r,     DarkRedDefinition.g,     DarkRedDefinition.b    );
-        public static readonly AnsiControlSequence DarkYellow  = ForegroundColor(DarkYellowDefinition.r,  DarkYellowDefinition.g,  DarkYellowDefinition.b );
-        public static readonly AnsiControlSequence Gray        = ForegroundColor(GrayDefinition.r,        GrayDefinition.g,        GrayDefinition.b       );
-        public static readonly AnsiControlSequence Green       = ForegroundColor(GreenDefinition.r,       GreenDefinition.g,       GreenDefinition.b      );
-        public static readonly AnsiControlSequence Magenta     = ForegroundColor(MagentaDefinition.r,     MagentaDefinition.g,     MagentaDefinition.b    );
-        public static readonly AnsiControlSequence Orange      = ForegroundColor(OrangeDefinition.r,      OrangeDefinition.g,      OrangeDefinition.b     );
-        public static readonly AnsiControlSequence Red         = ForegroundColor(RedDefinition.r,         RedDefinition.g,         RedDefinition.b        );
-        public static readonly AnsiControlSequence White       = ForegroundColor(WhiteDefinition.r,       WhiteDefinition.g,       WhiteDefinition.b      );
-        public static readonly AnsiControlSequence Yellow      = ForegroundColor(YellowDefinition.r,      YellowDefinition.g,      YellowDefinition.b     );
+        public static readonly AnsiControlSequence Black       = ForegroundColor(BlackDefinition.R,       BlackDefinition.G,       BlackDefinition.B      );
+        public static readonly AnsiControlSequence Blue        = ForegroundColor(BlueDefinition.R,        BlueDefinition.G,        BlueDefinition.B       );
+        public static readonly AnsiControlSequence Cyan        = ForegroundColor(CyanDefinition.R,        CyanDefinition.G,        CyanDefinition.B       );
+        public static readonly AnsiControlSequence DarkBlue    = ForegroundColor(DarkBlueDefinition.R,    DarkBlueDefinition.G,    DarkBlueDefinition.B   );
+        public static readonly AnsiControlSequence DarkCyan    = ForegroundColor(DarkCyanDefinition.R,    DarkCyanDefinition.G,    DarkCyanDefinition.B   );
+        public static readonly AnsiControlSequence DarkGray    = ForegroundColor(DarkGrayDefinition.R,    DarkGrayDefinition.G,    DarkGrayDefinition.B   );
+        public static readonly AnsiControlSequence DarkGreen   = ForegroundColor(DarkGreenDefinition.R,   DarkGreenDefinition.G,   DarkGreenDefinition.B  );
+        public static readonly AnsiControlSequence DarkMagenta = ForegroundColor(DarkMagentaDefinition.R, DarkMagentaDefinition.G, DarkMagentaDefinition.B);
+        public static readonly AnsiControlSequence DarkRed     = ForegroundColor(DarkRedDefinition.R,     DarkRedDefinition.G,     DarkRedDefinition.B    );
+        public static readonly AnsiControlSequence DarkYellow  = ForegroundColor(DarkYellowDefinition.R,  DarkYellowDefinition.G,  DarkYellowDefinition.B );
+        public static readonly AnsiControlSequence Gray        = ForegroundColor(GrayDefinition.R,        GrayDefinition.G,        GrayDefinition.B       );
+        public static readonly AnsiControlSequence Green       = ForegroundColor(GreenDefinition.R,       GreenDefinition.G,       GreenDefinition.B      );
+        public static readonly AnsiControlSequence Magenta     = ForegroundColor(MagentaDefinition.R,     MagentaDefinition.G,     MagentaDefinition.B    );
+        public static readonly AnsiControlSequence Orange      = ForegroundColor(OrangeDefinition.R,      OrangeDefinition.G,      OrangeDefinition.B     );
+        public static readonly AnsiControlSequence Red         = ForegroundColor(RedDefinition.R,         RedDefinition.G,         RedDefinition.B        );
+        public static readonly AnsiControlSequence White       = ForegroundColor(WhiteDefinition.R,       WhiteDefinition.G,       WhiteDefinition.B      );
+        public static readonly AnsiControlSequence Yellow      = ForegroundColor(YellowDefinition.R,      YellowDefinition.G,      YellowDefinition.B     );
     }
 
     public static class BackgroundColors
     {
-        public static readonly AnsiControlSequence Black       = BackgroundColor(BlackDefinition.r,       BlackDefinition.g,       BlackDefinition.b      );
-        public static readonly AnsiControlSequence Blue        = BackgroundColor(BlueDefinition.r,        BlueDefinition.g,        BlueDefinition.b       );
-        public static readonly AnsiControlSequence Cyan        = BackgroundColor(CyanDefinition.r,        CyanDefinition.g,        CyanDefinition.b       );
-        public static readonly AnsiControlSequence DarkBlue    = BackgroundColor(DarkBlueDefinition.r,    DarkBlueDefinition.g,    DarkBlueDefinition.b   );
-        public static readonly AnsiControlSequence DarkCyan    = BackgroundColor(DarkCyanDefinition.r,    DarkCyanDefinition.g,    DarkCyanDefinition.b   );
-        public static readonly AnsiControlSequence DarkGray    = BackgroundColor(DarkGrayDefinition.r,    DarkGrayDefinition.g,    DarkGrayDefinition.b   );
-        public static readonly AnsiControlSequence DarkGreen   = BackgroundColor(DarkGreenDefinition.r,   DarkGreenDefinition.g,   DarkGreenDefinition.b  );
-        public static readonly AnsiControlSequence DarkMagenta = BackgroundColor(DarkMagentaDefinition.r, DarkMagentaDefinition.g, DarkMagentaDefinition.b);
-        public static readonly AnsiControlSequence DarkRed     = BackgroundColor(DarkRedDefinition.r,     DarkRedDefinition.g,     DarkRedDefinition.b    );
-        public static readonly AnsiControlSequence DarkYellow  = BackgroundColor(DarkYellowDefinition.r,  DarkYellowDefinition.g,  DarkYellowDefinition.b );
-        public static readonly AnsiControlSequence Gray        = BackgroundColor(GrayDefinition.r,        GrayDefinition.g,        GrayDefinition.b       );
-        public static readonly AnsiControlSequence Green       = BackgroundColor(GreenDefinition.r,       GreenDefinition.g,       GreenDefinition.b      );
-        public static readonly AnsiControlSequence Magenta     = BackgroundColor(MagentaDefinition.r,     MagentaDefinition.g,     MagentaDefinition.b    );
-        public static readonly AnsiControlSequence Orange      = BackgroundColor(OrangeDefinition.r,      OrangeDefinition.g,      OrangeDefinition.b     );
-        public static readonly AnsiControlSequence Red         = BackgroundColor(RedDefinition.r,         RedDefinition.g,         RedDefinition.b        );
-        public static readonly AnsiControlSequence White       = BackgroundColor(WhiteDefinition.r,       WhiteDefinition.g,       WhiteDefinition.b      );
-        public static readonly AnsiControlSequence Yellow      = BackgroundColor(YellowDefinition.r,      YellowDefinition.g,      YellowDefinition.b     );
+        public static readonly AnsiControlSequence Black       = BackgroundColor(BlackDefinition.R,       BlackDefinition.G,       BlackDefinition.B      );
+        public static readonly AnsiControlSequence Blue        = BackgroundColor(BlueDefinition.R,        BlueDefinition.G,        BlueDefinition.B       );
+        public static readonly AnsiControlSequence Cyan        = BackgroundColor(CyanDefinition.R,        CyanDefinition.G,        CyanDefinition.B       );
+        public static readonly AnsiControlSequence DarkBlue    = BackgroundColor(DarkBlueDefinition.R,    DarkBlueDefinition.G,    DarkBlueDefinition.B   );
+        public static readonly AnsiControlSequence DarkCyan    = BackgroundColor(DarkCyanDefinition.R,    DarkCyanDefinition.G,    DarkCyanDefinition.B   );
+        public static readonly AnsiControlSequence DarkGray    = BackgroundColor(DarkGrayDefinition.R,    DarkGrayDefinition.G,    DarkGrayDefinition.B   );
+        public static readonly AnsiControlSequence DarkGreen   = BackgroundColor(DarkGreenDefinition.R,   DarkGreenDefinition.G,   DarkGreenDefinition.B  );
+        public static readonly AnsiControlSequence DarkMagenta = BackgroundColor(DarkMagentaDefinition.R, DarkMagentaDefinition.G, DarkMagentaDefinition.B);
+        public static readonly AnsiControlSequence DarkRed     = BackgroundColor(DarkRedDefinition.R,     DarkRedDefinition.G,     DarkRedDefinition.B    );
+        public static readonly AnsiControlSequence DarkYellow  = BackgroundColor(DarkYellowDefinition.R,  DarkYellowDefinition.G,  DarkYellowDefinition.B );
+        public static readonly AnsiControlSequence Gray        = BackgroundColor(GrayDefinition.R,        GrayDefinition.G,        GrayDefinition.B       );
+        public static readonly AnsiControlSequence Green       = BackgroundColor(GreenDefinition.R,       GreenDefinition.G,       GreenDefinition.B      );
+        public static readonly AnsiControlSequence Magenta     = BackgroundColor(MagentaDefinition.R,     MagentaDefinition.G,     MagentaDefinition.B    );
+        public static readonly AnsiControlSequence Orange      = BackgroundColor(OrangeDefinition.R,      OrangeDefinition.G,      OrangeDefinition.B     );
+        public static readonly AnsiControlSequence Red         = BackgroundColor(RedDefinition.R,         RedDefinition.G,         RedDefinition.B        );
+        public static readonly AnsiControlSequence White       = BackgroundColor(WhiteDefinition.R,       WhiteDefinition.G,       WhiteDefinition.B      );
+        public static readonly AnsiControlSequence Yellow      = BackgroundColor(YellowDefinition.R,      YellowDefinition.G,      YellowDefinition.B     );
     }
 }

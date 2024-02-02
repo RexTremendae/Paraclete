@@ -67,19 +67,19 @@ public partial class MainLoop(IServiceProvider services)
     private void PrintExceptionInfo()
     {
         new[] { ("Input handling loop", _inputHandlingException), ("Repaint loop", _repaintLoopException) }
-        .Foreach<(string loopId, Exception? exception)>(_ =>
+        .Foreach<(string LoopId, Exception? Exception)>(_ =>
         {
-            if (_.exception != null)
+            if (_.Exception != null)
             {
-                Console.WriteLine($"Unhandled exception occurred in " + AnsiSequences.ForegroundColors.Cyan + _.loopId + AnsiSequences.Reset + ": ");
-                var title = _.exception.GetType().Name;
+                Console.WriteLine($"Unhandled exception occurred in " + AnsiSequences.ForegroundColors.Cyan + _.LoopId + AnsiSequences.Reset + ": ");
+                var title = _.Exception.GetType().Name;
                 var bar = AnsiSequences.ForegroundColors.White + string.Empty.PadLeft(title.Length + 2, '-') + AnsiSequences.Reset;
                 Console.WriteLine(bar);
                 Console.WriteLine(AnsiSequences.ForegroundColors.Red + $" {title}" + AnsiSequences.Reset);
                 Console.WriteLine(bar);
-                Console.WriteLine(_.exception.Message);
+                Console.WriteLine(_.Exception.Message);
                 Console.WriteLine();
-                Console.WriteLine(AnsiSequences.ForegroundColors.Gray + (_.exception.StackTrace?.ToString() ?? string.Empty));
+                Console.WriteLine(AnsiSequences.ForegroundColors.Gray + (_.Exception.StackTrace?.ToString() ?? string.Empty));
                 Console.WriteLine();
             }
         });
