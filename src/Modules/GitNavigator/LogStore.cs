@@ -21,6 +21,8 @@ public class LogStore
 
     public async Task Refresh(string repository)
     {
+        var logLinesToFetch = 40;
+
         _logLines.Clear();
 
         if (string.IsNullOrEmpty(repository))
@@ -34,7 +36,7 @@ public class LogStore
         var prettyFormat = $"%h{separator}%ci{separator}%ae{separator}%s{separator}%d";
         var result = await ProcessRunner.ExecuteAsync(
             "git",
-            args: ["log", "--oneline", "--graph", $"--pretty=format:{prettyFormat}", "-20"],
+            args: ["log", "--oneline", "--graph", $"--pretty=format:{prettyFormat}", $"-{logLinesToFetch}"],
             workingDirectory: repository,
             launchExternal: false);
 

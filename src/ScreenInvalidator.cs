@@ -4,6 +4,7 @@ public partial class ScreenInvalidator
 {
     private PaintScope? _scope;
 
+    public Type? SelectedScreen { get; set; }
     public bool AreAllInvalid { get; private set; }
     public HashSet<int> InvalidPaneIndices { get; } = [];
 

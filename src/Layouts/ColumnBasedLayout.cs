@@ -54,7 +54,7 @@ public class ColumnBasedLayout(params ColumnBasedLayout.ColumnDefinition[] colum
         {
             var column = _columns[x];
             paneWidth = int.Min(column.Width, drawableWindowWidth - xPos).ZeroFloor();
-            panes.AddRange(GenerateColumnPanes(column, xPos: xPos, paneWidth: paneWidth, drawableWindowHeight: drawableWindowHeight));
+            panes.AddRange(GenerateColumnPanes(column, panes.Count, xPos: xPos, paneWidth: paneWidth, drawableWindowHeight: drawableWindowHeight));
             xPos += column.Width + 1;
         });
 
@@ -63,47 +63,49 @@ public class ColumnBasedLayout(params ColumnBasedLayout.ColumnDefinition[] colum
 
         if (paneWidth > 0 && paneHeight > 0)
         {
-            panes.Add(new((xPos, 1), (paneWidth, paneHeight), true));
+            panes.Add(new(panes.Count, (xPos, 1), (paneWidth, paneHeight), true));
         }
         else
         {
-            panes.Add(new((xPos, 1), (0, 0), false));
+            panes.Add(new(panes.Count, (xPos, 1), (0, 0), false));
         }
 
         Panes = [.. panes];
     }
 
-    private static IEnumerable<Pane> GenerateColumnPanes(ColumnDefinition column, int xPos, int paneWidth, int drawableWindowHeight)
+    private static IEnumerable<Pane> GenerateColumnPanes(ColumnDefinition column, int firstPaneIndex, int xPos, int paneWidth, int drawableWindowHeight)
     {
         var yPos = 1;
         var paneHeight = 0;
 
         var panes = new List<Pane>();
+        var paneIndex = firstPaneIndex;
         0.To(column.CellHeights.Length).Foreach(y =>
         {
             paneHeight = int.Min(column.CellHeights[y], drawableWindowHeight - yPos).ZeroFloor();
 
             if (paneHeight > 0 && paneWidth > 0)
             {
-                panes.Add(new((xPos, yPos), (paneWidth, paneHeight), true));
+                panes.Add(new(paneIndex, (xPos, yPos), (paneWidth, paneHeight), true));
             }
             else
             {
-                panes.Add(new((xPos, yPos), (0, 0), false));
+                panes.Add(new(paneIndex, (xPos, yPos), (0, 0), false));
             }
 
             yPos += paneHeight + 1;
+            paneIndex++;
         });
 
         paneHeight = (drawableWindowHeight - yPos).ZeroFloor();
 
         if (paneHeight > 0 && paneWidth > 0)
         {
-            panes.Add(new((xPos, yPos), (paneWidth, paneHeight), true));
+            panes.Add(new(paneIndex, (xPos, yPos), (paneWidth, paneHeight), true));
         }
         else
         {
-            panes.Add(new((xPos, yPos), (0, 0), false));
+            panes.Add(new(paneIndex, (xPos, yPos), (0, 0), false));
         }
 
         return panes;

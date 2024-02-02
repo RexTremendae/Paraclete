@@ -5,43 +5,33 @@ using Paraclete.IO;
 using Paraclete.Layouts;
 using Paraclete.Screens;
 
-public class Painter
-{
-    private readonly ScreenInvalidator _screenInvalidator;
-    private readonly ScreenSelector _screenSelector;
-    private readonly MenuPainter _menuPainter;
-    private readonly DataInputter _dataInputter;
-    private readonly DataInputPainter _dataInputPainter;
-    private readonly TimeFormatter _currentTimeFormatter;
-
-    private IScreen _selectedScreen;
-    private HashSet<int> _autoRefreshingPaneIndices;
-    private int _windowHeight;
-    private int _windowWidth;
-
-    public Painter(
+public class Painter(
         ScreenSelector screenSelector,
         ScreenInvalidator screenInvalidator,
         MenuPainter menuPainter,
         DataInputter dataInputter,
-        DataInputPainter dataInputPainter)
-    {
-        _screenInvalidator = screenInvalidator;
-        _screenSelector = screenSelector;
-        _menuPainter = menuPainter;
-        _dataInputter = dataInputter;
-        _dataInputPainter = dataInputPainter;
-        _selectedScreen = IScreen.NoScreen;
-        _autoRefreshingPaneIndices = [];
+        DataInputPainter dataInputPainter,
+        BusyIndicator busyIndicator)
+{
+    private readonly ScreenInvalidator _screenInvalidator = screenInvalidator;
+    private readonly ScreenSelector _screenSelector = screenSelector;
+    private readonly MenuPainter _menuPainter = menuPainter;
+    private readonly DataInputter _dataInputter = dataInputter;
+    private readonly DataInputPainter _dataInputPainter = dataInputPainter;
+    private readonly BusyIndicator _busyIndicator = busyIndicator;
 
-        _currentTimeFormatter = new(new()
+    private readonly TimeFormatter _currentTimeFormatter = new(new()
         {
             FontSize = Font.Size.XS,
             Color = AnsiSequences.ForegroundColors.White,
             ShowSeconds = true,
             ShowMilliseconds = false,
         });
-    }
+
+    private IScreen _selectedScreen = IScreen.NoScreen;
+    private HashSet<int> _autoRefreshingPaneIndices = [];
+    private int _windowHeight;
+    private int _windowWidth;
 
     public void PaintScreen(bool shortcutsMenuActive)
     {
@@ -138,6 +128,18 @@ public class Painter
         var (relativeXPosition, relativeYPosition) = position ?? (0, 0);
         var absolutePosistion = (relativeXPosition + pane.Position.x, relativeYPosition + pane.Position.y);
         var boundary = (pane.Position.x + pane.Size.x, pane.Position.y + pane.Size.y);
+
+        var (isBusy, busyText) = _busyIndicator.IsPaneBusy(_selectedScreen.GetType(), pane.PaneIndex);
+
+        if (isBusy)
+        {
+            absolutePosistion = pane.Position;
+            rows = 0.To(pane.Size.y)
+                .Select(y => y == 1
+                    ? new AnsiString(" ") + busyText
+                    : AnsiString.Empty);
+            padPaneWidth = true;
+        }
 
         if (padPaneWidth)
         {

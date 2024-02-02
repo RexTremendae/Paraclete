@@ -19,6 +19,7 @@ public class ScreenSelector(IServiceProvider serviceProvider, ScreenInvalidator 
         }
 
         _selectedScreen = screen;
+        _screenInvalidator.SelectedScreen = screen.GetType();
         _selectedScreen.OnAfterSwitch();
 
         _screenInvalidator.InvalidateAll();

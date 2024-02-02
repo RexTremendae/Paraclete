@@ -19,6 +19,7 @@ public static class Configurator
         var services = new ServiceConfigurator();
 
         services
+            .AddScoped<BusyIndicator>()
             .AddScoped<CalculatorHistory>()
             .AddScoped<DataInputPainter>()
             .AddScoped<DataInputter>()

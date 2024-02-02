@@ -1,5 +1,6 @@
 namespace Paraclete.Painting;
 
+using Paraclete.Ansi;
 using Paraclete.Layouts;
 using Paraclete.Modules.GitNavigator;
 
@@ -10,6 +11,11 @@ public class GitLogPainter(Painter painter, LogStore logStore)
 
     public void PaintLogLines(Pane pane, (int x, int y) position)
     {
-        _painter.PaintRows(_logStore.LogLines.Select(_ => _.ToAnsiString()), pane, position, padPaneWidth: true, showEllipsis: true);
+        var rows =
+            0.To(position.y)
+            .Select(_ => AnsiString.Empty)
+            .Concat(_logStore.LogLines.Select(_ => _.ToAnsiString()));
+
+        _painter.PaintRows(rows, pane, (position.x, 0), padPaneWidth: true, showEllipsis: true);
     }
 }

@@ -34,6 +34,6 @@ public class SinglePaneLayout : ILayout
 
     public void Recalculate(int windowWidth, int windowHeight)
     {
-        _pane = new Pane((1, 1), (windowWidth - 2, windowHeight - 5), isVisible: true);
+        _pane = new Pane(0, (1, 1), (windowWidth - 2, windowHeight - 5), isVisible: true);
     }
 }

@@ -25,7 +25,7 @@ public class ColumnLayoutExhibition : IExhibition
         var rows = new List<AnsiString>();
         var pane = Layout.Panes[paneIndex];
 
-        AddTopRow(rows, paneIndex.ToString("00"), pane.Size.x);
+        AddTopRow(rows, pane.PaneIndex.ToString("00"), pane.Size.x);
         var end = int.Max(1, pane.Size.y - 1);
         1.To(end).Foreach(y =>
         {
