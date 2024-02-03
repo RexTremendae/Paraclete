@@ -2,6 +2,9 @@ namespace Paraclete.Menu;
 
 public interface ICommand
 {
+    public const char FlagChar = '⚑';
+    public const char UnflagChar = '⚐';
+
     public static readonly ICommand NoCommand = new NoCommandImplementation();
 
     ConsoleKey Shortcut { get; }

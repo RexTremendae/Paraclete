@@ -6,6 +6,7 @@ public class GitMenu(IServiceProvider services)
         typeof(RefreshLogCommand),
         typeof(ChangeRepositoryCommand),
         typeof(PullCommand),
+        typeof(ToggleShowOriginCommand),
     })
 {
 }

@@ -6,6 +6,7 @@ public class LogStore
 {
     private readonly List<LogLine> _logLines = [];
 
+    private bool _showOrigin;
     public IEnumerable<LogLine> LogLines => _logLines;
 
     public async Task Pull(string repository)
@@ -95,9 +96,15 @@ public class LogStore
                     while (splitIdx >= 0)
                     {
                         splitIdx = branchesString.IndexOf(", ", startIdx);
-                        branchList.Add(splitIdx >= 0
+
+                        var branchName = splitIdx >= 0
                             ? branchesString[startIdx..splitIdx]
-                            : branchesString[startIdx..]);
+                            : branchesString[startIdx..];
+
+                        if (_showOrigin || !branchName.StartsWith("origin/"))
+                        {
+                            branchList.Add(branchName);
+                        }
 
                         startIdx = splitIdx + 2;
                     }
@@ -113,5 +120,10 @@ public class LogStore
                     branches: [.. branchList]));
             }
         }
+    }
+
+    public void SetShowOrigin(bool showOrigin)
+    {
+        _showOrigin = showOrigin;
     }
 }

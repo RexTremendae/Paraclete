@@ -104,6 +104,25 @@ public class MenuPainter(ScreenSelector screenSelector, IServiceProvider service
             endBracketIndex = description.IndexOf(']', startBracketIndex);
         }
 
+        var flagIndex = description.IndexOf(ICommand.UnflagChar);
+        var flagState = false;
+
+        if (flagIndex < 0)
+        {
+            flagIndex = description.IndexOf(ICommand.FlagChar);
+            if (flagIndex >= 0)
+            {
+                flagState = true;
+            }
+        }
+
+        var flagPart = string.Empty;
+        if (flagIndex > 0)
+        {
+            flagPart = $"{description[flagIndex]}";
+            description = description[..flagIndex] + description[(flagIndex + 1)..];
+        }
+
         var explicitBrackets = startBracketIndex >= 0 && endBracketIndex >= 0;
 
         builder.Append(_bracketColor).Append("[");
@@ -114,8 +133,10 @@ public class MenuPainter(ScreenSelector screenSelector, IServiceProvider service
         }
 
         var shortcutText = key.ToDisplayString() + (explicitBrackets ? string.Empty : " ");
+
         builder.Append(_shortcutColor).Append(shortcutText);
         builder.Append(_textColor).Append(description[(endBracketIndex + 1)..]);
+        builder.Append(flagState ? AnsiSequences.ForegroundColors.Orange : AnsiSequences.ForegroundColors.Orange).Append(flagPart);
         builder.Append(_bracketColor).Append("]");
     }
 }
