@@ -61,10 +61,10 @@ public static class Configurator
     public static ServiceConfigurator AddGitNavigatorModule(this ServiceConfigurator services)
     {
         services
-            .AddScoped<RepositorySelector>()
-            .AddScoped<GitRepositorySelectorPainter>()
             .AddScoped<GitLogPainter>()
+            .AddScoped<GitRepositorySelectorPainter>()
             .AddScoped<LogStore>()
+            .AddScoped<RepositorySelector>()
         ;
 
         return services;

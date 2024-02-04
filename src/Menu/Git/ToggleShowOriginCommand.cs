@@ -1,6 +1,7 @@
 namespace Paraclete.Menu.Git;
 
 using Paraclete.Modules.GitNavigator;
+using Paraclete.Screens.Git;
 
 public class ToggleShowOriginCommand(LogStore logStore, RepositorySelector repositorySelector, ScreenInvalidator screenInvalidator)
     : ICommand
@@ -18,10 +19,10 @@ public class ToggleShowOriginCommand(LogStore logStore, RepositorySelector repos
         _showOrigin = !_showOrigin;
         _logStore.SetShowOrigin(_showOrigin);
         await _logStore.Refresh(_repositorySelector.SelectedRepository);
-        _screenInvalidator.InvalidatePane(1);
+        _screenInvalidator.InvalidatePane(GitScreen.Panes.History);
     }
 
-    private bool _showOrigin = true;
+    private bool _showOrigin;
 
     private string GetToggledOnText()
     {

@@ -5,12 +5,19 @@ using System.Text.RegularExpressions;
 public class LogStore
 {
     private readonly List<LogLine> _logLines = [];
+    private readonly List<string> _commitInfoLines = [];
 
     private bool _showOrigin;
+    private string _selectedRepository = string.Empty;
+
+    public int SelectedLogLineIndex { get; private set; }
     public IEnumerable<LogLine> LogLines => _logLines;
+    public IEnumerable<string> CommitInfoLines => _commitInfoLines;
 
     public async Task Pull(string repository)
     {
+        _selectedRepository = repository;
+
         await ProcessRunner.ExecuteAsync(
             "git",
             args: ["pull"],
@@ -22,9 +29,12 @@ public class LogStore
 
     public async Task Refresh(string repository)
     {
+        _selectedRepository = repository;
+
         var logLinesToFetch = 40;
 
         _logLines.Clear();
+        SelectedLogLineIndex = 0;
 
         if (string.IsNullOrEmpty(repository))
         {
@@ -48,7 +58,7 @@ public class LogStore
         {
             var match = graphRegex.Match(line);
             var parts = match.Groups["nongraph"].Value.Split(separator, StringSplitOptions.TrimEntries);
-            var graphPart = match.Groups["graph"].Value;
+            var graphPart = match.Groups["graph"].Value.Trim();
 
             lineParts.Add([.. new[] { graphPart }.Concat(parts)]);
             graphMaxLen = int.Max(graphMaxLen, graphPart.Length);
@@ -120,6 +130,61 @@ public class LogStore
                     branches: [.. branchList]));
             }
         }
+
+        await RefreshCommitInfo();
+    }
+
+    public async Task SelectNextCommit()
+    {
+        for (; ;)
+        {
+            SelectedLogLineIndex++;
+            if (SelectedLogLineIndex >= _logLines.Count)
+            {
+                SelectedLogLineIndex = _logLines.Count - 1;
+                break;
+            }
+
+            if (!string.IsNullOrEmpty(_logLines[SelectedLogLineIndex].Sha))
+            {
+                break;
+            }
+        }
+
+        await RefreshCommitInfo();
+    }
+
+    public async Task SelectPreviousCommit()
+    {
+        for (; ;)
+        {
+            SelectedLogLineIndex--;
+            if (SelectedLogLineIndex < 0)
+            {
+                SelectedLogLineIndex = 0;
+                break;
+            }
+
+            if (!string.IsNullOrEmpty(_logLines[SelectedLogLineIndex].Sha))
+            {
+                break;
+            }
+        }
+
+        await RefreshCommitInfo();
+    }
+
+    public async Task RefreshCommitInfo()
+    {
+        var selectedCommit = _logLines[SelectedLogLineIndex].Sha;
+        var result = await ProcessRunner.ExecuteAsync(
+            "git",
+            args: ["show", selectedCommit, "--name-status"],
+            workingDirectory: _selectedRepository,
+            launchExternal: false);
+
+        _commitInfoLines.Clear();
+        _commitInfoLines.AddRange(result.StdOut.Select(_ => _.Replace("\t", "  ")));
     }
 
     public void SetShowOrigin(bool showOrigin)

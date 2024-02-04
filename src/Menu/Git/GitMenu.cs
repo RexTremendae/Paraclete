@@ -7,6 +7,8 @@ public class GitMenu(IServiceProvider services)
         typeof(ChangeRepositoryCommand),
         typeof(PullCommand),
         typeof(ToggleShowOriginCommand),
+        typeof(SelectPreviousCommitCommand),
+        typeof(SelectNextCommitCommand),
     })
 {
 }
