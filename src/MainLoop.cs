@@ -38,7 +38,7 @@ public partial class MainLoop(IServiceProvider services)
         _inputHandlingLoopIsActive = true;
         _repaintLoopIsActive = true;
 
-        while (_inputHandlingLoopIsActive || _repaintLoopIsActive)
+        while (_inputHandlingLoopIsActive && _repaintLoopIsActive)
         {
             await Task.Delay(100);
         }

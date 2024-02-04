@@ -12,7 +12,7 @@ public class ColumnLayoutExhibition : IExhibition
     private static readonly (int Width, int[] Heights)[] PaneSizes = new (int, int[])[]
     {
         (50, Array.Empty<int>()),
-        (16, new int[] { 5, 8, 12 }),
+        (0,  new int[] { 5, 8, 12 }),
         (20, new int[] { 18 }),
         (25, new int[] { 15, 15 }),
     };

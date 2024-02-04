@@ -4,12 +4,23 @@ using System.Text;
 using Paraclete.Ansi;
 using Paraclete.Painting;
 
-public class ColumnBasedLayout(params ColumnBasedLayout.ColumnDefinition[] columns) : ILayout
+public class ColumnBasedLayout : ILayout
 {
-    private readonly ColumnDefinition[] _columns = columns;
+    private readonly ColumnDefinition[] _columns;
 
+    private int[] _calculatedColumnWidths = [];
     private int _windowHeight;
     private int _windowWidth;
+
+    public ColumnBasedLayout(params ColumnDefinition[] columns)
+    {
+        if (columns.Count(_ => _.Width == 0) > 1)
+        {
+            throw new ArgumentException("Only one column can have 0 width (which means fill remaining space)", paramName: nameof(columns));
+        }
+
+        _columns = columns;
+    }
 
     public ColumnBasedLayout(IEnumerable<ColumnDefinition> columns)
         : this(columns.ToArray())
@@ -50,12 +61,43 @@ public class ColumnBasedLayout(params ColumnBasedLayout.ColumnDefinition[] colum
         int paneHeight;
         int paneWidth;
 
+        _calculatedColumnWidths = new int[_columns.Length];
+        var fillPaneIndex = -1;
+        var totalWidth = 0;
+
+        0.To(_columns.Length).Foreach(x =>
+        {
+            var columnWidth = _columns[x].Width;
+            if (columnWidth == 0)
+            {
+                fillPaneIndex = x;
+            }
+            else
+            {
+                _calculatedColumnWidths[x] = columnWidth;
+                totalWidth += columnWidth;
+            }
+        });
+
+        if (fillPaneIndex >= 0)
+        {
+            _calculatedColumnWidths[fillPaneIndex] = (drawableWindowWidth - totalWidth - _columns.Length).ZeroFloor();
+        }
+
         0.To(_columns.Length).Foreach(x =>
         {
             var column = _columns[x];
-            paneWidth = int.Min(column.Width, drawableWindowWidth - xPos).ZeroFloor();
-            panes.AddRange(GenerateColumnPanes(column, panes.Count, xPos: xPos, paneWidth: paneWidth, drawableWindowHeight: drawableWindowHeight));
-            xPos += column.Width + 1;
+            paneWidth = int.Min(_calculatedColumnWidths[x], drawableWindowWidth - xPos).ZeroFloor();
+
+            var generatedPanes = GenerateColumnPanes(
+                column,
+                panes.Count,
+                xPos: xPos,
+                paneWidth: paneWidth,
+                drawableWindowHeight: drawableWindowHeight);
+
+            panes.AddRange(generatedPanes);
+            xPos += _calculatedColumnWidths[x] + 1;
         });
 
         paneWidth = (drawableWindowWidth - xPos).ZeroFloor();
@@ -64,10 +106,6 @@ public class ColumnBasedLayout(params ColumnBasedLayout.ColumnDefinition[] colum
         if (paneWidth > 0 && paneHeight > 0)
         {
             panes.Add(new(panes.Count, (xPos, 1), (paneWidth, paneHeight), true));
-        }
-        else
-        {
-            panes.Add(new(panes.Count, (xPos, 1), (0, 0), false));
         }
 
         Panes = [.. panes];
@@ -139,25 +177,33 @@ public class ColumnBasedLayout(params ColumnBasedLayout.ColumnDefinition[] colum
 
         var colIsDivider = false;
         var isFirst = true;
-        bool lastColIsDivider;
+        var lastColIsDivider = false;
+        bool prevColIsDivider;
 
-        foreach (var col in _columns)
+        foreach (var x in 0.To(_calculatedColumnWidths.Length))
         {
+            var colWidth = _calculatedColumnWidths[x];
+            prevColIsDivider = colIsDivider;
+            colIsDivider = IsDivider(rowIndex, _columns[x]);
             lastColIsDivider = colIsDivider;
-            colIsDivider = IsDivider(rowIndex, col);
             var colDividerChar = 0 switch
             {
                 var _ when isFirst => colIsDivider ? '╟' : '║',
-                var _ when lastColIsDivider && colIsDivider  => '┼',
-                var _ when !lastColIsDivider && colIsDivider => '├',
-                var _ when lastColIsDivider && !colIsDivider => '┤',
+                var _ when prevColIsDivider && colIsDivider  => '┼',
+                var _ when !prevColIsDivider && colIsDivider => '├',
+                var _ when prevColIsDivider && !colIsDivider => '┤',
                 _                                            => '│',
             };
+            isFirst = false;
 
             rowBuilder.Append(colDividerChar);
-            rowBuilder.Append(string.Empty.PadRight(col.Width, colIsDivider ? '─' : ' '));
-            totalWidth += col.Width + 1;
-            isFirst = false;
+            rowBuilder.Append(string.Empty.PadRight(colWidth, colIsDivider ? '─' : ' '));
+            totalWidth += colWidth + 1;
+
+            if (totalWidth > _windowWidth - 2)
+            {
+                break;
+            }
         }
 
         rowBuilder.Append(colIsDivider ? '┤' : '│');
@@ -171,7 +217,7 @@ public class ColumnBasedLayout(params ColumnBasedLayout.ColumnDefinition[] colum
         }
 
         rowBuilder.Append(string.Empty.PadRight(int.Max(windowWidth - totalWidth - 1, 0)));
-        rowBuilder.Append('║');
+        rowBuilder.Append(lastColIsDivider ? '╢' : '║');
 
         return rowBuilder.ToString();
     }
@@ -182,7 +228,7 @@ public class ColumnBasedLayout(params ColumnBasedLayout.ColumnDefinition[] colum
         rowBuilder.Append(leftBorder);
         var totalWidth = 1;
 
-        foreach (var colWidth in _columns.Select(_ => _.Width))
+        foreach (var colWidth in _calculatedColumnWidths)
         {
             rowBuilder.Append(string.Empty.PadRight(colWidth, padding));
             rowBuilder.Append(colBorder);
