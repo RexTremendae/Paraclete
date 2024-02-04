@@ -129,7 +129,7 @@ public class Painter(
         var absolutePosistion = (relativeXPosition + pane.Position.X, relativeYPosition + pane.Position.Y);
         var boundary = (pane.Position.X + pane.Size.X, pane.Position.Y + pane.Size.Y);
 
-        var (isBusy, busyText) = _busyIndicator.IsPaneBusy(_selectedScreen.GetType(), pane.PaneIndex);
+        var (isBusy, busyText) = _busyIndicator.IsPaneBusy(_selectedScreen.GetType(), pane.PaneId);
 
         if (isBusy)
         {

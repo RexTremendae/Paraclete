@@ -11,10 +11,10 @@ public class ColumnLayoutExhibition : IExhibition
 
     private static readonly (int Width, int[] Heights)[] PaneSizes = new (int, int[])[]
     {
-        (50, Array.Empty<int>()),
-        (0,  new int[] { 5, 8, 12 }),
-        (20, new int[] { 18 }),
-        (25, new int[] { 15, 15 }),
+        (50, []),
+        (0,  [5, 0, 12]),
+        (20, [18]),
+        (25, [20, 10]),
     };
 
     public ILayout Layout { get; } = new ColumnBasedLayout(
@@ -25,28 +25,21 @@ public class ColumnLayoutExhibition : IExhibition
         var rows = new List<AnsiString>();
         var pane = Layout.Panes[paneIndex];
 
-        AddTopRow(rows, pane.PaneIndex.ToString("00"), pane.Size.X);
+        rows.Add(GetTopRow(pane.PaneId.ToString("00"), pane.Size.X));
         var end = int.Max(1, pane.Size.Y - 1);
-        1.To(end).Foreach(y =>
-        {
-            AddMiddleRow(rows, paneIndex: paneIndex, paneWidth: pane.Size.X, rowIndex: y);
-        });
-
-        AddBottomRow(rows, pane.Size.X);
+        rows.AddRange(GetMiddleRows(startRow: 1, endRow: end, paneIndex: paneIndex, paneWidth: pane.Size.X));
+        rows.Add(GetBottomRow(pane.Size.X));
 
         painter.PaintRows(rows, pane);
     }
 
-    private static void AddTopRow(List<AnsiString> rows, string title, int paneWidth)
+    private static AnsiString GetTopRow(string title, int paneWidth)
     {
         var ansiTitle = " # " + AnsiSequences.ForegroundColors.Blue + title + _foregroundColor + " # ";
         var paddingWidthLeft = (((paneWidth - ansiTitle.Length) / 2) - 1).ZeroFloor();
         var paddingWidthRight = (paneWidth - ansiTitle.Length - paddingWidthLeft).ZeroFloor();
 
-        Log.Information("'{0}' - left: {1} - right: {2}", ansiTitle.ToString(), paddingWidthLeft, paddingWidthRight);
-        Log.Information("L: {0} R: {1}", string.Empty.PadRight(paddingWidthLeft, '-'), string.Empty.PadRight(paddingWidthRight, '-'));
-
-        rows.Add(new AnsiStringBuilder()
+        return new AnsiStringBuilder()
             .Append(_foregroundColor)
             .Append(_backgroundColor)
             .Append("●")
@@ -56,69 +49,90 @@ public class ColumnLayoutExhibition : IExhibition
             .Build()
             .Truncate(paneWidth - 1) +
             _foregroundColor +
-            "●");
+            "●";
     }
 
-    private static void AddBottomRow(List<AnsiString> rows, int paneWidth)
+    private static AnsiString GetBottomRow(int paneWidth)
     {
-        rows.Add(new AnsiStringBuilder()
+        return new AnsiStringBuilder()
             .Append(_foregroundColor)
             .Append(_backgroundColor)
             .Append("●")
             .Append(string.Empty.PadRight((paneWidth - 2).ZeroFloor(), '-'))
             .Append("●")
-            .Build());
+            .Build();
     }
 
-    private void AddMiddleRow(List<AnsiString> rows, int paneIndex, int paneWidth, int rowIndex)
+    private IEnumerable<AnsiString> GetMiddleRows(int startRow, int endRow, int paneIndex, int paneWidth)
     {
+        var displayPaneIdx = 0;
+        var displayEmptyRow = false;
         var contentWidth = (paneWidth - 2).ZeroFloor();
-        var contentBuilder = new AnsiStringBuilder()
-            .Append(_foregroundColor)
-            .Append(_backgroundColor)
-            .Append("|");
+        var emptyRowContent = string.Empty.PadRight(contentWidth);
+        var currentColumnIndex = 0;
+        var paneToDisplay = Layout.Panes[0];
 
-        if (paneIndex == 0)
+        foreach (var y in startRow.To(endRow))
         {
-            var paneIdx = rowIndex - 4;
+            var contentBuilder = new AnsiStringBuilder()
+                .Append(_foregroundColor)
+                .Append(_backgroundColor)
+                .Append("|");
 
-            if (paneIdx >= 0 && paneIdx < Layout.Panes.Length)
+            if (paneIndex == 0)
             {
-                var listedPane = Layout.Panes[paneIdx];
-                var visibilityMarker = listedPane.IsVisible
-                    ? AnsiSequences.ForegroundColors.Green + "✓"
-                    : AnsiSequences.ForegroundColors.Red + "✘";
+                if (y < 4 || displayEmptyRow || displayPaneIdx >= Layout.Panes.Length)
+                {
+                    displayEmptyRow = false;
+                    contentBuilder.Append(emptyRowContent);
+                }
+                else
+                {
+                    var visibilityMarker = paneToDisplay.IsVisible
+                        ? AnsiSequences.ForegroundColors.Green + "✓"
+                        : AnsiSequences.ForegroundColors.Red + "✘";
 
-                contentBuilder
-                    .Append("  pane ")
-                    .Append(AnsiSequences.BackgroundColors.Gray)
-                    .Append(AnsiSequences.ForegroundColors.Black)
-                    .Append(paneIdx.ToString("00"))
-                    .Append(AnsiSequences.Reset)
-                    .Append(_foregroundColor)
-                    .Append(_backgroundColor)
-                    .Append(": ")
-                    .Append($"({listedPane.Position.X,3}, {listedPane.Position.Y,3})")
-                    .Append("  ")
-                    .Append($"({listedPane.Size.X,3} x {listedPane.Size.Y,3}) ")
-                    .Append($"visible: ")
-                    .Append(visibilityMarker)
-                    .Append(string.Empty.PadRight(contentWidth - contentBuilder.Length + 1))
-                ;
+                    contentBuilder
+                        .Append("  pane ")
+                        .Append(AnsiSequences.BackgroundColors.Gray)
+                        .Append(AnsiSequences.ForegroundColors.Black)
+                        .Append(displayPaneIdx.ToString("00"))
+                        .Append(AnsiSequences.Reset)
+                        .Append(_foregroundColor)
+                        .Append(_backgroundColor)
+                        .Append(": ")
+                        .Append($"({paneToDisplay.Position.X,3}, {paneToDisplay.Position.Y,3})")
+                        .Append("  ")
+                        .Append($"({paneToDisplay.Size.X,3} x {paneToDisplay.Size.Y,3}) ")
+                        .Append($"visible: ")
+                        .Append(visibilityMarker)
+                        .Append(string.Empty.PadRight(contentWidth - contentBuilder.Length + 1))
+                    ;
+
+                    displayPaneIdx++;
+                    if (displayPaneIdx < Layout.Panes.Length)
+                    {
+                        paneToDisplay = Layout.Panes[displayPaneIdx];
+
+                        if (currentColumnIndex != paneToDisplay.ColumnIndex)
+                        {
+                            displayEmptyRow = true;
+                            currentColumnIndex = paneToDisplay.ColumnIndex;
+                        }
+                    }
+                }
             }
             else
             {
-                contentBuilder.Append(string.Empty.PadRight(contentWidth));
+                contentBuilder.Append(emptyRowContent);
             }
-        }
-        else
-        {
-            contentBuilder.Append(string.Empty.PadRight(contentWidth));
-        }
 
-        rows.Add(contentBuilder
-            .Append(_foregroundColor)
-            .Append("|")
-            .Build());
+            contentBuilder
+                .Append(_foregroundColor)
+                .Append("|")
+                .Build();
+
+            yield return contentBuilder.Build();
+        }
     }
 }

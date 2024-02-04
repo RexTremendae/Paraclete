@@ -66,7 +66,11 @@ public partial class MainLoop(IServiceProvider services)
 
     private void PrintExceptionInfo()
     {
-        new[] { ("Input handling loop", _inputHandlingException), ("Repaint loop", _repaintLoopException) }
+        new[]
+        {
+            ("Input handling loop", _inputHandlingException),
+            ("Repaint loop", _repaintLoopException),
+        }
         .Foreach<(string LoopId, Exception? Exception)>(_ =>
         {
             if (_.Exception != null)

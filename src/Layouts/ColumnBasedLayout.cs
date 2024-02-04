@@ -9,6 +9,8 @@ public class ColumnBasedLayout : ILayout
     private readonly ColumnDefinition[] _columns;
 
     private int[] _calculatedColumnWidths = [];
+    private int[][] _calculatedPaneHeights = [[]];
+
     private int _windowHeight;
     private int _windowWidth;
 
@@ -17,6 +19,11 @@ public class ColumnBasedLayout : ILayout
         if (columns.Count(_ => _.Width == 0) > 1)
         {
             throw new ArgumentException("Only one column can have 0 width (which means fill remaining space)", paramName: nameof(columns));
+        }
+
+        if (columns.Any(c => c.CellHeights.Count(_ => _ == 0) > 1))
+        {
+            throw new ArgumentException("Only one pane per column can have 0 height (which means fill remaining space)", paramName: nameof(columns));
         }
 
         _columns = columns;
@@ -62,35 +69,63 @@ public class ColumnBasedLayout : ILayout
         int paneWidth;
 
         _calculatedColumnWidths = new int[_columns.Length];
-        var fillPaneIndex = -1;
-        var totalWidth = 0;
-
-        0.To(_columns.Length).Foreach(x =>
+        _calculatedPaneHeights = new int[_columns.Length][];
+        var fillColumnIndex = -1;
+        var fillPaneIndices = new int[_columns.Length];
+        0.To(_columns.Length).Foreach(idx =>
         {
-            var columnWidth = _columns[x].Width;
-            if (columnWidth == 0)
-            {
-                fillPaneIndex = x;
-            }
-            else
-            {
-                _calculatedColumnWidths[x] = columnWidth;
-                totalWidth += columnWidth;
-            }
+            fillPaneIndices[idx] = -1;
         });
 
-        if (fillPaneIndex >= 0)
-        {
-            _calculatedColumnWidths[fillPaneIndex] = (drawableWindowWidth - totalWidth - _columns.Length).ZeroFloor();
-        }
+        var totalWidth = 0;
+        var totalHeights = new int[_columns.Length];
 
         0.To(_columns.Length).Foreach(x =>
         {
             var column = _columns[x];
+            if (column.Width == 0)
+            {
+                fillColumnIndex = x;
+            }
+            else
+            {
+                _calculatedColumnWidths[x] = column.Width;
+                totalWidth += column.Width;
+            }
+
+            _calculatedPaneHeights[x] = new int[column.CellHeights.Length];
+            totalHeights[x] = 0;
+            foreach (var y in 0.To(column.CellHeights.Length))
+            {
+                var cellHeight = column.CellHeights[y];
+                _calculatedPaneHeights[x][y] = cellHeight;
+                totalHeights[x] += cellHeight;
+
+                if (cellHeight == 0)
+                {
+                    fillPaneIndices[x] = y;
+                }
+            }
+        });
+
+        if (fillColumnIndex >= 0)
+        {
+            _calculatedColumnWidths[fillColumnIndex] = (drawableWindowWidth - totalWidth - _columns.Length).ZeroFloor();
+        }
+
+        0.To(_columns.Length).Foreach(x =>
+        {
+            if (fillPaneIndices[x] >= 0)
+            {
+                _calculatedPaneHeights[x][fillPaneIndices[x]] =
+                    (drawableWindowHeight - totalHeights[x] - _calculatedPaneHeights[x].Length)
+                    .ZeroFloor();
+            }
+
             paneWidth = int.Min(_calculatedColumnWidths[x], drawableWindowWidth - xPos).ZeroFloor();
 
             var generatedPanes = GenerateColumnPanes(
-                column,
+                x,
                 panes.Count,
                 xPos: xPos,
                 paneWidth: paneWidth,
@@ -105,54 +140,70 @@ public class ColumnBasedLayout : ILayout
 
         if (paneWidth > 0 && paneHeight > 0)
         {
-            panes.Add(new(panes.Count, (xPos, 1), (paneWidth, paneHeight), true));
+            panes.Add(new(
+                paneId: panes.Count,
+                columnIndex: _columns.Length,
+                position: (xPos, 1),
+                size: (paneWidth, paneHeight),
+                isVisible: true));
         }
 
         Panes = [.. panes];
     }
 
-    private static IEnumerable<Pane> GenerateColumnPanes(ColumnDefinition column, int firstPaneIndex, int xPos, int paneWidth, int drawableWindowHeight)
+    private IEnumerable<Pane> GenerateColumnPanes(int columnIdx, int firstPaneId, int xPos, int paneWidth, int drawableWindowHeight)
     {
         var yPos = 1;
-        var paneHeight = 0;
+        int paneHeight;
 
         var panes = new List<Pane>();
-        var paneIndex = firstPaneIndex;
-        0.To(column.CellHeights.Length).Foreach(y =>
+        var paneId = firstPaneId;
+        foreach (var y in 0.To(_calculatedPaneHeights[columnIdx].Length))
         {
-            paneHeight = int.Min(column.CellHeights[y], drawableWindowHeight - yPos).ZeroFloor();
+            paneHeight = int.Min(_calculatedPaneHeights[columnIdx][y], drawableWindowHeight - yPos).ZeroFloor();
 
             if (paneHeight > 0 && paneWidth > 0)
             {
-                panes.Add(new(paneIndex, (xPos, yPos), (paneWidth, paneHeight), true));
+                panes.Add(new(
+                    paneId: paneId,
+                    columnIndex: columnIdx,
+                    position: (xPos, yPos),
+                    size: (paneWidth, paneHeight),
+                    isVisible: true));
             }
             else
             {
-                panes.Add(new(paneIndex, (xPos, yPos), (0, 0), false));
+                panes.Add(new(
+                    paneId: paneId,
+                    columnIndex: columnIdx,
+                    position: (xPos, yPos),
+                    size: (0, 0),
+                    isVisible: false));
             }
 
             yPos += paneHeight + 1;
-            paneIndex++;
-        });
+            paneId++;
+        }
 
         paneHeight = (drawableWindowHeight - yPos).ZeroFloor();
 
         if (paneHeight > 0 && paneWidth > 0)
         {
-            panes.Add(new(paneIndex, (xPos, yPos), (paneWidth, paneHeight), true));
-        }
-        else
-        {
-            panes.Add(new(paneIndex, (xPos, yPos), (0, 0), false));
+            panes.Add(new(
+                paneId: paneId,
+                columnIndex: columnIdx,
+                position: (xPos, yPos),
+                size: (paneWidth, paneHeight),
+                isVisible: true));
         }
 
         return panes;
     }
 
-    private static bool IsDivider(int rowIndex, ColumnDefinition col)
+    private bool IsDivider(int rowIndex, int colIdx)
     {
         var totalHeight = 1;
-        foreach (var height in col.CellHeights)
+        foreach (var height in _calculatedPaneHeights[colIdx])
         {
             totalHeight += height;
             if (rowIndex < totalHeight)
@@ -184,7 +235,7 @@ public class ColumnBasedLayout : ILayout
         {
             var colWidth = _calculatedColumnWidths[x];
             prevColIsDivider = colIsDivider;
-            colIsDivider = IsDivider(rowIndex, _columns[x]);
+            colIsDivider = IsDivider(rowIndex, x);
             lastColIsDivider = colIsDivider;
             var colDividerChar = 0 switch
             {
