@@ -1,5 +1,7 @@
 namespace Paraclete;
 
+using Paraclete.PInvoke;
+
 public partial class MainLoop
 {
     private Exception? _repaintLoopException;
@@ -17,7 +19,7 @@ public partial class MainLoop
 
             try
             {
-                _quickMenuIsActive = PInvoke.Keyboard.GetAsyncKeyState(PInvoke.Keyboard.VirtKey.TAB) != 0;
+                _quickMenuIsActive = User32.GetAsyncKeyState(User32.VirtKey.TAB) != 0;
 
                 if (_screenSaver.IsActive)
                 {

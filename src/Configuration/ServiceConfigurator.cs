@@ -1,54 +1,55 @@
 namespace Paraclete.Configuration;
 
-using Microsoft.Extensions.DependencyInjection;
+using Paraclete.IO;
+using Paraclete.Menu;
+using Paraclete.Modules.Chess.Scenarios;
+using Paraclete.Painting;
+using Paraclete.Screens;
+using Paraclete.Screens.Showroom;
+using Paraclete.Screens.Unicode;
 
-public class ServiceConfigurator
+public static class ServiceConfigurator
 {
-    private readonly IServiceCollection _services = new ServiceCollection();
-    private readonly List<Type> _initializers = [];
-
-    public ServiceConfigurator AddScoped<T>()
-        where T : class
+    public static async Task<IServiceProvider> Configure()
     {
-        AddScoped(typeof(T));
-        return this;
-    }
+        var services = new ServiceProviderBuilder();
 
-    public ServiceConfigurator AddScoped(Type type)
-    {
-        AddScopedInner(type);
-        return this;
-    }
+        services
+            .AddScoped<BusyIndicator>()
+            .AddScoped<DataInputPainter>()
+            .AddScoped<DataInputter>()
+            .AddScoped<ExhibitionSelector>()
+            .AddScoped<FpsCounter>()
+            .AddScoped<MainLoop>()
+            .AddScoped<MenuPainter>()
+            .AddScoped<NotebookPainter>()
+            .AddScoped<Notebook>()
+            .AddScoped<Painter>()
+            .AddScoped<ScreenInvalidator>()
+            .AddScoped<ScreenSaver>()
+            .AddScoped<ScreenSelector>()
+            .AddScoped<Settings>()
+            .AddScoped<Stopwatch>()
+            .AddScoped<Terminator>()
+            .AddScoped<ToDoList>()
+            .AddScoped<ToDoListPainter>()
+            .AddScoped<UnicodeControl>()
 
-    public ServiceConfigurator AddImplementationsOf<T>()
-    {
-        foreach (var menuItemType in TypeUtility.EnumerateImplementingTypesOf<T>())
-        {
-            AddScoped(menuItemType);
-        }
+            .AddCalculatorModule()
+            .AddChessModule()
+            .AddGitNavigatorModule()
 
-        return this;
-    }
+            .AddImplementationsOf<ICommand>()
+            .AddImplementationsOf<IExhibition>()
+            .AddImplementationsOf<IInputDefinition>()
+            .AddImplementationsOf<IScenario>()
+            .AddImplementationsOf<IScreen>()
+            .AddImplementationsOf<MenuBase>()
+        ;
 
-    public IServiceProvider BuildServiceProvider()
-    {
-        return _services.BuildServiceProvider();
-    }
+        var serviceProvider = services.BuildServiceProvider();
+        await services.InvokeInitializers(serviceProvider);
 
-    public async Task InvokeInitializers(IServiceProvider services)
-    {
-        foreach (var initializerType in _initializers)
-        {
-            await (services.GetRequiredService(initializerType) as IInitializer)!.Initialize(services);
-        }
-    }
-
-    private void AddScopedInner(Type type)
-    {
-        _services.AddScoped(type);
-        if (type.IsAssignableTo(typeof(IInitializer)))
-        {
-            _initializers.Add(type);
-        }
+        return serviceProvider;
     }
 }
