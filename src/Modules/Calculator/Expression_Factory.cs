@@ -10,8 +10,7 @@ public partial class Expression
         private readonly StringBuilder _currentToken = new();
         private TokenType _currentTokenType = TokenType.None;
 
-        private static IEnumerable<(string Token, TokenType Type)> NoTokens { get; } =
-            Enumerable.Empty<(string Token, TokenType Type)>();
+        private static IEnumerable<(string Token, TokenType Type)> NoTokens { get; } = [];
 
         public (ITokenNode Root, IEnumerable<(string Token, TokenType Type)> Tokens) CreateTokens(string inputData)
         {

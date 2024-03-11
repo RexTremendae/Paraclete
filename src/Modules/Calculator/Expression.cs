@@ -5,7 +5,7 @@ public partial class Expression
     private Expression()
     {
         RootNode = ITokenNode.Empty;
-        Tokens = Enumerable.Empty<(string, TokenType)>();
+        Tokens = [];
     }
 
     private Expression(ITokenNode rootNode, IEnumerable<(string Token, TokenType Type)> tokens)

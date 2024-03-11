@@ -78,12 +78,11 @@ public class Painter(
             var timeString = " " + _currentTimeFormatter.Format(DateTime.Now).First() + " ";
 
             PaintRows(
-                new[]
-                {
+                [
                     $"╤{string.Empty.PadRight(timeString.Length, '═')}╗",
                     "│" + timeString + AnsiSequences.Reset + "║",
                     $"╰{string.Empty.PadRight(timeString.Length, '─')}╢",
-                },
+                ],
                 (-timeString.Length - 2, 0));
         }
 
@@ -92,12 +91,11 @@ public class Painter(
             var titleString = $"  {_selectedScreen.Name}  ";
 
             PaintRows(
-                new[]
-                {
+                [
                     $"╤{string.Empty.PadRight(titleString.Length, '═')}╤",
                     "│" + AnsiSequences.ForegroundColors.Black + AnsiSequences.BackgroundColors.Blue + titleString + AnsiSequences.Reset + "│",
                     $"╰{string.Empty.PadRight(titleString.Length, '─')}╯",
-                },
+                ],
                 (((_windowWidth - titleString.Length) / 2) - 1, 0));
         }
 
@@ -115,12 +113,12 @@ public class Painter(
 
     public void Paint(AnsiString row, (int X, int Y)? position = null)
     {
-        PaintRows(new[] { row }, position);
+        PaintRows([row], position);
     }
 
     public void Paint(AnsiString row, Pane pane, (int X, int Y)? position = null)
     {
-        PaintRows(new[] { row }, pane, position);
+        PaintRows([row], pane, position);
     }
 
     public void PaintRows(

@@ -27,11 +27,10 @@ public class ShowroomScreen(ShowroomMenu showroomMenu, ExhibitionSelector exhibi
         if (paneIndex == 0)
         {
             painter.PaintRows(
-                new[]
-                {
+                [
                     AnsiSequences.ForegroundColors.Blue + exhibitionName,
                     string.Empty.PadLeft(exhibitionName.Length, '-'),
-                },
+                ],
                 (2, 2));
         }
     };

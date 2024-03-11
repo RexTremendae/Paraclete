@@ -145,7 +145,7 @@ public class TimeFormatter(TimeFormatterSettings settings)
         var result = rows.Select(_ => _.Build());
 
         return (_settings.ShowDate && formattedDate.Length > 0)
-            ? result.Concat(new[] { formattedDate })
+            ? result.Concat([formattedDate])
             : result;
     }
 

@@ -8,7 +8,7 @@ public class Stopwatch
     public DateTime Stop { get; private set; }
 
     public bool IsRunning { get; private set; }
-    public TimeSpan[] MarkedTimes => _markedTimes.ToArray();
+    public TimeSpan[] MarkedTimes => [.. _markedTimes];
     public TimeSpan CurrentDuration => (IsRunning ? DateTime.UtcNow : Stop) - Start;
 
     public void Reset()

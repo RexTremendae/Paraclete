@@ -6,7 +6,7 @@ using Paraclete.Painting;
 public class SinglePaneLayout : ILayout
 {
     private Pane _pane = Pane.Empty;
-    public Pane[] Panes => new[] { _pane };
+    public Pane[] Panes => [_pane];
 
     public void Paint(Painter painter)
     {

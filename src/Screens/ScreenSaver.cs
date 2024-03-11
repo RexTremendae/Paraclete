@@ -11,8 +11,8 @@ public class ScreenSaver(Painter painter, Settings settings)
 
     private readonly Painter _painter = painter;
 
-    private readonly (AnsiControlSequence Color, AnsiControlSequence SecondColor)[] _timeColors = new[]
-    {
+    private readonly (AnsiControlSequence Color, AnsiControlSequence SecondColor)[] _timeColors =
+    [
         (AnsiSequences.ForegroundColors.White,   AnsiSequences.ForegroundColors.Gray),
         (AnsiSequences.ForegroundColors.Yellow,  AnsiSequences.ForegroundColors.DarkYellow),
         (AnsiSequences.ForegroundColors.Cyan,    AnsiSequences.ForegroundColors.DarkCyan),
@@ -20,7 +20,7 @@ public class ScreenSaver(Painter painter, Settings settings)
         (AnsiSequences.ForegroundColors.Green,   AnsiSequences.ForegroundColors.DarkGreen),
         (AnsiSequences.ForegroundColors.Magenta, AnsiSequences.ForegroundColors.DarkMagenta),
         (AnsiSequences.ForegroundColors.Red,     AnsiSequences.ForegroundColors.DarkRed),
-    };
+    ];
 
     private int _timeWidth;
     private int _timeHeight;

@@ -148,6 +148,6 @@ public class DataInputter
             ?.GetMethod(nameof(IInputCommand<int>.CompleteInput), publicInstanceFlags)
             ?? throw new InvalidOperationException("Could not find the CompleteInput method.");
 
-        await (Task)(methodInfo!.Invoke(_command, new object[] { data.Result.GetNonNullValue() }))!;
+        await (Task)(methodInfo!.Invoke(_command, [data.Result.GetNonNullValue()]))!;
     }
 }

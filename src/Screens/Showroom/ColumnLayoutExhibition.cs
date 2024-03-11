@@ -9,13 +9,13 @@ public class ColumnLayoutExhibition : IExhibition
     private static readonly AnsiControlSequence _backgroundColor = AnsiSequences.BackgroundColor(0x22, 0x33, 0x44);
     private static readonly AnsiControlSequence _foregroundColor = AnsiSequences.ForegroundColors.Gray;
 
-    private static readonly (int Width, int[] Heights)[] PaneSizes = new (int, int[])[]
-    {
+    private static readonly (int Width, int[] Heights)[] PaneSizes =
+    [
         (50, []),
         (0,  [5, 0, 12]),
         (20, [18]),
         (25, [20, 10]),
-    };
+    ];
 
     public ILayout Layout { get; } = new ColumnBasedLayout(
         PaneSizes.Select(_ => new ColumnBasedLayout.ColumnDefinition(_.Width, _.Heights)));

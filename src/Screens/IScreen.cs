@@ -14,7 +14,7 @@ public interface IScreen
     ConsoleKey Shortcut { get; }
     bool ShowCurrentTime => true;
     bool ShowTitle => true;
-    int[] AutoRefreshingPaneIndices => Array.Empty<int>();
+    int[] AutoRefreshingPaneIndices => [];
 
     public virtual void OnAfterSwitch()
     {
