@@ -4,17 +4,13 @@ using Paraclete.Ansi;
 using Paraclete.Layouts;
 using Paraclete.Painting;
 
-using static Paraclete.Ansi.AnsiSequences;
-
 public class AnsiExhibition : IExhibition
 {
-    private const char EscapeChr = AnsiSequences.EscapeCharacter;
-
     public ILayout Layout { get; } = new SinglePaneLayout();
 
     public void Paint(Painter painter, (int X, int Y) position, int paneIndex)
     {
-        var esc = (string text) => new AnsiControlSequence(EscapeChr + text);
+        var esc = (string text) => new AnsiControlSequence($"\e{text}");
 
         foreach (var text in new AnsiString[]
         {
@@ -48,7 +44,7 @@ public class AnsiExhibition : IExhibition
             ansiExposedTextBuilder.Append(textToAppend);
         }
 
-        ansiExposedTextBuilder.Append(" ").Append(ForegroundColors.Cyan).Append($"[{text.Length} printable characters]");
+        ansiExposedTextBuilder.Append(" ").Append(AnsiSequences.ForegroundColors.Cyan).Append($"[{text.Length} printable characters]");
 
         painter.Paint(ansiExposedTextBuilder.Build(), pane, (left, top));
         painter.Paint(text + AnsiSequences.Reset + " ", pane, (left, top + 1));
@@ -57,12 +53,12 @@ public class AnsiExhibition : IExhibition
     private static AnsiString FormatForDisplay(AnsiStringControlSequencePart part)
     {
         return
-            ForegroundColors.Gray +
-            BackgroundColors.DarkGray +
+            AnsiSequences.ForegroundColors.Gray +
+            AnsiSequences.BackgroundColors.DarkGray +
             "\\u001b" +
-            ForegroundColors.Black +
-            BackgroundColors.Gray +
-            (part.ToString() ?? string.Empty).Replace(EscapeChr.ToString(), string.Empty) +
+            AnsiSequences.ForegroundColors.Black +
+            AnsiSequences.BackgroundColors.Gray +
+            (part.ToString() ?? string.Empty).Replace("\e", string.Empty) +
             AnsiSequences.Reset;
     }
 }

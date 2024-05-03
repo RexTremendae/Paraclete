@@ -2,29 +2,27 @@ namespace Paraclete.Ansi;
 
 public static class AnsiSequences
 {
-    public const char EscapeCharacter = '\u001b';
+    public static readonly AnsiString ClearScreen              = new("\e[2J");
+    public static readonly AnsiString EraseScrollbackBuffer    = new("\e[3J");
 
-    public static readonly AnsiString ClearScreen              = new($"{EscapeCharacter}[2J");
-    public static readonly AnsiString EraseScrollbackBuffer    = new($"{EscapeCharacter}[3J");
+    public static readonly AnsiControlSequence HideCursor      = new("\e[?25l");
+    public static readonly AnsiControlSequence ShowCursor      = new("\e[?25h");
 
-    public static readonly AnsiControlSequence HideCursor      = new($"{EscapeCharacter}[?25l");
-    public static readonly AnsiControlSequence ShowCursor      = new($"{EscapeCharacter}[?25h");
+    public static readonly AnsiControlSequence Reset           = new("\e[m");
 
-    public static readonly AnsiControlSequence Reset           = new($"{EscapeCharacter}[m");
-
-    public static readonly AnsiControlSequence Bold            = new($"{EscapeCharacter}[1m");
-    public static readonly AnsiControlSequence Dim             = new($"{EscapeCharacter}[2m");
-    public static readonly AnsiControlSequence Italic          = new($"{EscapeCharacter}[3m");
-    public static readonly AnsiControlSequence SlowBlink       = new($"{EscapeCharacter}[5m");
-    public static readonly AnsiControlSequence RapidBlink      = new($"{EscapeCharacter}[6m");
-    public static readonly AnsiControlSequence Reverse         = new($"{EscapeCharacter}[7m");
-    public static readonly AnsiControlSequence StrikeThrough   = new($"{EscapeCharacter}[9m");
-    public static readonly AnsiControlSequence Underline       = new($"{EscapeCharacter}[4m");
-    public static readonly AnsiControlSequence DoubleUnderline = new($"{EscapeCharacter}[21m");
-    public static readonly AnsiControlSequence NoUnderline     = new($"{EscapeCharacter}[24m");
-    public static readonly AnsiControlSequence NoBlinking      = new($"{EscapeCharacter}[25m");
-    public static readonly AnsiControlSequence NoReverse       = new($"{EscapeCharacter}[27m");
-    public static readonly AnsiControlSequence NoStrikeThrough = new($"{EscapeCharacter}[29m");
+    public static readonly AnsiControlSequence Bold            = new("\e[1m");
+    public static readonly AnsiControlSequence Dim             = new("\e[2m");
+    public static readonly AnsiControlSequence Italic          = new("\e[3m");
+    public static readonly AnsiControlSequence SlowBlink       = new("\e[5m");
+    public static readonly AnsiControlSequence RapidBlink      = new("\e[6m");
+    public static readonly AnsiControlSequence Reverse         = new("\e[7m");
+    public static readonly AnsiControlSequence StrikeThrough   = new("\e[9m");
+    public static readonly AnsiControlSequence Underline       = new("\e[4m");
+    public static readonly AnsiControlSequence DoubleUnderline = new("\e[21m");
+    public static readonly AnsiControlSequence NoUnderline     = new("\e[24m");
+    public static readonly AnsiControlSequence NoBlinking      = new("\e[25m");
+    public static readonly AnsiControlSequence NoReverse       = new("\e[27m");
+    public static readonly AnsiControlSequence NoStrikeThrough = new("\e[29m");
 
 #pragma warning disable SA1008 // Opening parenthesis should not be followed by a space
 
@@ -48,8 +46,8 @@ public static class AnsiSequences
 
 #pragma warning restore SA1008 // Opening parenthesis should not be followed by a space
 
-    public static AnsiControlSequence ForegroundColor(int r, int g, int b) => new($"{EscapeCharacter}[38;2;{r};{g};{b}m");
-    public static AnsiControlSequence BackgroundColor(int r, int g, int b) => new($"{EscapeCharacter}[48;2;{r};{g};{b}m");
+    public static AnsiControlSequence ForegroundColor(int r, int g, int b) => new($"\e[38;2;{r};{g};{b}m");
+    public static AnsiControlSequence BackgroundColor(int r, int g, int b) => new($"\e[48;2;{r};{g};{b}m");
 
     public static class ForegroundColors
     {

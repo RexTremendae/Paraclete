@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 public class AnsiControlSequence
 {
     private static readonly Regex _validationRegex = new(
-        $@"^{AnsiSequences.EscapeCharacter}\[\??(\d+(;\d+)*)?[a-zA-Z]$",
+        @"^\e\[\??(\d+(;\d+)*)?[a-zA-Z]$",
         RegexOptions.Compiled,
         TimeSpan.FromMilliseconds(500));
 
@@ -13,9 +13,9 @@ public class AnsiControlSequence
 
     public AnsiControlSequence(string sequence)
     {
-        if (!_validationRegex.IsMatch(sequence) && sequence != $"{AnsiSequences.EscapeCharacter}c")
+        if (!_validationRegex.IsMatch(sequence) && sequence != "\ec")
         {
-            var printableSequence = sequence.Replace(AnsiSequences.EscapeCharacter.ToString(), "\\u001b");
+            var printableSequence = sequence.Replace("\e", "\\u001b");
             throw new ArgumentException($"Invalid control sequence: '{printableSequence}'", paramName: nameof(sequence));
         }
 
