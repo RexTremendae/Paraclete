@@ -22,7 +22,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 7.0.x
+        dotnet-version: 9.0.100-preview.3.24204.13
 
     - name: Set up JDK 17 # Needed for Sonar Cube
       uses: actions/setup-java@v3

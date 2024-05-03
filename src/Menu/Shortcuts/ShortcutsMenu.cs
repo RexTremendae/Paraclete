@@ -3,14 +3,13 @@ namespace Paraclete.Menu.Shortcuts;
 using System.Text.Json;
 
 public class ShortcutsMenu(IServiceProvider services)
-    : MenuBase(services, new Type[]
-    {
+    : MenuBase(services, [
         typeof(ExitApplicationCommand),
         typeof(StartTaskManagerCommand),
         typeof(OutlookCommand),
         typeof(PowerShellCommand),
         typeof(HibernateCommand),
-    }), IInitializer
+    ]), IInitializer
 {
     private const string _shortcutsFilename = "shortcuts.json";
 

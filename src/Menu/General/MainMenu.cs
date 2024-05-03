@@ -1,11 +1,10 @@
 namespace Paraclete.Menu.General;
 
 public class MainMenu(IServiceProvider services)
-    : MenuBase(services, new Type[]
-    {
+    : MenuBase(services, [
         typeof(StartStopCommand),
         typeof(ResetCommand),
         typeof(MarkTimeCommand),
-    })
+    ])
 {
 }
