@@ -1,3 +1,5 @@
+namespace Paraclete.Configuration;
+
 using Paraclete.Modules.Calculator;
 
 public static class CalculatorModuleConfigurator

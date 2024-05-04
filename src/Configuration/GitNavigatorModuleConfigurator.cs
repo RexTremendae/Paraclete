@@ -1,3 +1,5 @@
+namespace Paraclete.Configuration;
+
 using Paraclete.Modules.GitNavigator;
 using Paraclete.Painting;
 
