@@ -22,6 +22,6 @@ public class ChangeRepositoryCommand(RepositorySelector repositorySelector, Scre
         );
 
         await _repositorySelector.SelectNext();
-        _screenInvalidator.InvalidateAll();
+        _screenInvalidator.InvalidatePanes([GitScreen.Panes.Repositories, GitScreen.Panes.History, GitScreen.Panes.CommitInfo]);
     }
 }

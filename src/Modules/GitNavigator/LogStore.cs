@@ -1,18 +1,18 @@
 namespace Paraclete.Modules.GitNavigator;
 
-using System.Text.RegularExpressions;
+using Paraclete.Ansi;
 
 public class LogStore
 {
     private readonly List<LogLine> _logLines = [];
-    private readonly List<string> _commitInfoLines = [];
+    private readonly List<AnsiString> _commitInfoLines = [];
 
     private bool _showOrigin;
     private string _selectedRepository = string.Empty;
 
     public int SelectedLogLineIndex { get; private set; }
     public IEnumerable<LogLine> LogLines => _logLines;
-    public IEnumerable<string> CommitInfoLines => _commitInfoLines;
+    public IEnumerable<AnsiString> CommitInfoLines => _commitInfoLines;
 
     public async Task Pull(string repository)
     {
@@ -43,7 +43,6 @@ public class LogStore
 
         var separator = (char)0x1F;
 
-        var graphRegex = new Regex(@"^(?<graph>[*/|\\ ]+)(?<nongraph>[a-f0-9].*)?$");
         var prettyFormat = $"%h{separator}%ci{separator}%ae{separator}%s{separator}%d";
         var result = await ProcessRunner.ExecuteAsync(
             "git",
@@ -56,7 +55,7 @@ public class LogStore
 
         foreach (var line in result.StdOut)
         {
-            var match = graphRegex.Match(line);
+            var match = GitRegex.GraphRegex().Match(line);
             var parts = match.Groups["nongraph"].Value.Split(separator, StringSplitOptions.TrimEntries);
             var graphPart = match.Groups["graph"].Value.Trim();
 
@@ -184,7 +183,36 @@ public class LogStore
             launchExternal: false);
 
         _commitInfoLines.Clear();
-        _commitInfoLines.AddRange(result.StdOut.Select(_ => _.Replace("\t", "  ")));
+        foreach (var line in result.StdOut)
+        {
+            var match = GitRegex.CommitFileChangeRegex().Match(line);
+            if (match.Success)
+            {
+                var changeType = match.Groups["changetype"].Value.Trim();
+                var filename = match.Groups["filename"].Value.Trim();
+
+                var changeTypeColor = changeType[0] switch
+                {
+                    'A' => AnsiSequences.ForegroundColors.DarkGreen,
+                    'D' => AnsiSequences.ForegroundColors.Orange,
+                    'R' => AnsiSequences.ForegroundColors.DarkCyan,
+                    'M' => AnsiSequences.ForegroundColors.DarkYellow,
+                    _ => AnsiString.Empty,
+                };
+                _commitInfoLines.Add(changeTypeColor + changeType.PadRight(5) + filename.Replace("\t", "  "));
+            }
+            else
+            {
+                if (line.StartsWith("commit "))
+                {
+                    _commitInfoLines.Add(line[..6] + AnsiSequences.ForegroundColors.DarkCyan + line[6..]);
+                }
+                else
+                {
+                    _commitInfoLines.Add(line);
+                }
+            }
+        }
     }
 
     public void SetShowOrigin(bool showOrigin)

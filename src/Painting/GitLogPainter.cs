@@ -21,7 +21,7 @@ public class GitLogPainter(Painter painter, LogStore logStore)
 
     public void PaintCommitInfo(Pane pane, (int X, int Y) position)
     {
-        var rows = _logStore.CommitInfoLines.Select(_ => new AnsiString(_));
+        var rows = _logStore.CommitInfoLines;
         _painter.PaintRows(rows, pane, position, padPaneWidth: true, padPaneHeight: true, showEllipsis: true);
     }
 }
