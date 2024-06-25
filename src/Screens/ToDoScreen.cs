@@ -17,6 +17,11 @@ public class ToDoScreen(ToDoMenu toDoMenu, ToDoList toDoList, ToDoListPainter to
     public MenuBase Menu { get; } = toDoMenu;
     public ILayout Layout { get; } = new SinglePaneLayout();
 
+    public static class Panes
+    {
+        public const int TodoList = 0;
+    }
+
     public void OnAfterSwitch()
     {
         _toDoList.ResetSelection();

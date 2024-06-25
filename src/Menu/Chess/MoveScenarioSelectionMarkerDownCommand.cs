@@ -14,7 +14,7 @@ public class MoveScenarioSelectionMarkerDownCommand(ScenarioSelector scenarioSel
     public Task Execute()
     {
         _scenarioSelector.MoveSelectionMarkerDown();
-        _screenInvalidator.InvalidatePane(0);
+        _screenInvalidator.InvalidatePane(ChessScreen.Panes.Menu);
         return Task.CompletedTask;
     }
 }

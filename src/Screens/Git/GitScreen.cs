@@ -1,6 +1,5 @@
 namespace Paraclete.Screens.Git;
 
-using System;
 using Paraclete.Layouts;
 using Paraclete.Menu;
 using Paraclete.Menu.Git;
@@ -15,16 +14,16 @@ public class GitScreen(
     private readonly GitRepositorySelectorPainter _repositoryListPainter = repositoryListPainter;
     private readonly GitLogPainter _logPainter = logPainter;
 
-    public MenuBase Menu { get; private set; } = menu;
+    public string Name => "Git";
+
+    public ConsoleKey Shortcut => ConsoleKey.F5;
+
+    public MenuBase Menu { get; } = menu;
 
     public ILayout Layout { get; } = new ColumnBasedLayout(
         new ColumnBasedLayout.ColumnDefinition(30),
         new ColumnBasedLayout.ColumnDefinition(0, [0, 20])
     );
-
-    public string Name => "Git";
-
-    public ConsoleKey Shortcut => ConsoleKey.F5;
 
     public static class Panes
     {

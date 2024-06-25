@@ -12,12 +12,16 @@ public class UnicodeScreen(UnicodeMenu menu, UnicodeControl unicodeControl)
 {
     private readonly UnicodeControl _unicodeControl = unicodeControl;
 
-    public MenuBase Menu { get; } = menu;
-    public ILayout Layout { get; } = new SinglePaneLayout();
-
     public string Name => "Unicode";
 
     public ConsoleKey Shortcut => ConsoleKey.F6;
+    public MenuBase Menu { get; } = menu;
+    public ILayout Layout { get; } = new SinglePaneLayout();
+
+    public static class Panes
+    {
+        public const int CharacterTable = 0;
+    }
 
     public Action GetPaintPaneAction(Painter painter, int paneIndex) =>
     () =>

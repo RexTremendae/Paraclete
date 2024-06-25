@@ -34,6 +34,12 @@ public class ChessScreen(
 
     public ConsoleKey Shortcut => ConsoleKey.F10;
 
+    public static class Panes
+    {
+        public const int Menu = 0;
+        public const int Board = 1;
+    }
+
     public Action GetPaintPaneAction(Painter painter, int paneIndex) => () =>
     {
         var pane = Layout.Panes[paneIndex];

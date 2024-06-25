@@ -20,6 +20,14 @@ public partial class ScreenInvalidator
         }
     }
 
+    public void InvalidatePanes(int[] indices)
+    {
+        foreach (var idx in indices)
+        {
+            InvalidatePane(idx);
+        }
+    }
+
     public void InvalidatePane(int index)
     {
         if (_scope != null)

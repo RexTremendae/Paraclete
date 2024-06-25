@@ -1,6 +1,7 @@
 namespace Paraclete.Menu.ToDo;
 
 using Paraclete.IO;
+using Paraclete.Screens;
 
 public class EditToDoItemCommand(ToDoList toDoList, DataInputter dataInputter, ScreenInvalidator screenInvalidator)
     : IInputCommand<string>
@@ -36,6 +37,6 @@ public class EditToDoItemCommand(ToDoList toDoList, DataInputter dataInputter, S
 
         _toDoList.SelectedToDoItem.Description = data;
         await _toDoList.Update();
-        _screenInvalidator.InvalidatePane(0);
+        _screenInvalidator.InvalidatePane(ToDoScreen.Panes.TodoList);
     }
 }

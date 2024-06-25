@@ -1,4 +1,5 @@
 namespace Paraclete.Menu.ToDo;
+using Paraclete.Screens;
 
 public class SortToDoItemsCommand(ToDoList toDoList, ScreenInvalidator screenInvalidator) : ICommand
 {
@@ -11,6 +12,6 @@ public class SortToDoItemsCommand(ToDoList toDoList, ScreenInvalidator screenInv
     public async Task Execute()
     {
         await _toDoList.SortToDoItems();
-        _screenInvalidator.InvalidatePane(0);
+        _screenInvalidator.InvalidatePane(ToDoScreen.Panes.TodoList);
     }
 }

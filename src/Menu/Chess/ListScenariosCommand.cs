@@ -17,7 +17,7 @@ public class ListScenariosCommand(ChessScreen chessScreen, ScenarioSelector scen
     {
         _chessScreen.StartSelectScenario();
         _scenarioSelector.StartSelectScenario();
-        _screenInvalidator.InvalidatePane(0);
+        _screenInvalidator.InvalidatePane(ChessScreen.Panes.Menu);
         return Task.CompletedTask;
     }
 }

@@ -3,6 +3,7 @@ namespace Paraclete.Menu.Calculator;
 using System.Numerics;
 using Paraclete.IO;
 using Paraclete.Modules.Calculator;
+using Paraclete.Screens;
 
 public class ConvertRadixCommand(DataInputter dataInputter, CalculatorHistory calculatorHistory, ScreenInvalidator screenInvalidator)
     : IInputCommand<BigInteger>
@@ -27,7 +28,7 @@ public class ConvertRadixCommand(DataInputter dataInputter, CalculatorHistory ca
     public Task CompleteInput(BigInteger data)
     {
         _calculatorHistory.RadixConversion = data;
-        _screenInvalidator.InvalidatePane(1);
+        _screenInvalidator.InvalidatePane(CalculatorScreen.Panes.Radix);
         return Task.CompletedTask;
     }
 }

@@ -16,9 +16,10 @@ public class PullCommand(RepositorySelector repositorySelector, LogStore logStor
 
     public async Task Execute()
     {
-        using var busy = _busyIndicator.IndicatePaneIsBusy<GitScreen>(
-            GitScreen.Panes.History,
-            "Waiting for 'git pull'...");
+        using var busy = _busyIndicator.IndicatePanesAreBusy<GitScreen>(
+            "Waiting for 'git pull'...",
+            [GitScreen.Panes.History, GitScreen.Panes.CommitInfo]
+        );
 
         await _logStore.Pull(_repositorySelector.SelectedRepository);
     }

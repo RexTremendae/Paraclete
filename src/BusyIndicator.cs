@@ -21,19 +21,26 @@ public class BusyIndicator(ScreenInvalidator screenInvalidator)
             : (false, string.Empty);
     }
 
-    public void IndicatePaneIsReady<T>(int paneIndex)
+    public void IndicatePanesAreReady<T>(params int[] paneIndices)
         where T : IScreen
     {
-        GetPaneBusyTextsForType<T>().Remove(paneIndex);
+        foreach (var idx in paneIndices)
+        {
+            GetPaneBusyTextsForType<T>().Remove(idx);
+        }
     }
 
-    public IDisposable IndicatePaneIsBusy<T>(int paneIndex, string text = "Working...")
+    public IDisposable IndicatePanesAreBusy<T>(string text, params int[] paneIndices)
         where T : IScreen
     {
-        GetPaneBusyTextsForType<T>().Add(paneIndex, text);
-        _screenInvalidator.InvalidatePane(paneIndex);
+        var texts = GetPaneBusyTextsForType<T>();
+        foreach (var pIdx in paneIndices)
+        {
+            texts.Add(pIdx, text);
+            _screenInvalidator.InvalidatePanes(paneIndices);
+        }
 
-        return new BusyIndicatorDisposable<T>(this, _screenInvalidator, paneIndex);
+        return new BusyIndicatorDisposable<T>(this, _screenInvalidator, paneIndices);
     }
 
     private Dictionary<int, string> GetPaneBusyTextsForType<T>()
@@ -53,18 +60,18 @@ public class BusyIndicator(ScreenInvalidator screenInvalidator)
         return busyPanes;
     }
 
-    private class BusyIndicatorDisposable<T>(BusyIndicator busyIndicator, ScreenInvalidator screenInvalidator, int paneIndex)
+    private class BusyIndicatorDisposable<T>(BusyIndicator busyIndicator, ScreenInvalidator screenInvalidator, int[] paneIndices)
         : IDisposable
         where T : IScreen
     {
         private readonly BusyIndicator _busyIndicator = busyIndicator;
         private readonly ScreenInvalidator _screenInvalidator = screenInvalidator;
-        private readonly int _paneIndex = paneIndex;
+        private readonly int[] _paneIndices = paneIndices;
 
         public void Dispose()
         {
-            _busyIndicator.IndicatePaneIsReady<T>(_paneIndex);
-            _screenInvalidator.InvalidatePane(_paneIndex);
+            _busyIndicator.IndicatePanesAreReady<T>(_paneIndices);
+            _screenInvalidator.InvalidatePanes(_paneIndices);
         }
     }
 }

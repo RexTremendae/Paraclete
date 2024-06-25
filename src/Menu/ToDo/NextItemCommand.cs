@@ -1,4 +1,5 @@
 namespace Paraclete.Menu.ToDo;
+using Paraclete.Screens;
 
 public class NextItemCommand(ToDoList toDoList, ScreenInvalidator screenInvalidator)
     : ICommand
@@ -12,6 +13,6 @@ public class NextItemCommand(ToDoList toDoList, ScreenInvalidator screenInvalida
     public async Task Execute()
     {
         await _toDoList.SelectNextItem();
-        _screenInvalidator.InvalidatePane(0);
+        _screenInvalidator.InvalidatePane(ToDoScreen.Panes.TodoList);
     }
 }

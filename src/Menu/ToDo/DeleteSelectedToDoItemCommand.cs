@@ -1,6 +1,7 @@
 namespace Paraclete.Menu.ToDo;
 
 using Paraclete.IO;
+using Paraclete.Screens;
 
 public class DeleteSelectedToDoItemCommand(ToDoList toDoList, DataInputter dataInputter, Settings settings, ScreenInvalidator screenInvalidator)
     : IInputCommand<bool>
@@ -27,7 +28,7 @@ public class DeleteSelectedToDoItemCommand(ToDoList toDoList, DataInputter dataI
         if (data)
         {
             await _toDoList.DeleteSelectedItem();
-            _screenInvalidator.InvalidatePane(0);
+            _screenInvalidator.InvalidatePane(ToDoScreen.Panes.TodoList);
         }
     }
 }

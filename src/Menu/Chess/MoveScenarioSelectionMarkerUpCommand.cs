@@ -14,7 +14,7 @@ public class MoveScenarioSelectionMarkerUpCommand(ScenarioSelector scenarioSelec
     public Task Execute()
     {
         _scenarioSelector.MoveSelectionMarkerUp();
-        _screenInvalidator.InvalidatePane(0);
+        _screenInvalidator.InvalidatePane(ChessScreen.Panes.Menu);
         return Task.CompletedTask;
     }
 }

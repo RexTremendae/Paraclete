@@ -13,10 +13,17 @@ public class CalculatorScreen(CalculatorMenu calculatorMenu, CalculatorHistory c
     private readonly CalculatorHistory _calculatorHistory = calculatorHistory;
 
     public string Name => "Calculator";
+
     public ConsoleKey Shortcut => ConsoleKey.F4;
 
     public MenuBase Menu { get; } = calculatorMenu;
     public ILayout Layout { get; } = new ColumnBasedLayout(new ColumnBasedLayout.ColumnDefinition(100));
+
+    public static class Panes
+    {
+        public const int Calculations = 0;
+        public const int Radix = 1;
+    }
 
     public Action GetPaintPaneAction(Painter painter, int paneIndex) =>
         paneIndex switch

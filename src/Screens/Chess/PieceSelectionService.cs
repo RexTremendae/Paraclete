@@ -10,7 +10,7 @@ public class PieceSelectionService(ScreenInvalidator screenInvalidator, Settings
     public void MoveSelection(int deltaX, int deltaY)
     {
         (deltaX, deltaY) = (GetTransform(deltaX), GetTransform(deltaY));
-        _screenInvalidator.InvalidatePane(1);
+        _screenInvalidator.InvalidatePane(ChessScreen.Panes.Board);
 
         var newX = MarkerPosition.X + deltaX;
         var newY = MarkerPosition.Y + deltaY;

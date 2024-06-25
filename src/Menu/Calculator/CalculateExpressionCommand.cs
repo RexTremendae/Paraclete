@@ -2,6 +2,7 @@ namespace Paraclete.Menu.Calculator;
 
 using Paraclete.IO;
 using Paraclete.Modules.Calculator;
+using Paraclete.Screens;
 
 public class CalculateExpressionCommand(DataInputter dataInputter, CalculatorHistory calculatorHistory, ScreenInvalidator screenInvalidator)
     : IInputCommand<Expression>
@@ -22,7 +23,7 @@ public class CalculateExpressionCommand(DataInputter dataInputter, CalculatorHis
     public Task CompleteInput(Expression data)
     {
         _calculatorHistory.AddEntry(data);
-        _screenInvalidator.InvalidatePane(0);
+        _screenInvalidator.InvalidatePane(CalculatorScreen.Panes.Calculations);
         return Task.CompletedTask;
     }
 }

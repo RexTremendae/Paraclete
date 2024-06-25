@@ -1,4 +1,5 @@
 namespace Paraclete.Menu.ToDo;
+using Paraclete.Screens;
 
 public class ToggleItemMoveModeCommand(ToDoList toDoList, ScreenInvalidator screenInvalidator)
     : ICommand
@@ -12,7 +13,7 @@ public class ToggleItemMoveModeCommand(ToDoList toDoList, ScreenInvalidator scre
     public Task Execute()
     {
         _toDoList.ToggleMoveItemMode();
-        _screenInvalidator.InvalidatePane(0);
+        _screenInvalidator.InvalidatePane(ToDoScreen.Panes.TodoList);
         return Task.CompletedTask;
     }
 }

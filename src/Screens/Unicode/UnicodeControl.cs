@@ -15,7 +15,7 @@ public class UnicodeControl(ScreenInvalidator screenInvalidator)
             SelectedColumn = 0;
         }
 
-        _screenInvalidator.InvalidatePane(0);
+        _screenInvalidator.InvalidatePane(UnicodeScreen.Panes.CharacterTable);
     }
 
     public void SelectPrevious()
@@ -26,24 +26,24 @@ public class UnicodeControl(ScreenInvalidator screenInvalidator)
             SelectedColumn = ColumnStartValues.Length - 1;
         }
 
-        _screenInvalidator.InvalidatePane(0);
+        _screenInvalidator.InvalidatePane(UnicodeScreen.Panes.CharacterTable);
     }
 
     public void SetSelectedCodepoint(int value)
     {
         ColumnStartValues[SelectedColumn] = value;
-        _screenInvalidator.InvalidatePane(0);
+        _screenInvalidator.InvalidatePane(UnicodeScreen.Panes.CharacterTable);
     }
 
     public void ScrollUp()
     {
         ColumnStartValues[SelectedColumn]--;
-        _screenInvalidator.InvalidatePane(0);
+        _screenInvalidator.InvalidatePane(UnicodeScreen.Panes.CharacterTable);
     }
 
     public void ScrollDown()
     {
         ColumnStartValues[SelectedColumn]++;
-        _screenInvalidator.InvalidatePane(0);
+        _screenInvalidator.InvalidatePane(UnicodeScreen.Panes.CharacterTable);
     }
 }

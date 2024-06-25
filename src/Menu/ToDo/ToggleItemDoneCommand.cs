@@ -1,4 +1,5 @@
 namespace Paraclete.Menu.ToDo;
+using Paraclete.Screens;
 
 public class ToggleItemDoneCommand(ToDoList toDoList, ScreenInvalidator screenInvalidator)
     : ICommand
@@ -12,6 +13,6 @@ public class ToggleItemDoneCommand(ToDoList toDoList, ScreenInvalidator screenIn
     public async Task Execute()
     {
         await _toDoList.ToggleSelectedDoneState();
-        _screenInvalidator.InvalidatePane(0);
+        _screenInvalidator.InvalidatePane(ToDoScreen.Panes.TodoList);
     }
 }

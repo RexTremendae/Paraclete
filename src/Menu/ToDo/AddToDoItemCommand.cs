@@ -1,6 +1,7 @@
 namespace Paraclete.Menu.ToDo;
 
 using Paraclete.IO;
+using Paraclete.Screens;
 
 public class AddToDoItemCommand(DataInputter dataInputter, ToDoList toDoList, ScreenInvalidator screenInvalidator)
     : IInputCommand<string>
@@ -20,6 +21,6 @@ public class AddToDoItemCommand(DataInputter dataInputter, ToDoList toDoList, Sc
     public async Task CompleteInput(string data)
     {
         await _toDoList.AddItem(new(data));
-        _screenInvalidator.InvalidatePane(0);
+        _screenInvalidator.InvalidatePane(ToDoScreen.Panes.TodoList);
     }
 }
