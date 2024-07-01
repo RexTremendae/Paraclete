@@ -11,18 +11,21 @@ public readonly record struct ChessBoardPiece
     bool HasMoved
 );
 
-public class ChessBoard(PossibleMovesTracker possibleMovesTracker, MoveHistory moveHistory) : IInitializer
+public class ChessBoard(PossibleMovesTracker possibleMovesTracker, MoveHistory moveHistory, BoardSelectionService boardSelectionService)
+    : IInitializer
 {
     private readonly Dictionary<PlayerColor, List<ChessBoardPiece>> _capturedPieces = new()
     {
-        { PlayerColor.White, new() },
-        { PlayerColor.Black, new() },
+        { PlayerColor.White, [] },
+        { PlayerColor.Black, [] },
     };
 
     private readonly Dictionary<PlayerColor, (int X, int Y)> _kingTracker = [];
     private readonly PossibleMovesTracker _possibleMovesTracker = possibleMovesTracker;
     private readonly MoveHistory _moveHistory = moveHistory;
-    private GameState _gameState = new(Enumerable.Empty<((int X, int Y), ChessBoardPiece)>());
+    private readonly BoardSelectionService _boardSelectionService = boardSelectionService;
+
+    private GameState _gameState = new([]);
 
     public PlayerColor CurrentPlayer { get; private set; }
     public bool IsCheck { get; private set; }
@@ -50,15 +53,9 @@ public class ChessBoard(PossibleMovesTracker possibleMovesTracker, MoveHistory m
         return Task.CompletedTask;
     }
 
-    public void InitializeScenario<T>()
-        where T : IScenario
-    {
-        InitializeScenario(Activator.CreateInstance<T>());
-    }
-
     public void InitializeScenario(IScenario scenario)
     {
-        var pieces = new List<((int, int), ChessBoardPiece)>();
+        var pieces = new List<((int, int) Position, ChessBoardPiece Piece)>();
         foreach (var (position, piece) in scenario.GetPieces())
         {
             pieces.Add((position, piece));
@@ -80,6 +77,7 @@ public class ChessBoard(PossibleMovesTracker possibleMovesTracker, MoveHistory m
 
         UpdateGameState(pieces);
         CurrentPlayer = scenario.CurrentPlayer;
+        _boardSelectionService.SetFromMarkerPosition(pieces.First(_ => _.Piece.Color == CurrentPlayer).Position);
     }
 
     public void PromotePiece((int X, int Y) position, PieceDefinition promoteToPiece)
@@ -169,6 +167,12 @@ public class ChessBoard(PossibleMovesTracker possibleMovesTracker, MoveHistory m
                 return next;
             }
         }
+    }
+
+    private void InitializeScenario<T>()
+        where T : IScenario
+    {
+        InitializeScenario(Activator.CreateInstance<T>());
     }
 
     private void UpdateGameState(IEnumerable<((int X, int Y) Position, ChessBoardPiece Piece)> pieces)

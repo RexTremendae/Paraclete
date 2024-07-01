@@ -6,6 +6,7 @@ using Paraclete.Ansi;
 using Paraclete.Layouts;
 using Paraclete.Menu;
 using Paraclete.Menu.Chess;
+using Paraclete.Menu.MenuStateHandling;
 using Paraclete.Modules.Chess;
 using Paraclete.Modules.Chess.Scenarios;
 using Paraclete.Painting;
@@ -13,15 +14,18 @@ using Paraclete.Painting;
 public class ChessScreen(
         Settings settings,
         ChessBoard board,
-        PieceSelectionService pieceSelectionService,
+        BoardSelectionService boardSelectionService,
         PossibleMovesTracker possibleMovesTracker,
-        ScenarioSelector scenarioSelector) : IScreen, IInitializer
+        ScenarioSelector scenarioSelector,
+        MenuStateMachine<ChessMenuState, ChessMenuStateCommand> menuStateMachine)
+    : IScreen, IInitializer
 {
     private readonly Settings.ChessSettings _settings = settings.Chess;
     private readonly ChessBoard _board = board;
-    private readonly PieceSelectionService _pieceSelectionService = pieceSelectionService;
+    private readonly BoardSelectionService _boardSelectionService = boardSelectionService;
     private readonly ScenarioSelector _scenarioSelector = scenarioSelector;
     private readonly PossibleMovesTracker _possibleMovesTracker = possibleMovesTracker;
+    private readonly MenuStateMachine<ChessMenuState, ChessMenuStateCommand> _menuStateMachine = menuStateMachine;
 
     private ChessMenu _chessMenu = default!;
     private SelectScenarioMenu _selectScenarioMenu = default!;
@@ -50,7 +54,7 @@ public class ChessScreen(
             PaintBoard(painter, pane, boardPosition);
             PaintPieces(painter, pane, boardPosition);
             PaintShadowPieces(painter, pane, boardPosition);
-            PaintSelectionMarker(painter, pane, boardPosition);
+            PaintSelectionMarkers(painter, pane, boardPosition);
         }
         else if (paneIndex == 0 && Menu == _selectScenarioMenu)
         {
@@ -88,6 +92,7 @@ public class ChessScreen(
 
     public void FinishSelectScenario(IScenario scenario)
     {
+        _menuStateMachine.Reset();
         _board.InitializeScenario(scenario);
         Menu = _chessMenu;
     }
@@ -104,14 +109,29 @@ public class ChessScreen(
         return (x, y);
     }
 
-    private void PaintSelectionMarker(Painter painter, Pane pane, (int X, int Y) boardPosition)
+    private void PaintSelectionMarkers(Painter painter, Pane pane, (int X, int Y) boardPosition)
     {
-        var markerPosition = _pieceSelectionService.MarkerPosition;
+        var isMovePieceState = _menuStateMachine.CurrentState == ChessMenuState.MovePiece;
+        var fromMarkerColor = isMovePieceState
+            ? _settings.Colors.SecondarySelection
+            : _settings.Colors.PrimarySelection;
+        var toMarkerColor = _settings.Colors.PrimarySelection;
 
-        var (markerX, markerY) = CalculatePaintPosition(Transform(markerPosition), boardPosition);
+        var primaryMarkerPosition = _boardSelectionService.FromMarkerPosition;
+        var (primaryMarkerX, primaryMarkerY) = CalculatePaintPosition(Transform(primaryMarkerPosition), boardPosition);
 
-        painter.Paint(_settings.Colors.PrimarySelection + "[", pane, (markerX - 1, markerY));
-        painter.Paint(_settings.Colors.PrimarySelection + "]", pane, (markerX + 1, markerY));
+        painter.Paint(fromMarkerColor + "[", pane, (primaryMarkerX - 1, primaryMarkerY));
+        painter.Paint(fromMarkerColor + "]", pane, (primaryMarkerX + 1, primaryMarkerY));
+
+        if (isMovePieceState)
+        {
+            var secondaryMarkerPosition = _boardSelectionService.ToMarkerPosition;
+            var (secondaryMarkerX, secondaryMarkerY) =
+                CalculatePaintPosition(Transform(secondaryMarkerPosition), boardPosition);
+
+            painter.Paint(toMarkerColor + "[", pane, (secondaryMarkerX - 1, secondaryMarkerY));
+            painter.Paint(toMarkerColor + "]", pane, (secondaryMarkerX + 1, secondaryMarkerY));
+        }
     }
 
     private void PaintPieces(Painter painter, Pane pane, (int X, int Y) boardPosition)
@@ -146,7 +166,7 @@ public class ChessScreen(
 
     private void PaintShadowPieces(Painter painter, Pane pane, (int X, int Y) boardPosition)
     {
-        var from = _pieceSelectionService.MarkerPosition;
+        var from = _boardSelectionService.FromMarkerPosition;
         var piece = _board.GetPiece(from);
 
         if (piece?.Color != _board.CurrentPlayer)
