@@ -17,7 +17,7 @@ public class DataInputter
     {
         _selectedInputter = IInputDefinition.NoInputter;
 
-        foreach (var dataInputter in TypeUtility.EnumerateImplementatingInstancesOf<IInputDefinition>(services))
+        foreach (var dataInputter in TypeEnumerator.GetDerivedContainerInstancesOf<IInputDefinition>(services))
         {
             _availableInputters.Add(dataInputter.DataType, dataInputter);
         }

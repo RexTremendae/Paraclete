@@ -11,7 +11,7 @@ public partial class MainLoop
     {
         _switchScreenCommands.Clear();
 
-        foreach (var screen in TypeUtility.EnumerateImplementatingInstancesOf<IScreen>(_services))
+        foreach (var screen in TypeEnumerator.GetDerivedContainerInstancesOf<IScreen>(_services))
         {
             _switchScreenCommands.Add(screen.Shortcut, new(screen.Shortcut, screen, _screenSelector));
         }

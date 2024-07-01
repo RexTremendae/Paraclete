@@ -20,11 +20,24 @@ public class ServiceProviderBuilder
         return this;
     }
 
+    public ServiceProviderBuilder AddSingleton<T>()
+        where T : class
+    {
+        AddSingleton(typeof(T));
+        return this;
+    }
+
+    public ServiceProviderBuilder AddSingleton(Type type)
+    {
+        AddSingletonInner(type);
+        return this;
+    }
+
     public ServiceProviderBuilder AddImplementationsOf<T>()
     {
-        foreach (var menuItemType in TypeUtility.EnumerateImplementingTypesOf<T>())
+        foreach (var type in TypeEnumerator.GetDerivedInstanceTypesOf<T>())
         {
-            AddScoped(menuItemType);
+            AddScoped(type);
         }
 
         return this;
@@ -39,13 +52,23 @@ public class ServiceProviderBuilder
     {
         foreach (var initializerType in _initializers)
         {
-            await (services.GetRequiredService(initializerType) as IInitializer)!.Initialize(services);
+            await (services.GetRequiredService(initializerType) as IInitializer)
+                !.Initialize(services);
         }
     }
 
     private void AddScopedInner(Type type)
     {
         _services.AddScoped(type);
+        if (type.IsAssignableTo(typeof(IInitializer)))
+        {
+            _initializers.Add(type);
+        }
+    }
+
+    private void AddSingletonInner(Type type)
+    {
+        _services.AddSingleton(type);
         if (type.IsAssignableTo(typeof(IInitializer)))
         {
             _initializers.Add(type);

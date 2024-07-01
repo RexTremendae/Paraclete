@@ -80,7 +80,7 @@ public class MenuPainter(ScreenSelector screenSelector, IServiceProvider service
 
         appendFormat("Quick menu", shortcutsMenuActive);
 
-        foreach (var screen in TypeUtility.EnumerateImplementatingInstancesOf<IScreen>(_services).OrderBy(_ => _.Shortcut))
+        foreach (var screen in TypeEnumerator.GetDerivedContainerInstancesOf<IScreen>(_services).OrderBy(_ => _.Shortcut))
         {
             row
                 .Append(_bracketColor).Append(" · ")

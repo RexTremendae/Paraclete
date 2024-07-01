@@ -59,6 +59,7 @@ public partial class Settings
             BlackPlayer = AnsiSequences.ForegroundColors.Magenta,
             WhitePlayer = AnsiSequences.ForegroundColors.White,
             PrimarySelection = AnsiSequences.ForegroundColors.Cyan,
+            SecondarySelection = AnsiSequences.ForegroundColors.DarkCyan,
             ShadowPiece = AnsiSequences.ForegroundColors.DarkCyan,
         };
 

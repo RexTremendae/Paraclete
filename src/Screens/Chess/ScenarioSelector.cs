@@ -18,8 +18,8 @@ public class ScenarioSelector(IServiceProvider services)
 
         if (!_scenarios.Any())
         {
-            TypeUtility.EnumerateImplementatingInstancesOf<IScenario>(_services).Foreach(_ => Log.Information(_.Name));
-            _scenarios.AddRange(TypeUtility.EnumerateImplementatingInstancesOf<IScenario>(_services));
+            TypeEnumerator.GetDerivedContainerInstancesOf<IScenario>(_services).Foreach(_ => Log.Information(_.Name));
+            _scenarios.AddRange(TypeEnumerator.GetDerivedContainerInstancesOf<IScenario>(_services));
         }
     }
 
