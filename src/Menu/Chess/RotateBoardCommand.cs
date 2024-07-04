@@ -3,23 +3,16 @@ namespace Paraclete.Menu.Chess;
 using Paraclete.Screens.Chess;
 
 public class RotateBoardCommand(ScreenInvalidator screenInvalidator, Settings settings)
-    : ICommand
+    : ToggleCommandBase(ConsoleKey.R, "[R]otate board", settings.Chess.RotateBoard)
 {
     private readonly ScreenInvalidator _screenInvalidator = screenInvalidator;
     private readonly Settings.ChessSettings _settings = settings.Chess;
 
-    public ConsoleKey Shortcut => ConsoleKey.R;
-    public string Description => GetToggledOnText();
-
-    public Task Execute()
+    public override Task Execute()
     {
-        _settings.RotateBoard = !_settings.RotateBoard;
+        Toggle();
+        _settings.RotateBoard = State;
         _screenInvalidator.InvalidatePane(ChessScreen.Panes.Board);
         return Task.CompletedTask;
-    }
-
-    private string GetToggledOnText()
-    {
-        return "[R]otate board " + (_settings.RotateBoard ? ICommand.FlagChar : ICommand.UnflagChar);
     }
 }

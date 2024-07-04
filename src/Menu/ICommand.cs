@@ -2,16 +2,14 @@ namespace Paraclete.Menu;
 
 public interface ICommand
 {
-    public const char FlagChar = '⚑';
-    public const char UnflagChar = '⚐';
-
     public static readonly ICommand NoCommand = new NoCommandImplementation();
 
-    ConsoleKey Shortcut { get; }
     virtual bool IsScreenSaverResistant => false;
+
+    ConsoleKey Shortcut { get; }
     string Description { get; }
 
-    Task Execute();
+    abstract Task Execute();
 
     [ExcludeFromEnumeration]
     private sealed class NoCommandImplementation : ICommand

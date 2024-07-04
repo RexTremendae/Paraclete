@@ -104,12 +104,12 @@ public class MenuPainter(ScreenSelector screenSelector, IServiceProvider service
             endBracketIndex = description.IndexOf(']', startBracketIndex);
         }
 
-        var flagIndex = description.IndexOf(ICommand.UnflagChar);
+        var flagIndex = description.IndexOf(ToggleCommandBase.UnflagChar);
         var flagState = false;
 
         if (flagIndex < 0)
         {
-            flagIndex = description.IndexOf(ICommand.FlagChar);
+            flagIndex = description.IndexOf(ToggleCommandBase.FlagChar);
             if (flagIndex >= 0)
             {
                 flagState = true;
