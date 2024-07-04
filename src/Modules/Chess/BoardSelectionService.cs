@@ -1,8 +1,8 @@
 ﻿namespace Paraclete.Modules.Chess;
 
-public class BoardSelectionService
+public class BoardSelectionService(Settings settings)
 {
-    private readonly bool _rotateBoard = false;
+    private readonly Settings.ChessSettings _settings = settings.Chess;
 
     public (int X, int Y) FromMarkerPosition { get; private set; }
     public (int X, int Y) ToMarkerPosition { get; private set; }
@@ -45,7 +45,7 @@ public class BoardSelectionService
 
     private (int X, int Y) GetTransform((int X, int Y) pos)
     {
-        return _rotateBoard
+        return _settings.RotateBoard
             ? (-pos.X, -pos.Y)
             : pos;
     }

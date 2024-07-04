@@ -48,7 +48,7 @@ public class ChessScreen(
     {
         var pane = Layout.Panes[paneIndex];
 
-        if (paneIndex == 1)
+        if (paneIndex == Panes.Board)
         {
             var boardPosition = (2, 2);
             PaintBoard(painter, pane, boardPosition);
@@ -56,9 +56,9 @@ public class ChessScreen(
             PaintShadowPieces(painter, pane, boardPosition);
             PaintSelectionMarkers(painter, pane, boardPosition);
         }
-        else if (paneIndex == 0 && Menu == _selectScenarioMenu)
+        else if (paneIndex == Panes.Menu && Menu == _selectScenarioMenu)
         {
-            var rows = new List<AnsiString>()
+            var rows = new List<AnsiString>
             {
                 AnsiSequences.ForegroundColors.White + "Select scenario",
                 AnsiString.Empty,

@@ -9,6 +9,7 @@ public class ChessMenu(IServiceProvider services)
         typeof(AcceptCommand),
         typeof(CancelCommand),
         typeof(ListScenariosCommand),
+        typeof(RotateBoardCommand),
     ])
 {
 }

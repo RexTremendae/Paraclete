@@ -14,7 +14,7 @@ public partial class Settings
 
 public partial class Settings
 {
-    public FpsCounterSettings FpsCounter => new();
+    public FpsCounterSettings FpsCounter { get; } = new();
 
     public class FpsCounterSettings
     {
@@ -25,7 +25,7 @@ public partial class Settings
 
 public partial class Settings
 {
-    public ScreenSaverSettings ScreenSaver => new();
+    public ScreenSaverSettings ScreenSaver { get; } = new();
 
     public class ScreenSaverSettings
     {
@@ -38,7 +38,7 @@ public partial class Settings
 
 public partial class Settings
 {
-    public ColorSettings Colors => new();
+    public ColorSettings Colors { get; } = new();
 
     public class ColorSettings
     {
@@ -50,7 +50,7 @@ public partial class Settings
 
 public partial class Settings
 {
-    public ChessSettings Chess => new();
+    public ChessSettings Chess { get; } = new();
 
     public class ChessSettings
     {
@@ -64,7 +64,7 @@ public partial class Settings
         };
 
         public BorderStyleDefinition.Style BorderStyle { get; } = BorderStyleDefinition.Style.SingleRoundCorners;
-        public bool RotateBoard { get; } = false;
+        public bool RotateBoard { get; set; }
 
         public class ColorSettings
         {

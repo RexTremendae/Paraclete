@@ -28,12 +28,13 @@ public static class ServiceConfigurator
             .AddScoped<ScreenInvalidator>()
             .AddScoped<ScreenSaver>()
             .AddScoped<ScreenSelector>()
-            .AddScoped<Settings>()
             .AddScoped<Stopwatch>()
             .AddScoped<Terminator>()
             .AddScoped<ToDoList>()
             .AddScoped<ToDoListPainter>()
             .AddScoped<UnicodeControl>()
+
+            .AddSingleton<Settings>()
 
             .AddCalculatorModule()
             .AddChessModule()
