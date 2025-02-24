@@ -6,11 +6,9 @@ public abstract class ToggleCommandBase(ConsoleKey shortcut, string description,
     public const char FlagChar = '⚑';
     public const char UnflagChar = '⚐';
 
-    private readonly string _description = description;
-
     public ConsoleKey Shortcut { get; } = shortcut;
 
-    public string Description => $"{_description} {(State ? FlagChar : UnflagChar)}";
+    public string Description => $"{description} {(State ? FlagChar : UnflagChar)}";
 
     protected bool State { get; private set; } = initialState;
 

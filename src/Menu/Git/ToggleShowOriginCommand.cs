@@ -12,7 +12,7 @@ public class ToggleShowOriginCommand(LogStore logStore, RepositorySelector repos
 
     public bool IsScreenSaverResistant => true;
 
-    public async override Task Execute()
+    public override async Task Execute()
     {
         Toggle();
         _logStore.SetShowOrigin(State);
