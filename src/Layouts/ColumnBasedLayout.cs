@@ -30,7 +30,7 @@ public class ColumnBasedLayout : ILayout
     }
 
     public ColumnBasedLayout(IEnumerable<ColumnDefinition> columns)
-        : this(columns.ToArray())
+        : this([..columns])
     {
     }
 

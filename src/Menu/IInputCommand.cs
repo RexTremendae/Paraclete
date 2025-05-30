@@ -7,7 +7,7 @@ public interface IInputCommand<in T> : IInputCommand
 
 public interface IInputCommand : ICommand
 {
-    public static readonly IInputCommand NoInputCommand = new NoInputCommandImplementation();
+    static readonly IInputCommand NoInputCommand = new NoInputCommandImplementation();
 
     [ExcludeFromEnumeration]
     private sealed class NoInputCommandImplementation : IInputCommand

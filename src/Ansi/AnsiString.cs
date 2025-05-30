@@ -16,9 +16,9 @@ public partial class AnsiString
 
     public AnsiString(IEnumerable<IAnsiStringPiece> pieces)
     {
-        Pieces = pieces.ToArray();
+        Pieces = [..pieces];
         _fullString = string.Concat(pieces.Select(_ => _.ToString()));
-        Length = Pieces.OfType<AnsiStringTextPiece>().Select(_ => _.ToString().Length).Sum();
+        Length = Pieces.OfType<AnsiStringTextPiece>().Sum(_ => _.ToString().Length);
     }
 
     public static AnsiString Empty => new(string.Empty);

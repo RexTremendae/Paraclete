@@ -17,9 +17,8 @@ public class CalculatorHistory
 
     public void AddEntry(Expression data)
     {
-        _entries = _entries
+        _entries = [.._entries
             .AsEnumerable()
-            .Append(data)
-            .ToList();
+            .Append(data)];
     }
 }

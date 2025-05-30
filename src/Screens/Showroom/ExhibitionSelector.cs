@@ -2,8 +2,7 @@ namespace Paraclete.Screens.Showroom;
 
 public class ExhibitionSelector(IServiceProvider services, ScreenInvalidator screenInvalidator)
 {
-    private readonly List<IExhibition> _exhibitions = new(TypeEnumerator.GetDerivedContainerInstancesOf<IExhibition>(services));
-    private readonly ScreenInvalidator _screenInvalidator = screenInvalidator;
+    private readonly List<IExhibition> _exhibitions = [..TypeEnumerator.GetDerivedContainerInstancesOf<IExhibition>(services)];
 
     public int ExhibitionCount => _exhibitions.Count;
     public int SelectedExhibitionIndex { get; private set; }
@@ -18,7 +17,7 @@ public class ExhibitionSelector(IServiceProvider services, ScreenInvalidator scr
             SelectedExhibitionIndex = 0;
         }
 
-        _screenInvalidator.InvalidateAll();
+        screenInvalidator.InvalidateAll();
     }
 
     public void SelectPrevious()
@@ -30,6 +29,6 @@ public class ExhibitionSelector(IServiceProvider services, ScreenInvalidator scr
             SelectedExhibitionIndex = _exhibitions.Count - 1;
         }
 
-        _screenInvalidator.InvalidateAll();
+        screenInvalidator.InvalidateAll();
     }
 }

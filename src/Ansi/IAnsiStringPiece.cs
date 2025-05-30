@@ -4,7 +4,7 @@ namespace Paraclete.Ansi;
 
 public interface IAnsiStringPiece
 {
-    public int Length { get; }
+    int Length { get; }
 }
 
 public class AnsiStringTextPiece(string text) : IAnsiStringPiece

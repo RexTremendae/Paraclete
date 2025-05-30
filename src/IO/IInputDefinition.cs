@@ -2,8 +2,8 @@ namespace Paraclete.IO;
 
 public interface IInputDefinition
 {
-    public const string NumericAlphabet = "0123456789";
-    public static readonly IInputDefinition NoInputter = new NoInputDefinitionImplementation();
+    const string NumericAlphabet = "0123456789";
+    static readonly IInputDefinition NoInputter = new NoInputDefinitionImplementation();
 
     Type DataType { get; }
     string Alphabet { get; }

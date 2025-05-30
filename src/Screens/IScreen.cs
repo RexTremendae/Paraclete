@@ -6,7 +6,7 @@ using Paraclete.Painting;
 
 public interface IScreen
 {
-    public static readonly IScreen NoScreen = new NoScreenImplementation();
+    static readonly IScreen NoScreen = new NoScreenImplementation();
 
     MenuBase Menu { get; }
     ILayout Layout { get; }
@@ -16,11 +16,11 @@ public interface IScreen
     bool ShowTitle => true;
     int[] AutoRefreshingPaneIndices => [];
 
-    public virtual void OnAfterSwitch()
+    virtual void OnAfterSwitch()
     {
     }
 
-    public Action GetPaintPaneAction(Painter painter, int paneIndex);
+    Action GetPaintPaneAction(Painter painter, int paneIndex);
 
     [ExcludeFromEnumeration]
     private sealed class NoScreenImplementation : IScreen

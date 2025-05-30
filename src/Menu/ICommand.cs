@@ -2,7 +2,7 @@ namespace Paraclete.Menu;
 
 public interface ICommand
 {
-    public static readonly ICommand NoCommand = new NoCommandImplementation();
+    static readonly ICommand NoCommand = new NoCommandImplementation();
 
     virtual bool IsScreenSaverResistant => false;
 
