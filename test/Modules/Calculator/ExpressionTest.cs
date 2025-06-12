@@ -20,10 +20,10 @@ public class ExpressionTest
             var token = tokenList.First();
 
             // Assert
-            success.Should().BeTrue();
-            tokenList.Count.Should().Be(1, because: "token list count mismatch");
-            token.Token.Should().Be(input.ToString(), because: "token value mismatch");
-            token.Type.Should().Be(TokenType.Numeric, because: "token type mismatch");
+            success.ShouldBeTrue();
+            tokenList.Count.ShouldBe(1, "token list count mismatch");
+            token.Token.ShouldBe(input.ToString(), "token value mismatch");
+            token.Type.ShouldBe(TokenType.Numeric, "token type mismatch");
         }
     }
 
@@ -42,8 +42,8 @@ public class ExpressionTest
             var evaluated = expression.Evaluate();
 
             // Assert
-            success.Should().BeTrue();
-            evaluated.Should().Be(input, because: "evaluated value mismatch");
+            success.ShouldBeTrue();
+            evaluated.ShouldBe(input, "evaluated value mismatch");
         }
 
         [Theory]
@@ -62,8 +62,8 @@ public class ExpressionTest
             var evaluated = expression.Evaluate();
 
             // Assert
-            success.Should().BeTrue();
-            evaluated.Should().Be(expected, because: "evaluated value mismatch");
+            success.ShouldBeTrue();
+            evaluated.ShouldBe(expected, "evaluated value mismatch");
         }
 
         [Theory]
@@ -79,8 +79,8 @@ public class ExpressionTest
             var evaluated = expression.Evaluate();
 
             // Assert
-            success.Should().BeTrue();
-            evaluated.Should().Be(expected, because: "evaluated value mismatch");
+            success.ShouldBeTrue();
+            evaluated.ShouldBe(expected, "evaluated value mismatch");
         }
     }
 }

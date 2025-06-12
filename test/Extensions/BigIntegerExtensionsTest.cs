@@ -26,7 +26,7 @@ public class BigIntegerExtensionsTest
         var result = ((BigInteger)input).ToHexadecimalString(useGrouping: useGrouping, padGroups: padGroups);
 
         // Assert
-        result.Should().Be(expected);
+        result.ShouldBe(expected);
     }
 
     [Theory]
@@ -46,7 +46,7 @@ public class BigIntegerExtensionsTest
         var result = ((BigInteger)input).ToBinaryString(useGrouping: useGrouping, padGroups: padGroups);
 
         // Assert
-        result.Should().Be(expected);
+        result.ShouldBe(expected);
     }
 
     [Theory]
@@ -66,7 +66,7 @@ public class BigIntegerExtensionsTest
         var result = ((BigInteger)input).ToOctalString(useGrouping: useGrouping, padGroups: padGroups);
 
         // Assert
-        result.Should().Be(expected);
+        result.ShouldBe(expected);
     }
 
     [Theory]
@@ -84,6 +84,6 @@ public class BigIntegerExtensionsTest
         var result = ((BigInteger)input).ToDecimalString(useGrouping: useGrouping, padGroups: padGroups);
 
         // Assert
-        result.Should().Be(expected);
+        result.ShouldBe(expected);
     }
 }

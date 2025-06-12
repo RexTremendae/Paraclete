@@ -48,10 +48,10 @@ public class RadixInputDefinitionTest
             var actualNullableResult = actualResultObject.Result;
 
             // Assert
-            actualResultObject.ErrorMessage.Should().BeNullOrEmpty();
-            success.Should().BeTrue();
-            actualNullableResult.HasNonNullValue().Should().BeTrue();
-            ((BigInteger)actualNullableResult.GetNonNullValue()).Should().Be(expectedResult);
+            actualResultObject.ErrorMessage.ShouldBeNullOrEmpty();
+            success.ShouldBeTrue();
+            actualNullableResult.HasNonNullValue().ShouldBeTrue();
+            ((BigInteger)actualNullableResult.GetNonNullValue()).ShouldBe(expectedResult);
         }
 
         [Theory]
@@ -76,8 +76,8 @@ public class RadixInputDefinitionTest
             var success = definition.TryCompleteInput(input, out var result);
 
             // Assert
-            result.ErrorMessage.Should().NotBeNullOrEmpty();
-            success.Should().BeFalse();
+            result.ErrorMessage.ShouldNotBeNullOrEmpty();
+            success.ShouldBeFalse();
         }
     }
 }
