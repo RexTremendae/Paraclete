@@ -1,0 +1,12 @@
+﻿<Solution>
+  <Folder Name="/Github/">
+    <File Path=".github/workflows/dotnet.yml" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Project Path="src/Paraclete.csproj" />
+  <Project Path="test/ParacleteTest.csproj" />
+</Solution>
